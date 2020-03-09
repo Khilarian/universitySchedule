@@ -6,23 +6,24 @@ public class Department {
 
     private String name;
     private Office office;
-    private Set<Subject> subjects = new HashSet<>();
-    private Set<Teacher> staff = new HashSet<>();
+    private Set<Subject> subjects;
+    private Set<Teacher> staff;
 
     public Department(String name, Office office) {
         this.name = name;
         this.office = office;
+        this.subjects = new HashSet<>();
+        this.staff = new HashSet<>();
     }
 
     public Department(String name, Office office, Set<Subject> subjects) {
-        super();
         this.name = name;
         this.office = office;
         this.subjects = subjects;
+        this.staff = new HashSet<>();
     }
 
     public Department(String name, Office office, Set<Subject> subjects, Set<Teacher> staff) {
-        super();
         this.name = name;
         this.office = office;
         this.subjects = subjects;
@@ -39,26 +40,6 @@ public class Department {
 
     public void setStaff(Set<Teacher> staff) {
         this.staff = staff;
-    }
-
-    public void addSubject(Subject subject) {
-        subjects.add(subject);
-    }
-
-    public void deleteSubject(Subject subject) {
-        if (subjects.contains(subject)) {
-            subjects.remove(subject);
-        }
-    }
-
-    public void addTeacher(Teacher teacher) {
-        staff.add(teacher);
-    }
-
-    public void deleteTeacher(Teacher teacher) {
-        if (staff.contains(teacher)) {
-            staff.remove(teacher);
-        }
     }
 
     public String getName() {

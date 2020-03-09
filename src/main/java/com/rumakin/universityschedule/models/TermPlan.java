@@ -5,7 +5,7 @@ import java.util.*;
 public class TermPlan {
 
     private final Term term;
-    private List<SubjectPlan> subjectPlans = new ArrayList<>();
+    private List<SubjectPlan> subjectPlans;
 
     public TermPlan(Term term, List<SubjectPlan> subjectPlan) {
         this.term = term;

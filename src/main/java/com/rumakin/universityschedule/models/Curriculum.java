@@ -7,11 +7,12 @@ public class Curriculum {
 
     private final LocalDate validFromYearOfRecept;
     private LocalDate validTillYearOfRecept;
-    private Set<TermPlan> learningPath = new HashSet<>();
+    private Set<TermPlan> learningPath;
 
     public Curriculum(LocalDate validFromYearOfRecept, Set<TermPlan> learningPath) {
         this.validFromYearOfRecept = validFromYearOfRecept;
         this.learningPath = learningPath;
+        this.learningPath = new HashSet<>();
     }
 
     public Curriculum(LocalDate validFromYearOfRecept, LocalDate validTillYearOfRecept, Set<TermPlan> learningPath) {
@@ -22,16 +23,6 @@ public class Curriculum {
 
     public void setValidTillYearOfRecept(LocalDate validTillYearOfRecept) {
         this.validTillYearOfRecept = validTillYearOfRecept;
-    }
-
-    public void addTermPlan(TermPlan termPlan) {
-        learningPath.add(termPlan);
-    }
-
-    public void deleteTermPlan(TermPlan termPlan) {
-        if (learningPath.contains(termPlan)) {
-            learningPath.remove(termPlan);
-        }
     }
 
     public LocalDate getValidFromYearOfRecept() {

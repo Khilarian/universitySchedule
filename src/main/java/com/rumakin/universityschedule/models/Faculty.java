@@ -6,11 +6,12 @@ public class Faculty {
 
     private String name;
     private Office office;
-    private Set<Department> departments = new HashSet<>();
+    private Set<Department> departments;
 
     public Faculty(String name, Office office) {
         this.name = name;
         this.office = office;
+        this.departments = new HashSet<>();
     }
 
     public Faculty(String name, Office office, Set<Department> departments) {
@@ -25,16 +26,6 @@ public class Faculty {
 
     public void setDepartments(Set<Department> departments) {
         this.departments = departments;
-    }
-
-    public void addDepartment(Department department) {
-        departments.add(department);
-    }
-
-    public void deleteDepartment(Department department) {
-        if (departments.contains(department)) {
-            departments.remove(department);
-        }
     }
 
     public String getName() {

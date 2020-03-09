@@ -7,13 +7,14 @@ public class Group {
     private final String name;
     private final Speciality speciality;
     private final CourseNumber course;
-    private List<Student> students = new ArrayList<>();
+    private List<Student> students;
     private Schedule schedule;
 
     public Group(String name, Speciality speciality, CourseNumber course) {
         this.name = name;
         this.speciality = speciality;
         this.course = course;
+        this.students = new ArrayList<>();
     }
 
     public Group(String name, Speciality speciality, CourseNumber course, List<Student> students) {
@@ -33,22 +34,6 @@ public class Group {
 
     public void setSchedule(Schedule schedule) {
         this.schedule = schedule;
-    }
-
-    public void addStudent(Student student) {
-        if (student == null) {
-            throw new IllegalArgumentException("Input sudent can't be null");
-        }
-        students.add(student);
-    }
-
-    public void deleteStudent(Student student) {
-        if (student == null) {
-            throw new IllegalArgumentException("Input sudent can't be null");
-        }
-        if (students.contains(student)) {
-            students.remove(student);
-        }
     }
 
     public String getName() {

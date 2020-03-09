@@ -4,13 +4,13 @@ import java.util.*;
 
 public class SubjectPlan {
 
-    private List<SubjectHours> plan = new ArrayList<>();
+    private List<SubjectLesson> plan;
 
-    public SubjectPlan(List<SubjectHours> subjectHours) {
+    public SubjectPlan(List<SubjectLesson> subjectHours) {
         this.plan = subjectHours;
     }
 
-    public List<SubjectHours> getPlan() {
+    public List<SubjectLesson> getPlan() {
         return plan;
     }
 

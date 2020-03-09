@@ -6,11 +6,12 @@ public class Building {
 
     private String name;
     private String address;
-    private Set<Room> rooms = new HashSet<>();
+    private Set<Room> rooms;
 
     public Building(String name, String address) {
         this.name = name;
         this.address = address;
+        this.rooms = new HashSet<>();
     }
 
     public void setName(String name) {
@@ -23,16 +24,6 @@ public class Building {
 
     public void setRooms(Set<Room> rooms) {
         this.rooms = rooms;
-    }
-
-    public void addRoom(Room room) {
-        rooms.add(room);
-    }
-
-    public void deleteRoom(Room room) {
-        if (rooms.contains(room)) {
-            rooms.remove(room);
-        }
     }
 
     public String getName() {

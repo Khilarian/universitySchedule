@@ -4,33 +4,12 @@ import java.util.*;
 
 public class University {
 
-    private Set<Building> buildings = new HashSet<>();
-    private Set<Faculty> faculties = new HashSet<>();
-    // temporary - here must be methods to get schedule by date for student/teacher
+    private Set<Building> buildings;
+    private Set<Faculty> faculties;
 
     public University(Set<Building> buildings, Set<Faculty> faculties) {
         this.buildings = buildings;
         this.faculties = faculties;
-    }
-
-    public void addBuilding(Building building) {
-        buildings.add(building);
-    }
-
-    public void deleteBuilding(Building building) {
-        if (buildings.contains(building)) {
-            buildings.remove(building);
-        }
-    }
-
-    public void addFaculty(Faculty faculty) {
-        faculties.add(faculty);
-    }
-
-    public void deleteFaculty(Faculty faculty) {
-        if (faculties.contains(faculty)) {
-            faculties.remove(faculty);
-        }
     }
 
     public Set<Building> getBuildings() {

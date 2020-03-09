@@ -4,7 +4,7 @@ import java.util.*;
 
 public class Schedule {
 
-    private List<Lesson> lessons = new ArrayList<>();
+    private List<Lesson> lessons;
 
     public Schedule(List<Lesson> lessons) {
         this.lessons = lessons;

@@ -7,9 +7,9 @@ public class Lesson {
 
     private final SubjectLesson subjectLesson;
     private Teacher teacher;
-    private Set<Teacher> assistants = new HashSet<>();
+    private Set<Teacher> assistants;
     private Auditorium auditorium;
-    private Set<Group> groups = new HashSet<>();
+    private Set<Group> groups;
     private LocalDate date;
     private TimeSlot timeSlot;
 
@@ -22,26 +22,6 @@ public class Lesson {
         this.groups = groups;
         this.date = date;
         this.timeSlot = timeSlot;
-    }
-
-    public void addAssistant(Teacher teacher) {
-        if (!this.teacher.equals(teacher)) {
-            assistants.add(teacher);
-        }
-    }
-
-    public void removeAssistant(Teacher teacher) {
-        if (assistants.contains(teacher)) {
-            assistants.remove(teacher);
-        }
-    }
-
-    public void addGroup(Group group) {
-        groups.add(group);
-    }
-
-    public void removeGroup(Group group) {
-        groups.remove(group);
     }
 
     public void setTeacher(Teacher teacher) {
