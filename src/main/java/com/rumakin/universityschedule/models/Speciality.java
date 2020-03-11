@@ -1,14 +1,16 @@
 package com.rumakin.universityschedule.models;
 
+import java.util.*;
+
 public class Speciality {
 
     private final String name;
-    private final Curriculum curriculum;
+    private List<Curriculum> curriculums;
     private final AcademicDegree academicDegree;
 
-    public Speciality(String name, Curriculum curriculum, AcademicDegree academicDegree) {
+    public Speciality(String name, AcademicDegree academicDegree) {
         this.name = name;
-        this.curriculum = curriculum;
+        this.curriculums = new ArrayList<>();
         this.academicDegree = academicDegree;
     }
 
@@ -16,8 +18,8 @@ public class Speciality {
         return name;
     }
 
-    public Curriculum getCurriculum() {
-        return curriculum;
+    public List<Curriculum> getCurriculums() {
+        return curriculums;
     }
 
     public AcademicDegree getAcademicDegree() {
@@ -29,7 +31,7 @@ public class Speciality {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((academicDegree == null) ? 0 : academicDegree.hashCode());
-        result = prime * result + ((curriculum == null) ? 0 : curriculum.hashCode());
+        result = prime * result + ((curriculums == null) ? 0 : curriculums.hashCode());
         result = prime * result + ((name == null) ? 0 : name.hashCode());
         return result;
     }
@@ -43,10 +45,10 @@ public class Speciality {
         Speciality other = (Speciality) obj;
         if (academicDegree != other.academicDegree)
             return false;
-        if (curriculum == null) {
-            if (other.curriculum != null)
+        if (curriculums == null) {
+            if (other.curriculums != null)
                 return false;
-        } else if (!curriculum.equals(other.curriculum))
+        } else if (!curriculums.equals(other.curriculums))
             return false;
         if (name == null) {
             if (other.name != null)
@@ -58,7 +60,7 @@ public class Speciality {
 
     @Override
     public String toString() {
-        return "Speciality [name=" + name + ", curriculum=" + curriculum + ", academicDegree=" + academicDegree + "]";
+        return "Speciality [name=" + name + ", curriculums=" + curriculums + ", academicDegree=" + academicDegree + "]";
     }
 
 }

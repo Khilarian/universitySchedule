@@ -5,17 +5,20 @@ import java.util.*;
 
 public class Curriculum {
 
+    private final String name;
     private final LocalDate validFromYearOfRecept;
     private LocalDate validTillYearOfRecept;
     private Set<TermPlan> learningPath;
 
-    public Curriculum(LocalDate validFromYearOfRecept, Set<TermPlan> learningPath) {
+    public Curriculum(String name, LocalDate validFromYearOfRecept, Set<TermPlan> learningPath) {
+        this.name = name;
         this.validFromYearOfRecept = validFromYearOfRecept;
         this.learningPath = learningPath;
         this.learningPath = new HashSet<>();
     }
 
-    public Curriculum(LocalDate validFromYearOfRecept, LocalDate validTillYearOfRecept, Set<TermPlan> learningPath) {
+    public Curriculum(String name, LocalDate validFromYearOfRecept, LocalDate validTillYearOfRecept, Set<TermPlan> learningPath) {
+        this.name = name;
         this.validFromYearOfRecept = validFromYearOfRecept;
         this.validTillYearOfRecept = validTillYearOfRecept;
         this.learningPath = learningPath;
@@ -23,6 +26,10 @@ public class Curriculum {
 
     public void setValidTillYearOfRecept(LocalDate validTillYearOfRecept) {
         this.validTillYearOfRecept = validTillYearOfRecept;
+    }
+    
+    public String getName() {
+        return name;
     }
 
     public LocalDate getValidFromYearOfRecept() {
@@ -42,6 +49,7 @@ public class Curriculum {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((learningPath == null) ? 0 : learningPath.hashCode());
+        result = prime * result + ((name == null) ? 0 : name.hashCode());
         result = prime * result + ((validFromYearOfRecept == null) ? 0 : validFromYearOfRecept.hashCode());
         result = prime * result + ((validTillYearOfRecept == null) ? 0 : validTillYearOfRecept.hashCode());
         return result;
@@ -59,6 +67,11 @@ public class Curriculum {
                 return false;
         } else if (!learningPath.equals(other.learningPath))
             return false;
+        if (name == null) {
+            if (other.name != null)
+                return false;
+        } else if (!name.equals(other.name))
+            return false;
         if (validFromYearOfRecept == null) {
             if (other.validFromYearOfRecept != null)
                 return false;
@@ -74,8 +87,10 @@ public class Curriculum {
 
     @Override
     public String toString() {
-        return "Curriculum [validFromYearOfRecept=" + validFromYearOfRecept + ", validTillYearOfRecept="
-                + validTillYearOfRecept + ", learningPath=" + learningPath + "]";
+        return "Curriculum [name=" + name + ", validFromYearOfRecept=" + validFromYearOfRecept
+                + ", validTillYearOfRecept=" + validTillYearOfRecept + ", learningPath=" + learningPath + "]";
     }
+
+
 
 }
