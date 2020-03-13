@@ -4,12 +4,12 @@ public class Auditorium extends Room {
 
     private int capacity;
 
-    public Auditorium(int number, int floor) {
-        super(number, floor);
+    public Auditorium(int number, int floor, Building building) {
+        super(number, floor, building);
     }
 
-    public Auditorium(int number, int floor, int capacity) {
-        super(number, floor);
+    public Auditorium(int number, int floor, Building building, int capacity) {
+        super(number, floor, building);
         this.capacity = capacity;
     }
 
@@ -45,7 +45,8 @@ public class Auditorium extends Room {
 
     @Override
     public String toString() {
-        return "Auditorium [number=" + getNumber() + ", floor=" + getFloor() + ", capacity=" + capacity + "]";
+        return "Auditorium [number=" + getNumber() + ", floor=" + getFloor() + ", building=" + getBuilding()
+                + ", capacity=" + capacity + "]";
     }
 
 }

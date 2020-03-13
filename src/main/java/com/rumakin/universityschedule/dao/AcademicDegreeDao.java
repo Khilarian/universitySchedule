@@ -1,20 +1,24 @@
 package com.rumakin.universityschedule.dao;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.List;
+import java.sql.*;
+import java.util.*;
 
-import org.springframework.dao.DataAccessException;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.*;
 
 import com.rumakin.universityschedule.models.AcademicDegree;
 
 public class AcademicDegreeDao implements Dao<AcademicDegree> {
 
-    private static final String ADD_ACADEMIC_DEGREE = "INSERT INTO academic_degree (degree_id, degree_name) values (?,?);";
-    private static final String FIND_ACADEMIC_DEGREE_BY_ID = "SELECT degree_name FROM degree WHERE degree_id=?;";
-    private static final String FIND_ALL_ACADEMIC_DEGREE = "SELECT degree_name FROM degree;";
+    private static final String TABLE_NAME = "academic_degree";
+    private static final String ID = "degree_id";
+    private static final String NAME = "degree_name";
+
+    private static final String ADD_ACADEMIC_DEGREE = "INSERT INTO " + TABLE_NAME
+            + " (" + ID + "," + NAME + ") values (?,?);";
+    private static final String FIND_ACADEMIC_DEGREE_BY_ID = "SELECT " + NAME + " FROM "
+            + TABLE_NAME + " WHERE " + ID + "=?;";
+    private static final String FIND_ALL_ACADEMIC_DEGREE = "SELECT " + NAME + " FROM "
+            + TABLE_NAME + ";";
 
     public final JdbcTemplate jdbcTemplate;
 
@@ -22,10 +26,30 @@ public class AcademicDegreeDao implements Dao<AcademicDegree> {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    @Override
-    public void addAll(List<AcademicDegree> data) throws DataAccessException, SQLException {
-        this.jdbcTemplate.update(prepareAddAllSQLQuery(data), createSqlArray(data));
+    private static class AcademicDegreeAddBatch implements BatchPreparedStatementSetter {
 
+        private final List<AcademicDegree> degrees;
+
+        public AcademicDegreeAddBatch(final List<AcademicDegree> data) {
+            this.degrees = data;
+        }
+
+        public final void setValues(
+                final PreparedStatement ps,
+                final int i) throws SQLException {
+            ps.setInt(1, degrees.get(i).getGradeLevel());
+            ps.setString(2, degrees.get(i).name());
+        }
+
+        @Override
+        public int getBatchSize() {
+            return degrees.size();
+        }
+    }
+
+    @Override
+    public void addAll(List<AcademicDegree> data) {
+        this.jdbcTemplate.batchUpdate(ADD_ACADEMIC_DEGREE, new AcademicDegreeAddBatch(data));
     }
 
     @Override
@@ -54,23 +78,6 @@ public class AcademicDegreeDao implements Dao<AcademicDegree> {
                         return AcademicDegree.valueOf(rs.getString("degree_name"));
                     }
                 });
-    }
-
-    private String prepareAddAllSQLQuery(List<AcademicDegree> data) {
-        StringBuilder sqlAddAll = new StringBuilder("INSERT INTO degree (degree_id, degree_name) values ");
-        String addBlock = "(?,?),";
-        for (int i = 0; i < data.size(); i++) {
-            sqlAddAll.append(addBlock);
-            if (i == data.size() - 1) {
-                sqlAddAll.replace(sqlAddAll.length() - 1, sqlAddAll.length(), ";");
-            }
-        }
-        return sqlAddAll.toString();
-    }
-
-    // ??????
-    private java.sql.Array createSqlArray(List<AcademicDegree> list) throws SQLException {
-        return jdbcTemplate.getDataSource().getConnection().createArrayOf("bigint", list.toArray());
     }
 
 }

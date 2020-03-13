@@ -4,26 +4,24 @@ import java.util.*;
 
 public class Building {
 
+    private int id;
     private String name;
     private String address;
     private Set<Room> rooms;
 
-    public Building(String name, String address) {
+    public Building(int id, String name, String address) {
+        this.id = id;
         this.name = name;
         this.address = address;
         this.rooms = new HashSet<>();
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
     public void setRooms(Set<Room> rooms) {
         this.rooms = rooms;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public String getName() {
@@ -43,6 +41,7 @@ public class Building {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((address == null) ? 0 : address.hashCode());
+        result = prime * result + id;
         result = prime * result + ((name == null) ? 0 : name.hashCode());
         result = prime * result + ((rooms == null) ? 0 : rooms.hashCode());
         return result;
@@ -60,6 +59,8 @@ public class Building {
                 return false;
         } else if (!address.equals(other.address))
             return false;
+        if (id != other.id)
+            return false;
         if (name == null) {
             if (other.name != null)
                 return false;
@@ -75,7 +76,7 @@ public class Building {
 
     @Override
     public String toString() {
-        return "Building [name=" + name + ", address=" + address + ", rooms=" + rooms + "]";
+        return "Building [id=" + id + ", name=" + name + ", address=" + address + ", rooms=" + rooms + "]";
     }
 
 }

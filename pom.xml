@@ -17,6 +17,7 @@
         <mockito.core.version>3.2.4</mockito.core.version>
         <mockito.junit.version>3.2.4</mockito.junit.version>
         <postgresql.version>42.2.9</postgresql.version>
+        <spring.version>5.2.4.RELEASE</spring.version>
     </properties>
 
     <build>
@@ -73,5 +74,15 @@
             <artifactId>postgresql</artifactId>
             <version>${postgresql.version}</version>
         </dependency>
+        <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-jdbc</artifactId>
+        <version>${spring.version}</version>
+    </dependency>
+    <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-context</artifactId>
+        <version>${spring.version}</version>
+    </dependency>
     </dependencies>
 </project>

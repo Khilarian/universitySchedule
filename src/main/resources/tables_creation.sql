@@ -30,8 +30,8 @@ building_address VARCHAR(200) NOT NULL UNIQUE
 CREATE TABLE room(
 room_id SERIAL PRIMARY KEY,
 room_number INTEGER NOT NULL,
+floor_number INTEGER NOT NULL,
 building_id INTEGER REFERENCES building(building_id) ON UPDATE CASCADE ON DELETE CASCADE,
-floor_number INTEGER NOT NULL
 );
 CREATE TABLE auditorium(
 room_id INTEGER REFERENCES room(room_id)ON UPDATE CASCADE ON DELETE CASCADE,
