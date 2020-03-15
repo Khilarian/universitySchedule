@@ -7,12 +7,14 @@ public class Office extends Room {
     private LocalTime openedFrom;
     private LocalTime openedTill;
 
-    public Office(int number, int floor, Building building) {
-        super(number, floor, building);
+    public Office(int number, Building building, LocalTime openedFrom, LocalTime openedTill) {
+        super(number, building);
+        this.openedFrom = openedFrom;
+        this.openedTill = openedTill;
     }
 
-    public Office(int number, int floor, Building building, LocalTime openedFrom, LocalTime openedTill) {
-        super(number, floor, building);
+    public Office(int id, int number, Building building, LocalTime openedFrom, LocalTime openedTill) {
+        super(id, number, building);
         this.openedFrom = openedFrom;
         this.openedTill = openedTill;
     }
@@ -64,9 +66,8 @@ public class Office extends Room {
 
     @Override
     public String toString() {
-        return "Office [number=" + getNumber() + ", floor=" + getFloor() + ", building=" + getBuilding()
-                + ", openedFrom=" + openedFrom + ", opnedTill="
-                + openedTill + "]";
+        return "Office [id=" + getId() + ", number=" + getNumber() + ", building="
+                + getBuilding() + ", openedFrom=" + openedFrom + ", opnedTill=" + openedTill + "]";
     }
 
 }

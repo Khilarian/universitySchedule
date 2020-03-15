@@ -6,14 +6,48 @@ public class Teacher extends Person {
 
     private AcademicDegree degree;
     private AcademicRank rank;
+    private Department department;
     private List<Subject> subjects;
 
-    public Teacher(String name, String surname) {
-        super(name, surname);
+    public Teacher(String firstName, String lastName, Department department) {
+        super(firstName, lastName);
+        this.department = department;
     }
 
-    public Teacher(String name, String surname, Integer id) {
-        super(name, surname, id);
+    public Teacher(String firstName, String lastName, Department department, AcademicDegree degree) {
+        super(firstName, lastName);
+        this.department = department;
+        this.degree = degree;
+    }
+
+    public Teacher(String firstName, String lastName, Department department, AcademicDegree degree, AcademicRank rank) {
+        super(firstName, lastName);
+        this.department = department;
+        this.degree = degree;
+        this.rank = rank;
+    }
+
+    public Teacher(int id, String firstName, String lastName, Department department) {
+        super(id, firstName, lastName);
+        this.department = department;
+    }
+
+    public Teacher(int id, String firstName, String lastName, Department department, AcademicDegree degree) {
+        super(id, firstName, lastName);
+        this.department = department;
+        this.degree = degree;
+    }
+
+    public Teacher(int id, String firstName, String lastName, Department department, AcademicDegree degree,
+            AcademicRank rank) {
+        super(id, firstName, lastName);
+        this.department = department;
+        this.degree = degree;
+        this.rank = rank;
+    }
+
+    public void setDepartment(Department department) {
+        this.department = department;
     }
 
     public void setDegree(AcademicDegree degree) {
@@ -26,6 +60,10 @@ public class Teacher extends Person {
 
     public void setSubjects(List<Subject> subjects) {
         this.subjects = subjects;
+    }
+
+    public Department getDepartment() {
+        return department;
     }
 
     public AcademicDegree getDegree() {
@@ -49,6 +87,11 @@ public class Teacher extends Person {
         Teacher other = (Teacher) obj;
         if (degree != other.degree)
             return false;
+        if (department == null) {
+            if (other.department != null)
+                return false;
+        } else if (!department.equals(other.department))
+            return false;
         if (rank != other.rank)
             return false;
         if (subjects == null) {
@@ -64,6 +107,7 @@ public class Teacher extends Person {
         final int prime = 31;
         int result = super.hashCode();
         result = prime * result + ((degree == null) ? 0 : degree.hashCode());
+        result = prime * result + ((department == null) ? 0 : department.hashCode());
         result = prime * result + ((rank == null) ? 0 : rank.hashCode());
         result = prime * result + ((subjects == null) ? 0 : subjects.hashCode());
         return result;
@@ -71,8 +115,9 @@ public class Teacher extends Person {
 
     @Override
     public String toString() {
-        return "Teacher [id=" + getId() + ", name=" + getName() + ", surname=" + getSurname() + ", degree=" + degree
-                + ", rank=" + rank + ", subjects=" + subjects + "]";
+        return "Teacher [uuid=" + getId() + ", name=" + getFirstName() + ", surname=" + getLastName() + "degree="
+                + degree + ", rank=" + rank + ", department=" + department + ", subjects=" + subjects
+                + "]";
     }
 
 }

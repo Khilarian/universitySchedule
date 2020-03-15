@@ -1,24 +1,33 @@
 package com.rumakin.universityschedule.models;
 
-import java.util.*;
-
 public class SubjectPlan {
 
-    private List<SubjectLesson> plan;
+    private int id;
+    private final TermPlan termPlan;
 
-    public SubjectPlan(List<SubjectLesson> subjectHours) {
-        this.plan = subjectHours;
+    public SubjectPlan(TermPlan termPlan) {
+        this.termPlan = termPlan;
     }
 
-    public List<SubjectLesson> getPlan() {
-        return plan;
+    public SubjectPlan(int id, TermPlan termPlan) {
+        this.id = id;
+        this.termPlan = termPlan;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public TermPlan getTermPlan() {
+        return termPlan;
     }
 
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((plan == null) ? 0 : plan.hashCode());
+        result = prime * result + id;
+        result = prime * result + ((termPlan == null) ? 0 : termPlan.hashCode());
         return result;
     }
 
@@ -29,17 +38,19 @@ public class SubjectPlan {
         if (obj == null || getClass() != obj.getClass())
             return false;
         SubjectPlan other = (SubjectPlan) obj;
-        if (plan == null) {
-            if (other.plan != null)
+        if (id != other.id)
+            return false;
+        if (termPlan == null) {
+            if (other.termPlan != null)
                 return false;
-        } else if (!plan.equals(other.plan))
+        } else if (!termPlan.equals(other.termPlan))
             return false;
         return true;
     }
 
     @Override
     public String toString() {
-        return "SubjectPlan [plan=" + plan + "]";
+        return "SubjectPlan [id=" + id + ", termPlan=" + termPlan + "]";
     }
 
 }

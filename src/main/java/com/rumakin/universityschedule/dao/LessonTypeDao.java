@@ -5,44 +5,21 @@ import java.util.List;
 
 import org.springframework.jdbc.core.*;
 
+import com.rumakin.universityschedule.dao.addbatch.LessonTypeAddBatch;
 import com.rumakin.universityschedule.models.LessonType;
 
 public class LessonTypeDao implements Dao<LessonType> {
     private static final String TABLE_NAME = "lesson_type";
-    private static final String ID = "lesson_type_id";
     private static final String NAME = "lesson_type_name";
 
-    private static final String ADD_LESSON_TYPE = "INSERT INTO " + TABLE_NAME
-            + " (" + NAME + ") values (?);";
-    private static final String FIND_LESSON_TYPE_BY_ID = "SELECT " + NAME + " FROM "
-            + TABLE_NAME + " WHERE " + ID + "=?;";
-    private static final String FIND_ALL_LESSON_TYPE = "SELECT " + NAME + " FROM "
-            + TABLE_NAME + ";";
+    private static final String ADD_LESSON_TYPE = "INSERT INTO " + TABLE_NAME + " (" + NAME + ") values (?);";
+    private static final String FIND_BY_NAME = "SELECT * FROM " + TABLE_NAME + " WHERE " + NAME + "=?;";
+    private static final String FIND_ALL_LESSON_TYPE = "SELECT * FROM " + TABLE_NAME + ";";
 
     public final JdbcTemplate jdbcTemplate;
 
     public LessonTypeDao(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
-    }
-
-    private static class LessonTypeAddBatch implements BatchPreparedStatementSetter {
-
-        private final List<LessonType> lessonTypes;
-
-        public LessonTypeAddBatch(final List<LessonType> data) {
-            this.lessonTypes = data;
-        }
-
-        public final void setValues(
-                final PreparedStatement ps,
-                final int i) throws SQLException {
-            ps.setString(1, lessonTypes.get(i).toString());
-        }
-
-        @Override
-        public int getBatchSize() {
-            return lessonTypes.size();
-        }
     }
 
     @Override
@@ -56,15 +33,19 @@ public class LessonTypeDao implements Dao<LessonType> {
         this.jdbcTemplate.update(ADD_LESSON_TYPE, lessonTypeName);
     }
 
-    @Override
-    public LessonType findById(int id) {
-        return this.jdbcTemplate.queryForObject(FIND_LESSON_TYPE_BY_ID,
-                new Object[] { 1212L },
+    public LessonType findByName(String name) {
+        return this.jdbcTemplate.queryForObject(FIND_BY_NAME,
+                new Object[] { name },
                 new RowMapper<LessonType>() {
                     public LessonType mapRow(ResultSet rs, int rowNum) throws SQLException {
                         return LessonType.valueOf(rs.getString(NAME));
                     }
                 });
+    }
+
+    @Override
+    public LessonType findById(int id) {
+        return null;
     }
 
     @Override

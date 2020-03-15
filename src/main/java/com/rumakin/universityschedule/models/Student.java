@@ -2,21 +2,27 @@ package com.rumakin.universityschedule.models;
 
 public class Student extends Person {
 
-    public Student(String name, String surname) {
-        super(name, surname);
+    private Group group;
+
+    public Student(String firstName, String lastName) {
+        super(firstName, lastName);
     }
 
-    public Student(String name, String surname, Integer id) {
-        super(name, surname, id);
+    public Student(String firstName, String lastName, Group group) {
+        super(firstName, lastName);
+        this.group = group;
+    }
+
+    public Student(int id, String name, String surname, Group group) {
+        super(id, name, surname);
+        this.group = group;
     }
 
     @Override
     public int hashCode() {
         final int prime = 31;
-        int result = 1;
-        result = prime * result + ((this.getId() == null) ? 0 : this.getId().hashCode());
-        result = prime * result + ((this.getName() == null) ? 0 : this.getName().hashCode());
-        result = prime * result + ((this.getSurname() == null) ? 0 : this.getSurname().hashCode());
+        int result = super.hashCode();
+        result = prime * result + ((group == null) ? 0 : group.hashCode());
         return result;
     }
 
@@ -24,30 +30,20 @@ public class Student extends Person {
     public boolean equals(Object obj) {
         if (this == obj)
             return true;
-        if (obj == null || getClass() != obj.getClass())
+        if (!super.equals(obj) || getClass() != obj.getClass())
             return false;
         Student other = (Student) obj;
-        if (this.getId() == null) {
-            if (other.getId() != null)
+        if (group == null) {
+            if (other.group != null)
                 return false;
-        } else if (!this.getId().equals(other.getId()))
-            return false;
-        if (this.getName() == null) {
-            if (other.getName() != null)
-                return false;
-        } else if (!this.getName().equals(other.getName()))
-            return false;
-        if (this.getSurname() == null) {
-            if (other.getSurname() != null)
-                return false;
-        } else if (!this.getSurname().equals(other.getSurname()))
+        } else if (!group.equals(other.group))
             return false;
         return true;
     }
 
     @Override
     public String toString() {
-        return "Student [getId()=" + getId() + ", getName()=" + getName() + ", getSurname()=" + getSurname() + "]";
+        return "Student [id=" + getId() + ", getName()=" + getFirstName() + ", getSurname()=" + getLastName() + "]";
     }
 
 }

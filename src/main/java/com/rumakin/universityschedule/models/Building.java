@@ -1,23 +1,20 @@
 package com.rumakin.universityschedule.models;
 
-import java.util.*;
-
 public class Building {
 
     private int id;
     private String name;
     private String address;
-    private Set<Room> rooms;
+
+    public Building(String name, String address) {
+        this.name = name;
+        this.address = address;
+    }
 
     public Building(int id, String name, String address) {
         this.id = id;
         this.name = name;
         this.address = address;
-        this.rooms = new HashSet<>();
-    }
-
-    public void setRooms(Set<Room> rooms) {
-        this.rooms = rooms;
     }
 
     public int getId() {
@@ -32,10 +29,6 @@ public class Building {
         return address;
     }
 
-    public Set<Room> getRooms() {
-        return rooms;
-    }
-
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -43,7 +36,6 @@ public class Building {
         result = prime * result + ((address == null) ? 0 : address.hashCode());
         result = prime * result + id;
         result = prime * result + ((name == null) ? 0 : name.hashCode());
-        result = prime * result + ((rooms == null) ? 0 : rooms.hashCode());
         return result;
     }
 
@@ -66,17 +58,12 @@ public class Building {
                 return false;
         } else if (!name.equals(other.name))
             return false;
-        if (rooms == null) {
-            if (other.rooms != null)
-                return false;
-        } else if (!rooms.equals(other.rooms))
-            return false;
         return true;
     }
 
     @Override
     public String toString() {
-        return "Building [id=" + id + ", name=" + name + ", address=" + address + ", rooms=" + rooms + "]";
+        return "Building [id=" + id + ", name=" + name + ", address=" + address + "]";
     }
 
 }

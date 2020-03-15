@@ -1,16 +1,5 @@
 package com.rumakin.universityschedule.models;
 
 public enum AcademicDegree {
-    BACHELOR(1), SPECIALIST(2), MASTER(3), CANDIDAT_OF_SCIENCES(4), DOCTOR_OF_SIENCE(5);
-
-    private final int gradeLevel;
-
-    AcademicDegree(int i) {
-        this.gradeLevel = i;
-    }
-
-    public int getGradeLevel() {
-        return gradeLevel;
-    }
-
+    BACHELOR, SPECIALIST, MASTER, CANDIDAT_OF_SCIENCES, DOCTOR_OF_SIENCE;
 }

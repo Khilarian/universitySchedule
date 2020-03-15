@@ -5,31 +5,37 @@ import java.time.*;
 
 public class Lesson {
 
+    private int id;
     private final SubjectLesson subjectLesson;
-    private Teacher teacher;
-    private Set<Teacher> assistants;
+    private Set<Teacher> teachers;
     private Auditorium auditorium;
     private Set<Group> groups;
     private LocalDate date;
     private TimeSlot timeSlot;
 
-    public Lesson(SubjectLesson subjectLesson, Teacher teacher, Set<Teacher> assistants, Auditorium auditorium,
+    public Lesson(SubjectLesson subjectLesson, Set<Teacher> teachers, Auditorium auditorium,
             Set<Group> groups, LocalDate date, TimeSlot timeSlot) {
         this.subjectLesson = subjectLesson;
-        this.teacher = teacher;
-        this.assistants = assistants;
+        this.teachers = teachers;
         this.auditorium = auditorium;
         this.groups = groups;
         this.date = date;
         this.timeSlot = timeSlot;
     }
 
-    public void setTeacher(Teacher teacher) {
-        this.teacher = teacher;
+    public Lesson(int id, SubjectLesson subjectLesson, Set<Teacher> teachers, Auditorium auditorium,
+            Set<Group> groups, LocalDate date, TimeSlot timeSlot) {
+        this.id = id;
+        this.subjectLesson = subjectLesson;
+        this.teachers = teachers;
+        this.auditorium = auditorium;
+        this.groups = groups;
+        this.date = date;
+        this.timeSlot = timeSlot;
     }
 
-    public void setAssistants(Set<Teacher> assistants) {
-        this.assistants = assistants;
+    public void setTeachers(Set<Teacher> teachers) {
+        this.teachers = teachers;
     }
 
     public void setAuditorium(Auditorium auditorium) {
@@ -48,16 +54,16 @@ public class Lesson {
         this.timeSlot = timeSlot;
     }
 
+    public int getId() {
+        return id;
+    }
+
     public SubjectLesson getSubjectLesson() {
         return subjectLesson;
     }
 
-    public Teacher getTeacher() {
-        return teacher;
-    }
-
-    public Set<Teacher> getAssistants() {
-        return assistants;
+    public Set<Teacher> getTeachers() {
+        return teachers;
     }
 
     public Auditorium getAuditorium() {
@@ -80,12 +86,11 @@ public class Lesson {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((assistants == null) ? 0 : assistants.hashCode());
         result = prime * result + ((auditorium == null) ? 0 : auditorium.hashCode());
         result = prime * result + ((date == null) ? 0 : date.hashCode());
         result = prime * result + ((groups == null) ? 0 : groups.hashCode());
         result = prime * result + ((subjectLesson == null) ? 0 : subjectLesson.hashCode());
-        result = prime * result + ((teacher == null) ? 0 : teacher.hashCode());
+        result = prime * result + ((teachers == null) ? 0 : teachers.hashCode());
         result = prime * result + ((timeSlot == null) ? 0 : timeSlot.hashCode());
         return result;
     }
@@ -97,11 +102,6 @@ public class Lesson {
         if (obj == null || getClass() != obj.getClass())
             return false;
         Lesson other = (Lesson) obj;
-        if (assistants == null) {
-            if (other.assistants != null)
-                return false;
-        } else if (!assistants.equals(other.assistants))
-            return false;
         if (auditorium == null) {
             if (other.auditorium != null)
                 return false;
@@ -122,21 +122,18 @@ public class Lesson {
                 return false;
         } else if (!subjectLesson.equals(other.subjectLesson))
             return false;
-        if (teacher == null) {
-            if (other.teacher != null)
+        if (teachers == null) {
+            if (other.teachers != null)
                 return false;
-        } else if (!teacher.equals(other.teacher))
+        } else if (!teachers.equals(other.teachers))
             return false;
-        if (timeSlot != other.timeSlot)
-            return false;
-        return true;
+        return timeSlot == other.timeSlot;
     }
 
     @Override
     public String toString() {
-        return "Lesson [subjectLesson=" + subjectLesson + ", teacher=" + teacher + ", assistants=" + assistants
-                + ", auditorium=" + auditorium + ", groups=" + groups + ", date=" + date + ", timeSlot=" + timeSlot
-                + "]";
+        return "Lesson [subjectLesson=" + subjectLesson + ", teachers=" + teachers + ", auditorium=" + auditorium
+                + ", groups=" + groups + ", date=" + date + ", timeSlot=" + timeSlot + "]";
     }
 
 }

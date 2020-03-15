@@ -1,25 +1,28 @@
 package com.rumakin.universityschedule.models;
 
-import java.util.*;
-
 public class Speciality {
 
+    private int id;
     private final String name;
-    private List<Curriculum> curriculums;
     private final AcademicDegree academicDegree;
 
     public Speciality(String name, AcademicDegree academicDegree) {
         this.name = name;
-        this.curriculums = new ArrayList<>();
         this.academicDegree = academicDegree;
+    }
+
+    public Speciality(int id, String name, AcademicDegree academicDegree) {
+        this.id = id;
+        this.name = name;
+        this.academicDegree = academicDegree;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public String getName() {
         return name;
-    }
-
-    public List<Curriculum> getCurriculums() {
-        return curriculums;
     }
 
     public AcademicDegree getAcademicDegree() {
@@ -31,7 +34,7 @@ public class Speciality {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((academicDegree == null) ? 0 : academicDegree.hashCode());
-        result = prime * result + ((curriculums == null) ? 0 : curriculums.hashCode());
+        result = prime * result + id;
         result = prime * result + ((name == null) ? 0 : name.hashCode());
         return result;
     }
@@ -45,10 +48,7 @@ public class Speciality {
         Speciality other = (Speciality) obj;
         if (academicDegree != other.academicDegree)
             return false;
-        if (curriculums == null) {
-            if (other.curriculums != null)
-                return false;
-        } else if (!curriculums.equals(other.curriculums))
+        if (id != other.id)
             return false;
         if (name == null) {
             if (other.name != null)
@@ -60,7 +60,7 @@ public class Speciality {
 
     @Override
     public String toString() {
-        return "Speciality [name=" + name + ", curriculums=" + curriculums + ", academicDegree=" + academicDegree + "]";
+        return "Speciality [id=" + id + ", name=" + name + ", academicDegree=" + academicDegree + "]";
     }
 
 }

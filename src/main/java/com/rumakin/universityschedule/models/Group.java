@@ -1,39 +1,32 @@
 package com.rumakin.universityschedule.models;
 
-import java.util.*;
-
 public class Group {
 
-    private final String name;
+    private int id;
+    private String name;
     private final Speciality speciality;
     private final CourseNumber course;
-    private List<Student> students;
     private Schedule schedule;
 
     public Group(String name, Speciality speciality, CourseNumber course) {
         this.name = name;
         this.speciality = speciality;
         this.course = course;
-        this.students = new ArrayList<>();
     }
 
-    public Group(String name, Speciality speciality, CourseNumber course, List<Student> students) {
+    public Group(int id, String name, Speciality speciality, CourseNumber course) {
+        this.id = id;
         this.name = name;
         this.speciality = speciality;
         this.course = course;
-        this.students = students;
-    }
-
-    public Group(String name, Speciality speciality, CourseNumber course, List<Student> students, Schedule schedule) {
-        this.name = name;
-        this.speciality = speciality;
-        this.course = course;
-        this.students = students;
-        this.schedule = schedule;
     }
 
     public void setSchedule(Schedule schedule) {
         this.schedule = schedule;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public String getName() {
@@ -48,10 +41,6 @@ public class Group {
         return course;
     }
 
-    public List<Student> getStudents() {
-        return students;
-    }
-
     public Schedule getSchedule() {
         return schedule;
     }
@@ -61,10 +50,10 @@ public class Group {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((course == null) ? 0 : course.hashCode());
+        result = prime * result + id;
         result = prime * result + ((name == null) ? 0 : name.hashCode());
         result = prime * result + ((schedule == null) ? 0 : schedule.hashCode());
         result = prime * result + ((speciality == null) ? 0 : speciality.hashCode());
-        result = prime * result + ((students == null) ? 0 : students.hashCode());
         return result;
     }
 
@@ -76,6 +65,8 @@ public class Group {
             return false;
         Group other = (Group) obj;
         if (course != other.course)
+            return false;
+        if (id != other.id)
             return false;
         if (name == null) {
             if (other.name != null)
@@ -92,17 +83,12 @@ public class Group {
                 return false;
         } else if (!speciality.equals(other.speciality))
             return false;
-        if (students == null) {
-            if (other.students != null)
-                return false;
-        } else if (!students.equals(other.students))
-            return false;
         return true;
     }
 
     @Override
     public String toString() {
-        return "Group [name=" + name + ", speciality=" + speciality + ", course=" + course + ", students=" + students
+        return "Group [id=" + id + ", name=" + name + ", speciality=" + speciality + ", course=" + course
                 + ", schedule=" + schedule + "]";
     }
 

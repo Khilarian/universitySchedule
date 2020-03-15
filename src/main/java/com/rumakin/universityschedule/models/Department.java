@@ -1,45 +1,31 @@
 package com.rumakin.universityschedule.models;
 
-import java.util.*;
-
 public class Department {
 
+    private int id;
     private String name;
+    private Faculty faculty;
     private Office office;
-    private Set<Subject> subjects;
-    private Set<Teacher> staff;
 
-    public Department(String name, Office office) {
+    public Department(String name, Office office, Faculty faculty) {
         this.name = name;
+        this.faculty = faculty;
         this.office = office;
-        this.subjects = new HashSet<>();
-        this.staff = new HashSet<>();
     }
 
-    public Department(String name, Office office, Set<Subject> subjects) {
+    public Department(int id, String name, Office office, Faculty faculty) {
+        this.id = id;
         this.name = name;
+        this.faculty = faculty;
         this.office = office;
-        this.subjects = subjects;
-        this.staff = new HashSet<>();
-    }
-
-    public Department(String name, Office office, Set<Subject> subjects, Set<Teacher> staff) {
-        this.name = name;
-        this.office = office;
-        this.subjects = subjects;
-        this.staff = staff;
     }
 
     public void setOffice(Office office) {
         this.office = office;
     }
 
-    public void setSubjects(Set<Subject> subjects) {
-        this.subjects = subjects;
-    }
-
-    public void setStaff(Set<Teacher> staff) {
-        this.staff = staff;
+    public int getId() {
+        return id;
     }
 
     public String getName() {
@@ -50,22 +36,18 @@ public class Department {
         return office;
     }
 
-    public Set<Subject> getSubjects() {
-        return subjects;
-    }
-
-    public Set<Teacher> getStaff() {
-        return staff;
+    public Faculty getFaculty() {
+        return faculty;
     }
 
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
+        result = prime * result + ((faculty == null) ? 0 : faculty.hashCode());
+        result = prime * result + id;
         result = prime * result + ((name == null) ? 0 : name.hashCode());
         result = prime * result + ((office == null) ? 0 : office.hashCode());
-        result = prime * result + ((staff == null) ? 0 : staff.hashCode());
-        result = prime * result + ((subjects == null) ? 0 : subjects.hashCode());
         return result;
     }
 
@@ -76,6 +58,13 @@ public class Department {
         if (obj == null || getClass() != obj.getClass())
             return false;
         Department other = (Department) obj;
+        if (faculty == null) {
+            if (other.faculty != null)
+                return false;
+        } else if (!faculty.equals(other.faculty))
+            return false;
+        if (id != other.id)
+            return false;
         if (name == null) {
             if (other.name != null)
                 return false;
@@ -86,22 +75,12 @@ public class Department {
                 return false;
         } else if (!office.equals(other.office))
             return false;
-        if (staff == null) {
-            if (other.staff != null)
-                return false;
-        } else if (!staff.equals(other.staff))
-            return false;
-        if (subjects == null) {
-            if (other.subjects != null)
-                return false;
-        } else if (!subjects.equals(other.subjects))
-            return false;
         return true;
     }
 
     @Override
     public String toString() {
-        return "Department [name=" + name + ", office=" + office + ", subjects=" + subjects + ", staff=" + staff + "]";
+        return "Department [id=" + id + ", name=" + name + ", faculty=" + faculty + ", office=" + office + "]";
     }
 
 }

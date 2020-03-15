@@ -4,19 +4,21 @@ import java.sql.Driver;
 
 import org.springframework.jdbc.datasource.SimpleDriverDataSource;
 
-public class BaseDataSource {
+public class DataSourceProvider {
 
-    private SimpleDriverDataSource dataSource;
-    private PropertiesLoader propertiesLoader;
+    private final SimpleDriverDataSource dataSource;
+    private final PropertiesLoader propertiesLoader;
 
-    public BaseDataSource(PropertiesLoader propertiesLoader) throws ClassNotFoundException {
+    public DataSourceProvider(PropertiesLoader propertiesLoader) throws ClassNotFoundException {
         this.propertiesLoader = propertiesLoader;
+        this.dataSource = new SimpleDriverDataSource();
         configureDataSourse();
     }
 
     @SuppressWarnings("unchecked")
     private void configureDataSourse() throws ClassNotFoundException {
-        dataSource.setDriverClass((Class<? extends Driver>) Class.forName(propertiesLoader.loadDriver()));
+        Class<? extends Driver> driver = (Class<? extends Driver>) Class.forName(propertiesLoader.loadDriver());
+        dataSource.setDriverClass(driver);
         dataSource.setUrl(propertiesLoader.loadHost());
         dataSource.setUsername(propertiesLoader.loadLogin());
         dataSource.setPassword(propertiesLoader.loadPassword());

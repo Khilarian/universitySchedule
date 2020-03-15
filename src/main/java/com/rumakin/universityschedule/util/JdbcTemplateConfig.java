@@ -6,7 +6,7 @@ public class JdbcTemplateConfig {
 
     private JdbcTemplate jdbcTemplate;
 
-    public JdbcTemplateConfig(BaseDataSource dataSource) {
+    public JdbcTemplateConfig(DataSourceProvider dataSource) {
         jdbcTemplate = new JdbcTemplate(dataSource.getDataSource());
     }
 

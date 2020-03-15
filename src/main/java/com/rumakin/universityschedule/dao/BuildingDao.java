@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.jdbc.core.*;
 
+import com.rumakin.universityschedule.dao.addbatch.BuildingAddBatch;
 import com.rumakin.universityschedule.models.Building;
 
 public class BuildingDao implements Dao<Building> {
@@ -13,38 +14,17 @@ public class BuildingDao implements Dao<Building> {
     private static final String NAME = "building_name";
     private static final String ADDRESS = "building_address";
 
-    private static final String ADD_BUILDING = "INSERT INTO " + TABLE_NAME
-            + " (" + NAME + "," + ADDRESS + ") values (?,?);";
+    private static final String ADD_BUILDING = "INSERT INTO " + TABLE_NAME + " (" + NAME + "," + ADDRESS
+            + ") values (?,?);";
     private static final String FIND_BUILDING_BY_ID = "SELECT " + NAME + "," + ADDRESS + " FROM "
             + TABLE_NAME + " WHERE " + ID + "=?;";
-    private static final String FIND_ALL_BUILDING = "SELECT " + NAME + "," + ADDRESS + " FROM "
-            + TABLE_NAME + ";";
+    private static final String FIND_ID_BY_NAME = "SELECT " + ID + " FROM " + TABLE_NAME + " WHERE " + NAME + "=?;";
+    private static final String FIND_ALL_BUILDING = "SELECT " + NAME + "," + ADDRESS + " FROM " + TABLE_NAME + ";";
 
     public final JdbcTemplate jdbcTemplate;
 
     public BuildingDao(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
-    }
-
-    private static class BuildingAddBatch implements BatchPreparedStatementSetter {
-
-        private final List<Building> buildings;
-
-        public BuildingAddBatch(final List<Building> data) {
-            this.buildings = data;
-        }
-
-        public final void setValues(
-                final PreparedStatement ps,
-                final int i) throws SQLException {
-            ps.setString(1, buildings.get(i).getName());
-            ps.setString(2, buildings.get(i).getAddress());
-        }
-
-        @Override
-        public int getBatchSize() {
-            return buildings.size();
-        }
     }
 
     @Override
@@ -59,10 +39,14 @@ public class BuildingDao implements Dao<Building> {
         this.jdbcTemplate.update(ADD_BUILDING, buildingName, buildingAddress);
     }
 
+    public int findIdByName(String name) {
+        return this.jdbcTemplate.queryForObject(FIND_ID_BY_NAME, Integer.class, name);
+    }
+
     @Override
     public Building findById(int id) {
         return this.jdbcTemplate.queryForObject(FIND_BUILDING_BY_ID,
-                new Object[] { 1212L },
+                new Object[] { id },
                 new RowMapper<Building>() {
                     public Building mapRow(ResultSet rs, int rowNum) throws SQLException {
                         return new Building(rs.getInt(ID), rs.getString(NAME), rs.getString(ADDRESS));

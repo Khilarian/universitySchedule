@@ -4,12 +4,21 @@ public class Auditorium extends Room {
 
     private int capacity;
 
-    public Auditorium(int number, int floor, Building building) {
-        super(number, floor, building);
+    public Auditorium(int number, Building building) {
+        super(number, building);
     }
 
-    public Auditorium(int number, int floor, Building building, int capacity) {
-        super(number, floor, building);
+    public Auditorium(int id, int number, Building building) {
+        super(id, number, building);
+    }
+
+    public Auditorium(int number, Building building, int capacity) {
+        super(number, building);
+        this.capacity = capacity;
+    }
+
+    public Auditorium(int id, int number, Building building, int capacity) {
+        super(id, number, building);
         this.capacity = capacity;
     }
 
@@ -38,15 +47,13 @@ public class Auditorium extends Room {
         if (getClass() != obj.getClass())
             return false;
         Auditorium other = (Auditorium) obj;
-        if (capacity != other.capacity)
-            return false;
-        return true;
+        return capacity == other.capacity;
     }
 
     @Override
     public String toString() {
-        return "Auditorium [number=" + getNumber() + ", floor=" + getFloor() + ", building=" + getBuilding()
-                + ", capacity=" + capacity + "]";
+        return "Auditorium [id=" + getId() + ", snumber=" + getNumber() + ", building="
+                + getBuilding() + ", capacity=" + capacity + "]";
     }
 
 }
