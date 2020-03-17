@@ -17,7 +17,8 @@ public class TermAddBatch implements BatchPreparedStatementSetter {
     }
 
     public final void setValues(final PreparedStatement ps, final int i) throws SQLException {
-        ps.setString(1, terms.get(i).name());
+        String name = terms.get(i).name();
+        ps.setString(1, name);
     }
 
     @Override

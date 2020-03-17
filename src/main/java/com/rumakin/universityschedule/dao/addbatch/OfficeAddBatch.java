@@ -17,10 +17,14 @@ public class OfficeAddBatch implements BatchPreparedStatementSetter {
     }
 
     public final void setValues(final PreparedStatement ps, final int i) throws SQLException {
-        ps.setInt(1, offices.get(i).getNumber());
-        ps.setInt(2, offices.get(i).getBuilding().getId());
-        ps.setObject(3, offices.get(i).getOpenedFrom());
-        ps.setObject(4, offices.get(i).getOpnedTill());
+        int id = offices.get(i).getNumber();
+        int buildingId = offices.get(i).getBuilding().getId();
+        Object openedFrom = offices.get(i).getOpenedFrom();
+        Object openedTill = offices.get(i).getOpnedTill();
+        ps.setInt(1, id);
+        ps.setInt(2, buildingId);
+        ps.setObject(3, openedFrom);
+        ps.setObject(4, openedTill);
     }
 
     @Override

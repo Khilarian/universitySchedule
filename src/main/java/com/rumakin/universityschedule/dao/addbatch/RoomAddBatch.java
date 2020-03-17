@@ -17,8 +17,10 @@ public class RoomAddBatch implements BatchPreparedStatementSetter {
     }
 
     public final void setValues(final PreparedStatement ps, final int i) throws SQLException {
-        ps.setInt(1, rooms.get(i).getNumber());
-        ps.setInt(2, rooms.get(i).getBuilding().getId());
+        int number = rooms.get(i).getNumber();
+        int buildingId = rooms.get(i).getBuilding().getId();
+        ps.setInt(1, number);
+        ps.setInt(2, buildingId);
     }
 
     @Override

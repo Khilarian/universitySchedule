@@ -17,7 +17,8 @@ public class LessonTypeAddBatch implements BatchPreparedStatementSetter {
     }
 
     public final void setValues(final PreparedStatement ps, final int i) throws SQLException {
-        ps.setString(1, lessonTypes.get(i).toString());
+        String name = lessonTypes.get(i).toString();
+        ps.setString(1, name);
     }
 
     @Override

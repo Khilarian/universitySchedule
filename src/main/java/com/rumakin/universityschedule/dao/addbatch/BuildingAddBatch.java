@@ -17,8 +17,11 @@ public class BuildingAddBatch implements BatchPreparedStatementSetter {
     }
 
     public final void setValues(final PreparedStatement ps, final int i) throws SQLException {
-        ps.setString(1, buildings.get(i).getName());
-        ps.setString(2, buildings.get(i).getAddress());
+        String name = buildings.get(i).getName();
+        String address = buildings.get(i).getAddress();
+        
+        ps.setString(1, name);
+        ps.setString(2, address);
     }
 
     @Override

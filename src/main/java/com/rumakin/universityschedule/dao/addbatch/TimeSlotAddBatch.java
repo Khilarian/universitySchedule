@@ -17,7 +17,8 @@ public class TimeSlotAddBatch implements BatchPreparedStatementSetter {
     }
 
     public final void setValues(final PreparedStatement ps, final int i) throws SQLException {
-        ps.setString(1, timeSlots.get(i).name());
+        String name = timeSlots.get(i).name();
+        ps.setString(1, name);
     }
 
     @Override

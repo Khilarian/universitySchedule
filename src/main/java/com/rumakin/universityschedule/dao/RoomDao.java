@@ -1,32 +1,31 @@
 package com.rumakin.universityschedule.dao;
 
-import java.sql.*;
 import java.util.List;
 
 import org.springframework.jdbc.core.*;
 
 import com.rumakin.universityschedule.dao.addbatch.RoomAddBatch;
-import com.rumakin.universityschedule.models.Building;
+import com.rumakin.universityschedule.dao.rowmapper.RoomRowMapper;
 import com.rumakin.universityschedule.models.Room;
 
 public class RoomDao implements Dao<Room> {
-    private static final String TABLE_NAME = "room as r";
+    private static final String TABLE_NAME = "room r";
     private static final String ID = "room_id";
     private static final String NUMBER = "room_number";
-    private static final String BUILDING_TABLE_NAME = "building as b";
+    private static final String BUILDING_TABLE_NAME = "building b";
     private static final String BUILDING_ID = "building_id";
     private static final String BUILDING_NAME = "building_name";
-    private static final String BUILDING_ADDRESS = "building_addredd";
+    private static final String BUILDING_ADDRESS = "building_address";
 
     private static final String ADD_ROOM = "INSERT INTO " + TABLE_NAME
-            + " (" + NUMBER  + "," + BUILDING_ID + ") values (?,?);";
-    private static final String FIND_ROOM_BY_ID = "SELECT (r." + ID + ",r." + NUMBER 
+            + " (" + NUMBER + "," + BUILDING_ID + ") values (?,?);";
+    private static final String FIND_ROOM_BY_ID = "SELECT (r." + ID + ",r." + NUMBER
             + ",r." + BUILDING_ID + ",b." + BUILDING_NAME + ",b." + BUILDING_ADDRESS + ") FROM "
             + TABLE_NAME + " INNER JOIN " + BUILDING_TABLE_NAME + " ON r." + BUILDING_ID + "=b." + BUILDING_ID
             + " WHERE " + ID + "=?;";
     private static final String FIND_ID_BY_NUMBER_AND_BUILDING = "SELECT " + ID + " FROM " + TABLE_NAME
             + " WHERE " + NUMBER + "=?  AND " + BUILDING_ID + "=?;";
-    private static final String FIND_ALL_ROOM = "SELECT (r." + ID + ",r." + NUMBER 
+    private static final String FIND_ALL_ROOM = "SELECT (r." + ID + ",r." + NUMBER
             + ",r." + BUILDING_ID + ",b." + BUILDING_NAME + ",b." + BUILDING_ADDRESS + ") FROM " + TABLE_NAME
             + " INNER JOIN " + BUILDING_TABLE_NAME + " ON r." + BUILDING_ID + "=b." + BUILDING_ID;
 
@@ -55,33 +54,11 @@ public class RoomDao implements Dao<Room> {
 
     @Override
     public Room findById(int id) {
-        return this.jdbcTemplate.queryForObject(FIND_ROOM_BY_ID,
-                new Object[] { id },
-                new RowMapper<Room>() {
-                    public Room mapRow(ResultSet rs, int rowNum) throws SQLException {
-                        int number = rs.getInt(NUMBER);
-                        int buildingId = rs.getInt(BUILDING_ID);
-                        String buildingName = rs.getString(BUILDING_NAME);
-                        String buildingAddress = rs.getString(BUILDING_ADDRESS);
-                        Building building = new Building(buildingId, buildingName, buildingAddress);
-                        return new Room(id, number, building);
-                    }
-                });
+        return this.jdbcTemplate.queryForObject(FIND_ROOM_BY_ID, new Object[] { id }, new RoomRowMapper());
     }
 
     @Override
     public List<Room> findAll() {
-        return this.jdbcTemplate.query(FIND_ALL_ROOM,
-                new RowMapper<Room>() {
-                    public Room mapRow(ResultSet rs, int rowNum) throws SQLException {
-                        int id = rs.getInt(ID);
-                        int number = rs.getInt(NUMBER);
-                        int buildingId = rs.getInt(BUILDING_ID);
-                        String buildingName = rs.getString(BUILDING_NAME);
-                        String buildingAddress = rs.getString(BUILDING_ADDRESS);
-                        Building building = new Building(buildingId, buildingName, buildingAddress);
-                        return new Room(id, number, building);
-                    }
-                });
+        return this.jdbcTemplate.query(FIND_ALL_ROOM, new RoomRowMapper());
     }
 }

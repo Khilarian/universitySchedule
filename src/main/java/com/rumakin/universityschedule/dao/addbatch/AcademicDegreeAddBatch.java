@@ -1,7 +1,6 @@
 package com.rumakin.universityschedule.dao.addbatch;
 
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.List;
 
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;

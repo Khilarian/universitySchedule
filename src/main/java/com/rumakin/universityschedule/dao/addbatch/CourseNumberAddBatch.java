@@ -17,7 +17,8 @@ public class CourseNumberAddBatch implements BatchPreparedStatementSetter {
     }
 
     public final void setValues(final PreparedStatement ps, final int i) throws SQLException {
-        ps.setString(1, courses.get(i).name());
+        String name = courses.get(i).name();
+        ps.setString(1, name);
     }
 
     @Override

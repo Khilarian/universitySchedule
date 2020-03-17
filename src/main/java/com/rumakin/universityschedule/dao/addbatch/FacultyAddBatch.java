@@ -17,8 +17,10 @@ public class FacultyAddBatch implements BatchPreparedStatementSetter {
     }
 
     public final void setValues(final PreparedStatement ps, final int i) throws SQLException {
-        ps.setString(1, faculties.get(i).getName());
-        ps.setInt(2, faculties.get(i).getOffice().getId());
+        String name = faculties.get(i).getName();
+        int officeId = faculties.get(i).getOffice().getId();
+        ps.setString(1, name);
+        ps.setInt(2, officeId);
     }
 
     @Override

@@ -2,17 +2,15 @@ package com.rumakin.universityschedule.dao;
 
 import static org.junit.Assert.*;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 
-import java.lang.reflect.Array;
 import java.sql.SQLException;
 import java.util.Arrays;
+import java.util.List;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.jdbc.core.BatchPreparedStatementSetter;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.*;
 
 import com.rumakin.universityschedule.dao.addbatch.AcademicDegreeAddBatch;
 import com.rumakin.universityschedule.dao.rowmapper.AcademicDegreeRowMapper;
@@ -21,8 +19,7 @@ import com.rumakin.universityschedule.models.AcademicDegree;
 
 class AcademicDegreeDaoTest {
 
-    JdbcTemplate mockJdbcTemplate = mock(JdbcTemplate.class);
-    AcademicDegreeRowMapper mockAcademicDegreeRowMapper = mock(AcademicDegreeRowMapper.class);
+    private JdbcTemplate mockJdbcTemplate = mock(JdbcTemplate.class);
 
     private AcademicDegreeDao academicDegreeDao = new AcademicDegreeDao(mockJdbcTemplate);
 
@@ -30,7 +27,8 @@ class AcademicDegreeDaoTest {
     void addShouldExecuteOnceWhenDbCallFine() throws SQLException {
         AcademicDegree degree = AcademicDegree.BACHELOR;
         academicDegreeDao.add(degree);
-        verify(mockJdbcTemplate, times(1)).update(anyString(), anyString());
+        verify(mockJdbcTemplate, times(1)).update(eq("INSERT INTO academic_degree (degree_name) values (?);"),
+                eq("BACHELOR"));
     }
 
     @Test
@@ -45,25 +43,43 @@ class AcademicDegreeDaoTest {
     @Test
     void findByNameShouldReturnAcademicDegreeIfNameExists() throws SQLException {
         AcademicDegree expected = AcademicDegree.MASTER;
-        when(mockJdbcTemplate.queryForObject(eq(anyString()), any(), new AcademicDegreeRowMapper())).thenReturn(AcademicDegree.MASTER);
-        when(mockAcademicDegreeRowMapper.mapRow(any(), anyInt())).thenReturn(AcademicDegree.MASTER);
+        when(mockJdbcTemplate.queryForObject(any(String.class), (Object[]) any(Object.class),
+                any(AcademicDegreeRowMapper.class)))
+                        .thenReturn(AcademicDegree.MASTER);
         AcademicDegree actual = academicDegreeDao.findByName("MASTER");
         assertEquals(expected, actual);
-        verify(mockJdbcTemplate, times(1)).queryForObject(eq(anyString()), any(), new AcademicDegreeRowMapper());
+        Object[] input = { "MASTER" };
+        verify(mockJdbcTemplate, times(1)).queryForObject(eq("SELECT * FROM academic_degree WHERE degree_name=?;"),
+                eq(input), any(AcademicDegreeRowMapper.class));
     }
 
     @Test
     void findByIdShouldRaiseExceptionIfIDMissed() throws SQLException {
-        when(mockJdbcTemplate.queryForObject(eq(anyString()), any(), new AcademicDegreeRowMapper()))
-                .thenThrow(DaoException.class);
-        assertThrows(DaoException.class, () -> academicDegreeDao.findByName("name"));
+        when(mockJdbcTemplate.queryForObject(any(String.class), (Object[]) any(Object.class),
+                any(AcademicDegreeRowMapper.class)))
+                        .thenThrow(DaoException.class);
+        assertThrows(DaoException.class, () -> academicDegreeDao.findByName("BACHELOR"));
+        Object[] input = { "BACHELOR" };
+        verify(mockJdbcTemplate, times(1)).queryForObject(eq("SELECT * FROM academic_degree WHERE degree_name=?;"),
+                eq(input), any(AcademicDegreeRowMapper.class));
     }
 
-    /*
-     * @Test void findAllShouldReturnListOfCoursesIfAtLeastOneExist() throws
-     * SQLException {
-     * 
-     * }
-     */
+    @Test
+    void findAllShouldReturnListOfCoursesIfAtLeastOneExist() throws SQLException {
+        List<AcademicDegree> expected = Arrays.asList(AcademicDegree.BACHELOR, AcademicDegree.MASTER);
+        when(mockJdbcTemplate.query(any(String.class), any(AcademicDegreeRowMapper.class))).thenReturn(expected);
+        List<AcademicDegree> actual = academicDegreeDao.findAll();
+        assertEquals(expected, actual);
+        verify(mockJdbcTemplate, times(1)).query(eq("SELECT * FROM academic_degree;"),
+                any(AcademicDegreeRowMapper.class));
+    }
 
+    @Test
+    void findAllShouldRaiseExceptionIfDataBaseEmpty() throws SQLException {
+        when(mockJdbcTemplate.query(any(String.class), any(AcademicDegreeRowMapper.class)))
+                .thenThrow(DaoException.class);
+        assertThrows(DaoException.class, () -> academicDegreeDao.findAll());
+        verify(mockJdbcTemplate, times(1)).query(eq("SELECT * FROM academic_degree;"),
+                any(AcademicDegreeRowMapper.class));
+    }
 }

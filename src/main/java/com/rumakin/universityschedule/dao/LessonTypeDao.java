@@ -9,6 +9,7 @@ import com.rumakin.universityschedule.dao.addbatch.LessonTypeAddBatch;
 import com.rumakin.universityschedule.models.LessonType;
 
 public class LessonTypeDao implements Dao<LessonType> {
+
     private static final String TABLE_NAME = "lesson_type";
     private static final String NAME = "lesson_type_name";
 

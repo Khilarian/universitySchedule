@@ -17,7 +17,8 @@ public class AcademicRankAddBatch implements BatchPreparedStatementSetter {
     }
 
     public final void setValues(final PreparedStatement ps, final int i) throws SQLException {
-        ps.setString(1, ranks.get(i).name());
+        String name = ranks.get(i).name();
+        ps.setString(1, name);
     }
 
     @Override

@@ -1,11 +1,11 @@
 package com.rumakin.universityschedule.dao;
 
-import java.sql.*;
-import java.util.List;
+import java.util.*;
 
 import org.springframework.jdbc.core.*;
 
 import com.rumakin.universityschedule.dao.addbatch.BuildingAddBatch;
+import com.rumakin.universityschedule.dao.rowmapper.BuildingRowMapper;
 import com.rumakin.universityschedule.models.Building;
 
 public class BuildingDao implements Dao<Building> {
@@ -45,22 +45,11 @@ public class BuildingDao implements Dao<Building> {
 
     @Override
     public Building findById(int id) {
-        return this.jdbcTemplate.queryForObject(FIND_BUILDING_BY_ID,
-                new Object[] { id },
-                new RowMapper<Building>() {
-                    public Building mapRow(ResultSet rs, int rowNum) throws SQLException {
-                        return new Building(rs.getInt(ID), rs.getString(NAME), rs.getString(ADDRESS));
-                    }
-                });
+        return this.jdbcTemplate.queryForObject(FIND_BUILDING_BY_ID, new Object[] { id }, new BuildingRowMapper());
     }
 
     @Override
     public List<Building> findAll() {
-        return this.jdbcTemplate.query(FIND_ALL_BUILDING,
-                new RowMapper<Building>() {
-                    public Building mapRow(ResultSet rs, int rowNum) throws SQLException {
-                        return new Building(rs.getInt(ID), rs.getString(NAME), rs.getString(ADDRESS));
-                    }
-                });
+        return this.jdbcTemplate.query(FIND_ALL_BUILDING, new BuildingRowMapper());
     }
 }

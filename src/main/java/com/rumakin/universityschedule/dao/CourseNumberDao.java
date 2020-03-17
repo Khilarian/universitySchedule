@@ -1,11 +1,10 @@
 package com.rumakin.universityschedule.dao;
-
-import java.sql.*;
 import java.util.List;
 
 import org.springframework.jdbc.core.*;
 
 import com.rumakin.universityschedule.dao.addbatch.CourseNumberAddBatch;
+import com.rumakin.universityschedule.dao.rowmapper.CourseNumberRowMapper;
 import com.rumakin.universityschedule.models.CourseNumber;
 
 public class CourseNumberDao implements Dao<CourseNumber> {
@@ -34,13 +33,7 @@ public class CourseNumberDao implements Dao<CourseNumber> {
     }
 
     public CourseNumber findByName(String name) {
-        return this.jdbcTemplate.queryForObject(FIND_BY_NAME,
-                new Object[] { name },
-                new RowMapper<CourseNumber>() {
-                    public CourseNumber mapRow(ResultSet rs, int rowNum) throws SQLException {
-                        return CourseNumber.valueOf(rs.getString(NAME));
-                    }
-                });
+        return this.jdbcTemplate.queryForObject(FIND_BY_NAME, new Object[] { name }, new CourseNumberRowMapper());
     }
 
     @Override
@@ -50,12 +43,7 @@ public class CourseNumberDao implements Dao<CourseNumber> {
 
     @Override
     public List<CourseNumber> findAll() {
-        return this.jdbcTemplate.query(FIND_ALL_COURSE_NUMBER,
-                new RowMapper<CourseNumber>() {
-                    public CourseNumber mapRow(ResultSet rs, int rowNum) throws SQLException {
-                        return CourseNumber.valueOf(rs.getString(NAME));
-                    }
-                });
+        return this.jdbcTemplate.query(FIND_ALL_COURSE_NUMBER, new CourseNumberRowMapper());
     }
 
 }
