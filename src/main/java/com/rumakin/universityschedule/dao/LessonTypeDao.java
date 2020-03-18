@@ -6,7 +6,7 @@ import java.util.List;
 import org.springframework.jdbc.core.*;
 
 import com.rumakin.universityschedule.dao.addbatch.LessonTypeAddBatch;
-import com.rumakin.universityschedule.models.LessonType;
+import com.rumakin.universityschedule.enums.LessonType;
 
 public class LessonTypeDao implements Dao<LessonType> {
 

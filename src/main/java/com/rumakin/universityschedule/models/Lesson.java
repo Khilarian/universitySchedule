@@ -1,34 +1,29 @@
 package com.rumakin.universityschedule.models;
 
 import java.util.*;
+
+import com.rumakin.universityschedule.enums.*;
+
 import java.time.*;
 
 public class Lesson {
 
     private int id;
-    private final SubjectLesson subjectLesson;
-    private Set<Teacher> teachers;
+    private final Subject subject;
+    private final LessonType type;
     private Auditorium auditorium;
+    private Set<Teacher> teachers;
     private Set<Group> groups;
     private LocalDate date;
     private TimeSlot timeSlot;
 
-    public Lesson(SubjectLesson subjectLesson, Set<Teacher> teachers, Auditorium auditorium,
-            Set<Group> groups, LocalDate date, TimeSlot timeSlot) {
-        this.subjectLesson = subjectLesson;
-        this.teachers = teachers;
-        this.auditorium = auditorium;
-        this.groups = groups;
-        this.date = date;
-        this.timeSlot = timeSlot;
-    }
-
-    public Lesson(int id, SubjectLesson subjectLesson, Set<Teacher> teachers, Auditorium auditorium,
+    public Lesson(int id, Subject subject, LessonType type, Auditorium auditorium, Set<Teacher> teachers,
             Set<Group> groups, LocalDate date, TimeSlot timeSlot) {
         this.id = id;
-        this.subjectLesson = subjectLesson;
-        this.teachers = teachers;
+        this.subject = subject;
+        this.type = type;
         this.auditorium = auditorium;
+        this.teachers = teachers;
         this.groups = groups;
         this.date = date;
         this.timeSlot = timeSlot;
@@ -46,20 +41,16 @@ public class Lesson {
         this.groups = groups;
     }
 
-    public void setDate(LocalDate date) {
-        this.date = date;
-    }
-
-    public void setTimeSlot(TimeSlot timeSlot) {
-        this.timeSlot = timeSlot;
-    }
-
     public int getId() {
         return id;
     }
 
-    public SubjectLesson getSubjectLesson() {
-        return subjectLesson;
+    public Subject getSubject() {
+        return subject;
+    }
+
+    public LessonType getLessonType() {
+        return type;
     }
 
     public Set<Teacher> getTeachers() {
@@ -89,9 +80,11 @@ public class Lesson {
         result = prime * result + ((auditorium == null) ? 0 : auditorium.hashCode());
         result = prime * result + ((date == null) ? 0 : date.hashCode());
         result = prime * result + ((groups == null) ? 0 : groups.hashCode());
-        result = prime * result + ((subjectLesson == null) ? 0 : subjectLesson.hashCode());
+        result = prime * result + id;
+        result = prime * result + ((subject == null) ? 0 : subject.hashCode());
         result = prime * result + ((teachers == null) ? 0 : teachers.hashCode());
         result = prime * result + ((timeSlot == null) ? 0 : timeSlot.hashCode());
+        result = prime * result + ((type == null) ? 0 : type.hashCode());
         return result;
     }
 
@@ -117,23 +110,29 @@ public class Lesson {
                 return false;
         } else if (!groups.equals(other.groups))
             return false;
-        if (subjectLesson == null) {
-            if (other.subjectLesson != null)
+        if (id != other.id)
+            return false;
+        if (subject == null) {
+            if (other.subject != null)
                 return false;
-        } else if (!subjectLesson.equals(other.subjectLesson))
+        } else if (!subject.equals(other.subject))
             return false;
         if (teachers == null) {
             if (other.teachers != null)
                 return false;
         } else if (!teachers.equals(other.teachers))
             return false;
-        return timeSlot == other.timeSlot;
+        if (timeSlot != other.timeSlot)
+            return false;
+        if (type != other.type)
+            return false;
+        return true;
     }
 
     @Override
     public String toString() {
-        return "Lesson [subjectLesson=" + subjectLesson + ", teachers=" + teachers + ", auditorium=" + auditorium
-                + ", groups=" + groups + ", date=" + date + ", timeSlot=" + timeSlot + "]";
+        return "Lesson [id=" + id + ", subject=" + subject + ", type=" + type + ", auditorium=" + auditorium
+                + ", teachers=" + teachers + ", groups=" + groups + ", date=" + date + ", timeSlot=" + timeSlot + "]";
     }
 
 }

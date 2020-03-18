@@ -5,7 +5,7 @@ import org.springframework.jdbc.core.*;
 
 import com.rumakin.universityschedule.dao.addbatch.CourseNumberAddBatch;
 import com.rumakin.universityschedule.dao.rowmapper.CourseNumberRowMapper;
-import com.rumakin.universityschedule.models.CourseNumber;
+import com.rumakin.universityschedule.enums.CourseNumber;
 
 public class CourseNumberDao implements Dao<CourseNumber> {
     private static final String TABLE_NAME = "course_number";

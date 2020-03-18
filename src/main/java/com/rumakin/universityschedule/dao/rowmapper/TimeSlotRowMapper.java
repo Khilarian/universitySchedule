@@ -4,7 +4,7 @@ import java.sql.*;
 
 import org.springframework.jdbc.core.RowMapper;
 
-import com.rumakin.universityschedule.models.TimeSlot;
+import com.rumakin.universityschedule.enums.TimeSlot;
 
 public class TimeSlotRowMapper implements RowMapper<TimeSlot> {
 

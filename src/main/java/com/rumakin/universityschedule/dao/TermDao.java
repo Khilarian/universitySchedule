@@ -6,7 +6,7 @@ import java.util.List;
 import org.springframework.jdbc.core.*;
 
 import com.rumakin.universityschedule.dao.addbatch.TermAddBatch;
-import com.rumakin.universityschedule.models.Term;
+import com.rumakin.universityschedule.enums.Term;
 
 public class TermDao implements Dao<Term> {
     private static final String TABLE_NAME = "term";

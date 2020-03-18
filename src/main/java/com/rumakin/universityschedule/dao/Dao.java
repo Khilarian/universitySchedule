@@ -2,6 +2,8 @@ package com.rumakin.universityschedule.dao;
 
 import java.util.List;
 
+import org.springframework.jdbc.core.RowMapper;
+
 public interface Dao<T> {
 
     void addAll(List<T> data);
@@ -11,6 +13,8 @@ public interface Dao<T> {
     T findById(int id);
 
     List<T> findAll();
+
+    RowMapper<T> mapRow();
 
     // void delete(T entity);
 }

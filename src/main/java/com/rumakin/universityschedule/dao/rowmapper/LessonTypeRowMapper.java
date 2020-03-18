@@ -4,7 +4,7 @@ import java.sql.*;
 
 import org.springframework.jdbc.core.RowMapper;
 
-import com.rumakin.universityschedule.models.LessonType;
+import com.rumakin.universityschedule.enums.LessonType;
 
 public class LessonTypeRowMapper implements RowMapper<LessonType> {
 

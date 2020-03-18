@@ -6,7 +6,7 @@ import java.util.List;
 import org.springframework.jdbc.core.*;
 
 import com.rumakin.universityschedule.dao.addbatch.TimeSlotAddBatch;
-import com.rumakin.universityschedule.models.TimeSlot;
+import com.rumakin.universityschedule.enums.TimeSlot;
 
 public class TimeSlotDao implements Dao<TimeSlot> {
     private static final String TABLE_NAME = "time_slot";

@@ -2,10 +2,11 @@ package com.rumakin.universityschedule.models;
 
 import java.util.*;
 
+import com.rumakin.universityschedule.enums.AcademicDegree;
+
 public class Teacher extends Person {
 
     private AcademicDegree degree;
-    private AcademicRank rank;
     private Department department;
     private List<Subject> subjects;
 
@@ -20,13 +21,6 @@ public class Teacher extends Person {
         this.degree = degree;
     }
 
-    public Teacher(String firstName, String lastName, Department department, AcademicDegree degree, AcademicRank rank) {
-        super(firstName, lastName);
-        this.department = department;
-        this.degree = degree;
-        this.rank = rank;
-    }
-
     public Teacher(int id, String firstName, String lastName, Department department) {
         super(id, firstName, lastName);
         this.department = department;
@@ -38,24 +32,12 @@ public class Teacher extends Person {
         this.degree = degree;
     }
 
-    public Teacher(int id, String firstName, String lastName, Department department, AcademicDegree degree,
-            AcademicRank rank) {
-        super(id, firstName, lastName);
-        this.department = department;
-        this.degree = degree;
-        this.rank = rank;
-    }
-
     public void setDepartment(Department department) {
         this.department = department;
     }
 
     public void setDegree(AcademicDegree degree) {
         this.degree = degree;
-    }
-
-    public void setRank(AcademicRank rank) {
-        this.rank = rank;
     }
 
     public void setSubjects(List<Subject> subjects) {
@@ -68,10 +50,6 @@ public class Teacher extends Person {
 
     public AcademicDegree getDegree() {
         return degree;
-    }
-
-    public AcademicRank getRank() {
-        return rank;
     }
 
     public List<Subject> getSubjects() {
@@ -92,8 +70,6 @@ public class Teacher extends Person {
                 return false;
         } else if (!department.equals(other.department))
             return false;
-        if (rank != other.rank)
-            return false;
         if (subjects == null) {
             if (other.subjects != null)
                 return false;
@@ -108,16 +84,14 @@ public class Teacher extends Person {
         int result = super.hashCode();
         result = prime * result + ((degree == null) ? 0 : degree.hashCode());
         result = prime * result + ((department == null) ? 0 : department.hashCode());
-        result = prime * result + ((rank == null) ? 0 : rank.hashCode());
         result = prime * result + ((subjects == null) ? 0 : subjects.hashCode());
         return result;
     }
 
     @Override
     public String toString() {
-        return "Teacher [uuid=" + getId() + ", name=" + getFirstName() + ", surname=" + getLastName() + "degree="
-                + degree + ", rank=" + rank + ", department=" + department + ", subjects=" + subjects
-                + "]";
+        return "Teacher [id=" + getId() + ", firstName=" + getFirstName() + ", lastName=" + getLastName() + "degree="
+                + degree + ", department=" + department + ", subjects=" + subjects + "]";
     }
 
 }

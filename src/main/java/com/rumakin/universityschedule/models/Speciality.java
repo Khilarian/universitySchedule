@@ -1,5 +1,7 @@
 package com.rumakin.universityschedule.models;
 
+import com.rumakin.universityschedule.enums.AcademicDegree;
+
 public class Speciality {
 
     private int id;

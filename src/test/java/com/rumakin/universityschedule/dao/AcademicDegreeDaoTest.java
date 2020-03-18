@@ -14,8 +14,8 @@ import org.springframework.jdbc.core.*;
 
 import com.rumakin.universityschedule.dao.addbatch.AcademicDegreeAddBatch;
 import com.rumakin.universityschedule.dao.rowmapper.AcademicDegreeRowMapper;
+import com.rumakin.universityschedule.enums.AcademicDegree;
 import com.rumakin.universityschedule.exceptions.DaoException;
-import com.rumakin.universityschedule.models.AcademicDegree;
 
 class AcademicDegreeDaoTest {
 

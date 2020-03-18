@@ -1,15 +1,15 @@
 package com.rumakin.universityschedule;
 
-import com.rumakin.universityschedule.util.DataSourceProvider;
-import com.rumakin.universityschedule.util.JdbcTemplateProvider;
-import com.rumakin.universityschedule.util.PropertiesLoader;
+import org.springframework.jdbc.core.JdbcTemplate;
+
+import com.rumakin.universityschedule.util.*;
 
 public class AppRunner {
 
     public static void main(String[] args) throws ClassNotFoundException {
         PropertiesLoader propertiesLoader = new PropertiesLoader();
         DataSourceProvider dataSourceProvider = new DataSourceProvider(propertiesLoader);
-        JdbcTemplateProvider jdbcTemplateProvider = new JdbcTemplateProvider(dataSourceProvider.getDataSource());
+        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSourceProvider.getDataSource());
     }
 
 }

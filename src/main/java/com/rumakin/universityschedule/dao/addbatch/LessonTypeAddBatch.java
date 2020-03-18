@@ -6,7 +6,7 @@ import java.util.List;
 
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 
-import com.rumakin.universityschedule.models.LessonType;
+import com.rumakin.universityschedule.enums.LessonType;
 
 public class LessonTypeAddBatch implements BatchPreparedStatementSetter {
 

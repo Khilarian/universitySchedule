@@ -6,7 +6,7 @@ import java.util.List;
 
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 
-import com.rumakin.universityschedule.models.Term;
+import com.rumakin.universityschedule.enums.Term;
 
 public class TermAddBatch implements BatchPreparedStatementSetter {
 
