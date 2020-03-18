@@ -1,9 +1,5 @@
 package com.rumakin.universityschedule;
 
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.util.*;
-
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import com.rumakin.universityschedule.util.*;

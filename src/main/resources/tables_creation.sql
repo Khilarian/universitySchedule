@@ -1,14 +1,5 @@
-CREATE TABLE academic_degree(
-degree_name VARCHAR(50) NOT NULL UNIQUE PRIMARY KEY
-);
-CREATE TABLE course_number(
-course_number_name VARCHAR(20) NOT NULL UNIQUE PRIMARY KEY
-);
 CREATE TABLE lesson_type(
 lesson_type_name VARCHAR(20) NOT NULL UNIQUE PRIMARY KEY
-);
-CREATE TABLE term(
-term_name VARCHAR(20) NOT NULL UNIQUE PRIMARY KEY
 );
 CREATE TABLE time_slot(
 time_slot_name VARCHAR(20) NOT NULL UNIQUE PRIMARY KEY
@@ -17,11 +8,6 @@ CREATE TABLE building(
 building_id SERIAL PRIMARY KEY,
 building_name VARCHAR(50) NOT NULL UNIQUE,
 building_address VARCHAR(200) NOT NULL UNIQUE
-);
-CREATE TABLE room(
-auditorium_id SERIAL PRIMARY KEY,
-room_number INTEGER NOT NULL,
-building_id INTEGER REFERENCES building(building_id) ON UPDATE CASCADE ON DELETE CASCADE
 );
 CREATE TABLE auditorium(
 auditorium_id SERIAL PRIMARY KEY,
@@ -33,15 +19,10 @@ CREATE TABLE faculty(
 faculty_id SERIAL PRIMARY KEY,
 faculty_name VARCHAR(100) NOT NULL UNIQUE
 );
-CREATE TABLE department(
-department_id SERIAL PRIMARY KEY,
-department_name VARCHAR(100) NOT NULL UNIQUE,
-faculty_id INTEGER REFERENCES faculty(faculty_id) ON UPDATE CASCADE ON DELETE CASCADE
-);
 CREATE TABLE subject(
 subject_id SERIAL PRIMARY KEY,
 subject_name VARCHAR(30) NOT NULL UNIQUE,
-department_id INTEGER REFERENCES department(department_id)
+faculty_id INTEGER REFERENCES faculty(faculty_id)
 );
 CREATE TABLE person(
 person_id SERIAL PRIMARY KEY,
@@ -50,19 +31,11 @@ person_last_name VARCHAR(30) NOT NULL
 );
 CREATE TABLE teacher(
 teacher_id INTEGER REFERENCES person(person_id) ON UPDATE CASCADE ON DELETE CASCADE PRIMARY KEY,
-degree_name VARCHAR(50) REFERENCES academic_degree(degree_name) ON UPDATE CASCADE ON DELETE CASCADE,
-department_id INTEGER REFERENCES department(department_id) ON UPDATE CASCADE ON DELETE CASCADE
-);
-CREATE TABLE speciality(
-speciality_id SERIAL PRIMARY KEY,
-speciality_name VARCHAR(50),
-degree_name VARCHAR(50) REFERENCES academic_degree(degree_name) ON UPDATE CASCADE ON DELETE CASCADE
+faculty_id INTEGER REFERENCES faculty(faculty_id) ON UPDATE CASCADE ON DELETE CASCADE
 );
 CREATE TABLE groups(
 group_id SERIAL PRIMARY KEY,
-group_name VARCHAR(10) NOT NULL UNIQUE,
-speciality_id INTEGER REFERENCES speciality(speciality_id) ON UPDATE CASCADE ON DELETE CASCADE,
-course_number_name VARCHAR(20) REFERENCES course_number(course_number_name) ON UPDATE CASCADE ON DELETE CASCADE
+group_name VARCHAR(10) NOT NULL UNIQUE
 );
 CREATE TABLE student(
 student_id INTEGER REFERENCES person(person_id) ON UPDATE CASCADE ON DELETE CASCADE PRIMARY KEY,

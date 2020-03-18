@@ -4,17 +4,17 @@ public class Subject {
 
     private int id;
     private String name;
-    private Department department;
+    private Faculty faculty;
 
-    Subject(String name, Department department) {
+    Subject(String name, Faculty faculty) {
         this.name = name;
-        this.department = department;
+        this.faculty = faculty;
     }
 
-    Subject(int id, String name, Department department) {
+    Subject(int id, String name, Faculty faculty) {
         this.id = id;
         this.name = name;
-        this.department = department;
+        this.faculty = faculty;
     }
 
     public int getId() {
@@ -25,15 +25,15 @@ public class Subject {
         return name;
     }
 
-    public Department getDepartment() {
-        return department;
+    public Faculty getFaculty() {
+        return faculty;
     }
 
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((department == null) ? 0 : department.hashCode());
+        result = prime * result + ((faculty == null) ? 0 : faculty.hashCode());
         result = prime * result + id;
         result = prime * result + ((name == null) ? 0 : name.hashCode());
         return result;
@@ -46,10 +46,10 @@ public class Subject {
         if (obj == null || getClass() != obj.getClass())
             return false;
         Subject other = (Subject) obj;
-        if (department == null) {
-            if (other.department != null)
+        if (faculty == null) {
+            if (other.faculty != null)
                 return false;
-        } else if (!department.equals(other.department))
+        } else if (!faculty.equals(other.faculty))
             return false;
         if (id != other.id)
             return false;
@@ -63,7 +63,7 @@ public class Subject {
 
     @Override
     public String toString() {
-        return "Subject [id=" + id + ", name=" + name + ", department=" + department + "]";
+        return "Subject [id=" + id + ", name=" + name + ", faculty=" + faculty + "]";
     }
 
 }
