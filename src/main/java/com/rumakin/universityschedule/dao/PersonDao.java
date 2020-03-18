@@ -34,7 +34,9 @@ public class PersonDao implements Dao<Person>, PreparedStatementBatchSetter<Pers
 
     @Override
     public void add(Person person) {
-        this.jdbcTemplate.update(ADD, person);
+        String firstName = person.getFirstName();
+        String lastName = person.getLastName();
+        this.jdbcTemplate.update(ADD, firstName, lastName);
     }
 
     @Override

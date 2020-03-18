@@ -12,41 +12,41 @@ import org.junit.jupiter.api.Test;
 import org.springframework.jdbc.core.*;
 
 import com.rumakin.universityschedule.exceptions.DaoException;
-import com.rumakin.universityschedule.models.Person;
+import com.rumakin.universityschedule.models.Building;
 
-class PersonDaoTest {
+class BuildingDaoTest {
 
     private JdbcTemplate mockJdbcTemplate = mock(JdbcTemplate.class);
 
-    private PersonDao personDao = new PersonDao(mockJdbcTemplate);
+    private BuildingDao buildingDao = new BuildingDao(mockJdbcTemplate);
 
     @Test
     void addShouldExecuteOnceWhenDbCallFine() throws SQLException {
-        Person person = new Person("Lexx", "Luger");
-        personDao.add(person);
+        Building building = new Building("Main", "Moskow, Tverskaya, 1");
+        buildingDao.add(building);
         verify(mockJdbcTemplate, times(1))
-                .update(eq("INSERT INTO person (person_first_name,person_last_name) values (?,?);"),
-                        eq(person.getFirstName()), eq(person.getLastName()));
+                .update(eq("INSERT INTO building (building_name,building_address) values (?,?);"),
+                        eq(building.getName()), eq(building.getAddress()));
     }
 
     @Test
     void addAllShouldExecuteOnceWhenDbCallFine() throws SQLException {
-        Person person = new Person("Lexx", "Luger");
-        Person personTwo = new Person("Hulk", "Hogan");
-        Person[] data = { person, personTwo };
-        personDao.addAll(Arrays.asList(data));
+        Building building = new Building("Main", "Moskow, Tverskaya, 1");
+        Building buildingTwo = new Building("Second", "Khimki, Moskovskaya, 23");
+        Building[] data = { building, buildingTwo };
+        buildingDao.addAll(Arrays.asList(data));
         verify(mockJdbcTemplate, times(1)).batchUpdate(anyString(), any(BatchComposer.class));
     }
 
     @Test
     void findByIdShouldReturnPersonIfIdExists() throws SQLException {
-        Person expected = new Person(1, "Lexx", "Luger");
+        Building expected = new Building("Main", "Moskow, Tverskaya, 1");
         when(mockJdbcTemplate.queryForObject(any(String.class), (Object[]) any(Object.class),
-                (RowMapper<Person>) any(RowMapper.class))).thenReturn(expected);
-        Person actual = personDao.findById(1);
+                (RowMapper<Building>) any(RowMapper.class))).thenReturn(expected);
+        Building actual = buildingDao.findById(1);
         assertEquals(expected, actual);
         Object[] input = { 1 };
-        verify(mockJdbcTemplate, times(1)).queryForObject(eq("SELECT * FROM person WHERE person_id=?;"),
+        verify(mockJdbcTemplate, times(1)).queryForObject(eq("SELECT * FROM building WHERE building_id=?;"),
                 eq(input), any(RowMapper.class));
     }
 
@@ -54,21 +54,21 @@ class PersonDaoTest {
     void findByIdShouldRaiseExceptionIfIDMissed() throws SQLException {
         when(mockJdbcTemplate.queryForObject(any(String.class), (Object[]) any(Object.class),
                 any(RowMapper.class))).thenThrow(DaoException.class);
-        assertThrows(DaoException.class, () -> personDao.findById(20));
+        assertThrows(DaoException.class, () -> buildingDao.findById(20));
         Object[] input = { 20 };
-        verify(mockJdbcTemplate, times(1)).queryForObject(eq("SELECT * FROM person WHERE person_id=?;"),
+        verify(mockJdbcTemplate, times(1)).queryForObject(eq("SELECT * FROM building WHERE building_id=?;"),
                 eq(input), any(RowMapper.class));
     }
 
     @Test
     void findAllShouldReturnListOfCoursesIfAtLeastOneExist() throws SQLException {
-        Person person = new Person("Lexx", "Luger");
-        Person personTwo = new Person("Hulk", "Hogan");
-        List<Person> expected = Arrays.asList(person, personTwo);
+        Building building = new Building("Main", "Moskow, Tverskaya, 1");
+        Building buildingTwo = new Building("Second", "Khimki, Moskovskaya, 23");
+        List<Building> expected = Arrays.asList(building, buildingTwo);
         when(mockJdbcTemplate.query(any(String.class), any(RowMapper.class))).thenReturn(expected);
-        List<Person> actual = personDao.findAll();
+        List<Building> actual = buildingDao.findAll();
         assertEquals(expected, actual);
-        verify(mockJdbcTemplate, times(1)).query(eq("SELECT * FROM person;"),
+        verify(mockJdbcTemplate, times(1)).query(eq("SELECT * FROM building;"),
                 any(RowMapper.class));
     }
 
@@ -76,8 +76,8 @@ class PersonDaoTest {
     void findAllShouldRaiseExceptionIfDataBaseEmpty() throws SQLException {
         when(mockJdbcTemplate.query(any(String.class), any(RowMapper.class)))
                 .thenThrow(DaoException.class);
-        assertThrows(DaoException.class, () -> personDao.findAll());
-        verify(mockJdbcTemplate, times(1)).query(eq("SELECT * FROM person;"),
+        assertThrows(DaoException.class, () -> buildingDao.findAll());
+        verify(mockJdbcTemplate, times(1)).query(eq("SELECT * FROM building;"),
                 any(RowMapper.class));
     }
 
