@@ -19,8 +19,6 @@ public class PersonDao implements Dao<Person>, PreparedStatementBatchSetter<Pers
     private static final String ADD = "INSERT INTO " + TABLE_NAME + " (" + FIRST_NAME + "," + LAST_NAME
             + ") values (?,?);";
     private static final String FIND_BY_ID = "SELECT * FROM " + TABLE_NAME + " WHERE " + ID + "=?;";
-    private static final String FIND_BY_NAME = "SELECT * FROM " + TABLE_NAME + " WHERE " + FIRST_NAME + "=? AND "
-            + LAST_NAME + "=;";
     private static final String FIND_ALL = "SELECT * FROM " + TABLE_NAME + ";";
 
     public final JdbcTemplate jdbcTemplate;
@@ -48,15 +46,6 @@ public class PersonDao implements Dao<Person>, PreparedStatementBatchSetter<Pers
         return person;
     }
 
-    public Person findByName(String firstName, String lastName) {
-        Person person = this.jdbcTemplate.queryForObject(FIND_BY_NAME, new Object[] { firstName, lastName },
-                mapRow());
-        if (person == null) {
-            throw new DaoException("Person with name " + firstName + " " + lastName + " is absent.");
-        }
-        return person;
-    }
-
     @Override
     public List<Person> findAll() {
         List<Person> people = this.jdbcTemplate.query(FIND_ALL, mapRow());
@@ -70,7 +59,6 @@ public class PersonDao implements Dao<Person>, PreparedStatementBatchSetter<Pers
     public RowMapper<Person> mapRow() {
         return (ResultSet rs, int rowNumber) -> new Person(rs.getInt(ID), rs.getString(FIRST_NAME),
                 rs.getString(LAST_NAME));
-
     }
 
     @Override

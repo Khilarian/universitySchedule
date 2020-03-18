@@ -5,16 +5,16 @@ import java.util.List;
 
 import org.springframework.jdbc.core.*;
 
-import com.rumakin.universityschedule.dao.addbatch.TimeSlotAddBatch;
 import com.rumakin.universityschedule.enums.TimeSlot;
+import com.rumakin.universityschedule.exceptions.DaoException;
 
-public class TimeSlotDao implements Dao<TimeSlot> {
+public class TimeSlotDao implements Dao<TimeSlot>, PreparedStatementBatchSetter<TimeSlot> {
     private static final String TABLE_NAME = "time_slot";
     private static final String NAME = "time_slot_name";
 
-    private static final String ADD_TIME_SLOT = "INSERT INTO " + TABLE_NAME + " (" + NAME + ") values (?);";
+    private static final String ADD = "INSERT INTO " + TABLE_NAME + " (" + NAME + ") values (?);";
     private static final String FIND_BY_NAME = "SELECT * FROM " + TABLE_NAME + " WHERE " + NAME + "=?;";
-    private static final String FIND_ALL_TIME_SLOT = "SELECT " + NAME + " FROM " + TABLE_NAME + ";";
+    private static final String FIND_ALL = "SELECT " + NAME + " FROM " + TABLE_NAME + ";";
 
     public final JdbcTemplate jdbcTemplate;
 
@@ -24,23 +24,22 @@ public class TimeSlotDao implements Dao<TimeSlot> {
 
     @Override
     public void addAll(List<TimeSlot> data) {
-        this.jdbcTemplate.batchUpdate(ADD_TIME_SLOT, new TimeSlotAddBatch(data));
+        this.jdbcTemplate.batchUpdate(ADD, new BatchComposer<TimeSlot>(data, this));
     }
 
     @Override
-    public void add(TimeSlot entity) {
-        String timeSlotName = entity.name();
-        this.jdbcTemplate.update(ADD_TIME_SLOT, timeSlotName);
+    public void add(TimeSlot timeSlot) {
+        String timeSlotName = timeSlot.name();
+        this.jdbcTemplate.update(ADD, timeSlotName);
     }
 
     public TimeSlot findByName(String name) {
-        return this.jdbcTemplate.queryForObject(FIND_BY_NAME,
-                new Object[] { name },
-                new RowMapper<TimeSlot>() {
-                    public TimeSlot mapRow(ResultSet rs, int rowNum) throws SQLException {
-                        return TimeSlot.valueOf(rs.getString(NAME));
-                    }
-                });
+        TimeSlot timeSlot = this.jdbcTemplate.queryForObject(FIND_BY_NAME, new Object[] { name },
+                mapRow());
+        if (timeSlot == null) {
+            throw new DaoException("TimeSlot with name " + name + " is absent.");
+        }
+        return timeSlot;
     }
 
     @Override
@@ -50,11 +49,21 @@ public class TimeSlotDao implements Dao<TimeSlot> {
 
     @Override
     public List<TimeSlot> findAll() {
-        return this.jdbcTemplate.query(FIND_ALL_TIME_SLOT,
-                new RowMapper<TimeSlot>() {
-                    public TimeSlot mapRow(ResultSet rs, int rowNum) throws SQLException {
-                        return TimeSlot.valueOf(rs.getString(NAME));
-                    }
-                });
+        List<TimeSlot> timeSlots = this.jdbcTemplate.query(FIND_ALL, mapRow());
+        if (timeSlots.isEmpty()) {
+            throw new DaoException("TimeSlot table is empty.");
+        }
+        return timeSlots;
+    }
+
+    @Override
+    public void setStatements(PreparedStatement ps, TimeSlot timeSlot) throws SQLException {
+        String timeSlotName = timeSlot.name();
+        ps.setString(1, timeSlotName);
+    }
+
+    @Override
+    public RowMapper<TimeSlot> mapRow() {
+        return (ResultSet rs, int rowNumver) -> TimeSlot.valueOf(rs.getString(NAME));
     }
 }

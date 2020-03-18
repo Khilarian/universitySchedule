@@ -1,22 +1,13 @@
 package com.rumakin.universityschedule.util;
 
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.util.Properties;
+import java.util.*;
 
 public class PropertiesLoader {
-    
-    private static final String PROPERTIES_PATH = "src\\main\\resources\\config.properties";
 
     private Properties properties;
 
-    public PropertiesLoader() {
-        properties = new Properties();
-        try (FileInputStream stream = new FileInputStream(PROPERTIES_PATH)) {
-            properties.load(stream);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public PropertiesLoader(Properties properties) {
+        this.properties = properties;
     }
 
     public String loadDriver() {

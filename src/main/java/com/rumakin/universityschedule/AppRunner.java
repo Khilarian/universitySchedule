@@ -1,5 +1,9 @@
 package com.rumakin.universityschedule;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.*;
+
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import com.rumakin.universityschedule.util.*;
@@ -7,8 +11,9 @@ import com.rumakin.universityschedule.util.*;
 public class AppRunner {
 
     public static void main(String[] args) throws ClassNotFoundException {
-        PropertiesLoader propertiesLoader = new PropertiesLoader();
-        DataSourceProvider dataSourceProvider = new DataSourceProvider(propertiesLoader);
+        PropertiesLoader propertiesLoader = new PropertiesLoader(PropertiesConfiguration.loadProperties());
+        DataSourceConfiguration dataSourceConfiguration = new DataSourceConfiguration(propertiesLoader);
+        DataSourceProvider dataSourceProvider = new DataSourceProvider(dataSourceConfiguration.getDataSource());
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSourceProvider.getDataSource());
     }
 

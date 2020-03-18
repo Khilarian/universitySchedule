@@ -5,25 +5,17 @@ import java.util.List;
 
 import org.springframework.jdbc.core.*;
 
-import com.rumakin.universityschedule.dao.addbatch.FacultyAddBatch;
-import com.rumakin.universityschedule.dao.addbatch.RoomAddBatch;
-import com.rumakin.universityschedule.models.Building;
+import com.rumakin.universityschedule.exceptions.DaoException;
 import com.rumakin.universityschedule.models.Faculty;
-import com.rumakin.universityschedule.models.Room;
 
-public class FacultyDao implements Dao<Faculty> {
+public class FacultyDao implements Dao<Faculty>, PreparedStatementBatchSetter<Faculty> {
 
     private static final String TABLE = "faculty";
     private static final String ID = "faculty_id";
     private static final String NAME = "faculty_name";
-    private static final String OFFICE = "office_id";
 
-    private static final String ADD = "INSERT INTO " + TABLE + "(" + NAME + "," + OFFICE + ")" + " VALUES " + "(?,?);";
-    private static final String FIND_ID_BY_NAME = "SELECT * FROM " + TABLE + " WHERE " + NAME + "=?;";
+    private static final String ADD = "INSERT INTO " + TABLE + "(" + NAME + ")" + " VALUES " + "(?);";
     private static final String FIND_BY_ID = "SELECT * FROM " + TABLE + " WHERE " + ID + "=?;";
-    
-    
-    
     private static final String FIND_ALL = "SELECT * FROM " + TABLE + ";";
 
     private final JdbcTemplate jdbcTemplate;
@@ -34,50 +26,41 @@ public class FacultyDao implements Dao<Faculty> {
 
     @Override
     public void addAll(List<Faculty> data) {
-        this.jdbcTemplate.batchUpdate(ADD, new FacultyAddBatch(data));
+        this.jdbcTemplate.batchUpdate(ADD, new BatchComposer<Faculty>(data, this));
     }
 
     @Override
     public void add(Faculty entity) {
         String facultyName = entity.getName();
-        int officeId = entity.getOffice().getId();
-        this.jdbcTemplate.update(ADD, facultyName, officeId);
-    }
-
-    public int findIdByName(String name) {
-        return this.jdbcTemplate.queryForObject(FIND_ID_BY_NAME, Integer.class, name);
+        this.jdbcTemplate.update(ADD, facultyName);
     }
 
     @Override
     public Faculty findById(int id) {
-        return this.jdbcTemplate.queryForObject(FIND_BY_ID,
-                new Object[] { id },
-                new RowMapper<Faculty>() {
-                    public Faculty mapRow(ResultSet rs, int rowNum) throws SQLException {
-                        String name = rs.getString(NAME);
-                        int officeId = rs.getInt(OFFICE);
-                        String buildingName = rs.getString(BUILDING_NAME);
-                        String buildingAddress = rs.getString(BUILDING_ADDRESS);
-                       Office office = new Office();
-                        return new Faculty(id, name, office);
-                    }
-                });
+        Faculty faculty = this.jdbcTemplate.queryForObject(FIND_BY_ID, new Object[] { id }, mapRow());
+        if (faculty == null) {
+            throw new DaoException("Faculty with id " + id + " is absent.");
+        }
+        return faculty;
     }
 
     @Override
     public List<Faculty> findAll() {
-        return this.jdbcTemplate.query(FIND_ALL,
-                new RowMapper<Faculty>() {
-                    public Faculty mapRow(ResultSet rs, int rowNum) throws SQLException {
-                        int id = rs.getInt(ID);
-                        int number = rs.getInt(NUMBER);
-                        int floor = rs.getInt(FLOOR);
-                        int buildingId = rs.getInt(BUILDING_ID);
-                        String buildingName = rs.getString(BUILDING_NAME);
-                        String buildingAddress = rs.getString(BUILDING_ADDRESS);
-                        Building building = new Building(buildingId, buildingName, buildingAddress);
-                        return new Faculty(id, number, floor, building);
-                    }
-                });
+        List<Faculty> faculties = this.jdbcTemplate.query(FIND_ALL, mapRow());
+        if (faculties.isEmpty()) {
+            throw new DaoException("Faculty table is empty.");
+        }
+        return faculties;
+    }
+
+    @Override
+    public void setStatements(PreparedStatement ps, Faculty faculty) throws SQLException {
+        String facultyName = faculty.getName();
+        ps.setString(1, facultyName);
+    }
+
+    @Override
+    public RowMapper<Faculty> mapRow() {
+        return (ResultSet rs, int rowNumber) -> new Faculty(rs.getInt(ID), rs.getString(NAME));
     }
 }

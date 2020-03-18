@@ -12,19 +12,24 @@ public class Lesson {
     private final Subject subject;
     private final LessonType type;
     private Auditorium auditorium;
-    private Set<Teacher> teachers;
-    private Set<Group> groups;
+    private Set<Teacher> teachers = new HashSet<>();
+    private Set<Group> groups = new HashSet<>();
     private LocalDate date;
     private TimeSlot timeSlot;
 
-    public Lesson(int id, Subject subject, LessonType type, Auditorium auditorium, Set<Teacher> teachers,
-            Set<Group> groups, LocalDate date, TimeSlot timeSlot) {
+    public Lesson(Subject subject, LessonType type, Auditorium auditorium, LocalDate date, TimeSlot timeSlot) {
+        this.subject = subject;
+        this.type = type;
+        this.auditorium = auditorium;
+        this.date = date;
+        this.timeSlot = timeSlot;
+    }
+
+    public Lesson(int id, Subject subject, LessonType type, Auditorium auditorium, LocalDate date, TimeSlot timeSlot) {
         this.id = id;
         this.subject = subject;
         this.type = type;
         this.auditorium = auditorium;
-        this.teachers = teachers;
-        this.groups = groups;
         this.date = date;
         this.timeSlot = timeSlot;
     }
