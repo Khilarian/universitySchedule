@@ -15,8 +15,9 @@ public class TimeSlotDao implements Dao<TimeSlot>, ResultSetMapper<TimeSlot> {
     private static final String ADD = "INSERT INTO " + TABLE_NAME + " (" + NAME + ") values (?);";
     private static final String FIND_BY_NAME = "SELECT * FROM " + TABLE_NAME + " WHERE " + NAME + "=?;";
     private static final String FIND_ALL = "SELECT " + NAME + " FROM " + TABLE_NAME + ";";
+    private static final String REMOVE_BY_NAME = "DELETE FROM " + TABLE_NAME + " WHERE " + NAME + " =?;";
 
-    public final JdbcTemplate jdbcTemplate;
+    private final JdbcTemplate jdbcTemplate;
 
     public TimeSlotDao(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
@@ -33,7 +34,9 @@ public class TimeSlotDao implements Dao<TimeSlot>, ResultSetMapper<TimeSlot> {
         this.jdbcTemplate.update(ADD, timeSlotName);
     }
 
-    public TimeSlot findByName(String name) {
+    @SuppressWarnings("hiding")
+    @Override
+    public <String> TimeSlot find(String name) {
         TimeSlot timeSlot = this.jdbcTemplate.queryForObject(FIND_BY_NAME, new Object[] { name },
                 mapRow());
         if (timeSlot == null) {
@@ -43,17 +46,18 @@ public class TimeSlotDao implements Dao<TimeSlot>, ResultSetMapper<TimeSlot> {
     }
 
     @Override
-    public TimeSlot findById(int id) {
-        return null;
-    }
-
-    @Override
     public List<TimeSlot> findAll() {
         List<TimeSlot> timeSlots = this.jdbcTemplate.query(FIND_ALL, mapRow());
         if (timeSlots.isEmpty()) {
             throw new DaoException("TimeSlot table is empty.");
         }
         return timeSlots;
+    }
+
+    @SuppressWarnings("hiding")
+    @Override
+    public <String> void remove(String name) {
+        this.jdbcTemplate.update(REMOVE_BY_NAME, name);
     }
 
     @Override

@@ -43,7 +43,7 @@ class PersonDaoTest {
         Person expected = new Person(1, "Lexx", "Luger");
         when(mockJdbcTemplate.queryForObject(any(String.class), (Object[]) any(Object.class),
                 (RowMapper<Person>) any(RowMapper.class))).thenReturn(expected);
-        Person actual = personDao.findById(1);
+        Person actual = personDao.find(1);
         assertEquals(expected, actual);
         Object[] input = { 1 };
         verify(mockJdbcTemplate, times(1)).queryForObject(eq("SELECT * FROM person WHERE person_id=?;"),
@@ -54,7 +54,7 @@ class PersonDaoTest {
     void findByIdShouldRaiseExceptionIfIDMissed() throws SQLException {
         when(mockJdbcTemplate.queryForObject(any(String.class), (Object[]) any(Object.class),
                 any(RowMapper.class))).thenThrow(DaoException.class);
-        assertThrows(DaoException.class, () -> personDao.findById(20));
+        assertThrows(DaoException.class, () -> personDao.find(20));
         Object[] input = { 20 };
         verify(mockJdbcTemplate, times(1)).queryForObject(eq("SELECT * FROM person WHERE person_id=?;"),
                 eq(input), any(RowMapper.class));

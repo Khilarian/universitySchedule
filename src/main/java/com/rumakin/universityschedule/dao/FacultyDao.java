@@ -10,13 +10,14 @@ import com.rumakin.universityschedule.models.Faculty;
 
 public class FacultyDao implements Dao<Faculty>, ResultSetMapper<Faculty> {
 
-    private static final String TABLE = "faculty";
+    private static final String TABLE_NAME = "faculty";
     private static final String ID = "faculty_id";
     private static final String NAME = "faculty_name";
 
-    private static final String ADD = "INSERT INTO " + TABLE + " (" + NAME + ")" + " values " + "(?);";
-    private static final String FIND_BY_ID = "SELECT * FROM " + TABLE + " WHERE " + ID + "=?;";
-    private static final String FIND_ALL = "SELECT * FROM " + TABLE + ";";
+    private static final String ADD = "INSERT INTO " + TABLE_NAME + " (" + NAME + ")" + " values " + "(?);";
+    private static final String FIND_BY_ID = "SELECT * FROM " + TABLE_NAME + " WHERE " + ID + "=?;";
+    private static final String FIND_ALL = "SELECT * FROM " + TABLE_NAME + ";";
+    private static final String REMOVE_BY_ID = "DELETE FROM " + TABLE_NAME + " WHERE " + ID + " =?;";
 
     private final JdbcTemplate jdbcTemplate;
 
@@ -35,8 +36,9 @@ public class FacultyDao implements Dao<Faculty>, ResultSetMapper<Faculty> {
         this.jdbcTemplate.update(ADD, facultyName);
     }
 
+    @SuppressWarnings("hiding")
     @Override
-    public Faculty findById(int id) {
+    public <Integer>Faculty find(Integer id) {
         Faculty faculty = this.jdbcTemplate.queryForObject(FIND_BY_ID, new Object[] { id }, mapRow());
         if (faculty == null) {
             throw new DaoException("Faculty with id " + id + " is absent.");
@@ -51,6 +53,12 @@ public class FacultyDao implements Dao<Faculty>, ResultSetMapper<Faculty> {
             throw new DaoException("Faculty table is empty.");
         }
         return faculties;
+    }
+    
+    @SuppressWarnings("hiding")
+    @Override
+    public <Integer>void remove(Integer id) {
+        this.jdbcTemplate.update(REMOVE_BY_ID, id);
     }
 
     @Override

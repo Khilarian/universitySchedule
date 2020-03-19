@@ -16,8 +16,9 @@ public class LessonTypeDao implements Dao<LessonType>, ResultSetMapper<LessonTyp
     private static final String ADD = "INSERT INTO " + TABLE_NAME + " (" + NAME + ") values (?);";
     private static final String FIND_BY_NAME = "SELECT * FROM " + TABLE_NAME + " WHERE " + NAME + "=?;";
     private static final String FIND_ALL = "SELECT * FROM " + TABLE_NAME + ";";
+    private static final String REMOVE_BY_NAME = "DELETE FROM " + TABLE_NAME + " WHERE " + NAME + " =?;";
 
-    public final JdbcTemplate jdbcTemplate;
+    private final JdbcTemplate jdbcTemplate;
 
     public LessonTypeDao(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
@@ -34,7 +35,9 @@ public class LessonTypeDao implements Dao<LessonType>, ResultSetMapper<LessonTyp
         this.jdbcTemplate.update(ADD, lessonTypeName);
     }
 
-    public LessonType findByName(String name) {
+    @SuppressWarnings("hiding")
+    @Override
+    public <String>LessonType find(String name) {
         LessonType degree = this.jdbcTemplate.queryForObject(FIND_BY_NAME, new Object[] { name },
                 mapRow());
         if (degree == null) {
@@ -44,17 +47,18 @@ public class LessonTypeDao implements Dao<LessonType>, ResultSetMapper<LessonTyp
     }
 
     @Override
-    public LessonType findById(int id) {
-        return null;
-    }
-
-    @Override
     public List<LessonType> findAll() {
         List<LessonType> types = this.jdbcTemplate.query(FIND_ALL, mapRow());
         if (types.isEmpty()) {
             throw new DaoException("LessonType table is empty.");
         }
         return types;
+    }
+    
+    @SuppressWarnings("hiding")
+    @Override
+    public <String>void remove(String name) {
+        this.jdbcTemplate.update(REMOVE_BY_NAME, name);
     }
 
     @Override

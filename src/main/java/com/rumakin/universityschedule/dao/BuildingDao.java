@@ -5,6 +5,7 @@ import java.util.*;
 
 import org.springframework.jdbc.core.*;
 
+import com.rumakin.universityschedule.exceptions.DaoException;
 import com.rumakin.universityschedule.models.Building;
 
 public class BuildingDao implements Dao<Building>, ResultSetMapper<Building> {
@@ -17,8 +18,9 @@ public class BuildingDao implements Dao<Building>, ResultSetMapper<Building> {
             + ") values (?,?);";
     private static final String FIND_BY_ID = "SELECT * FROM " + TABLE_NAME + " WHERE " + ID + "=?;";
     private static final String FIND_ALL = "SELECT * FROM " + TABLE_NAME + ";";
+    private static final String REMOVE_BY_ID = "DELETE FROM " + TABLE_NAME + " WHERE " + ID + " =?;";
 
-    public final JdbcTemplate jdbcTemplate;
+    private final JdbcTemplate jdbcTemplate;
 
     public BuildingDao(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
@@ -36,14 +38,29 @@ public class BuildingDao implements Dao<Building>, ResultSetMapper<Building> {
         this.jdbcTemplate.update(ADD, buildingName, buildingAddress);
     }
 
+    @SuppressWarnings("hiding")
     @Override
-    public Building findById(int id) {
-        return this.jdbcTemplate.queryForObject(FIND_BY_ID, new Object[] { id }, mapRow());
+    public <Integer> Building find(Integer id) {
+        Building building = this.jdbcTemplate.queryForObject(FIND_BY_ID, new Object[] { id }, mapRow());
+        if (building == null) {
+            throw new DaoException("Building with id " + id + " is absent.");
+        }
+        return building;
     }
 
     @Override
     public List<Building> findAll() {
-        return this.jdbcTemplate.query(FIND_ALL, mapRow());
+        List<Building> buildings = this.jdbcTemplate.query(FIND_ALL, mapRow());
+        if (buildings.isEmpty()) {
+            throw new DaoException("Building table is empty.");
+        }
+        return buildings;
+    }
+
+    @SuppressWarnings("hiding")
+    @Override
+    public <Integer> void remove(Integer id) {
+        this.jdbcTemplate.update(REMOVE_BY_ID, id);
     }
 
     @Override

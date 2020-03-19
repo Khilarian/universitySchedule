@@ -7,10 +7,13 @@ import java.util.List;
 
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Component;
 
+import com.rumakin.universityschedule.exceptions.DaoException;
 import com.rumakin.universityschedule.models.Auditorium;
 import com.rumakin.universityschedule.models.Building;
 
+@Component
 public class AuditoriumDao implements Dao<Auditorium>, ResultSetMapper<Auditorium> {
     private static final String TABLE_NAME = "auditorium a";
     private static final String ID = "auditorium_id";
@@ -30,8 +33,9 @@ public class AuditoriumDao implements Dao<Auditorium>, ResultSetMapper<Auditoriu
             + " WHERE " + ID + "=?;";
 
     private static final String FIND_ALL = "SELECT * FROM " + TABLE_NAME + ";";
+    private static final String REMOVE_BY_ID = "DELETE FROM " + TABLE_NAME + " WHERE " + ID + " =?;";
 
-    public final JdbcTemplate jdbcTemplate;
+    private final JdbcTemplate jdbcTemplate;
 
     public AuditoriumDao(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
@@ -50,14 +54,23 @@ public class AuditoriumDao implements Dao<Auditorium>, ResultSetMapper<Auditoriu
         this.jdbcTemplate.update(ADD, auditoriumNumber, auditoriumCapacity, buildingID);
     }
 
+    @SuppressWarnings("hiding")
     @Override
-    public Auditorium findById(int id) {
-        return this.jdbcTemplate.queryForObject(FIND_BY_ID, new Object[] { id }, mapRow());
+    public <Integer> Auditorium find(Integer id) {
+        Auditorium auditorium = this.jdbcTemplate.queryForObject(FIND_BY_ID, new Object[] { id }, mapRow());
+        if (auditorium == null) {
+            throw new DaoException("Auditorium with id " + id + " is absent.");
+        }
+        return auditorium;
     }
 
     @Override
     public List<Auditorium> findAll() {
-        return this.jdbcTemplate.query(FIND_ALL, mapRow());
+        List<Auditorium> auditoriums = this.jdbcTemplate.query(FIND_ALL, mapRow());
+        if (auditoriums.isEmpty()) {
+            throw new DaoException("Auditoriums table is empty.");
+        }
+        return auditoriums;
     }
 
     @Override
@@ -65,6 +78,12 @@ public class AuditoriumDao implements Dao<Auditorium>, ResultSetMapper<Auditoriu
         return (ResultSet rs, int rowNumber) -> new Auditorium(rs.getInt(ID), rs.getInt(NUMBER),
                 rs.getInt(ADDRESS),
                 new Building(rs.getInt(BUILDING_ID), rs.getString(BUILDING_NAME), rs.getString(ADDRESS)));
+    }
+
+    @SuppressWarnings("hiding")
+    @Override
+    public <Integer> void remove(Integer id) {
+        this.jdbcTemplate.update(REMOVE_BY_ID, id);
     }
 
     @Override

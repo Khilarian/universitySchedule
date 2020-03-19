@@ -42,7 +42,7 @@ class FacultyDaoTest {
         Faculty expected = new Faculty("Math");
         when(mockJdbcTemplate.queryForObject(any(String.class), (Object[]) any(Object.class),
                 (RowMapper<Faculty>) any(RowMapper.class))).thenReturn(expected);
-        Faculty actual = facultyDao.findById(1);
+        Faculty actual = facultyDao.find(1);
         assertEquals(expected, actual);
         Object[] input = { 1 };
         verify(mockJdbcTemplate, times(1)).queryForObject(eq("SELECT * FROM faculty WHERE faculty_id=?;"),
@@ -53,7 +53,7 @@ class FacultyDaoTest {
     void findByIdShouldRaiseExceptionIfIDMissed() throws SQLException {
         when(mockJdbcTemplate.queryForObject(any(String.class), (Object[]) any(Object.class),
                 any(RowMapper.class))).thenThrow(DaoException.class);
-        assertThrows(DaoException.class, () -> facultyDao.findById(20));
+        assertThrows(DaoException.class, () -> facultyDao.find(20));
         Object[] input = { 20 };
         verify(mockJdbcTemplate, times(1)).queryForObject(eq("SELECT * FROM faculty WHERE faculty_id=?;"),
                 eq(input), any(RowMapper.class));

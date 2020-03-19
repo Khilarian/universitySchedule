@@ -20,8 +20,9 @@ public class PersonDao implements Dao<Person>, ResultSetMapper<Person> {
             + ") values (?,?);";
     private static final String FIND_BY_ID = "SELECT * FROM " + TABLE_NAME + " WHERE " + ID + "=?;";
     private static final String FIND_ALL = "SELECT * FROM " + TABLE_NAME + ";";
+    private static final String REMOVE_BY_ID = "DELETE FROM " + TABLE_NAME + " WHERE " + ID + " =?;";
 
-    public final JdbcTemplate jdbcTemplate;
+    private final JdbcTemplate jdbcTemplate;
 
     public PersonDao(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
@@ -39,8 +40,9 @@ public class PersonDao implements Dao<Person>, ResultSetMapper<Person> {
         this.jdbcTemplate.update(ADD, firstName, lastName);
     }
 
+    @SuppressWarnings("hiding")
     @Override
-    public Person findById(int id) {
+    public <Integer>Person find(Integer id) {
         Person person = this.jdbcTemplate.queryForObject(FIND_BY_ID, new Object[] { id }, mapRow());
         if (person == null) {
             throw new DaoException("Person with id " + id + " is absent.");
@@ -55,6 +57,12 @@ public class PersonDao implements Dao<Person>, ResultSetMapper<Person> {
             throw new DaoException("Person table is empty.");
         }
         return people;
+    }
+    
+    @SuppressWarnings("hiding")
+    @Override
+    public <Integer>void remove(Integer id) {
+        this.jdbcTemplate.update(REMOVE_BY_ID, id);
     }
 
     @Override

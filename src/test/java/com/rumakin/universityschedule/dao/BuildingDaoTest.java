@@ -43,7 +43,7 @@ class BuildingDaoTest {
         Building expected = new Building("Main", "Moskow, Tverskaya, 1");
         when(mockJdbcTemplate.queryForObject(any(String.class), (Object[]) any(Object.class),
                 (RowMapper<Building>) any(RowMapper.class))).thenReturn(expected);
-        Building actual = buildingDao.findById(1);
+        Building actual = buildingDao.find(1);
         assertEquals(expected, actual);
         Object[] input = { 1 };
         verify(mockJdbcTemplate, times(1)).queryForObject(eq("SELECT * FROM building WHERE building_id=?;"),
@@ -54,7 +54,7 @@ class BuildingDaoTest {
     void findByIdShouldRaiseExceptionIfIDMissed() throws SQLException {
         when(mockJdbcTemplate.queryForObject(any(String.class), (Object[]) any(Object.class),
                 any(RowMapper.class))).thenThrow(DaoException.class);
-        assertThrows(DaoException.class, () -> buildingDao.findById(20));
+        assertThrows(DaoException.class, () -> buildingDao.find(20));
         Object[] input = { 20 };
         verify(mockJdbcTemplate, times(1)).queryForObject(eq("SELECT * FROM building WHERE building_id=?;"),
                 eq(input), any(RowMapper.class));
