@@ -1,71 +1,32 @@
 package com.rumakin.universityschedule;
 
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.sql.Driver;
-import java.util.Properties;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.*;
+import org.springframework.core.env.Environment;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.datasource.SimpleDriverDataSource;
+import org.springframework.jdbc.datasource.*;
 
 @Configuration
 @ComponentScan
+@PropertySource("classpath::config.properties")
 public class ApplicationContextConfiguration {
 
-    private static final String PROPERTIES_PATH = "src\\main\\resources\\config.properties";
-
+    @Autowired
+    Environment environment;
+    
+    private final String URL = "db.host";
+    private final String USER = "db.login";
+    private final String PASSWORD = "db.password";
+    private final String DRIVER = "db.driver";
+    
     @Bean
     @Scope("singleton")
-    private Properties getProperties() {
-        Properties properties = new Properties();
-        try (FileInputStream stream = new FileInputStream(PROPERTIES_PATH)) {
-            properties.load(stream);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return properties;
-    }
-
-    @Bean
-    @Scope("singleton")
-    public String loadDriver() {
-        return getProperties().getProperty("db.driver");
-    }
-
-    @Bean
-    @Scope("singleton")
-    public String loadLogin() {
-        return getProperties().getProperty("db.login");
-    }
-
-    @Bean
-    @Scope("singleton")
-    public String loadPassword() {
-        return getProperties().getProperty("db.password");
-    }
-
-    @Bean
-    @Scope("singleton")
-    public String loadHost() {
-        return getProperties().getProperty("db.host");
-    }
-
-    @Bean
-    @Scope("singleton")
-    public String loadTables() {
-        return getProperties().getProperty("db.tables");
-    }
-
-    @Bean
-    @Scope("singleton")
-    public SimpleDriverDataSource getDataSource() throws ClassNotFoundException {
-        SimpleDriverDataSource dataSource = new SimpleDriverDataSource();
-        Class<? extends Driver> driver = (Class<? extends Driver>) Class.forName(loadDriver());
-        dataSource.setDriverClass(driver);
-        dataSource.setUrl(loadHost());
-        dataSource.setUsername(loadLogin());
-        dataSource.setPassword(loadPassword());
+    public DriverManagerDataSource getDataSource() throws ClassNotFoundException {
+        DriverManagerDataSource dataSource = new DriverManagerDataSource();
+        dataSource.setDriverClassName(environment.getProperty(DRIVER));
+        dataSource.setUrl(environment.getProperty(URL));
+        dataSource.setUsername(environment.getProperty(USER));
+        dataSource.setPassword(environment.getProperty(PASSWORD));
         return dataSource;
     }
     

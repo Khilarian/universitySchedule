@@ -10,11 +10,11 @@ public interface Dao<T> {
 
     void add(T entity);
 
-    <E>T find(E id);
+    <E> T find(E id);
 
     List<T> findAll();
 
     RowMapper<T> mapRow();
 
-     <E> void remove(E id);
+    <E> void remove(E id);
 }

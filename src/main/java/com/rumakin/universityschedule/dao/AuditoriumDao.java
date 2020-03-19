@@ -1,13 +1,11 @@
 package com.rumakin.universityschedule.dao;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.List;
 
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
-import org.springframework.stereotype.Component;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.*;
+import org.springframework.stereotype.*;
 
 import com.rumakin.universityschedule.exceptions.DaoException;
 import com.rumakin.universityschedule.models.Auditorium;
@@ -35,6 +33,7 @@ public class AuditoriumDao implements Dao<Auditorium>, ResultSetMapper<Auditoriu
     private static final String FIND_ALL = "SELECT * FROM " + TABLE_NAME + ";";
     private static final String REMOVE_BY_ID = "DELETE FROM " + TABLE_NAME + " WHERE " + ID + " =?;";
 
+    @Autowired
     private final JdbcTemplate jdbcTemplate;
 
     public AuditoriumDao(JdbcTemplate jdbcTemplate) {

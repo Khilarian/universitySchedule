@@ -12,7 +12,7 @@ import com.rumakin.universityschedule.models.Auditorium;
 public class AuditoriumService {
 
     @Autowired
-    private AuditoriumDao auditoriumDao;
+    private final AuditoriumDao auditoriumDao;
 
     public AuditoriumService(AuditoriumDao auditoriumDao) {
         this.auditoriumDao = auditoriumDao;
