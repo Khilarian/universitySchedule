@@ -7,7 +7,7 @@ import org.springframework.jdbc.core.*;
 
 import com.rumakin.universityschedule.models.Building;
 
-public class BuildingDao implements Dao<Building>, PreparedStatementBatchSetter<Building> {
+public class BuildingDao implements Dao<Building>, StatementFiller<Building> {
     private static final String TABLE_NAME = "building";
     private static final String ID = "building_id";
     private static final String NAME = "building_name";
@@ -53,7 +53,7 @@ public class BuildingDao implements Dao<Building>, PreparedStatementBatchSetter<
     }
 
     @Override
-    public void setStatements(PreparedStatement ps, Building building) throws SQLException {
+    public void setParameters(PreparedStatement ps, Building building) throws SQLException {
         String name = building.getName();
         String address = building.getAddress();
         ps.setString(1, name);

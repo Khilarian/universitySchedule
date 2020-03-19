@@ -8,7 +8,7 @@ import org.springframework.jdbc.core.*;
 import com.rumakin.universityschedule.enums.TimeSlot;
 import com.rumakin.universityschedule.exceptions.DaoException;
 
-public class TimeSlotDao implements Dao<TimeSlot>, PreparedStatementBatchSetter<TimeSlot> {
+public class TimeSlotDao implements Dao<TimeSlot>, StatementFiller<TimeSlot> {
     private static final String TABLE_NAME = "time_slot";
     private static final String NAME = "time_slot_name";
 
@@ -57,7 +57,7 @@ public class TimeSlotDao implements Dao<TimeSlot>, PreparedStatementBatchSetter<
     }
 
     @Override
-    public void setStatements(PreparedStatement ps, TimeSlot timeSlot) throws SQLException {
+    public void setParameters(PreparedStatement ps, TimeSlot timeSlot) throws SQLException {
         String timeSlotName = timeSlot.name();
         ps.setString(1, timeSlotName);
     }

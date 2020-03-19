@@ -9,7 +9,7 @@ import org.springframework.jdbc.core.RowMapper;
 import com.rumakin.universityschedule.exceptions.DaoException;
 import com.rumakin.universityschedule.models.Person;
 
-public class PersonDao implements Dao<Person>, PreparedStatementBatchSetter<Person> {
+public class PersonDao implements Dao<Person>, StatementFiller<Person> {
 
     private static final String TABLE_NAME = "person";
     private static final String ID = "person_id";
@@ -64,7 +64,7 @@ public class PersonDao implements Dao<Person>, PreparedStatementBatchSetter<Pers
     }
 
     @Override
-    public void setStatements(PreparedStatement ps, Person person) throws SQLException {
+    public void setParameters(PreparedStatement ps, Person person) throws SQLException {
         String firstName = person.getFirstName();
         String lastName = person.getLastName();
         ps.setString(1, firstName);

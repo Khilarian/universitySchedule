@@ -7,13 +7,13 @@ public class Auditorium {
     private int capacity;
     private Building building;
 
-    public Auditorium(int number, Building building, int capacity) {
+    public Auditorium(int number, int capacity, Building building) {
         this.number = number;
         this.capacity = capacity;
         this.building = building;
     }
 
-    public Auditorium(int id, int number, Building building, int capacity) {
+    public Auditorium(int id, int number, int capacity, Building building) {
         this.id = id;
         this.number = number;
         this.capacity = capacity;

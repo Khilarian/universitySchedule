@@ -15,7 +15,7 @@ public class DataSourceConfiguration {
     }
     
     @SuppressWarnings("unchecked")
-    private void configureDataSourse() throws ClassNotFoundException {
+    public void configureDataSource() throws ClassNotFoundException {
         Class<? extends Driver> driver = (Class<? extends Driver>) Class.forName(propertiesLoader.loadDriver());
         dataSource.setDriverClass(driver);
         dataSource.setUrl(propertiesLoader.loadHost());

@@ -8,13 +8,13 @@ import org.springframework.jdbc.core.*;
 import com.rumakin.universityschedule.exceptions.DaoException;
 import com.rumakin.universityschedule.models.Faculty;
 
-public class FacultyDao implements Dao<Faculty>, PreparedStatementBatchSetter<Faculty> {
+public class FacultyDao implements Dao<Faculty>, StatementFiller<Faculty> {
 
     private static final String TABLE = "faculty";
     private static final String ID = "faculty_id";
     private static final String NAME = "faculty_name";
 
-    private static final String ADD = "INSERT INTO " + TABLE + "(" + NAME + ")" + " VALUES " + "(?);";
+    private static final String ADD = "INSERT INTO " + TABLE + " (" + NAME + ")" + " values " + "(?);";
     private static final String FIND_BY_ID = "SELECT * FROM " + TABLE + " WHERE " + ID + "=?;";
     private static final String FIND_ALL = "SELECT * FROM " + TABLE + ";";
 
@@ -54,7 +54,7 @@ public class FacultyDao implements Dao<Faculty>, PreparedStatementBatchSetter<Fa
     }
 
     @Override
-    public void setStatements(PreparedStatement ps, Faculty faculty) throws SQLException {
+    public void setParameters(PreparedStatement ps, Faculty faculty) throws SQLException {
         String facultyName = faculty.getName();
         ps.setString(1, facultyName);
     }
