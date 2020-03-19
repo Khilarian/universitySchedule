@@ -7,7 +7,7 @@ import org.springframework.jdbc.core.*;
 
 import com.rumakin.universityschedule.models.Building;
 
-public class BuildingDao implements Dao<Building>, StatementFiller<Building> {
+public class BuildingDao implements Dao<Building>, ResultSetMapper<Building> {
     private static final String TABLE_NAME = "building";
     private static final String ID = "building_id";
     private static final String NAME = "building_name";

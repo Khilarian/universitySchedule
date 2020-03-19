@@ -8,7 +8,7 @@ import org.springframework.jdbc.core.*;
 import com.rumakin.universityschedule.enums.LessonType;
 import com.rumakin.universityschedule.exceptions.DaoException;
 
-public class LessonTypeDao implements Dao<LessonType>, StatementFiller<LessonType> {
+public class LessonTypeDao implements Dao<LessonType>, ResultSetMapper<LessonType> {
 
     private static final String TABLE_NAME = "lesson_type";
     private static final String NAME = "lesson_type_name";

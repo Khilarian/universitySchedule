@@ -8,7 +8,7 @@ import org.springframework.jdbc.core.*;
 import com.rumakin.universityschedule.enums.TimeSlot;
 import com.rumakin.universityschedule.exceptions.DaoException;
 
-public class TimeSlotDao implements Dao<TimeSlot>, StatementFiller<TimeSlot> {
+public class TimeSlotDao implements Dao<TimeSlot>, ResultSetMapper<TimeSlot> {
     private static final String TABLE_NAME = "time_slot";
     private static final String NAME = "time_slot_name";
 

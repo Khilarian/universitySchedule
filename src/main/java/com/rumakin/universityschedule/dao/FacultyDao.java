@@ -8,7 +8,7 @@ import org.springframework.jdbc.core.*;
 import com.rumakin.universityschedule.exceptions.DaoException;
 import com.rumakin.universityschedule.models.Faculty;
 
-public class FacultyDao implements Dao<Faculty>, StatementFiller<Faculty> {
+public class FacultyDao implements Dao<Faculty>, ResultSetMapper<Faculty> {
 
     private static final String TABLE = "faculty";
     private static final String ID = "faculty_id";

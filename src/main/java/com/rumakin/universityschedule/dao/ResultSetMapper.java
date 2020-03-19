@@ -2,7 +2,7 @@ package com.rumakin.universityschedule.dao;
 
 import java.sql.*;
 
-public interface StatementFiller<T> {
+public interface ResultSetMapper<T> {
 
     void setParameters(PreparedStatement ps, T t) throws SQLException;
 

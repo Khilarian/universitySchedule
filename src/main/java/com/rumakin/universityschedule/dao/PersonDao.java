@@ -9,7 +9,7 @@ import org.springframework.jdbc.core.RowMapper;
 import com.rumakin.universityschedule.exceptions.DaoException;
 import com.rumakin.universityschedule.models.Person;
 
-public class PersonDao implements Dao<Person>, StatementFiller<Person> {
+public class PersonDao implements Dao<Person>, ResultSetMapper<Person> {
 
     private static final String TABLE_NAME = "person";
     private static final String ID = "person_id";

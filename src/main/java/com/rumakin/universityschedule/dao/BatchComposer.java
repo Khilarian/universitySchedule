@@ -8,9 +8,9 @@ import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 public class BatchComposer<T> implements BatchPreparedStatementSetter {
 
     private final List<T> data;
-    private StatementFiller<T> batch;
+    private ResultSetMapper<T> batch;
 
-    public BatchComposer(final List<T> data, StatementFiller<T> batch) {
+    public BatchComposer(final List<T> data, ResultSetMapper<T> batch) {
         this.data = data;
         this.batch = batch;
     }
