@@ -1,16 +1,24 @@
 package com.rumakin.universityschedule.models;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
+@Component
+@Scope("prototype")
 public class Subject {
 
     private int id;
     private String name;
     private Faculty faculty;
 
+    @Autowired
     Subject(String name, Faculty faculty) {
         this.name = name;
         this.faculty = faculty;
     }
 
+    @Autowired
     Subject(int id, String name, Faculty faculty) {
         this.id = id;
         this.name = name;

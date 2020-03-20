@@ -1,5 +1,11 @@
 package com.rumakin.universityschedule.models;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
+@Component
+@Scope("prototype")
 public class Student extends Person {
 
     private Group group;
@@ -8,14 +14,25 @@ public class Student extends Person {
         super(firstName, lastName);
     }
 
+    @Autowired
     public Student(String firstName, String lastName, Group group) {
         super(firstName, lastName);
         this.group = group;
     }
 
+    @Autowired
     public Student(int id, String name, String surname, Group group) {
         super(id, name, surname);
         this.group = group;
+    }
+
+    @Autowired
+    public void setGroup(Group group) {
+        this.group = group;
+    }
+
+    public Group getGroup() {
+        return group;
     }
 
     @Override

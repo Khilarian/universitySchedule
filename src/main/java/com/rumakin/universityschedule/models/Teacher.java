@@ -2,25 +2,35 @@ package com.rumakin.universityschedule.models;
 
 import java.util.*;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
+@Component
+@Scope("prototype")
 public class Teacher extends Person {
 
     private Faculty faculty;
     private List<Subject> subjects;
 
+    @Autowired
     public Teacher(String firstName, String lastName, Faculty faculty) {
         super(firstName, lastName);
         this.faculty = faculty;
     }
 
+    @Autowired
     public Teacher(int id, String firstName, String lastName, Faculty faculty) {
         super(id, firstName, lastName);
         this.faculty = faculty;
     }
 
-    public void setDepartment(Faculty faculty) {
+    @Autowired
+    public void setFaculty(Faculty faculty) {
         this.faculty = faculty;
     }
 
+    @Autowired
     public void setSubjects(List<Subject> subjects) {
         this.subjects = subjects;
     }

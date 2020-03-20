@@ -5,10 +5,12 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.*;
+import org.springframework.stereotype.Repository;
 
 import com.rumakin.universityschedule.enums.LessonType;
 import com.rumakin.universityschedule.exceptions.DaoException;
 
+@Repository
 public class LessonTypeDao implements Dao<LessonType>, ResultSetMapper<LessonType> {
 
     private static final String TABLE_NAME = "lesson_type";

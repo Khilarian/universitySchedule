@@ -6,10 +6,12 @@ import java.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Repository;
 
 import com.rumakin.universityschedule.exceptions.DaoException;
 import com.rumakin.universityschedule.models.Person;
 
+@Repository
 public class PersonDao implements Dao<Person>, ResultSetMapper<Person> {
 
     private static final String TABLE_NAME = "person";

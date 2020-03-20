@@ -2,10 +2,16 @@ package com.rumakin.universityschedule.models;
 
 import java.util.*;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
 import com.rumakin.universityschedule.enums.*;
 
 import java.time.*;
 
+@Component
+@Scope("prototype")
 public class Lesson {
 
     private int id;
@@ -17,6 +23,7 @@ public class Lesson {
     private LocalDate date;
     private TimeSlot timeSlot;
 
+    @Autowired
     public Lesson(Subject subject, LessonType type, Auditorium auditorium, LocalDate date, TimeSlot timeSlot) {
         this.subject = subject;
         this.type = type;
@@ -25,6 +32,7 @@ public class Lesson {
         this.timeSlot = timeSlot;
     }
 
+    @Autowired
     public Lesson(int id, Subject subject, LessonType type, Auditorium auditorium, LocalDate date, TimeSlot timeSlot) {
         this.id = id;
         this.subject = subject;
@@ -34,14 +42,17 @@ public class Lesson {
         this.timeSlot = timeSlot;
     }
 
+    @Autowired
     public void setTeachers(Set<Teacher> teachers) {
         this.teachers = teachers;
     }
 
+    @Autowired
     public void setAuditorium(Auditorium auditorium) {
         this.auditorium = auditorium;
     }
 
+    @Autowired
     public void setGroups(Set<Group> groups) {
         this.groups = groups;
     }

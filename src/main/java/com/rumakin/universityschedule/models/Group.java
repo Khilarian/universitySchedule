@@ -1,5 +1,11 @@
 package com.rumakin.universityschedule.models;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
+@Component
+@Scope("prototype")
 public class Group {
 
     private int id;
@@ -15,6 +21,7 @@ public class Group {
         this.name = name;
     }
 
+    @Autowired
     public void setSchedule(Schedule schedule) {
         this.schedule = schedule;
     }

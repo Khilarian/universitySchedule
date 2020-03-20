@@ -5,10 +5,12 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.*;
+import org.springframework.stereotype.Repository;
 
 import com.rumakin.universityschedule.exceptions.DaoException;
 import com.rumakin.universityschedule.models.Faculty;
 
+@Repository
 public class FacultyDao implements Dao<Faculty>, ResultSetMapper<Faculty> {
 
     private static final String TABLE_NAME = "faculty";

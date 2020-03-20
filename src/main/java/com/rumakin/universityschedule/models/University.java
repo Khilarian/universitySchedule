@@ -2,13 +2,30 @@ package com.rumakin.universityschedule.models;
 
 import java.util.*;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
+@Component
+@Scope("prototype")
 public class University {
 
     private Set<Building> buildings;
     private Set<Faculty> faculties;
 
+    @Autowired
     public University(Set<Building> buildings, Set<Faculty> faculties) {
         this.buildings = buildings;
+        this.faculties = faculties;
+    }
+
+    @Autowired
+    public void setBuildings(Set<Building> buildings) {
+        this.buildings = buildings;
+    }
+
+    @Autowired
+    public void setFaculties(Set<Faculty> faculties) {
         this.faculties = faculties;
     }
 

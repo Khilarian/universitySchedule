@@ -11,8 +11,9 @@ import com.rumakin.universityschedule.exceptions.DaoException;
 import com.rumakin.universityschedule.models.Auditorium;
 import com.rumakin.universityschedule.models.Building;
 
-@Component
+@Repository
 public class AuditoriumDao implements Dao<Auditorium>, ResultSetMapper<Auditorium> {
+    
     private static final String TABLE_NAME = "auditorium a";
     private static final String ID = "auditorium_id";
     private static final String NUMBER = "number_id";

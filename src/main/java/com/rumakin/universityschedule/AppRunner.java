@@ -11,9 +11,7 @@ public class AppRunner {
 
     public static void main(String[] args) {
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(ApplicationContextConfiguration.class);
-        AuditoriumDao aD = context.getBean(AuditoriumDao.class);
-        AuditoriumService aS = context.getBean(AuditoriumService.class);
-        BuildingService bS = context.getBean(BuildingService.class);
+        context.close();
     }
 
 }

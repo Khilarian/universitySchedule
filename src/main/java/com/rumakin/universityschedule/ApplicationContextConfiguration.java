@@ -9,7 +9,7 @@ import org.springframework.jdbc.datasource.*;
 
 @Configuration
 @ComponentScan
-@PropertySource("classpath::config.properties")
+@PropertySource("classpath:config.properties")
 public class ApplicationContextConfiguration {
 
     @Autowired
@@ -22,6 +22,8 @@ public class ApplicationContextConfiguration {
     @Value("${db.password}")
     private String password;
     
+    
+    
     @Bean
     @Scope("singleton")
     public DriverManagerDataSource getDataSource() {
@@ -29,7 +31,7 @@ public class ApplicationContextConfiguration {
         dataSource.setDriverClassName(environment.getProperty(DRIVER));
         dataSource.setUrl(environment.getProperty(URL));
         dataSource.setUsername(environment.getProperty(USER));
-        dataSource.setPassword(environment.getProperty(PASSWORD));
+        dataSource.setPassword(password);
         return dataSource;
     }
     

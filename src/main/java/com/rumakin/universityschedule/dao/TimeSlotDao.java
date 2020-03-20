@@ -5,11 +5,14 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.*;
+import org.springframework.stereotype.Repository;
 
 import com.rumakin.universityschedule.enums.TimeSlot;
 import com.rumakin.universityschedule.exceptions.DaoException;
 
+@Repository
 public class TimeSlotDao implements Dao<TimeSlot>, ResultSetMapper<TimeSlot> {
+    
     private static final String TABLE_NAME = "time_slot";
     private static final String NAME = "time_slot_name";
 

@@ -2,10 +2,17 @@ package com.rumakin.universityschedule.models;
 
 import java.util.*;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
+@Component
+@Scope("prototype")
 public class Schedule {
 
     private List<Lesson> lessons;
 
+    @Autowired
     public Schedule(List<Lesson> lessons) {
         this.lessons = lessons;
     }
