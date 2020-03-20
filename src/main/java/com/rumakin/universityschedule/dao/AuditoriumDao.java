@@ -33,9 +33,9 @@ public class AuditoriumDao implements Dao<Auditorium>, ResultSetMapper<Auditoriu
     private static final String FIND_ALL = "SELECT * FROM " + TABLE_NAME + ";";
     private static final String REMOVE_BY_ID = "DELETE FROM " + TABLE_NAME + " WHERE " + ID + " =?;";
 
-    @Autowired
     private final JdbcTemplate jdbcTemplate;
 
+    @Autowired
     public AuditoriumDao(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }

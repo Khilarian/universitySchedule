@@ -3,6 +3,7 @@ package com.rumakin.universityschedule.dao;
 import java.sql.*;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.*;
 
 import com.rumakin.universityschedule.enums.LessonType;
@@ -20,6 +21,7 @@ public class LessonTypeDao implements Dao<LessonType>, ResultSetMapper<LessonTyp
 
     private final JdbcTemplate jdbcTemplate;
 
+    @Autowired
     public LessonTypeDao(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }

@@ -3,6 +3,7 @@ package com.rumakin.universityschedule.dao;
 import java.sql.*;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.*;
 
 import com.rumakin.universityschedule.exceptions.DaoException;
@@ -21,6 +22,7 @@ public class FacultyDao implements Dao<Faculty>, ResultSetMapper<Faculty> {
 
     private final JdbcTemplate jdbcTemplate;
 
+    @Autowired
     public FacultyDao(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }

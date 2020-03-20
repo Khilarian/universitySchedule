@@ -1,6 +1,7 @@
 package com.rumakin.universityschedule;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.*;
 import org.springframework.core.env.Environment;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -14,14 +15,16 @@ public class ApplicationContextConfiguration {
     @Autowired
     Environment environment;
     
-    private final String URL = "db.host";
-    private final String USER = "db.login";
-    private final String PASSWORD = "db.password";
-    private final String DRIVER = "db.driver";
+    private static final String URL = "db.host";
+    private static final String USER = "db.login";
+    private static final String PASSWORD = "db.password";
+    private static final String DRIVER = "db.driver";
+    @Value("${db.password}")
+    private String password;
     
     @Bean
     @Scope("singleton")
-    public DriverManagerDataSource getDataSource() throws ClassNotFoundException {
+    public DriverManagerDataSource getDataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName(environment.getProperty(DRIVER));
         dataSource.setUrl(environment.getProperty(URL));
@@ -32,7 +35,7 @@ public class ApplicationContextConfiguration {
     
     @Bean
     @Scope("singleton")
-    public JdbcTemplate getJdbcTemplate() throws ClassNotFoundException {
+    public JdbcTemplate getJdbcTemplate() {
         return new JdbcTemplate(getDataSource());
     }
 

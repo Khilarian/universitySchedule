@@ -3,6 +3,7 @@ package com.rumakin.universityschedule.dao;
 import java.sql.*;
 import java.util.*;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 
@@ -24,6 +25,7 @@ public class PersonDao implements Dao<Person>, ResultSetMapper<Person> {
 
     private final JdbcTemplate jdbcTemplate;
 
+    @Autowired
     public PersonDao(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }

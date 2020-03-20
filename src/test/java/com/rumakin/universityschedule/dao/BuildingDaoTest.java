@@ -39,7 +39,7 @@ class BuildingDaoTest {
     }
 
     @Test
-    void findByIdShouldReturnPersonIfIdExists() throws SQLException {
+    void findShouldReturnPersonIfIdExists() throws SQLException {
         Building expected = new Building("Main", "Moskow, Tverskaya, 1");
         when(mockJdbcTemplate.queryForObject(any(String.class), (Object[]) any(Object.class),
                 (RowMapper<Building>) any(RowMapper.class))).thenReturn(expected);
@@ -51,7 +51,7 @@ class BuildingDaoTest {
     }
 
     @Test
-    void findByIdShouldRaiseExceptionIfIDMissed() throws SQLException {
+    void findShouldRaiseExceptionIfIDMissed() throws SQLException {
         when(mockJdbcTemplate.queryForObject(any(String.class), (Object[]) any(Object.class),
                 any(RowMapper.class))).thenThrow(DaoException.class);
         assertThrows(DaoException.class, () -> buildingDao.find(20));
@@ -61,7 +61,7 @@ class BuildingDaoTest {
     }
 
     @Test
-    void findAllShouldReturnListOfCoursesIfAtLeastOneExist() throws SQLException {
+    void findAllShouldReturnListOfCoursesIfAtLeastOneExists() throws SQLException {
         Building building = new Building("Main", "Moskow, Tverskaya, 1");
         Building buildingTwo = new Building("Second", "Khimki, Moskovskaya, 23");
         List<Building> expected = Arrays.asList(building, buildingTwo);
@@ -79,6 +79,13 @@ class BuildingDaoTest {
         assertThrows(DaoException.class, () -> buildingDao.findAll());
         verify(mockJdbcTemplate, times(1)).query(eq("SELECT * FROM building;"),
                 any(RowMapper.class));
+    }
+    
+    @Test
+    void removeShouldExecuteOnceWhenDbCallFine() throws SQLException {
+        buildingDao.remove(1);
+        verify(mockJdbcTemplate, times(1))
+                .update(eq("DELETE FROM building WHERE building_id =?;"),eq(1));
     }
 
 }

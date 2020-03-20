@@ -3,6 +3,7 @@ package com.rumakin.universityschedule.dao;
 import java.sql.*;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.*;
 
 import com.rumakin.universityschedule.enums.TimeSlot;
@@ -19,6 +20,7 @@ public class TimeSlotDao implements Dao<TimeSlot>, ResultSetMapper<TimeSlot> {
 
     private final JdbcTemplate jdbcTemplate;
 
+    @Autowired
     public TimeSlotDao(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }

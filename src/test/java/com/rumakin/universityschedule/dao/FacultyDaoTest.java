@@ -60,7 +60,7 @@ class FacultyDaoTest {
     }
 
     @Test
-    void findAllShouldReturnListOfCoursesIfAtLeastOneExist() throws SQLException {
+    void findAllShouldReturnListOfCoursesIfAtLeastOneExists() throws SQLException {
         Faculty faculty = new Faculty("Math");
         Faculty facultyTwo = new Faculty("History");
         List<Faculty> expected = Arrays.asList(faculty, facultyTwo);
@@ -78,6 +78,13 @@ class FacultyDaoTest {
         assertThrows(DaoException.class, () -> facultyDao.findAll());
         verify(mockJdbcTemplate, times(1)).query(eq("SELECT * FROM faculty;"),
                 any(RowMapper.class));
+    }
+    
+    @Test
+    void removeShouldExecuteOnceWhenDbCallFine() throws SQLException {
+        facultyDao.remove(1);
+        verify(mockJdbcTemplate, times(1))
+                .update(eq("DELETE FROM faculty WHERE faculty_id =?;"),eq(1));
     }
 
 }

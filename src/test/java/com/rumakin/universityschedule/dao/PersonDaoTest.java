@@ -61,7 +61,7 @@ class PersonDaoTest {
     }
 
     @Test
-    void findAllShouldReturnListOfCoursesIfAtLeastOneExist() throws SQLException {
+    void findAllShouldReturnListOfCoursesIfAtLeastOneExists() throws SQLException {
         Person person = new Person("Lexx", "Luger");
         Person personTwo = new Person("Hulk", "Hogan");
         List<Person> expected = Arrays.asList(person, personTwo);
@@ -79,6 +79,13 @@ class PersonDaoTest {
         assertThrows(DaoException.class, () -> personDao.findAll());
         verify(mockJdbcTemplate, times(1)).query(eq("SELECT * FROM person;"),
                 any(RowMapper.class));
+    }
+    
+    @Test
+    void removeShouldExecuteOnceWhenDbCallFine() throws SQLException {
+        personDao.remove(1);
+        verify(mockJdbcTemplate, times(1))
+                .update(eq("DELETE FROM person WHERE person_id =?;"),eq(1));
     }
 
 }
