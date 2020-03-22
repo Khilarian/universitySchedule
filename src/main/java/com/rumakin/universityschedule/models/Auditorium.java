@@ -1,11 +1,5 @@
 package com.rumakin.universityschedule.models;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
-
-@Component
-@Scope("prototype")
 public class Auditorium {
 
     private int id;
@@ -13,14 +7,12 @@ public class Auditorium {
     private int capacity;
     private Building building;
 
-    @Autowired
     public Auditorium(int number, int capacity, Building building) {
         this.number = number;
         this.capacity = capacity;
         this.building = building;
     }
 
-    @Autowired
     public Auditorium(int id, int number, int capacity, Building building) {
         this.id = id;
         this.number = number;
