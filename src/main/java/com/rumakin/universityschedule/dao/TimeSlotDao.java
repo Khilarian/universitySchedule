@@ -8,11 +8,10 @@ import org.springframework.jdbc.core.*;
 import org.springframework.stereotype.Repository;
 
 import com.rumakin.universityschedule.enums.TimeSlot;
-import com.rumakin.universityschedule.exceptions.DaoException;
 
 @Repository
-public class TimeSlotDao implements Dao<TimeSlot>, ResultSetMapper<TimeSlot> {
-    
+public class TimeSlotDao implements Dao<TimeSlot> {
+
     private static final String TABLE_NAME = "time_slot";
     private static final String NAME = "time_slot_name";
 
@@ -42,21 +41,12 @@ public class TimeSlotDao implements Dao<TimeSlot>, ResultSetMapper<TimeSlot> {
     @SuppressWarnings("hiding")
     @Override
     public <String> TimeSlot find(String name) {
-        TimeSlot timeSlot = this.jdbcTemplate.queryForObject(FIND_BY_NAME, new Object[] { name },
-                mapRow());
-        if (timeSlot == null) {
-            throw new DaoException("TimeSlot with name " + name + " is absent.");
-        }
-        return timeSlot;
+        return this.jdbcTemplate.queryForObject(FIND_BY_NAME, new Object[] { name }, mapRow());
     }
 
     @Override
     public List<TimeSlot> findAll() {
-        List<TimeSlot> timeSlots = this.jdbcTemplate.query(FIND_ALL, mapRow());
-        if (timeSlots.isEmpty()) {
-            throw new DaoException("TimeSlot table is empty.");
-        }
-        return timeSlots;
+        return this.jdbcTemplate.query(FIND_ALL, mapRow());
     }
 
     @SuppressWarnings("hiding")

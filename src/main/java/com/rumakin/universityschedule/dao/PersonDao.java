@@ -8,11 +8,10 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
-import com.rumakin.universityschedule.exceptions.DaoException;
 import com.rumakin.universityschedule.models.Person;
 
 @Repository
-public class PersonDao implements Dao<Person>, ResultSetMapper<Person> {
+public class PersonDao implements Dao<Person> {
 
     private static final String TABLE_NAME = "person";
     private static final String ID = "person_id";
@@ -46,26 +45,18 @@ public class PersonDao implements Dao<Person>, ResultSetMapper<Person> {
 
     @SuppressWarnings("hiding")
     @Override
-    public <Integer>Person find(Integer id) {
-        Person person = this.jdbcTemplate.queryForObject(FIND_BY_ID, new Object[] { id }, mapRow());
-        if (person == null) {
-            throw new DaoException("Person with id " + id + " is absent.");
-        }
-        return person;
+    public <Integer> Person find(Integer id) {
+        return this.jdbcTemplate.queryForObject(FIND_BY_ID, new Object[] { id }, mapRow());
     }
 
     @Override
     public List<Person> findAll() {
-        List<Person> people = this.jdbcTemplate.query(FIND_ALL, mapRow());
-        if (people.isEmpty()) {
-            throw new DaoException("Person table is empty.");
-        }
-        return people;
+        return this.jdbcTemplate.query(FIND_ALL, mapRow());
     }
-    
+
     @SuppressWarnings("hiding")
     @Override
-    public <Integer>void remove(Integer id) {
+    public <Integer> void remove(Integer id) {
         this.jdbcTemplate.update(REMOVE_BY_ID, id);
     }
 

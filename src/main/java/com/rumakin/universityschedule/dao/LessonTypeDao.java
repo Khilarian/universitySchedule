@@ -8,10 +8,9 @@ import org.springframework.jdbc.core.*;
 import org.springframework.stereotype.Repository;
 
 import com.rumakin.universityschedule.enums.LessonType;
-import com.rumakin.universityschedule.exceptions.DaoException;
 
 @Repository
-public class LessonTypeDao implements Dao<LessonType>, ResultSetMapper<LessonType> {
+public class LessonTypeDao implements Dao<LessonType> {
 
     private static final String TABLE_NAME = "lesson_type";
     private static final String NAME = "lesson_type_name";
@@ -41,27 +40,18 @@ public class LessonTypeDao implements Dao<LessonType>, ResultSetMapper<LessonTyp
 
     @SuppressWarnings("hiding")
     @Override
-    public <String>LessonType find(String name) {
-        LessonType degree = this.jdbcTemplate.queryForObject(FIND_BY_NAME, new Object[] { name },
-                mapRow());
-        if (degree == null) {
-            throw new DaoException("LessonType with name " + name + " is absent.");
-        }
-        return degree;
+    public <String> LessonType find(String name) {
+        return this.jdbcTemplate.queryForObject(FIND_BY_NAME, new Object[] { name }, mapRow());
     }
 
     @Override
     public List<LessonType> findAll() {
-        List<LessonType> types = this.jdbcTemplate.query(FIND_ALL, mapRow());
-        if (types.isEmpty()) {
-            throw new DaoException("LessonType table is empty.");
-        }
-        return types;
+        return this.jdbcTemplate.query(FIND_ALL, mapRow());
     }
-    
+
     @SuppressWarnings("hiding")
     @Override
-    public <String>void remove(String name) {
+    public <String> void remove(String name) {
         this.jdbcTemplate.update(REMOVE_BY_NAME, name);
     }
 

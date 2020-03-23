@@ -7,11 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.*;
 import org.springframework.stereotype.Repository;
 
-import com.rumakin.universityschedule.exceptions.DaoException;
 import com.rumakin.universityschedule.models.Faculty;
 
 @Repository
-public class FacultyDao implements Dao<Faculty>, ResultSetMapper<Faculty> {
+public class FacultyDao implements Dao<Faculty> {
 
     private static final String TABLE_NAME = "faculty";
     private static final String ID = "faculty_id";
@@ -42,26 +41,18 @@ public class FacultyDao implements Dao<Faculty>, ResultSetMapper<Faculty> {
 
     @SuppressWarnings("hiding")
     @Override
-    public <Integer>Faculty find(Integer id) {
-        Faculty faculty = this.jdbcTemplate.queryForObject(FIND_BY_ID, new Object[] { id }, mapRow());
-        if (faculty == null) {
-            throw new DaoException("Faculty with id " + id + " is absent.");
-        }
-        return faculty;
+    public <Integer> Faculty find(Integer id) {
+        return this.jdbcTemplate.queryForObject(FIND_BY_ID, new Object[] { id }, mapRow());
     }
 
     @Override
     public List<Faculty> findAll() {
-        List<Faculty> faculties = this.jdbcTemplate.query(FIND_ALL, mapRow());
-        if (faculties.isEmpty()) {
-            throw new DaoException("Faculty table is empty.");
-        }
-        return faculties;
+        return this.jdbcTemplate.query(FIND_ALL, mapRow());
     }
-    
+
     @SuppressWarnings("hiding")
     @Override
-    public <Integer>void remove(Integer id) {
+    public <Integer> void remove(Integer id) {
         this.jdbcTemplate.update(REMOVE_BY_ID, id);
     }
 

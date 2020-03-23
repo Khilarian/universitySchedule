@@ -7,19 +7,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.*;
 import org.springframework.stereotype.Repository;
 
-import com.rumakin.universityschedule.exceptions.DaoException;
 import com.rumakin.universityschedule.models.Building;
 
 @Repository
-public class BuildingDao implements Dao<Building>, ResultSetMapper<Building> {
-    
+public class BuildingDao implements Dao<Building> {
+
     private static final String TABLE_NAME = "building";
     private static final String ID = "building_id";
     private static final String NAME = "building_name";
     private static final String ADDRESS = "building_address";
 
-    private static final String ADD = "INSERT INTO " + TABLE_NAME + " (" + NAME + "," + ADDRESS
-            + ") values (?,?);";
+    private static final String ADD = "INSERT INTO " + TABLE_NAME + " (" + NAME + "," + ADDRESS + ") values (?,?);";
     private static final String FIND_BY_ID = "SELECT * FROM " + TABLE_NAME + " WHERE " + ID + "=?;";
     private static final String FIND_ALL = "SELECT * FROM " + TABLE_NAME + ";";
     private static final String REMOVE_BY_ID = "DELETE FROM " + TABLE_NAME + " WHERE " + ID + " =?;";
@@ -46,20 +44,12 @@ public class BuildingDao implements Dao<Building>, ResultSetMapper<Building> {
     @SuppressWarnings("hiding")
     @Override
     public <Integer> Building find(Integer id) {
-        Building building = this.jdbcTemplate.queryForObject(FIND_BY_ID, new Object[] { id }, mapRow());
-        if (building == null) {
-            throw new DaoException("Building with id " + id + " is absent.");
-        }
-        return building;
+        return this.jdbcTemplate.queryForObject(FIND_BY_ID, new Object[] { id }, mapRow());
     }
 
     @Override
     public List<Building> findAll() {
-        List<Building> buildings = this.jdbcTemplate.query(FIND_ALL, mapRow());
-        if (buildings.isEmpty()) {
-            throw new DaoException("Building table is empty.");
-        }
-        return buildings;
+        return this.jdbcTemplate.query(FIND_ALL, mapRow());
     }
 
     @SuppressWarnings("hiding")

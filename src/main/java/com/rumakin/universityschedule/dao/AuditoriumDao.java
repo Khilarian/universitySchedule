@@ -7,29 +7,30 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.*;
 import org.springframework.stereotype.*;
 
-import com.rumakin.universityschedule.exceptions.DaoException;
-import com.rumakin.universityschedule.models.Auditorium;
-import com.rumakin.universityschedule.models.Building;
+import com.rumakin.universityschedule.models.*;
 
 @Repository
-public class AuditoriumDao implements Dao<Auditorium>, ResultSetMapper<Auditorium> {
-    
+public class AuditoriumDao implements Dao<Auditorium> {
+
     private static final String TABLE_NAME = "auditorium a";
+    private static final String TABLE_ALIAS = "a";
     private static final String ID = "auditorium_id";
     private static final String NUMBER = "number_id";
     private static final String CAPACITY = "capacity";
 
     private static final String BUILDING_TABLE_NAME = "building b";
+    private static final String BUILDING_TABLE_ALIAS = "b";
     private static final String BUILDING_ID = "building_id";
     private static final String BUILDING_NAME = "building_name";
     private static final String ADDRESS = "building_address";
 
-    private static final String ADD = "INSERT INTO " + TABLE_NAME + " (" + NUMBER + "," + CAPACITY + "," + BUILDING_ID
-            + ") values (?,?);";
-    private static final String FIND_BY_ID = "SELECT a." + ID + " a." + NUMBER + " a." + CAPACITY + " b." + BUILDING_ID
-            + " b." + BUILDING_NAME + " b." + ADDRESS + " FROM " + TABLE_NAME + " INNER JOIN " + BUILDING_TABLE_NAME
-            + " ON a." + BUILDING_ID + "=" + "b." + BUILDING_ID
-            + " WHERE " + ID + "=?;";
+    private static final String ADD = "INSERT INTO " + TABLE_NAME + " " + TABLE_ALIAS + " (" + NUMBER + "," + CAPACITY
+            + "," + BUILDING_ID + ") values (?,?);";
+    private static final String FIND_BY_ID = "SELECT " + TABLE_ALIAS + ID + " " + TABLE_ALIAS + NUMBER + " "
+            + TABLE_ALIAS + CAPACITY + " " + BUILDING_TABLE_ALIAS + BUILDING_ID + " " + BUILDING_TABLE_ALIAS
+            + BUILDING_NAME + " " + BUILDING_TABLE_ALIAS + ADDRESS + " FROM " + TABLE_NAME
+            + " " + TABLE_ALIAS + " INNER JOIN " + BUILDING_TABLE_NAME + " " + BUILDING_TABLE_ALIAS
+            + " ON " + TABLE_ALIAS + BUILDING_ID + "=" + BUILDING_TABLE_ALIAS + BUILDING_ID + " WHERE " + ID + "=?;";
 
     private static final String FIND_ALL = "SELECT * FROM " + TABLE_NAME + ";";
     private static final String REMOVE_BY_ID = "DELETE FROM " + TABLE_NAME + " WHERE " + ID + " =?;";
@@ -57,20 +58,12 @@ public class AuditoriumDao implements Dao<Auditorium>, ResultSetMapper<Auditoriu
     @SuppressWarnings("hiding")
     @Override
     public <Integer> Auditorium find(Integer id) {
-        Auditorium auditorium = this.jdbcTemplate.queryForObject(FIND_BY_ID, new Object[] { id }, mapRow());
-        if (auditorium == null) {
-            throw new DaoException("Auditorium with id " + id + " is absent.");
-        }
-        return auditorium;
+        return this.jdbcTemplate.queryForObject(FIND_BY_ID, new Object[] { id }, mapRow());
     }
 
     @Override
     public List<Auditorium> findAll() {
-        List<Auditorium> auditoriums = this.jdbcTemplate.query(FIND_ALL, mapRow());
-        if (auditoriums.isEmpty()) {
-            throw new DaoException("Auditoriums table is empty.");
-        }
-        return auditoriums;
+        return this.jdbcTemplate.query(FIND_ALL, mapRow());
     }
 
     @Override
