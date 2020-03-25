@@ -7,18 +7,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.*;
 import org.springframework.stereotype.Repository;
 
-import com.rumakin.universityschedule.enums.LessonType;
+import com.rumakin.universityschedule.models.enums.LessonType;
 
 @Repository
 public class LessonTypeDao implements Dao<LessonType> {
 
-    private static final String TABLE_NAME = "lesson_type";
+    private static final String TABLE = "lesson_type";
+    private static final String ALIAS = "lt";
     private static final String NAME = "lesson_type_name";
 
-    private static final String ADD = "INSERT INTO " + TABLE_NAME + " (" + NAME + ") values (?);";
-    private static final String FIND_BY_NAME = "SELECT * FROM " + TABLE_NAME + " WHERE " + NAME + "=?;";
-    private static final String FIND_ALL = "SELECT * FROM " + TABLE_NAME + ";";
-    private static final String REMOVE_BY_NAME = "DELETE FROM " + TABLE_NAME + " WHERE " + NAME + " =?;";
+    private static final String ADD = "INSERT INTO " + TABLE + " (" + NAME + ") values (?);";
+    private static final String FIND_BY_NAME = "SELECT * FROM " + TABLE + " WHERE " + NAME + "=?;";
+    private static final String FIND_ALL = "SELECT * FROM " + TABLE + ";";
+    private static final String REMOVE_BY_NAME = "DELETE FROM " + TABLE + " WHERE " + NAME + " =?;";
 
     private final JdbcTemplate jdbcTemplate;
 
@@ -64,5 +65,20 @@ public class LessonTypeDao implements Dao<LessonType> {
     @Override
     public RowMapper<LessonType> mapRow() {
         return (ResultSet rs, int rowNumver) -> LessonType.valueOf(rs.getString(NAME));
+    }
+
+    @Override
+    public java.lang.String getFieldsList() {
+        return ALIAS + "." + NAME;
+    }
+
+    @Override
+    public java.lang.String getTableName() {
+        return TABLE;
+    }
+
+    @Override
+    public java.lang.String getAlias() {
+        return ALIAS;
     }
 }

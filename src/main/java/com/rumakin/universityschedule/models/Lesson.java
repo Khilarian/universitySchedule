@@ -2,7 +2,7 @@ package com.rumakin.universityschedule.models;
 
 import java.util.*;
 
-import com.rumakin.universityschedule.enums.*;
+import com.rumakin.universityschedule.models.enums.*;
 
 import java.time.*;
 
@@ -12,8 +12,8 @@ public class Lesson {
     private final Subject subject;
     private final LessonType type;
     private Auditorium auditorium;
-    private Set<Teacher> teachers = new HashSet<>();
-    private Set<Group> groups = new HashSet<>();
+    private List<Teacher> teachers = new ArrayList<>();
+    private List<Group> groups = new ArrayList<>();
     private LocalDate date;
     private TimeSlot timeSlot;
 
@@ -34,7 +34,7 @@ public class Lesson {
         this.timeSlot = timeSlot;
     }
 
-    public void setTeachers(Set<Teacher> teachers) {
+    public void setTeachers(List<Teacher> teachers) {
         this.teachers = teachers;
     }
 
@@ -42,7 +42,7 @@ public class Lesson {
         this.auditorium = auditorium;
     }
 
-    public void setGroups(Set<Group> groups) {
+    public void setGroups(List<Group> groups) {
         this.groups = groups;
     }
 
@@ -58,7 +58,7 @@ public class Lesson {
         return type;
     }
 
-    public Set<Teacher> getTeachers() {
+    public List<Teacher> getTeachers() {
         return teachers;
     }
 
@@ -66,7 +66,7 @@ public class Lesson {
         return auditorium;
     }
 
-    public Set<Group> getGroups() {
+    public List<Group> getGroups() {
         return groups;
     }
 
@@ -129,9 +129,7 @@ public class Lesson {
             return false;
         if (timeSlot != other.timeSlot)
             return false;
-        if (type != other.type)
-            return false;
-        return true;
+        return type == other.type;
     }
 
     @Override

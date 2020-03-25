@@ -13,16 +13,17 @@ import com.rumakin.universityschedule.models.Person;
 @Repository
 public class PersonDao implements Dao<Person> {
 
-    private static final String TABLE_NAME = "person";
+    private static final String TABLE = "person";
+    private static final String ALIAS = "p";
     private static final String ID = "person_id";
     private static final String FIRST_NAME = "person_first_name";
     private static final String LAST_NAME = "person_last_name";
 
-    private static final String ADD = "INSERT INTO " + TABLE_NAME + " (" + FIRST_NAME + "," + LAST_NAME
+    private static final String ADD = "INSERT INTO " + TABLE + " (" + FIRST_NAME + "," + LAST_NAME
             + ") values (?,?);";
-    private static final String FIND_BY_ID = "SELECT * FROM " + TABLE_NAME + " WHERE " + ID + "=?;";
-    private static final String FIND_ALL = "SELECT * FROM " + TABLE_NAME + ";";
-    private static final String REMOVE_BY_ID = "DELETE FROM " + TABLE_NAME + " WHERE " + ID + " =?;";
+    private static final String FIND_BY_ID = "SELECT * FROM " + TABLE + " WHERE " + ID + "=?;";
+    private static final String FIND_ALL = "SELECT * FROM " + TABLE + ";";
+    private static final String REMOVE_BY_ID = "DELETE FROM " + TABLE + " WHERE " + ID + " =?;";
 
     private final JdbcTemplate jdbcTemplate;
 
@@ -72,6 +73,21 @@ public class PersonDao implements Dao<Person> {
         String lastName = person.getLastName();
         ps.setString(1, firstName);
         ps.setString(2, lastName);
+    }
+
+    @Override
+    public String getFieldsList() {
+        return ALIAS + "." + ID + "," + ALIAS + "." + FIRST_NAME + "," + ALIAS + "." + LAST_NAME;
+    }
+
+    @Override
+    public String getTableName() {
+        return TABLE;
+    }
+
+    @Override
+    public String getAlias() {
+        return ALIAS;
     }
 
 }

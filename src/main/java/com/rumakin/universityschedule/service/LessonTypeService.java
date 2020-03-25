@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.rumakin.universityschedule.dao.LessonTypeDao;
-import com.rumakin.universityschedule.enums.LessonType;
+import com.rumakin.universityschedule.models.enums.LessonType;
 
 public class LessonTypeService {
     

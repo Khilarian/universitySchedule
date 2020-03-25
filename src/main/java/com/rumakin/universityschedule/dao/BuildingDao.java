@@ -12,15 +12,16 @@ import com.rumakin.universityschedule.models.Building;
 @Repository
 public class BuildingDao implements Dao<Building> {
 
-    private static final String TABLE_NAME = "building";
+    private static final String TABLE = "building";
+    private static final String ALIAS = "b";
     private static final String ID = "building_id";
     private static final String NAME = "building_name";
     private static final String ADDRESS = "building_address";
 
-    private static final String ADD = "INSERT INTO " + TABLE_NAME + " (" + NAME + "," + ADDRESS + ") values (?,?);";
-    private static final String FIND_BY_ID = "SELECT * FROM " + TABLE_NAME + " WHERE " + ID + "=?;";
-    private static final String FIND_ALL = "SELECT * FROM " + TABLE_NAME + ";";
-    private static final String REMOVE_BY_ID = "DELETE FROM " + TABLE_NAME + " WHERE " + ID + " =?;";
+    private static final String ADD = "INSERT INTO " + TABLE + " (" + NAME + "," + ADDRESS + ") values (?,?);";
+    private static final String FIND_BY_ID = "SELECT * FROM " + TABLE + " WHERE " + ID + "=?;";
+    private static final String FIND_ALL = "SELECT * FROM " + TABLE + ";";
+    private static final String REMOVE_BY_ID = "DELETE FROM " + TABLE + " WHERE " + ID + " =?;";
 
     private final JdbcTemplate jdbcTemplate;
 
@@ -71,6 +72,21 @@ public class BuildingDao implements Dao<Building> {
         ps.setString(1, name);
         ps.setString(2, address);
 
+    }
+
+    @Override
+    public String getFieldsList() {
+        return ALIAS + "." + ID + "," + ALIAS + "." + NAME + "," + ALIAS + "." + ADDRESS;
+    }
+
+    @Override
+    public String getTableName() {
+        return TABLE;
+    }
+
+    @Override
+    public String getAlias() {
+        return ALIAS;
     }
 
 }

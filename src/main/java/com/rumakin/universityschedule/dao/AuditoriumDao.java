@@ -12,34 +12,27 @@ import com.rumakin.universityschedule.models.*;
 @Repository
 public class AuditoriumDao implements Dao<Auditorium> {
 
-    private static final String TABLE_NAME = "auditorium a";
-    private static final String TABLE_ALIAS = "a";
+    private static final String TABLE = "auditorium";
+    private static final String ALIAS = "a";
     private static final String ID = "auditorium_id";
     private static final String NUMBER = "number_id";
     private static final String CAPACITY = "capacity";
-
-    private static final String BUILDING_TABLE_NAME = "building b";
-    private static final String BUILDING_TABLE_ALIAS = "b";
     private static final String BUILDING_ID = "building_id";
-    private static final String BUILDING_NAME = "building_name";
-    private static final String ADDRESS = "building_address";
 
-    private static final String ADD = "INSERT INTO " + TABLE_NAME + " " + TABLE_ALIAS + " (" + NUMBER + "," + CAPACITY
-            + "," + BUILDING_ID + ") values (?,?);";
-    private static final String FIND_BY_ID = "SELECT " + TABLE_ALIAS + ID + " " + TABLE_ALIAS + NUMBER + " "
-            + TABLE_ALIAS + CAPACITY + " " + BUILDING_TABLE_ALIAS + BUILDING_ID + " " + BUILDING_TABLE_ALIAS
-            + BUILDING_NAME + " " + BUILDING_TABLE_ALIAS + ADDRESS + " FROM " + TABLE_NAME
-            + " " + TABLE_ALIAS + " INNER JOIN " + BUILDING_TABLE_NAME + " " + BUILDING_TABLE_ALIAS
-            + " ON " + TABLE_ALIAS + BUILDING_ID + "=" + BUILDING_TABLE_ALIAS + BUILDING_ID + " WHERE " + ID + "=?;";
+    private static final String ADD = "INSERT INTO " + TABLE + " (" + NUMBER + "," + CAPACITY
+            + "," + BUILDING_ID + ") values (?,?,?);";
+    private static final String FIND_BY_ID = "SELECT * FROM " + TABLE + " WHERE " + ID + "=?;";
 
-    private static final String FIND_ALL = "SELECT * FROM " + TABLE_NAME + ";";
-    private static final String REMOVE_BY_ID = "DELETE FROM " + TABLE_NAME + " WHERE " + ID + " =?;";
+    private static final String FIND_ALL = "SELECT * FROM " + TABLE + ";";
+    private static final String REMOVE_BY_ID = "DELETE FROM " + TABLE + " WHERE " + ID + " =?;";
 
     private final JdbcTemplate jdbcTemplate;
+    private final BuildingDao buildingDao;
 
     @Autowired
-    public AuditoriumDao(JdbcTemplate jdbcTemplate) {
+    public AuditoriumDao(JdbcTemplate jdbcTemplate, BuildingDao buildingDao) {
         this.jdbcTemplate = jdbcTemplate;
+        this.buildingDao = buildingDao;
     }
 
     @Override
@@ -69,8 +62,7 @@ public class AuditoriumDao implements Dao<Auditorium> {
     @Override
     public RowMapper<Auditorium> mapRow() {
         return (ResultSet rs, int rowNumber) -> new Auditorium(rs.getInt(ID), rs.getInt(NUMBER),
-                rs.getInt(ADDRESS),
-                new Building(rs.getInt(BUILDING_ID), rs.getString(BUILDING_NAME), rs.getString(ADDRESS)));
+                rs.getInt(CAPACITY), buildingDao.find(rs.getInt(BUILDING_ID)));
     }
 
     @SuppressWarnings("hiding")
@@ -87,6 +79,21 @@ public class AuditoriumDao implements Dao<Auditorium> {
         ps.setInt(1, number);
         ps.setInt(2, capacity);
         ps.setInt(3, buildingId);
+    }
+
+    @Override
+    public String getFieldsList() {
+        return ALIAS + "." + ID + "," + ALIAS + "." + NUMBER + "," + ALIAS + "." + CAPACITY + "," + ALIAS + "." + BUILDING_ID;
+    }
+
+    @Override
+    public String getTableName() {
+        return TABLE;
+    }
+
+    @Override
+    public String getAlias() {
+        return ALIAS;
     }
 
 }

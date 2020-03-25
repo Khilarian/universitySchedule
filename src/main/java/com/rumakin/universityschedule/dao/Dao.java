@@ -21,4 +21,10 @@ public interface Dao<T> {
     <E> void remove(E id);
     
     void setParameters(PreparedStatement ps, T t) throws SQLException;
+    
+    String getFieldsList();
+    
+    String getTableName();
+    
+    String getAlias();
 }

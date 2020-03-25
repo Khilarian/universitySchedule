@@ -53,7 +53,7 @@ CREATE TABLE teacher_subject(
 teacher_id INTEGER REFERENCES teacher(teacher_id) ON UPDATE CASCADE ON DELETE CASCADE,
 subject_id INTEGER REFERENCES subject(subject_id) ON UPDATE CASCADE ON DELETE CASCADE
 );
-CREATE TABLE teacher_lesson(
+CREATE TABLE lesson_teacher(
 teacher_id INTEGER REFERENCES teacher(teacher_id) ON UPDATE CASCADE ON DELETE CASCADE,
 lesson_id INTEGER REFERENCES lesson(lesson_id) ON UPDATE CASCADE ON DELETE CASCADE
 );

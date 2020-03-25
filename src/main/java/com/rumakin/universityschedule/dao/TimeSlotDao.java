@@ -7,18 +7,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.*;
 import org.springframework.stereotype.Repository;
 
-import com.rumakin.universityschedule.enums.TimeSlot;
+import com.rumakin.universityschedule.models.enums.TimeSlot;
 
 @Repository
 public class TimeSlotDao implements Dao<TimeSlot> {
 
-    private static final String TABLE_NAME = "time_slot";
+    private static final String TABLE = "time_slot";
+    private static final String ALIAS = "ts";
     private static final String NAME = "time_slot_name";
 
-    private static final String ADD = "INSERT INTO " + TABLE_NAME + " (" + NAME + ") values (?);";
-    private static final String FIND_BY_NAME = "SELECT * FROM " + TABLE_NAME + " WHERE " + NAME + "=?;";
-    private static final String FIND_ALL = "SELECT " + NAME + " FROM " + TABLE_NAME + ";";
-    private static final String REMOVE_BY_NAME = "DELETE FROM " + TABLE_NAME + " WHERE " + NAME + " =?;";
+    private static final String ADD = "INSERT INTO " + TABLE + " (" + NAME + ") values (?);";
+    private static final String FIND_BY_NAME = "SELECT * FROM " + TABLE + " WHERE " + NAME + "=?;";
+    private static final String FIND_ALL = "SELECT " + NAME + " FROM " + TABLE + ";";
+    private static final String REMOVE_BY_NAME = "DELETE FROM " + TABLE + " WHERE " + NAME + " =?;";
 
     private final JdbcTemplate jdbcTemplate;
 
@@ -64,5 +65,20 @@ public class TimeSlotDao implements Dao<TimeSlot> {
     @Override
     public RowMapper<TimeSlot> mapRow() {
         return (ResultSet rs, int rowNumver) -> TimeSlot.valueOf(rs.getString(NAME));
+    }
+
+    @Override
+    public String getFieldsList() {
+        return ALIAS + "." + NAME;
+    }
+
+    @Override
+    public String getTableName() {
+        return TABLE;
+    }
+
+    @Override
+    public String getAlias() {
+        return ALIAS;
     }
 }

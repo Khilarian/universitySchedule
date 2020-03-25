@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.rumakin.universityschedule.dao.TimeSlotDao;
-import com.rumakin.universityschedule.enums.TimeSlot;
+import com.rumakin.universityschedule.models.enums.TimeSlot;
 
 public class TimeSlotService {
 

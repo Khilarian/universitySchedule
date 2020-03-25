@@ -12,14 +12,15 @@ import com.rumakin.universityschedule.models.Faculty;
 @Repository
 public class FacultyDao implements Dao<Faculty> {
 
-    private static final String TABLE_NAME = "faculty";
+    private static final String TABLE = "faculty";
+    private static final String ALIAS = "f";
     private static final String ID = "faculty_id";
     private static final String NAME = "faculty_name";
 
-    private static final String ADD = "INSERT INTO " + TABLE_NAME + " (" + NAME + ")" + " values " + "(?);";
-    private static final String FIND_BY_ID = "SELECT * FROM " + TABLE_NAME + " WHERE " + ID + "=?;";
-    private static final String FIND_ALL = "SELECT * FROM " + TABLE_NAME + ";";
-    private static final String REMOVE_BY_ID = "DELETE FROM " + TABLE_NAME + " WHERE " + ID + " =?;";
+    private static final String ADD = "INSERT INTO " + TABLE + " (" + NAME + ")" + " values " + "(?);";
+    private static final String FIND_BY_ID = "SELECT * FROM " + TABLE + " WHERE " + ID + "=?;";
+    private static final String FIND_ALL = "SELECT * FROM " + TABLE + ";";
+    private static final String REMOVE_BY_ID = "DELETE FROM " + TABLE + " WHERE " + ID + " =?;";
 
     private final JdbcTemplate jdbcTemplate;
 
@@ -65,5 +66,20 @@ public class FacultyDao implements Dao<Faculty> {
     @Override
     public RowMapper<Faculty> mapRow() {
         return (ResultSet rs, int rowNumber) -> new Faculty(rs.getInt(ID), rs.getString(NAME));
+    }
+
+    @Override
+    public String getFieldsList() {
+        return ALIAS + "." + ID + "," + ALIAS + "." + NAME;
+    }
+
+    @Override
+    public String getTableName() {
+        return TABLE;
+    }
+
+    @Override
+    public String getAlias() {
+        return ALIAS;
     }
 }
