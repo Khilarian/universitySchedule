@@ -1,18 +1,17 @@
 package com.rumakin.universityschedule.dao;
 
 import java.sql.*;
-import java.util.List;
+import java.time.*;
+import java.util.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.*;
 
-import com.rumakin.universityschedule.models.Group;
+import com.rumakin.universityschedule.models.*;
 
 public class GroupDao implements Dao<Group> {
 
     private static final String TABLE = "group";
-    private static final String ALIAS = "g";
     private static final String ID = "group_id";
     private static final String NAME = "group_name";
 
@@ -21,26 +20,37 @@ public class GroupDao implements Dao<Group> {
     private static final String FIND_ALL = "SELECT * FROM " + TABLE + ";";
     private static final String REMOVE_BY_ID = "DELETE FROM " + TABLE + " WHERE " + ID + " =?;";
 
-    private static final String FIND_ALL_LESSON_BY_DATE = "SELECT ";
-
     private final JdbcTemplate jdbcTemplate;
+    private final AuditoriumDao auditoriumDao;
 
     @Autowired
-    public GroupDao(JdbcTemplate jdbcTemplate) {
+    public GroupDao(JdbcTemplate jdbcTemplate, AuditoriumDao auditoriumDao) {
         this.jdbcTemplate = jdbcTemplate;
+        this.auditoriumDao = auditoriumDao;
+    }
+
+    public List<Auditorium> findAuditoriumOnDate(int groupId, LocalDate date) {
+        String sql = "SELECT l.auditorium_id FROM " + TABLE
+                + "g INNER JOIN lesson_group lg ON g.group_id=lg.group_id INNER JOIN lesson l ON lg.lesson_id=l.lesson_id WHERE g.group_id=? AND l.date=?;";
+        Object[] input = { groupId, java.sql.Date.valueOf(date) };
+        List<Integer> auditoriumsId = this.jdbcTemplate.queryForList(sql, input, Integer.class);
+        List<Auditorium> auditoriums = new ArrayList<>();
+        for (Integer id : auditoriumsId) {
+            Auditorium auditorium = auditoriumDao.find(id);
+            auditoriums.add(auditorium);
+        }
+        return auditoriums;
     }
 
     @Override
     public void addAll(List<Group> data) {
         this.jdbcTemplate.batchUpdate(ADD, new BatchComposer<Group>(data, this));
-
     }
 
     @Override
     public void add(Group group) {
         String groupName = group.getName();
         this.jdbcTemplate.update(ADD, groupName);
-
     }
 
     @SuppressWarnings("hiding")
@@ -72,18 +82,9 @@ public class GroupDao implements Dao<Group> {
     }
 
     @Override
-    public String getFieldsList() {
-        return ALIAS + "." + ID + "," + ALIAS + "." + NAME;
-    }
-
-    @Override
-    public String getTableName() {
-        return TABLE;
-    }
-
-    @Override
-    public String getAlias() {
-        return ALIAS;
+    public String getFieldsList(String alias) {
+        List<String> fields = Arrays.asList(ID, NAME);
+        return formatFieldsList(alias, fields);
     }
 
 }

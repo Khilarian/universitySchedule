@@ -15,24 +15,4 @@ private final FacultyDao facultyDao;
     public FacultyService(FacultyDao facultyDao) {
         this.facultyDao = facultyDao;
     }
-    
-    public void add(Faculty faculty) {
-        facultyDao.add(faculty);
-    }
-    
-    public void addAll(List<Faculty> facultys) {
-        facultyDao.addAll(facultys);
-    }
-    
-    public Faculty find(int id) {
-        return facultyDao.find(id);
-    }
-    
-    public List<Faculty> findAll(){
-        return facultyDao.findAll();
-    }
-    
-    public void remove(int id) {
-        facultyDao.remove(id);
-    }
 }

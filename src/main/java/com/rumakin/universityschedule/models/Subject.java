@@ -6,12 +6,12 @@ public class Subject {
     private String name;
     private Faculty faculty;
 
-    Subject(String name, Faculty faculty) {
+    public Subject(String name, Faculty faculty) {
         this.name = name;
         this.faculty = faculty;
     }
 
-    Subject(int id, String name, Faculty faculty) {
+    public Subject(int id, String name, Faculty faculty) {
         this.id = id;
         this.name = name;
         this.faculty = faculty;

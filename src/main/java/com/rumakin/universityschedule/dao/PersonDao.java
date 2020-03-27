@@ -14,7 +14,6 @@ import com.rumakin.universityschedule.models.Person;
 public class PersonDao implements Dao<Person> {
 
     private static final String TABLE = "person";
-    private static final String ALIAS = "p";
     private static final String ID = "person_id";
     private static final String FIRST_NAME = "person_first_name";
     private static final String LAST_NAME = "person_last_name";
@@ -76,18 +75,9 @@ public class PersonDao implements Dao<Person> {
     }
 
     @Override
-    public String getFieldsList() {
-        return ALIAS + "." + ID + "," + ALIAS + "." + FIRST_NAME + "," + ALIAS + "." + LAST_NAME;
-    }
-
-    @Override
-    public String getTableName() {
-        return TABLE;
-    }
-
-    @Override
-    public String getAlias() {
-        return ALIAS;
+    public String getFieldsList(String alias) {
+        List<String> fields = Arrays.asList(ID, FIRST_NAME, LAST_NAME);
+        return formatFieldsList(alias, fields);
     }
 
 }

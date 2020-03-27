@@ -15,24 +15,4 @@ private final PersonDao personDao;
     public PersonService(PersonDao personDao) {
         this.personDao = personDao;
     }
-    
-    public void add(Person person) {
-        personDao.add(person);
-    }
-    
-    public void addAll(List<Person> persons) {
-        personDao.addAll(persons);
-    }
-    
-    public Person find(int id) {
-        return personDao.find(id);
-    }
-    
-    public List<Person> findAll(){
-        return personDao.findAll();
-    }
-    
-    public void remove(int id) {
-        personDao.remove(id);
-    }
 }

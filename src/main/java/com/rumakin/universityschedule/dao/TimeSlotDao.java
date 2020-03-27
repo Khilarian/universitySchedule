@@ -1,7 +1,7 @@
 package com.rumakin.universityschedule.dao;
 
 import java.sql.*;
-import java.util.List;
+import java.util.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.*;
@@ -13,7 +13,6 @@ import com.rumakin.universityschedule.models.enums.TimeSlot;
 public class TimeSlotDao implements Dao<TimeSlot> {
 
     private static final String TABLE = "time_slot";
-    private static final String ALIAS = "ts";
     private static final String NAME = "time_slot_name";
 
     private static final String ADD = "INSERT INTO " + TABLE + " (" + NAME + ") values (?);";
@@ -68,17 +67,9 @@ public class TimeSlotDao implements Dao<TimeSlot> {
     }
 
     @Override
-    public String getFieldsList() {
-        return ALIAS + "." + NAME;
+    public java.lang.String getFieldsList(java.lang.String alias) {
+        List<String> fields = Arrays.asList(NAME);
+        return formatFieldsList(alias, fields);
     }
 
-    @Override
-    public String getTableName() {
-        return TABLE;
-    }
-
-    @Override
-    public String getAlias() {
-        return ALIAS;
-    }
 }

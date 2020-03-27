@@ -16,23 +16,4 @@ private final TimeSlotDao timeSlotDao;
         this.timeSlotDao = timeSlotDao;
     }
     
-    public void add(TimeSlot timeSlot) {
-        timeSlotDao.add(timeSlot);
-    }
-    
-    public void addAll(List<TimeSlot> timeSlots) {
-        timeSlotDao.addAll(timeSlots);
-    }
-    
-    public TimeSlot find(String name) {
-        return timeSlotDao.find(name);
-    }
-    
-    public List<TimeSlot> findAll(){
-        return timeSlotDao.findAll();
-    }
-    
-    public void remove(int id) {
-        timeSlotDao.remove(id);
-    }
 }

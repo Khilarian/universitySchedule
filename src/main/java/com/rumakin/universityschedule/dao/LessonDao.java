@@ -1,23 +1,19 @@
 package com.rumakin.universityschedule.dao;
 
 import java.sql.*;
-import java.util.List;
-import java.util.Set;
+import java.sql.Date;
+import java.time.LocalDate;
+import java.util.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.*;
 
-import com.rumakin.universityschedule.models.Auditorium;
-import com.rumakin.universityschedule.models.Group;
-import com.rumakin.universityschedule.models.Lesson;
-import com.rumakin.universityschedule.models.Teacher;
-import com.rumakin.universityschedule.models.enums.LessonType;
-import com.rumakin.universityschedule.models.enums.TimeSlot;
+import com.rumakin.universityschedule.models.*;
+import com.rumakin.universityschedule.models.enums.*;
 
 public class LessonDao implements Dao<Lesson> {
 
     private static final String TABLE = "lesson";
-    private static final String ALIAS = "l";
     private static final String ID = "lesson_id";
     private static final String SUBJECT = "subject_id";
     private static final String TYPE = "lesson_type_name";
@@ -41,15 +37,25 @@ public class LessonDao implements Dao<Lesson> {
     private static final String FIND_ALL = "SELECT * FROM " + TABLE + ";";
     private static final String REMOVE_BY_ID = "DELETE FROM " + TABLE + " WHERE " + ID + " =?;";
 
+    private static final String FIND_TEACHER_BY_LESSON_ID = "SELECT " + TEACHER_ID + " FROM " + LESSON_TEACHER_TABLE
+            + " WHERE " + ID + "=?;";
+    private static final String FIND_GROUP_BY_LESSON_ID = "SELECT " + GROUP_ID + " FROM " + LESSON_GROUP_TABLE
+            + " WHERE " + ID + "=?;";
+
     private JdbcTemplate jdbcTemplate;
     private AuditoriumDao auditoriumDao;
     private SubjectDao subjectDao;
+    private TeacherDao teacherDao;
+    private GroupDao groupDao;
 
     @Autowired
-    public LessonDao(JdbcTemplate jdbcTemplate, AuditoriumDao auditoriumDao, SubjectDao subjectDao) {
+    public LessonDao(JdbcTemplate jdbcTemplate, AuditoriumDao auditoriumDao, SubjectDao subjectDao,
+            TeacherDao teacherDao, GroupDao groupDao) {
         this.jdbcTemplate = jdbcTemplate;
         this.auditoriumDao = auditoriumDao;
         this.subjectDao = subjectDao;
+        this.teacherDao = teacherDao;
+        this.groupDao = groupDao;
     }
 
     @Override
@@ -59,16 +65,68 @@ public class LessonDao implements Dao<Lesson> {
 
     @Override
     public void add(Lesson lesson) {
-        int subjectId = lesson.getSubject().getId(); // subject has id already?
+        int id = addToDataBase(lesson);
+        addToLessonTeacher(id, lesson.getTeachers());
+        addToLessonGroup(id, lesson.getGroups());
+    }
+
+    @SuppressWarnings("hiding")
+    @Override
+    public <Integer> Lesson find(Integer lessonId) {
+        Lesson lesson = this.jdbcTemplate.queryForObject(FIND_BY_ID, new Object[] { lessonId }, mapRow());
+        lesson.setTeachers(findAllTeachers(lesson.getId()));
+        lesson.setGroups(findAllGroups(lesson.getId()));
+        return lesson;
+    }
+
+    @Override
+    public List<Lesson> findAll() {
+        List<Lesson> lessons = this.jdbcTemplate.query(FIND_ALL, mapRow());
+        for (Lesson lesson : lessons) {
+            lesson.setTeachers(findAllTeachers(lesson.getId()));
+            lesson.setGroups(findAllGroups(lesson.getId()));
+        }
+        return lessons;
+    }
+
+    @Override
+    public RowMapper<Lesson> mapRow() {
+        return (ResultSet rs, int rowNumber) -> new Lesson(rs.getInt(ID), subjectDao.find(rs.getInt(SUBJECT)),
+                LessonType.valueOf(rs.getString(TYPE)),
+                auditoriumDao.find(rs.getInt(AUDITORIUM_ID)), ((java.sql.Date) rs.getObject(DATE)).toLocalDate(),
+                TimeSlot.valueOf(rs.getString(TIME_SLOT)));
+    }
+
+    @SuppressWarnings("hiding")
+    @Override
+    public <Integer> void remove(Integer id) {
+        this.jdbcTemplate.update(REMOVE_BY_ID, id);
+    }
+
+    @Override
+    public void setParameters(PreparedStatement ps, Lesson t) throws SQLException {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public String getFieldsList(String alias) {
+        List<String> fields = Arrays.asList(ID, SUBJECT, TYPE, AUDITORIUM_ID, DATE, TIME_SLOT);
+        return formatFieldsList(alias, fields);
+    }
+
+    private int addToDataBase(Lesson lesson) {
+        int subjectId = lesson.getSubject().getId();
         String lessonType = lesson.getLessonType().name();
-        int auditoriumId = lesson.getAuditorium().getId(); // same as subject
-        Object date = lesson.getDate();
+        int auditoriumId = lesson.getAuditorium().getId();
+        Object date = java.sql.Date.valueOf(lesson.getDate());
         String timeSlot = lesson.getTimeSlot().name();
         Object[] inputData = { subjectId, lessonType, auditoriumId, date, timeSlot };
-        int id = this.jdbcTemplate.queryForObject(ADD, inputData, Integer.class);
+        return this.jdbcTemplate.queryForObject(ADD, inputData, Integer.class);
+    }
 
-        List<Teacher> teachers = lesson.getTeachers();
-        this.jdbcTemplate.batchUpdate(ADD_TEACHER, new BatchPreparedStatementSetter() {//must be additional private
+    private void addToLessonTeacher(int id, List<Teacher> teachers) {
+        this.jdbcTemplate.batchUpdate(ADD_TEACHER, new BatchPreparedStatementSetter() {
             @Override
             public void setValues(PreparedStatement preparedStatement, int i) throws SQLException {
                 preparedStatement.setInt(1, id);
@@ -80,9 +138,10 @@ public class LessonDao implements Dao<Lesson> {
                 return teachers.size();
             }
         });
+    }
 
-        List<Group> groups = lesson.getGroups();
-        this.jdbcTemplate.batchUpdate(ADD_GROUP, new BatchPreparedStatementSetter() {//must be additional private
+    private void addToLessonGroup(int id, List<Group> groups) {
+        this.jdbcTemplate.batchUpdate(ADD_GROUP, new BatchPreparedStatementSetter() {
             @Override
             public void setValues(PreparedStatement preparedStatement, int i) throws SQLException {
                 preparedStatement.setInt(1, id);
@@ -96,47 +155,24 @@ public class LessonDao implements Dao<Lesson> {
         });
     }
 
-    @Override
-    public <Integer> Lesson find(Integer id) {
-        return this.jdbcTemplate.queryForObject(FIND_BY_ID, new Object[] { id }, mapRow());
+    private List<Teacher> findAllTeachers(Integer lessonId) {
+        List<Teacher> teachers = new ArrayList<>();
+        List<Integer> teachersId = this.jdbcTemplate.queryForList(FIND_TEACHER_BY_LESSON_ID, new Object[] { lessonId },
+                Integer.class);
+        for (int id : teachersId) {
+            teachers.add(teacherDao.find(id));
+        }
+        return teachers;
     }
 
-    @Override
-    public List<Lesson> findAll() {
-        return this.jdbcTemplate.query(FIND_ALL, mapRow());
-    }
-
-    @Override
-    public RowMapper<Lesson> mapRow() {
-        return (ResultSet rs, int rowNumber) -> new Lesson(rs.getInt(ID), subjectDao.find(rs.getInt(SUBJECT)),LessonType.valueOf(rs.getString(TYPE)),
-                auditoriumDao.find(rs.getInt(AUDITORIUM_ID)), rs.getObject(DATE), TimeSlot.valueOf(rs.getString(TIME_SLOT)));
-    }
-
-    @Override
-    public <Integer> void remove(Integer id) {
-        this.jdbcTemplate.update(REMOVE_BY_ID, id);
-    }
-
-    @Override
-    public void setParameters(PreparedStatement ps, Lesson t) throws SQLException {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public String getFieldsList() {
-        return ALIAS + "." + ID + "," + ALIAS + "." + SUBJECT + "," + ALIAS + "." + TYPE + "," + ALIAS + "."
-                + AUDITORIUM_ID + "," + ALIAS + "." + DATE + "," + ALIAS + "." + TIME_SLOT;
-    }
-
-    @Override
-    public String getTableName() {
-        return TABLE;
-    }
-
-    @Override
-    public String getAlias() {
-        return ALIAS;
+    private List<Group> findAllGroups(Integer lessonId) {
+        List<Group> groups = new ArrayList<>();
+        List<Integer> groupsId = this.jdbcTemplate.queryForList(FIND_GROUP_BY_LESSON_ID, new Object[] { lessonId },
+                Integer.class);
+        for (int id : groupsId) {
+            groups.add(groupDao.find(id));
+        }
+        return groups;
     }
 
 }

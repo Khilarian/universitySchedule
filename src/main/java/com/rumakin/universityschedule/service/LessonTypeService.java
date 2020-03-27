@@ -15,24 +15,4 @@ private final LessonTypeDao lessonTypeDao;
     public LessonTypeService(LessonTypeDao lessonTypeDao) {
         this.lessonTypeDao = lessonTypeDao;
     }
-    
-    public void add(LessonType lessonType) {
-        lessonTypeDao.add(lessonType);
-    }
-    
-    public void addAll(List<LessonType> lessonTypes) {
-        lessonTypeDao.addAll(lessonTypes);
-    }
-    
-    public LessonType find(String name) {
-        return lessonTypeDao.find(name);
-    }
-    
-    public List<LessonType> findAll(){
-        return lessonTypeDao.findAll();
-    }
-    
-    public void remove(int id) {
-        lessonTypeDao.remove(id);
-    }
 }

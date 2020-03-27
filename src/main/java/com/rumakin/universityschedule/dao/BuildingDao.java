@@ -13,7 +13,6 @@ import com.rumakin.universityschedule.models.Building;
 public class BuildingDao implements Dao<Building> {
 
     private static final String TABLE = "building";
-    private static final String ALIAS = "b";
     private static final String ID = "building_id";
     private static final String NAME = "building_name";
     private static final String ADDRESS = "building_address";
@@ -75,18 +74,9 @@ public class BuildingDao implements Dao<Building> {
     }
 
     @Override
-    public String getFieldsList() {
-        return ALIAS + "." + ID + "," + ALIAS + "." + NAME + "," + ALIAS + "." + ADDRESS;
-    }
-
-    @Override
-    public String getTableName() {
-        return TABLE;
-    }
-
-    @Override
-    public String getAlias() {
-        return ALIAS;
+    public String getFieldsList(String alias) {
+        List<String> fields = Arrays.asList(ID, NAME, ADDRESS);
+        return formatFieldsList(alias, fields);
     }
 
 }

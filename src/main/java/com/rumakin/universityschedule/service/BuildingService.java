@@ -18,23 +18,4 @@ public class BuildingService {
         this.buildingDao = buildingDao;
     }
     
-    public void add(Building building) {
-        buildingDao.add(building);
-    }
-    
-    public void addAll(List<Building> buildings) {
-        buildingDao.addAll(buildings);
-    }
-    
-    public Building find(int id) {
-        return buildingDao.find(id);
-    }
-    
-    public List<Building> findAll(){
-        return buildingDao.findAll();
-    }
-    
-    public void remove(int id) {
-        buildingDao.remove(id);
-    }
 }

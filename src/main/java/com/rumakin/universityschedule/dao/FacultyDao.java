@@ -1,6 +1,7 @@
 package com.rumakin.universityschedule.dao;
 
 import java.sql.*;
+import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +14,6 @@ import com.rumakin.universityschedule.models.Faculty;
 public class FacultyDao implements Dao<Faculty> {
 
     private static final String TABLE = "faculty";
-    private static final String ALIAS = "f";
     private static final String ID = "faculty_id";
     private static final String NAME = "faculty_name";
 
@@ -69,17 +69,9 @@ public class FacultyDao implements Dao<Faculty> {
     }
 
     @Override
-    public String getFieldsList() {
-        return ALIAS + "." + ID + "," + ALIAS + "." + NAME;
+    public String getFieldsList(String alias) {
+        List<String> fields = Arrays.asList(ID, NAME);
+        return formatFieldsList(alias, fields);
     }
 
-    @Override
-    public String getTableName() {
-        return TABLE;
-    }
-
-    @Override
-    public String getAlias() {
-        return ALIAS;
-    }
 }

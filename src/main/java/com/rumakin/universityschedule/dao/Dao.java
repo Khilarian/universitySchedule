@@ -1,8 +1,7 @@
 package com.rumakin.universityschedule.dao;
 
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.util.List;
+import java.sql.*;
+import java.util.*;
 
 import org.springframework.jdbc.core.RowMapper;
 
@@ -19,12 +18,16 @@ public interface Dao<T> {
     RowMapper<T> mapRow();
 
     <E> void remove(E id);
-    
+
     void setParameters(PreparedStatement ps, T t) throws SQLException;
-    
-    String getFieldsList();
-    
-    String getTableName();
-    
-    String getAlias();
+
+    String getFieldsList(String alias);
+
+    default String addAlias(String alias, String text) {
+        return alias + "." + text;
+    }
+
+    default String formatFieldsList(String alias, List<String> fields) {
+        return fields.stream().map(a -> addAlias(alias, a)).reduce((a, b) -> a + ',' + b).get(); // orElse ???
+    }
 }

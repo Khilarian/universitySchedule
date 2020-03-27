@@ -1,6 +1,7 @@
 package com.rumakin.universityschedule.dao;
 
 import java.sql.*;
+import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +14,6 @@ import com.rumakin.universityschedule.models.enums.LessonType;
 public class LessonTypeDao implements Dao<LessonType> {
 
     private static final String TABLE = "lesson_type";
-    private static final String ALIAS = "lt";
     private static final String NAME = "lesson_type_name";
 
     private static final String ADD = "INSERT INTO " + TABLE + " (" + NAME + ") values (?);";
@@ -68,17 +68,9 @@ public class LessonTypeDao implements Dao<LessonType> {
     }
 
     @Override
-    public java.lang.String getFieldsList() {
-        return ALIAS + "." + NAME;
+    public String getFieldsList(String alias) {
+        List<String> fields = Arrays.asList(NAME);
+        return formatFieldsList(alias, fields);
     }
 
-    @Override
-    public java.lang.String getTableName() {
-        return TABLE;
-    }
-
-    @Override
-    public java.lang.String getAlias() {
-        return ALIAS;
-    }
 }
