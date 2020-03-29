@@ -1,8 +1,7 @@
 package com.rumakin.universityschedule.dao;
 
 import java.sql.*;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.*;
@@ -17,7 +16,8 @@ public class FacultyDao implements Dao<Faculty> {
     private static final String ID = "faculty_id";
     private static final String NAME = "faculty_name";
 
-    private static final String ADD = "INSERT INTO " + TABLE + " (" + NAME + ")" + " values " + "(?);";
+    private static final String ADD = "INSERT INTO " + TABLE + " (" + NAME + ")" + " values "
+            + "(?) RETURNING " + ID + ";";
     private static final String FIND_BY_ID = "SELECT * FROM " + TABLE + " WHERE " + ID + "=?;";
     private static final String FIND_ALL = "SELECT * FROM " + TABLE + ";";
     private static final String REMOVE_BY_ID = "DELETE FROM " + TABLE + " WHERE " + ID + " =?;";
@@ -30,14 +30,19 @@ public class FacultyDao implements Dao<Faculty> {
     }
 
     @Override
-    public void addAll(List<Faculty> data) {
-        this.jdbcTemplate.batchUpdate(ADD, new BatchComposer<Faculty>(data, this));
+    public List<Faculty> addAll(List<Faculty> faculties) {
+        for (Faculty faculty : faculties) {
+            add(faculty);
+        }
+        return faculties;
     }
 
     @Override
-    public void add(Faculty entity) {
-        String facultyName = entity.getName();
-        this.jdbcTemplate.update(ADD, facultyName);
+    public Faculty add(Faculty faculty) {
+        String facultyName = faculty.getName();
+        int facultyId = this.jdbcTemplate.update(ADD, facultyName, Integer.class);
+        faculty.setId(facultyId);
+        return faculty;
     }
 
     @SuppressWarnings("hiding")

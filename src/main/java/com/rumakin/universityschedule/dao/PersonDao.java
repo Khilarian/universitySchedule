@@ -19,7 +19,7 @@ public class PersonDao implements Dao<Person> {
     private static final String LAST_NAME = "person_last_name";
 
     private static final String ADD = "INSERT INTO " + TABLE + " (" + FIRST_NAME + "," + LAST_NAME
-            + ") values (?,?);";
+            + ") values (?,?) RETURNING " + ID + ";";
     private static final String FIND_BY_ID = "SELECT * FROM " + TABLE + " WHERE " + ID + "=?;";
     private static final String FIND_ALL = "SELECT * FROM " + TABLE + ";";
     private static final String REMOVE_BY_ID = "DELETE FROM " + TABLE + " WHERE " + ID + " =?;";
@@ -32,15 +32,21 @@ public class PersonDao implements Dao<Person> {
     }
 
     @Override
-    public void addAll(List<Person> data) {
-        this.jdbcTemplate.batchUpdate(ADD, new BatchComposer<Person>(data, this));
+    public List<Person> addAll(List<Person> people) {
+        for (Person person: people) {
+            add(person);
+        }
+        return people;
     }
 
     @Override
-    public void add(Person person) {
+    public Person add(Person person) {
         String firstName = person.getFirstName();
         String lastName = person.getLastName();
-        this.jdbcTemplate.update(ADD, firstName, lastName);
+        Object[] input = { firstName, lastName };
+        int personId = this.jdbcTemplate.queryForObject(ADD, input, Integer.class);
+        person.setId(personId);
+        return person;
     }
 
     @SuppressWarnings("hiding")

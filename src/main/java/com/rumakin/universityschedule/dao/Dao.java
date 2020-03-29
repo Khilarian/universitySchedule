@@ -7,9 +7,9 @@ import org.springframework.jdbc.core.RowMapper;
 
 public interface Dao<T> {
 
-    void addAll(List<T> data);
+    List<T> addAll(List<T> data);
 
-    void add(T entity);
+    T add(T entity);
 
     <E> T find(E id);
 

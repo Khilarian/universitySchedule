@@ -18,7 +18,8 @@ public class SubjectDao implements Dao<Subject> {
     private static final String NAME = "subject_name";
     private static final String FACULTY_ID = "faculty_id";
 
-    private static final String ADD = "INSERT INTO " + TABLE + " (" + NAME + "," + FACULTY_ID + ") values (?,?);";
+    private static final String ADD = "INSERT INTO " + TABLE + " (" + NAME + "," + FACULTY_ID
+            + ") values (?,?) RETURNING " + ID + ";";
     private static final String FIND_BY_ID = "SELECT * FROM " + TABLE + " WHERE " + ID + "=?;";
     private static final String FIND_ALL = "SELECT * FROM " + TABLE + ";";
     private static final String REMOVE_BY_ID = "DELETE FROM " + TABLE + " WHERE " + ID + " =?;";
@@ -33,15 +34,21 @@ public class SubjectDao implements Dao<Subject> {
     }
 
     @Override
-    public void addAll(List<Subject> data) {
-        this.jdbcTemplate.batchUpdate(ADD, new BatchComposer<Subject>(data, this));
+    public List<Subject> addAll(List<Subject> subjects) {
+        for (Subject subject : subjects) {
+            add(subject);
+        }
+        return subjects;
     }
 
     @Override
-    public void add(Subject subject) {
-        int subjectId = subject.getId();
+    public Subject add(Subject subject) {
         String subjectName = subject.getName();
-        this.jdbcTemplate.update(ADD, subjectId, subjectName);
+        int facultyId = subject.getFaculty().getId();
+        Object[] input = { subjectName, facultyId };
+        int subjectId = this.jdbcTemplate.update(ADD, input, Integer.class);
+        subject.setId(subjectId);
+        return subject;
     }
 
     @SuppressWarnings("hiding")

@@ -34,6 +34,10 @@ public class Lesson {
         this.timeSlot = timeSlot;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public void setTeachers(List<Teacher> teachers) {
         this.teachers = teachers;
     }

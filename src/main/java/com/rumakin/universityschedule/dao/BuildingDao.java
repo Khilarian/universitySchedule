@@ -17,7 +17,7 @@ public class BuildingDao implements Dao<Building> {
     private static final String NAME = "building_name";
     private static final String ADDRESS = "building_address";
 
-    private static final String ADD = "INSERT INTO " + TABLE + " (" + NAME + "," + ADDRESS + ") values (?,?);";
+    private static final String ADD = "INSERT INTO " + TABLE + " (" + NAME + "," + ADDRESS + ") values (?,?) RETURNING " + ID +";";
     private static final String FIND_BY_ID = "SELECT * FROM " + TABLE + " WHERE " + ID + "=?;";
     private static final String FIND_ALL = "SELECT * FROM " + TABLE + ";";
     private static final String REMOVE_BY_ID = "DELETE FROM " + TABLE + " WHERE " + ID + " =?;";
@@ -30,15 +30,21 @@ public class BuildingDao implements Dao<Building> {
     }
 
     @Override
-    public void addAll(List<Building> data) {
-        this.jdbcTemplate.batchUpdate(ADD, new BatchComposer<Building>(data, this));
+    public List<Building> addAll(List<Building> buildings) {
+        for(Building building: buildings) {
+            add(building);
+        }
+        return buildings;
     }
 
     @Override
-    public void add(Building building) {
+    public Building add(Building building) {
         String buildingName = building.getName();
         String buildingAddress = building.getAddress();
-        this.jdbcTemplate.update(ADD, buildingName, buildingAddress);
+        Object[] input = {buildingName,buildingAddress};
+        int buildingId = this.jdbcTemplate.update(ADD, input, Integer.class);
+        building.setId(buildingId);
+        return building;
     }
 
     @SuppressWarnings("hiding")

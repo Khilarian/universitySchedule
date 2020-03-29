@@ -59,15 +59,20 @@ public class LessonDao implements Dao<Lesson> {
     }
 
     @Override
-    public void addAll(List<Lesson> data) {
-        this.jdbcTemplate.batchUpdate(ADD, new BatchComposer<Lesson>(data, this));
-    }
-
-    @Override
-    public void add(Lesson lesson) {
+    public Lesson add(Lesson lesson) {
         int id = addToDataBase(lesson);
         addToLessonTeacher(id, lesson.getTeachers());
         addToLessonGroup(id, lesson.getGroups());
+        lesson.setId(id);
+        return lesson;
+    }
+
+    @Override
+    public List<Lesson> addAll(List<Lesson> lessons) {
+        for (Lesson lesson:lessons) {
+            add(lesson);
+        }
+        return lessons;
     }
 
     @SuppressWarnings("hiding")

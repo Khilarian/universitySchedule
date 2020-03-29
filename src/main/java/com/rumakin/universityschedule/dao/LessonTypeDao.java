@@ -29,14 +29,18 @@ public class LessonTypeDao implements Dao<LessonType> {
     }
 
     @Override
-    public void addAll(List<LessonType> data) {
-        this.jdbcTemplate.batchUpdate(ADD, new BatchComposer<LessonType>(data, this));
+    public List<LessonType> addAll(List<LessonType> types) {
+        for (LessonType type: types) {
+            add(type);
+        }
+        return types;
     }
 
     @Override
-    public void add(LessonType lessonType) {
+    public LessonType add(LessonType lessonType) {
         String lessonTypeName = lessonType.toString();
         this.jdbcTemplate.update(ADD, lessonTypeName);
+        return lessonType;
     }
 
     @SuppressWarnings("hiding")

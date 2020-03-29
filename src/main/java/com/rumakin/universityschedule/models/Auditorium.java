@@ -20,6 +20,10 @@ public class Auditorium {
         this.building = building;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public void setCapacity(int capacity) {
         this.capacity = capacity;
     }

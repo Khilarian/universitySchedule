@@ -17,6 +17,10 @@ public class Subject {
         this.faculty = faculty;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public int getId() {
         return id;
     }

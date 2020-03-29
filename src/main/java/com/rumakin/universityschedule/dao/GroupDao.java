@@ -15,7 +15,7 @@ public class GroupDao implements Dao<Group> {
     private static final String ID = "group_id";
     private static final String NAME = "group_name";
 
-    private static final String ADD = "INSERT INTO " + TABLE + " (" + NAME + ") values (?);";
+    private static final String ADD = "INSERT INTO " + TABLE + " (" + NAME + ") values (?) RETURNING " + ID + ";";
     private static final String FIND_BY_ID = "SELECT * FROM " + TABLE + " WHERE " + ID + "=?;";
     private static final String FIND_ALL = "SELECT * FROM " + TABLE + ";";
     private static final String REMOVE_BY_ID = "DELETE FROM " + TABLE + " WHERE " + ID + " =?;";
@@ -43,14 +43,19 @@ public class GroupDao implements Dao<Group> {
     }
 
     @Override
-    public void addAll(List<Group> data) {
-        this.jdbcTemplate.batchUpdate(ADD, new BatchComposer<Group>(data, this));
+    public List<Group> addAll(List<Group> groups) {
+        for (Group group : groups) {
+            add(group);
+        }
+        return groups;
     }
 
     @Override
-    public void add(Group group) {
+    public Group add(Group group) {
         String groupName = group.getName();
-        this.jdbcTemplate.update(ADD, groupName);
+        int groupId = this.jdbcTemplate.update(ADD, groupName, Integer.class);
+        group.setId(groupId);
+        return group;
     }
 
     @SuppressWarnings("hiding")

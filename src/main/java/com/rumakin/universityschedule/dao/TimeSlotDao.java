@@ -28,14 +28,16 @@ public class TimeSlotDao implements Dao<TimeSlot> {
     }
 
     @Override
-    public void addAll(List<TimeSlot> data) {
-        this.jdbcTemplate.batchUpdate(ADD, new BatchComposer<TimeSlot>(data, this));
+    public List<TimeSlot> addAll(List<TimeSlot> timeSlots) {
+        this.jdbcTemplate.batchUpdate(ADD, new BatchComposer<TimeSlot>(timeSlots, this));
+        return timeSlots;
     }
 
     @Override
-    public void add(TimeSlot timeSlot) {
+    public TimeSlot add(TimeSlot timeSlot) {
         String timeSlotName = timeSlot.name();
         this.jdbcTemplate.update(ADD, timeSlotName);
+        return timeSlot;
     }
 
     @SuppressWarnings("hiding")

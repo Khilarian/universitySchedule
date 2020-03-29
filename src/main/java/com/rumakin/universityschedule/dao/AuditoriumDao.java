@@ -19,7 +19,7 @@ public class AuditoriumDao implements Dao<Auditorium> {
     private static final String BUILDING_ID = "building_id";
 
     private static final String ADD = "INSERT INTO " + TABLE + " (" + NUMBER + "," + CAPACITY
-            + "," + BUILDING_ID + ") values (?,?,?);";
+            + "," + BUILDING_ID + ") values (?,?,?) RETURNING " + ID + ";";
     private static final String FIND_BY_ID = "SELECT * FROM " + TABLE + " WHERE " + ID + "=?;";
 
     private static final String FIND_ALL = "SELECT * FROM " + TABLE + ";";
@@ -35,16 +35,22 @@ public class AuditoriumDao implements Dao<Auditorium> {
     }
 
     @Override
-    public void addAll(List<Auditorium> data) {
-        this.jdbcTemplate.batchUpdate(ADD, new BatchComposer<Auditorium>(data, this));
+    public List<Auditorium> addAll(List<Auditorium> auditoriums) {
+        for (Auditorium auditorium : auditoriums) {
+            add(auditorium);
+        }
+        return auditoriums;
     }
 
     @Override
-    public void add(Auditorium auditorium) {
+    public Auditorium add(Auditorium auditorium) {
         int auditoriumNumber = auditorium.getNumber();
         int auditoriumCapacity = auditorium.getCapacity();
         int buildingID = auditorium.getBuilding().getId();
-        this.jdbcTemplate.update(ADD, auditoriumNumber, auditoriumCapacity, buildingID);
+        Object[] input = { auditoriumNumber, auditoriumCapacity, buildingID };
+        int auditoriumId = this.jdbcTemplate.queryForObject(ADD, input, Integer.class);
+        auditorium.setId(auditoriumId);
+        return auditorium;
     }
 
     @SuppressWarnings("hiding")

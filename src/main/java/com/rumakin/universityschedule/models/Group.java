@@ -19,6 +19,10 @@ public class Group {
         this.schedule = schedule;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public int getId() {
         return id;
     }
