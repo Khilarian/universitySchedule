@@ -15,9 +15,9 @@ public class AppRunner {
 
     public static void main(String[] args) {
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(ApplicationContextConfiguration.class);
-        AuditoriumDao dao = new AuditoriumDao(context.getBean(JdbcTemplate.class), context.getBean(BuildingDao.class));
-        Auditorium au = new Auditorium(1, 1, new Building("a","b"));
-        dao.findAll();
+//        AuditoriumDao dao = new AuditoriumDao(context.getBean(JdbcTemplate.class), context.getBean(BuildingDao.class));
+//        Auditorium au = new Auditorium(1, 1, new Building("a","b"));
+//        dao.findAll();
         context.close();
     }
 
