@@ -21,7 +21,11 @@ public interface Dao<T> {
 
     //void setParameters(PreparedStatement ps, T t) throws SQLException;
 
+<<<<<<< HEAD
      String getFieldsList(String alias);
+=======
+    // String getFieldsList(String alias);
+>>>>>>> 03f0f99477e04ee4dd233cc9468ca2d78120090c
 
     default String addAlias(String alias, String text) {
         return alias + "." + text;
