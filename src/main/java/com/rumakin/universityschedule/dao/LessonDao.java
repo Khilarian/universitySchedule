@@ -28,6 +28,7 @@ public class LessonDao implements Dao<Lesson> {
 
     private static final String ADD = "INSERT INTO " + TABLE + " (" + SUBJECT + "," + TYPE + "," + AUDITORIUM_ID + ","
             + DATE + "," + TIME_SLOT + ") values (?,?,?,?,?) RETURNING " + ID + ";";
+    private static final String ADD_NEW = "INSERT INTO %s (%s) values (%s) RETURNING id;";
     private static final String ADD_TEACHER = "INSERT INTO " + LESSON_TEACHER_TABLE + " (" + ID + "," + TEACHER_ID
             + ") values (?,?);";
     private static final String ADD_GROUP = "INSERT INTO " + LESSON_GROUP_TABLE + " (" + ID + "," + GROUP_ID

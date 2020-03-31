@@ -19,15 +19,15 @@ public interface Dao<T> {
 
     <E> void remove(E id);
 
-    void setParameters(PreparedStatement ps, T t) throws SQLException;
+    //void setParameters(PreparedStatement ps, T t) throws SQLException;
 
-    String getFieldsList(String alias);
+     String getFieldsList(String alias);
 
     default String addAlias(String alias, String text) {
         return alias + "." + text;
     }
 
     default String formatFieldsList(String alias, List<String> fields) {
-        return fields.stream().map(a -> addAlias(alias, a)).reduce((a, b) -> a + ',' + b).get(); // orElse ???
+        return fields.stream().map(a -> addAlias(alias, a)).reduce((a, b) -> a + ',' + b).orElse("empty list");
     }
 }
