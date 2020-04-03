@@ -6,7 +6,7 @@ import com.rumakin.universityschedule.models.enums.*;
 
 import java.time.*;
 
-public class Lesson {
+public class Lesson implements Entity{
 
     private int id;
     private final Subject subject;

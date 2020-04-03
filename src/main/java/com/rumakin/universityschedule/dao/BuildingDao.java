@@ -10,58 +10,37 @@ import org.springframework.stereotype.Repository;
 import com.rumakin.universityschedule.models.Building;
 
 @Repository
-public class BuildingDao implements Dao<Building> {
+public class BuildingDao extends Dao<Building> {
 
     private static final String TABLE = "building";
+    private static final String ALIAS = "b";
     private static final String ID = "building_id";
     private static final String NAME = "building_name";
     private static final String ADDRESS = "building_address";
 
-    private static final String ADD = "INSERT INTO " + TABLE + " (" + NAME + "," + ADDRESS + ") values (?,?) RETURNING " + ID +";";
-    private static final String FIND_BY_ID = "SELECT * FROM " + TABLE + " WHERE " + ID + "=?;";
-    private static final String FIND_ALL = "SELECT * FROM " + TABLE + ";";
-    private static final String REMOVE_BY_ID = "DELETE FROM " + TABLE + " WHERE " + ID + " =?;";
-
-    private final JdbcTemplate jdbcTemplate;
-
     @Autowired
     public BuildingDao(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
+        super(jdbcTemplate);
     }
 
     @Override
-    public List<Building> addAll(List<Building> buildings) {
-        for(Building building: buildings) {
-            add(building);
-        }
-        return buildings;
+    String getTableName() {
+        return TABLE;
     }
 
     @Override
-    public Building add(Building building) {
-        String buildingName = building.getName();
-        String buildingAddress = building.getAddress();
-        Object[] input = {buildingName,buildingAddress};
-        int buildingId = this.jdbcTemplate.update(ADD, input, Integer.class);
-        building.setId(buildingId);
-        return building;
-    }
-
-    @SuppressWarnings("hiding")
-    @Override
-    public <Integer> Building find(Integer id) {
-        return this.jdbcTemplate.queryForObject(FIND_BY_ID, new Object[] { id }, mapRow());
+    String getTableAlias() {
+        return ALIAS;
     }
 
     @Override
-    public List<Building> findAll() {
-        return this.jdbcTemplate.query(FIND_ALL, mapRow());
+    String getEntityIdName() {
+        return ID;
     }
 
-    @SuppressWarnings("hiding")
     @Override
-    public <Integer> void remove(Integer id) {
-        this.jdbcTemplate.update(REMOVE_BY_ID, id);
+    List<String> getFieldsNames() {
+        return Arrays.asList(NAME, ADDRESS);
     }
 
     @Override
@@ -71,18 +50,8 @@ public class BuildingDao implements Dao<Building> {
     }
 
     @Override
-    public void setParameters(PreparedStatement ps, Building building) throws SQLException {
-        String name = building.getName();
-        String address = building.getAddress();
-        ps.setString(1, name);
-        ps.setString(2, address);
-
-    }
-
-    @Override
-    public String getFieldsList(String alias) {
-        List<String> fields = Arrays.asList(ID, NAME, ADDRESS);
-        return formatFieldsList(alias, fields);
+    Object[] getFieldValues(Building building) {
+        return new Object[] { building.getName(), building.getAddress() };
     }
 
 }

@@ -11,7 +11,7 @@ import org.springframework.jdbc.core.*;
 import com.rumakin.universityschedule.models.*;
 import com.rumakin.universityschedule.models.enums.*;
 
-public class LessonDao implements Dao<Lesson> {
+public class LessonDao extends Dao<Lesson> {
 
     private static final String TABLE = "lesson";
     private static final String ID = "lesson_id";
@@ -26,18 +26,10 @@ public class LessonDao implements Dao<Lesson> {
     private static final String TEACHER_ID = "teacher_id";
     private static final String GROUP_ID = "group_id";
 
-    private static final String ADD = "INSERT INTO " + TABLE + " (" + SUBJECT + "," + TYPE + "," + AUDITORIUM_ID + ","
-            + DATE + "," + TIME_SLOT + ") values (?,?,?,?,?) RETURNING " + ID + ";";
-    private static final String ADD_NEW = "INSERT INTO %s (%s) values (%s) RETURNING id;";
     private static final String ADD_TEACHER = "INSERT INTO " + LESSON_TEACHER_TABLE + " (" + ID + "," + TEACHER_ID
             + ") values (?,?);";
     private static final String ADD_GROUP = "INSERT INTO " + LESSON_GROUP_TABLE + " (" + ID + "," + GROUP_ID
             + ") values (?,?);";
-
-    private static final String FIND_BY_ID = "SELECT * FROM " + TABLE + " WHERE " + ID + "=?;";
-    private static final String FIND_ALL = "SELECT * FROM " + TABLE + ";";
-    private static final String REMOVE_BY_ID = "DELETE FROM " + TABLE + " WHERE " + ID + " =?;";
-
     private static final String FIND_TEACHER_BY_LESSON_ID = "SELECT " + TEACHER_ID + " FROM " + LESSON_TEACHER_TABLE
             + " WHERE " + ID + "=?;";
     private static final String FIND_GROUP_BY_LESSON_ID = "SELECT " + GROUP_ID + " FROM " + LESSON_GROUP_TABLE
@@ -70,7 +62,7 @@ public class LessonDao implements Dao<Lesson> {
 
     @Override
     public List<Lesson> addAll(List<Lesson> lessons) {
-        for (Lesson lesson:lessons) {
+        for (Lesson lesson : lessons) {
             add(lesson);
         }
         return lessons;
@@ -107,12 +99,6 @@ public class LessonDao implements Dao<Lesson> {
     @Override
     public <Integer> void remove(Integer id) {
         this.jdbcTemplate.update(REMOVE_BY_ID, id);
-    }
-
-    @Override
-    public void setParameters(PreparedStatement ps, Lesson t) throws SQLException {
-        // TODO Auto-generated method stub
-
     }
 
     @Override

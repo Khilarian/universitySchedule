@@ -9,6 +9,7 @@ import java.sql.SQLException;
 import java.util.*;
 
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.springframework.jdbc.core.*;
 
 import com.rumakin.universityschedule.exceptions.DaoException;
@@ -16,31 +17,45 @@ import com.rumakin.universityschedule.models.Building;
 
 class BuildingDaoTest {
 
+    // @Mock
     private JdbcTemplate mockJdbcTemplate = mock(JdbcTemplate.class);
 
     private BuildingDao buildingDao = new BuildingDao(mockJdbcTemplate);
 
     @Test
     void addShouldExecuteOnceWhenDbCallFine() throws SQLException {
-        Building building = new Building("Main", "Moskow, Tverskaya, 1");
-        buildingDao.add(building);
-        verify(mockJdbcTemplate, times(1))
-                .update(eq("INSERT INTO building (building_name,building_address) values (?,?);"),
-                        eq(building.getName()), eq(building.getAddress()));
+        Building building = new Building("Main", "Moscow, Tverskaya, 1");
+        Building expected = new Building(1, "Main", "Moscow, Tverskaya, 1");
+        Object[] input = { "Main", "Moscow, Tverskaya, 1" };
+        when(mockJdbcTemplate.queryForObject(anyString(), any(), eq(Integer.class))).thenReturn(1);
+        Building actual = buildingDao.add(building);
+        verify(mockJdbcTemplate, times(1)).queryForObject(eq(
+                "INSERT INTO building b (b.building_name,b.building_address) VALUES (?,?) RETURNING building_id;"),
+                eq(input), eq(Integer.class));
+        assertEquals(expected, actual);
     }
 
     @Test
     void addAllShouldExecuteOnceWhenDbCallFine() throws SQLException {
-        Building building = new Building("Main", "Moskow, Tverskaya, 1");
+        Building building = new Building("Main", "Moscow, Tverskaya, 1");
         Building buildingTwo = new Building("Second", "Khimki, Moskovskaya, 23");
+        when(mockJdbcTemplate.queryForObject(anyString(), any(), eq(Integer.class))).thenReturn(1, 2);
         Building[] data = { building, buildingTwo };
-        buildingDao.addAll(Arrays.asList(data));
-        verify(mockJdbcTemplate, times(1)).batchUpdate(anyString(), any(BatchComposer.class));
+        List<Building> expected = Arrays.asList(new Building(1, "Main", "Moscow, Tverskaya, 1"),
+                new Building(2, "Second", "Khimki, Moskovskaya, 23"));
+        List<Building> actual = buildingDao.addAll(Arrays.asList(data));
+        assertEquals(expected, actual);
+        verify(mockJdbcTemplate, times(1)).queryForObject(eq(
+                "INSERT INTO building b (b.building_name,b.building_address) VALUES (?,?) RETURNING building_id;"),
+                eq(new Object[] { "Main", "Moscow, Tverskaya, 1" }), eq(Integer.class));
+        verify(mockJdbcTemplate, times(1)).queryForObject(eq(
+                "INSERT INTO building b (b.building_name,b.building_address) VALUES (?,?) RETURNING building_id;"),
+                eq(new Object[] { "Second", "Khimki, Moskovskaya, 23" }), eq(Integer.class));
     }
 
     @Test
-    void findShouldReturnPersonIfIdExists() throws SQLException {
-        Building expected = new Building("Main", "Moskow, Tverskaya, 1");
+    void findShouldReturnBuildingIfIdExists() throws SQLException {
+        Building expected = new Building(1,"Main", "Moskow, Tverskaya, 1");
         when(mockJdbcTemplate.queryForObject(any(String.class), (Object[]) any(Object.class),
                 (RowMapper<Building>) any(RowMapper.class))).thenReturn(expected);
         Building actual = buildingDao.find(1);
@@ -61,9 +76,9 @@ class BuildingDaoTest {
     }
 
     @Test
-    void findAllShouldReturnListOfCoursesIfAtLeastOneExists() throws SQLException {
-        Building building = new Building("Main", "Moskow, Tverskaya, 1");
-        Building buildingTwo = new Building("Second", "Khimki, Moskovskaya, 23");
+    void findAllShouldReturnListOfBuildingsIfAtLeastOneExists() throws SQLException {
+        Building building = new Building(1,"Main", "Moskow, Tverskaya, 1");
+        Building buildingTwo = new Building(2,"Second", "Khimki, Moskovskaya, 23");
         List<Building> expected = Arrays.asList(building, buildingTwo);
         when(mockJdbcTemplate.query(any(String.class), any(RowMapper.class))).thenReturn(expected);
         List<Building> actual = buildingDao.findAll();
@@ -85,7 +100,7 @@ class BuildingDaoTest {
     void removeShouldExecuteOnceWhenDbCallFine() throws SQLException {
         buildingDao.remove(1);
         verify(mockJdbcTemplate, times(1))
-                .update(eq("DELETE FROM building WHERE building_id =?;"),eq(1));
+                .update(eq("DELETE FROM building WHERE building_id=?;"),eq(1));
     }
 
 }

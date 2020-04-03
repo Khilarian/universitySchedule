@@ -9,6 +9,8 @@ import java.sql.SQLException;
 import java.util.*;
 
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
+
 import com.rumakin.universityschedule.dao.AuditoriumDao;
 import com.rumakin.universityschedule.exceptions.DaoException;
 import com.rumakin.universityschedule.models.Auditorium;
@@ -16,7 +18,8 @@ import com.rumakin.universityschedule.models.Building;
 
 class AuditoriumServiceTest {
     
-    AuditoriumDao mockAuditoriumDao = mock(AuditoriumDao.class);
+    @Mock
+    AuditoriumDao mockAuditoriumDao;
     AuditoriumService auditoriumService = new AuditoriumService(mockAuditoriumDao);
 
     @Test

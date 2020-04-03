@@ -1,8 +1,7 @@
 package com.rumakin.universityschedule.dao;
 
 import java.sql.*;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.*;
@@ -11,59 +10,36 @@ import org.springframework.stereotype.Repository;
 import com.rumakin.universityschedule.models.enums.LessonType;
 
 @Repository
-public class LessonTypeDao implements Dao<LessonType> {
+public class LessonTypeDao extends Dao<LessonType> {
 
     private static final String TABLE = "lesson_type";
+    private static final String ALIAS = "lt";
+    private static final String ID = "lesson_type_id";
     private static final String NAME = "lesson_type_name";
-
-    private static final String ADD = "INSERT INTO " + TABLE + " (" + NAME + ") values (?);";
-    private static final String FIND_BY_NAME = "SELECT * FROM " + TABLE + " WHERE " + NAME + "=?;";
-    private static final String FIND_ALL = "SELECT * FROM " + TABLE + ";";
-    private static final String REMOVE_BY_NAME = "DELETE FROM " + TABLE + " WHERE " + NAME + " =?;";
-
-    private final JdbcTemplate jdbcTemplate;
 
     @Autowired
     public LessonTypeDao(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
+        super(jdbcTemplate);
     }
 
     @Override
-    public List<LessonType> addAll(List<LessonType> types) {
-        for (LessonType type: types) {
-            add(type);
-        }
-        return types;
+    java.lang.String getTableName() {
+        return TABLE;
     }
 
     @Override
-    public LessonType add(LessonType lessonType) {
-        String lessonTypeName = lessonType.toString();
-        this.jdbcTemplate.update(ADD, lessonTypeName);
-        return lessonType;
-    }
-
-    @SuppressWarnings("hiding")
-    @Override
-    public <String> LessonType find(String name) {
-        return this.jdbcTemplate.queryForObject(FIND_BY_NAME, new Object[] { name }, mapRow());
+    java.lang.String getTableAlias() {
+        return ALIAS;
     }
 
     @Override
-    public List<LessonType> findAll() {
-        return this.jdbcTemplate.query(FIND_ALL, mapRow());
-    }
-
-    @SuppressWarnings("hiding")
-    @Override
-    public <String> void remove(String name) {
-        this.jdbcTemplate.update(REMOVE_BY_NAME, name);
+    String getEntityIdName() {
+        return ID;
     }
 
     @Override
-    public void setParameters(PreparedStatement ps, LessonType lessonType) throws SQLException {
-        String lessonTypeName = lessonType.name();
-        ps.setString(1, lessonTypeName);
+    List<String> getFieldsNames() {
+        return Arrays.asList(NAME);
     }
 
     @Override
@@ -72,9 +48,8 @@ public class LessonTypeDao implements Dao<LessonType> {
     }
 
     @Override
-    public String getFieldsList(String alias) {
-        List<String> fields = Arrays.asList(NAME);
-        return formatFieldsList(alias, fields);
+    Object[] getFieldValues(LessonType entity) {
+        return new Object[] { NAME };
     }
 
 }

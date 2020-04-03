@@ -9,6 +9,7 @@ import java.sql.SQLException;
 import java.util.*;
 
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.springframework.jdbc.core.*;
 
 import com.rumakin.universityschedule.exceptions.DaoException;
@@ -16,7 +17,8 @@ import com.rumakin.universityschedule.models.Faculty;
 
 class FacultyDaoTest {
 
-    private JdbcTemplate mockJdbcTemplate = mock(JdbcTemplate.class);
+    @Mock
+    private JdbcTemplate mockJdbcTemplate;
 
     private FacultyDao facultyDao = new FacultyDao(mockJdbcTemplate);
 

@@ -1,8 +1,10 @@
 CREATE TABLE lesson_type(
-lesson_type_name VARCHAR(20) NOT NULL UNIQUE PRIMARY KEY
+lesson_type_id SERIAL PRIMARY KEY,
+lesson_type_name VARCHAR(20) NOT NULL UNIQUE
 );
 CREATE TABLE time_slot(
-time_slot_name VARCHAR(20) NOT NULL UNIQUE PRIMARY KEY
+time_slot_id SERIAL PRIMARY KEY,
+time_slot_name VARCHAR(20) NOT NULL UNIQUE
 );
 CREATE TABLE building( 
 building_id SERIAL PRIMARY KEY,
@@ -44,10 +46,10 @@ group_id INTEGER REFERENCES groups(group_id) ON UPDATE CASCADE ON DELETE SET NUL
 CREATE TABLE lesson(
 lesson_id SERIAL PRIMARY KEY,
 subject_id INTEGER REFERENCES subject(subject_id) ON UPDATE CASCADE ON DELETE CASCADE,
-lesson_type_name VARCHAR(20) REFERENCES lesson_type(lesson_type_name) ON UPDATE CASCADE ON DELETE CASCADE,
+lesson_type_id INTEGER REFERENCES lesson_type(lesson_type_id) ON UPDATE CASCADE ON DELETE CASCADE,
 auditorium_id INTEGER REFERENCES auditorium(auditorium_id) ON UPDATE CASCADE ON DELETE CASCADE,
 date DATE,
-time_slot_name VARCHAR(20) REFERENCES time_slot(time_slot_name) ON UPDATE CASCADE ON DELETE CASCADE
+time_slot_id INTEGER REFERENCES time_slot(time_slot_id) ON UPDATE CASCADE ON DELETE CASCADE
 );
 CREATE TABLE teacher_subject(
 teacher_id INTEGER REFERENCES teacher(teacher_id) ON UPDATE CASCADE ON DELETE CASCADE,

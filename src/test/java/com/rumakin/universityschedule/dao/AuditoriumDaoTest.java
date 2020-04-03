@@ -14,6 +14,7 @@ import java.sql.SQLException;
 import java.util.*;
 
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import com.rumakin.universityschedule.exceptions.DaoException;
@@ -21,18 +22,23 @@ import com.rumakin.universityschedule.models.Auditorium;
 import com.rumakin.universityschedule.models.Building;
 
 class AuditoriumDaoTest {
-    
-    private JdbcTemplate mockJdbcTemplate = mock(JdbcTemplate.class);
-    private BuildingDao mockBuildingDao = mock(BuildingDao.class);
-    private Building mockBuilding = mock(Building.class);
-    private Building mockBuildingTwo = mock(Building.class);
-    
-    private AuditoriumDao auditoriumDao = new AuditoriumDao(mockJdbcTemplate,mockBuildingDao);
+
+    @Mock
+    private JdbcTemplate mockJdbcTemplate;
+    @Mock
+    private BuildingDao mockBuildingDao;
+    @Mock
+    private Building mockBuilding;
+    @Mock
+    private Building mockBuildingTwo;
+
+    private AuditoriumDao auditoriumDao = new AuditoriumDao(mockJdbcTemplate, mockBuildingDao);
 
     @Test
     void addShouldExecuteOnceWhenDbCallFine() throws SQLException {
-        Auditorium auditorium = new Auditorium(1,35,mockBuilding);
+        Auditorium auditorium = new Auditorium(1, 35, mockBuilding);
         when(mockBuilding.getId()).thenReturn(1);
+        when(mockJdbcTemplate.queryForObject(anyString(), any(), Integer.class)).thenReturn(1);
         auditoriumDao.add(auditorium);
         verify(mockBuilding, times(1)).getId();
         verify(mockJdbcTemplate, times(1))
@@ -40,17 +46,16 @@ class AuditoriumDaoTest {
                         eq(1), eq(35), eq(1));
     }
 
-    @Test
-    void addAllShouldExecuteOnceWhenDbCallFine() throws SQLException {
-        Auditorium auditorium = new Auditorium(1,35,mockBuilding);
-        Auditorium auditoriumTwo = new Auditorium(2,15,mockBuildingTwo);
-        when(mockBuilding.getId()).thenReturn(1);
-        when(mockBuildingTwo.getId()).thenReturn(2);
-        Auditorium[] data = { auditorium, auditoriumTwo };
-        auditoriumDao.addAll(Arrays.asList(data));
-        verify(mockJdbcTemplate, times(1)).batchUpdate(anyString(), any(BatchComposer.class));        
-    }
-//
+//    @Test
+//    void addAllShouldExecuteOnceWhenDbCallFine() throws SQLException {
+//        Auditorium auditorium = new Auditorium(1, 35, mockBuilding);
+//        Auditorium auditoriumTwo = new Auditorium(2, 15, mockBuildingTwo);
+//        when(mockBuilding.getId()).thenReturn(1);
+//        when(mockBuildingTwo.getId()).thenReturn(2);
+//        Auditorium[] data = { auditorium, auditoriumTwo };
+//        auditoriumDao.addAll(Arrays.asList(data));
+//    }
+////
 //    @Test
 //    void findShouldReturnPersonIfIdExists() throws SQLException {
 //        Building expected = new Building("Main", "Moskow, Tverskaya, 1");
