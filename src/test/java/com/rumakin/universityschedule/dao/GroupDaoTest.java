@@ -39,7 +39,7 @@ class GroupDaoTest {
                 new Auditorium(2, 2, 20, new Building(1, "First", "Moscow")));
         Group group = new Group(1, "Best Group");
         LocalDate date = LocalDate.of(2015, 3, 2);
-        List<Auditorium> actual = groupDao.findAuditoriumOnDate(group, date);
+        List<Auditorium> actual = groupDao.findAuditoriumOnDate(group.getId(), date);
         assertEquals(expected, actual);
         verify(mockJdbcTemplate, times(1)).queryForList(
                 eq("SELECT l.auditorium_id FROM group g INNER JOIN lesson_group lg ON g.group_id=lg.group_id "

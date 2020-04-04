@@ -24,11 +24,11 @@ public class GroupDao extends Dao<Group> {
         this.auditoriumDao = auditoriumDao;
     }
 
-    public List<Auditorium> findAuditoriumOnDate(Group group, LocalDate date) {
+    public List<Auditorium> findAuditoriumOnDate(int groupId, LocalDate date) {
         String sql = "SELECT l.auditorium_id FROM " + TABLE + " " + ALIAS
                 + " INNER JOIN lesson_group lg ON " + addAlias(ALIAS, ID) + "=" + addAlias("lg", ID)
                 + " INNER JOIN lesson l ON lg.lesson_id=l.lesson_id WHERE " + addAlias(ALIAS, ID) + "=? AND l.date=?;";
-        Object[] input = { group.getId(), java.sql.Date.valueOf(date) };
+        Object[] input = { groupId, java.sql.Date.valueOf(date) };
         List<Integer> auditoriumsId = this.jdbcTemplate.queryForList(sql, input, Integer.class);
         List<Auditorium> auditoriums = new ArrayList<>();
         for (Integer id : auditoriumsId) {
