@@ -5,11 +5,11 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.*;
 
-import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
+import org.junit.jupiter.api.*;
+import org.mockito.*;
 import org.springframework.jdbc.core.*;
 
 import com.rumakin.universityschedule.exceptions.DaoException;
@@ -19,25 +19,43 @@ class PersonDaoTest {
 
     @Mock
     private JdbcTemplate mockJdbcTemplate;
-
+    @InjectMocks
     private PersonDao personDao = new PersonDao(mockJdbcTemplate);
+
+    @BeforeEach
+    public void setUp() {
+        MockitoAnnotations.initMocks(this);
+    }
 
     @Test
     void addShouldExecuteOnceWhenDbCallFine() throws SQLException {
+        when(mockJdbcTemplate.queryForObject(anyString(), any(), eq(Integer.class))).thenReturn(1);
         Person person = new Person("Lexx", "Luger");
-        personDao.add(person);
+        Person expected = new Person(1, "Lexx", "Luger");
+        Person actual = personDao.add(person);
+        assertEquals(expected, actual);
         verify(mockJdbcTemplate, times(1))
-                .update(eq("INSERT INTO person (person_first_name,person_last_name) values (?,?);"),
-                        eq(person.getFirstName()), eq(person.getLastName()));
+                .queryForObject(eq(
+                        "INSERT INTO person p (p.person_first_name,p.person_last_name) VALUES (?,?) RETURNING person_id;"),
+                        eq(new Object[] { "Lexx", "Luger" }), eq(Integer.class));
     }
 
     @Test
     void addAllShouldExecuteOnceWhenDbCallFine() throws SQLException {
+        when(mockJdbcTemplate.queryForObject(anyString(), any(), eq(Integer.class))).thenReturn(1, 2);
         Person person = new Person("Lexx", "Luger");
         Person personTwo = new Person("Hulk", "Hogan");
         Person[] data = { person, personTwo };
-        personDao.addAll(Arrays.asList(data));
-        verify(mockJdbcTemplate, times(1)).batchUpdate(anyString(), any(BatchComposer.class));
+        List<Person> expected = Arrays.asList(new Person(1, "Lexx", "Luger"), new Person(2, "Hulk", "Hogan"));
+        List<Person> actual = personDao.addAll(Arrays.asList(data));
+        verify(mockJdbcTemplate, times(1))
+        .queryForObject(eq(
+                "INSERT INTO person p (p.person_first_name,p.person_last_name) VALUES (?,?) RETURNING person_id;"),
+                eq(new Object[] { "Lexx", "Luger" }), eq(Integer.class));
+        verify(mockJdbcTemplate, times(1))
+        .queryForObject(eq(
+                "INSERT INTO person p (p.person_first_name,p.person_last_name) VALUES (?,?) RETURNING person_id;"),
+                eq(new Object[] { "Hulk", "Hogan" }), eq(Integer.class));
     }
 
     @Test
@@ -48,16 +66,6 @@ class PersonDaoTest {
         Person actual = personDao.find(1);
         assertEquals(expected, actual);
         Object[] input = { 1 };
-        verify(mockJdbcTemplate, times(1)).queryForObject(eq("SELECT * FROM person WHERE person_id=?;"),
-                eq(input), any(RowMapper.class));
-    }
-
-    @Test
-    void findByIdShouldRaiseExceptionIfIDMissed() throws SQLException {
-        when(mockJdbcTemplate.queryForObject(any(String.class), (Object[]) any(Object.class),
-                any(RowMapper.class))).thenThrow(DaoException.class);
-        assertThrows(DaoException.class, () -> personDao.find(20));
-        Object[] input = { 20 };
         verify(mockJdbcTemplate, times(1)).queryForObject(eq("SELECT * FROM person WHERE person_id=?;"),
                 eq(input), any(RowMapper.class));
     }
@@ -75,19 +83,10 @@ class PersonDaoTest {
     }
 
     @Test
-    void findAllShouldRaiseExceptionIfDataBaseEmpty() throws SQLException {
-        when(mockJdbcTemplate.query(any(String.class), any(RowMapper.class)))
-                .thenThrow(DaoException.class);
-        assertThrows(DaoException.class, () -> personDao.findAll());
-        verify(mockJdbcTemplate, times(1)).query(eq("SELECT * FROM person;"),
-                any(RowMapper.class));
-    }
-    
-    @Test
     void removeShouldExecuteOnceWhenDbCallFine() throws SQLException {
         personDao.remove(1);
         verify(mockJdbcTemplate, times(1))
-                .update(eq("DELETE FROM person WHERE person_id =?;"),eq(1));
+                .update(eq("DELETE FROM person WHERE person_id=?;"), eq(1));
     }
 
 }
