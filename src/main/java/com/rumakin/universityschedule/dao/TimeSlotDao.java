@@ -23,22 +23,22 @@ public class TimeSlotDao extends Dao<TimeSlot> {
     }
 
     @Override
-    String getTableName() {
+    protected String getTableName() {
         return TABLE;
     }
 
     @Override
-    String getTableAlias() {
+    protected String getTableAlias() {
         return ALIAS;
     }
 
     @Override
-    String getEntityIdName() {
+    protected String getEntityIdName() {
         return ID;
     }
 
     @Override
-    List<String> getFieldsNames() {
+    protected List<String> getFieldsNames() {
         return Arrays.asList(NAME);
     }
 
@@ -48,12 +48,12 @@ public class TimeSlotDao extends Dao<TimeSlot> {
     }
 
     @Override
-    Object[] getFieldValues(TimeSlot entity) {
+    protected Object[] getFieldValues(TimeSlot entity) {
         return new Object[] { NAME };
     }
 
     @Override
-    String getModelClassName() {
+    protected String getModelClassName() {
         return TimeSlot.class.getSimpleName();
     }
 
