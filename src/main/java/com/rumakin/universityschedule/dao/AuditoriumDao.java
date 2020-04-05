@@ -28,22 +28,22 @@ public class AuditoriumDao extends Dao<Auditorium> {
     }
 
     @Override
-    String getTableName() {
+    protected String getTableName() {
         return TABLE;
     }
 
     @Override
-    String getTableAlias() {
+    protected String getTableAlias() {
         return ALIAS;
     }
 
     @Override
-    String getEntityIdName() {
+    protected String getEntityIdName() {
         return ID;
     }
 
     @Override
-    List<String> getFieldsNames() {
+    protected List<String> getFieldsNames() {
         return Arrays.asList(NUMBER, CAPACITY, BUILDING_ID);
     }
 
@@ -54,8 +54,13 @@ public class AuditoriumDao extends Dao<Auditorium> {
     }
 
     @Override
-    Object[] getFieldValues(Auditorium auditorium) {
+    protected Object[] getFieldValues(Auditorium auditorium) {
         return new Object[] { auditorium.getNumber(), auditorium.getCapacity(), auditorium.getBuilding().getId() };
+    }
+
+    @Override
+    protected String getModelClassName() {
+        return Auditorium.class.getSimpleName();
     }
 
 }

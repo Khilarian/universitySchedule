@@ -14,6 +14,7 @@ import com.rumakin.universityschedule.models.enums.*;
 public class LessonDao extends Dao<Lesson> {
 
     private static final String TABLE = "lesson";
+    private static final String ALIAS = "l";
     private static final String ID = "lesson_id";
     private static final String SUBJECT = "subject_id";
     private static final String TYPE = "lesson_type_name";
@@ -53,7 +54,7 @@ public class LessonDao extends Dao<Lesson> {
 
     @Override
     public Lesson add(Lesson lesson) {
-        int id = addToDataBase(lesson);
+        int id = addWithDepende(lesson);
         addToLessonTeacher(id, lesson.getTeachers());
         addToLessonGroup(id, lesson.getGroups());
         lesson.setId(id);
@@ -68,9 +69,8 @@ public class LessonDao extends Dao<Lesson> {
         return lessons;
     }
 
-    @SuppressWarnings("hiding")
     @Override
-    public <Integer> Lesson find(Integer lessonId) {
+    public Lesson find(int lessonId) {
         Lesson lesson = this.jdbcTemplate.queryForObject(FIND_BY_ID, new Object[] { lessonId }, mapRow());
         lesson.setTeachers(findAllTeachers(lesson.getId()));
         lesson.setGroups(findAllGroups(lesson.getId()));
@@ -95,9 +95,8 @@ public class LessonDao extends Dao<Lesson> {
                 TimeSlot.valueOf(rs.getString(TIME_SLOT)));
     }
 
-    @SuppressWarnings("hiding")
     @Override
-    public <Integer> void remove(Integer id) {
+    public void remove(int id) {
         this.jdbcTemplate.update(REMOVE_BY_ID, id);
     }
 
@@ -107,7 +106,7 @@ public class LessonDao extends Dao<Lesson> {
         return formatFieldsList(alias, fields);
     }
 
-    private int addToDataBase(Lesson lesson) {
+    private int addWithDepende(Lesson lesson) {
         int subjectId = lesson.getSubject().getId();
         String lessonType = lesson.getLessonType().name();
         int auditoriumId = lesson.getAuditorium().getId();
@@ -165,6 +164,38 @@ public class LessonDao extends Dao<Lesson> {
             groups.add(groupDao.find(id));
         }
         return groups;
+    }
+
+    @Override
+    protected String getTableName() {
+        return TABLE;
+    }
+
+    @Override
+    protected String getTableAlias() {
+        return ALIAS;
+    }
+
+    @Override
+    protected  String getEntityIdName() {
+        return ID;
+    }
+
+    @Override
+    protected List<String> getFieldsNames() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    protected Object[] getFieldValues(Lesson entity) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    protected String getModelClassName() {
+        return Lesson.class.getSimpleName();
     }
 
 }

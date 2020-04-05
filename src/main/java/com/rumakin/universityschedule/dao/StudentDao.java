@@ -45,7 +45,7 @@ public class StudentDao extends Dao<Student> {
     }
 
     @Override
-    public <Integer> Student find(Integer id) {
+    public Student find(int id) {
         String sql = prepareSqlFind(ID);
         return this.jdbcTemplate.queryForObject(sql, new Object[] { id }, mapRow());
     }
@@ -63,29 +63,40 @@ public class StudentDao extends Dao<Student> {
     }
 
     @Override
-    public <Integer> void remove(Integer id) {
+    public void remove(int id) {
         personDao.remove(id);
     }
 
     @Override
-    public String getFieldsList(String alias) {
-        List<String> fields = Arrays.asList(ID, GROUP_ID);
-        return formatFieldsList(alias, fields);
-    }
-
-    @Override
-    String getTableAlias() {
+    protected String getTableAlias() {
         return ALIAS;
     }
 
     @Override
-    String getTableName() {
+    protected String getTableName() {
         return TABLE;
     }
 
     @Override
-    int countFields() {
-        return Arrays.asList(ID, GROUP_ID).size();
+    protected String getEntityIdName() {
+        return ID;
+    }
+
+    @Override
+    protected List<String> getFieldsNames() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    protected Object[] getFieldValues(Student entity) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    protected String getModelClassName() {
+        return Student.class.getSimpleName();
     }
 
 }

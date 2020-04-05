@@ -17,10 +17,12 @@ public class Person implements Entity{
         this.lastName = lastName;
     }
 
+    @Override
     public void setId(int id) {
         this.id = id;
     }
 
+    @Override
     public int getId() {
         return id;
     }

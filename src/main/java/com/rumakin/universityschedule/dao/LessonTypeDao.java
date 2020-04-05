@@ -23,22 +23,22 @@ public class LessonTypeDao extends Dao<LessonType> {
     }
 
     @Override
-    java.lang.String getTableName() {
+    protected String getTableName() {
         return TABLE;
     }
 
     @Override
-    java.lang.String getTableAlias() {
+    protected String getTableAlias() {
         return ALIAS;
     }
 
     @Override
-    String getEntityIdName() {
+    protected String getEntityIdName() {
         return ID;
     }
 
     @Override
-    List<String> getFieldsNames() {
+    protected List<String> getFieldsNames() {
         return Arrays.asList(NAME);
     }
 
@@ -48,8 +48,13 @@ public class LessonTypeDao extends Dao<LessonType> {
     }
 
     @Override
-    Object[] getFieldValues(LessonType entity) {
+    protected Object[] getFieldValues(LessonType entity) {
         return new Object[] { NAME };
+    }
+
+    @Override
+    protected String getModelClassName() {
+        return LessonType.class.getSimpleName();
     }
 
 }

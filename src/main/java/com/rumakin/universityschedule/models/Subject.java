@@ -17,10 +17,12 @@ public class Subject implements Entity{
         this.faculty = faculty;
     }
 
+    @Override
     public void setId(int id) {
         this.id = id;
     }
 
+    @Override
     public int getId() {
         return id;
     }

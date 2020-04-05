@@ -34,6 +34,7 @@ public class Lesson implements Entity{
         this.timeSlot = timeSlot;
     }
 
+    @Override
     public void setId(int id) {
         this.id = id;
     }
@@ -50,6 +51,7 @@ public class Lesson implements Entity{
         this.groups = groups;
     }
 
+    @Override
     public int getId() {
         return id;
     }

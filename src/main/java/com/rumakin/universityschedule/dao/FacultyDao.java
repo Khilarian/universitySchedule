@@ -23,33 +23,38 @@ public class FacultyDao extends Dao<Faculty> {
     }
 
     @Override
+    protected String getTableAlias() {
+        return ALIAS;
+    }
+
+    @Override
+    protected String getTableName() {
+        return TABLE;
+    }
+
+    @Override
+    protected String getEntityIdName() {
+        return ID;
+    }
+
+    @Override
+    protected List<String> getFieldsNames() {
+        return Arrays.asList(NAME);
+    }
+
+    @Override
     public RowMapper<Faculty> mapRow() {
         return (ResultSet rs, int rowNumber) -> new Faculty(rs.getInt(ID), rs.getString(NAME));
     }
 
     @Override
-    String getTableAlias() {
-        return ALIAS;
-    }
-
-    @Override
-    String getTableName() {
-        return TABLE;
-    }
-
-    @Override
-    String getEntityIdName() {
-        return ID;
-    }
-
-    @Override
-    List<String> getFieldsNames() {
-        return Arrays.asList(NAME);
-    }
-
-    @Override
-    Object[] getFieldValues(Faculty faculty) {
+    protected Object[] getFieldValues(Faculty faculty) {
         return new Object[] { faculty.getName() };
+    }
+
+    @Override
+    protected String getModelClassName() {
+        return Faculty.class.getSimpleName();
     }
 
 }

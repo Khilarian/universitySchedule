@@ -3,8 +3,7 @@ package com.rumakin.universityschedule.dao;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.*;
 
 import com.rumakin.universityschedule.exceptions.InvalidEntityException;
 import com.rumakin.universityschedule.models.Entity;
@@ -23,17 +22,19 @@ public abstract class Dao<T> {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    abstract String getTableName();
+    protected abstract String getTableName();
 
-    abstract String getTableAlias();
+    protected abstract String getTableAlias();
 
-    abstract String getEntityIdName();
+    protected abstract String getEntityIdName();
 
-    abstract List<String> getFieldsNames();
+    protected abstract List<String> getFieldsNames();
 
-    abstract RowMapper<T> mapRow();
+    protected abstract RowMapper<T> mapRow();
 
-    abstract Object[] getFieldValues(T entity);
+    protected abstract Object[] getFieldValues(T entity);
+
+    protected abstract String getModelClassName();
 
     public T add(T entity) {
         Object[] input = getFieldValues(entity);
@@ -68,7 +69,11 @@ public abstract class Dao<T> {
 
     protected String formatFieldsList() {
         return getFieldsNames().stream().map(a -> addAlias(getTableAlias(), a)).reduce((a, b) -> a + ',' + b)
-                .orElseThrow(InvalidEntityException::new);
+                .orElseThrow(() -> new InvalidEntityException(getModelClassName()));
+    }
+
+    protected String addAlias(String alias, String text) {
+        return alias + "." + text;
     }
 
     private static String inputFieldPrepare(int size) {
@@ -78,10 +83,6 @@ public abstract class Dao<T> {
                     .append("?");
         }
         return builder.toString();
-    }
-
-    protected String addAlias(String alias, String text) {
-        return alias + "." + text;
     }
 
 }

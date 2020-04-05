@@ -25,22 +25,22 @@ public class SubjectDao extends Dao<Subject> {
     }
 
     @Override
-    String getTableName() {
+    protected String getTableName() {
         return TABLE;
     }
 
     @Override
-    String getTableAlias() {
+    protected String getTableAlias() {
         return ALIAS;
     }
 
     @Override
-    String getEntityIdName() {
+    protected String getEntityIdName() {
         return ID;
     }
 
     @Override
-    List<String> getFieldsNames() {
+    protected List<String> getFieldsNames() {
         return Arrays.asList(ID, NAME, FACULTY_ID);
     }
 
@@ -51,8 +51,13 @@ public class SubjectDao extends Dao<Subject> {
     }
 
     @Override
-    Object[] getFieldValues(Subject subject) {
+    protected Object[] getFieldValues(Subject subject) {
         return new Object[] { subject.getName(), subject.getFaculty() };
+    }
+
+    @Override
+    protected String getModelClassName() {
+        return Subject.class.getSimpleName();
     }
 
 }

@@ -17,10 +17,12 @@ public class Building implements Entity{
         this.address = address;
     }
 
+    @Override
     public void setId(int id) {
         this.id = id;
     }
 
+    @Override
     public int getId() {
         return id;
     }

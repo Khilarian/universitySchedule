@@ -52,4 +52,9 @@ public class TimeSlotDao extends Dao<TimeSlot> {
         return new Object[] { NAME };
     }
 
+    @Override
+    String getModelClassName() {
+        return TimeSlot.class.getSimpleName();
+    }
+
 }

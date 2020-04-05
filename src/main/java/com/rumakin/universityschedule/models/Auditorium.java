@@ -20,6 +20,7 @@ public class Auditorium implements Entity{
         this.building = building;
     }
 
+    @Override
     public void setId(int id) {
         this.id = id;
     }
@@ -28,6 +29,7 @@ public class Auditorium implements Entity{
         this.capacity = capacity;
     }
 
+    @Override
     public int getId() {
         return id;
     }

@@ -24,22 +24,22 @@ public class BuildingDao extends Dao<Building> {
     }
 
     @Override
-    String getTableName() {
+    protected String getTableName() {
         return TABLE;
     }
 
     @Override
-    String getTableAlias() {
+    protected String getTableAlias() {
         return ALIAS;
     }
 
     @Override
-    String getEntityIdName() {
+    protected String getEntityIdName() {
         return ID;
     }
 
     @Override
-    List<String> getFieldsNames() {
+    protected List<String> getFieldsNames() {
         return Arrays.asList(NAME, ADDRESS);
     }
 
@@ -50,8 +50,13 @@ public class BuildingDao extends Dao<Building> {
     }
 
     @Override
-    Object[] getFieldValues(Building building) {
+    protected Object[] getFieldValues(Building building) {
         return new Object[] { building.getName(), building.getAddress() };
+    }
+
+    @Override
+    protected String getModelClassName() {
+        return Building.class.getSimpleName();
     }
 
 }

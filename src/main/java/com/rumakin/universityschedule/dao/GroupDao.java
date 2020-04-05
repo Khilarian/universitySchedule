@@ -39,22 +39,22 @@ public class GroupDao extends Dao<Group> {
     }
 
     @Override
-    String getTableName() {
+    protected String getTableName() {
         return TABLE;
     }
 
     @Override
-    String getTableAlias() {
+    protected String getTableAlias() {
         return ALIAS;
     }
 
     @Override
-    String getEntityIdName() {
+    protected String getEntityIdName() {
         return ID;
     }
 
     @Override
-    List<String> getFieldsNames() {
+    protected List<String> getFieldsNames() {
         return Arrays.asList(NAME);
     }
 
@@ -64,8 +64,13 @@ public class GroupDao extends Dao<Group> {
     }
 
     @Override
-    Object[] getFieldValues(Group group) {
+    protected Object[] getFieldValues(Group group) {
         return new Object[] { group.getName() };
+    }
+
+    @Override
+    protected String getModelClassName() {
+        return Group.class.getSimpleName();
     }
 
 }

@@ -24,17 +24,17 @@ public class PersonDao extends Dao<Person> {
     }
 
     @Override
-    String getTableName() {
+    protected String getTableName() {
         return TABLE;
     }
 
     @Override
-    String getTableAlias() {
+    protected String getTableAlias() {
         return ALIAS;
     }
 
     @Override
-    String getEntityIdName() {
+    protected String getEntityIdName() {
         return ID;
     }
 
@@ -45,12 +45,17 @@ public class PersonDao extends Dao<Person> {
     }
 
     @Override
-    List<String> getFieldsNames() {
+    protected List<String> getFieldsNames() {
         return Arrays.asList(FIRST_NAME, LAST_NAME);
     }
 
     @Override
-    Object[] getFieldValues(Person person) {
+    protected Object[] getFieldValues(Person person) {
         return new Object[] { person.getFirstName(), person.getLastName() };
+    }
+
+    @Override
+    protected String getModelClassName() {
+        return Person.class.getSimpleName();
     }
 }
