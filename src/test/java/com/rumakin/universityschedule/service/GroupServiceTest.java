@@ -10,10 +10,8 @@ import java.util.*;
 import org.junit.jupiter.api.*;
 import org.mockito.*;
 
-import com.rumakin.universityschedule.dao.GroupDao;
-import com.rumakin.universityschedule.models.Auditorium;
-import com.rumakin.universityschedule.models.Building;
-import com.rumakin.universityschedule.models.Group;
+import com.rumakin.universityschedule.dao.*;
+import com.rumakin.universityschedule.models.*;
 
 class GroupServiceTest {
     
@@ -36,6 +34,19 @@ class GroupServiceTest {
         List<Auditorium> actual = groupService.findAuditoriumsForGroupOnDate(group, date);
         assertEquals(expected, actual);
         verify(mockGroupDao, times(1)).findAuditoriumOnDate(eq(1), eq(date));
+    }
+    
+    @Test 
+    void findExamsForGroupShouldReturnListOfMapsWithSubjectAndDateOfExams() {
+        List<Map<Subject,LocalDate>> expected = new ArrayList<>();
+        Map<Subject,LocalDate> exam = new HashMap<>();
+        exam.put(new Subject("history", new Faculty("smth")), LocalDate.of(2020, 6, 1));
+        expected.add(exam);
+        when(mockGroupDao.findExamsForGroup(anyInt())).thenReturn(expected);
+        Group group = new Group(7,"testGroup");
+        List<Map<Subject,LocalDate>> actual = groupService.findExamsForGroup(group);
+        assertEquals(expected, actual);
+        verify(mockGroupDao, times(1)).findExamsForGroup(eq(7));
     }
 
 }

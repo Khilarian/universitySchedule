@@ -1,7 +1,7 @@
 package com.rumakin.universityschedule.service;
 
 import java.time.LocalDate;
-import java.util.List;
+import java.util.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,5 +22,10 @@ public class GroupService {
     public List<Auditorium> findAuditoriumsForGroupOnDate(Group group, LocalDate date){
         int groupId = group.getId();
         return groupDao.findAuditoriumOnDate(groupId, date);
+    }
+    
+    public List<Map<Subject,LocalDate>> findExamsForGroup(Group group){
+        int groupId = group.getId();
+        return groupDao.findExamsForGroup(groupId);
     }
 }

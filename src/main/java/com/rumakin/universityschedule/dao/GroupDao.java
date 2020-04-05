@@ -41,7 +41,7 @@ public class GroupDao extends Dao<Group> {
         return auditoriums;
     }
 
-    public List<Map<Subject, LocalDate>> findExamForGroup(int groupId) {
+    public List<Map<Subject, LocalDate>> findExamsForGroup(int groupId) {
         String sql = "SELECT l.subject_id,l.date FROM " + TABLE + " " + ALIAS + " INNER JOIN lesson l ON "
                 + addAlias("l", ID) + "=" + addAlias(ALIAS, ID)
                 + " INNER JOIN lessonType lt ON l.lesson_type_id=lt.lesson_type_id WHERE " + ID

@@ -11,10 +11,13 @@ import java.util.*;
 import org.junit.jupiter.api.*;
 import org.mockito.*;
 import org.springframework.jdbc.core.*;
+import org.springframework.jdbc.support.rowset.SqlRowSet;
 
 import com.rumakin.universityschedule.models.Auditorium;
 import com.rumakin.universityschedule.models.Building;
+import com.rumakin.universityschedule.models.Faculty;
 import com.rumakin.universityschedule.models.Group;
+import com.rumakin.universityschedule.models.Subject;
 
 class GroupDaoTest {
 
@@ -22,6 +25,11 @@ class GroupDaoTest {
     private JdbcTemplate mockJdbcTemplate;
     @Mock
     private AuditoriumDao mockAuditoriumDao;
+
+    @Mock
+    private SubjectDao mockSubjectDao;
+    @Mock
+    private SqlRowSet mockSqlRowSet;
     @InjectMocks
     private GroupDao groupDao;
 
@@ -47,6 +55,26 @@ class GroupDaoTest {
                 eq(new Object[] { 1, java.sql.Date.valueOf(date) }), eq(Integer.class));
         verify(mockAuditoriumDao, times(1)).find(1);
         verify(mockAuditoriumDao, times(1)).find(2);
+    }
+
+    @Test
+    void findExamsForGroupShouldExecuteOnceIfDbCallFineAndReturnListOfExamsIfAtLeastOneExists() {
+        List<Map<Subject,LocalDate>> expected = new ArrayList<>();
+        Map<Subject,LocalDate> exam = new HashMap<>();
+        Subject subject = new Subject("history", new Faculty("smth"));
+        exam.put(subject, LocalDate.of(2020, 6, 1));
+        expected.add(exam);
+        when(mockJdbcTemplate.queryForRowSet(anyString(), any())).thenReturn(mockSqlRowSet);
+        when(mockSqlRowSet.next()).thenReturn(Boolean.TRUE,Boolean.FALSE);
+        when(mockSqlRowSet.getInt("subject_id")).thenReturn(2);
+        when(mockSqlRowSet.getDate("date")).thenReturn(java.sql.Date.valueOf("2020-6-1"));
+        when(mockSubjectDao.find(anyInt())).thenReturn(subject);
+        List<Map<Subject,LocalDate>> actual = groupDao.findExamsForGroup(5);
+        assertEquals(expected, actual);
+        verify(mockSqlRowSet, times(2)).next();
+        verify(mockSqlRowSet, times(1)).getInt("subject_id");
+        verify(mockSqlRowSet, times(1)).getDate("date");
+        verify(mockSubjectDao,times(1)).find(2);
     }
 
     @Test
