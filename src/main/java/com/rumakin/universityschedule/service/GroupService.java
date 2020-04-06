@@ -24,7 +24,7 @@ public class GroupService {
         return groupDao.findAuditoriumOnDate(groupId, date);
     }
     
-    public List<Map<Subject,LocalDate>> findExamsForGroup(Group group){
+    public List<Lesson> findExamsForGroup(Group group){
         int groupId = group.getId();
         return groupDao.findExamsForGroup(groupId);
     }

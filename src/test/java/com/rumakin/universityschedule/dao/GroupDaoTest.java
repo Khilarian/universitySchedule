@@ -4,7 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
-import java.sql.SQLException;
+import java.sql.*;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -13,11 +13,9 @@ import org.mockito.*;
 import org.springframework.jdbc.core.*;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 
-import com.rumakin.universityschedule.models.Auditorium;
-import com.rumakin.universityschedule.models.Building;
-import com.rumakin.universityschedule.models.Faculty;
-import com.rumakin.universityschedule.models.Group;
-import com.rumakin.universityschedule.models.Subject;
+import com.rumakin.universityschedule.models.*;
+import com.rumakin.universityschedule.models.enums.LessonType;
+import com.rumakin.universityschedule.models.enums.TimeSlot;
 
 class GroupDaoTest {
 
@@ -27,7 +25,7 @@ class GroupDaoTest {
     private AuditoriumDao mockAuditoriumDao;
 
     @Mock
-    private SubjectDao mockSubjectDao;
+    private LessonDao mockLessonDao;
     @Mock
     private SqlRowSet mockSqlRowSet;
     @InjectMocks
@@ -59,22 +57,19 @@ class GroupDaoTest {
 
     @Test
     void findExamsForGroupShouldExecuteOnceIfDbCallFineAndReturnListOfExamsIfAtLeastOneExists() {
-        List<Map<Subject,LocalDate>> expected = new ArrayList<>();
-        Map<Subject,LocalDate> exam = new HashMap<>();
+        List<Lesson> expected = new ArrayList<>();
         Subject subject = new Subject("history", new Faculty("smth"));
-        exam.put(subject, LocalDate.of(2020, 6, 1));
-        expected.add(exam);
-        when(mockJdbcTemplate.queryForRowSet(anyString(), any())).thenReturn(mockSqlRowSet);
-        when(mockSqlRowSet.next()).thenReturn(Boolean.TRUE,Boolean.FALSE);
-        when(mockSqlRowSet.getInt("subject_id")).thenReturn(2);
-        when(mockSqlRowSet.getDate("date")).thenReturn(java.sql.Date.valueOf("2020-6-1"));
-        when(mockSubjectDao.find(anyInt())).thenReturn(subject);
-        List<Map<Subject,LocalDate>> actual = groupDao.findExamsForGroup(5);
+        Auditorium auditorium = new Auditorium(1,5,25,new Building(1,"First","Canter"));
+        LessonType type =LessonType.EXAM;
+        LocalDate date = LocalDate.of(2020, 6, 1);
+        TimeSlot timeSlot = TimeSlot.FIRST;
+        Lesson lesson = new Lesson(155,subject,type,auditorium,date,timeSlot);
+        expected.add(lesson);
+        when(mockJdbcTemplate.queryForList(anyString(), any(), eq(Integer.class))).thenReturn(Arrays.asList(155));
+        when(mockLessonDao.find(anyInt())).thenReturn(lesson);
+        List<Lesson> actual = groupDao.findExamsForGroup(5);
         assertEquals(expected, actual);
-        verify(mockSqlRowSet, times(2)).next();
-        verify(mockSqlRowSet, times(1)).getInt("subject_id");
-        verify(mockSqlRowSet, times(1)).getDate("date");
-        verify(mockSubjectDao,times(1)).find(2);
+        verify(mockLessonDao,times(1)).find(155);
     }
 
     @Test
@@ -114,8 +109,8 @@ class GroupDaoTest {
         Group actual = groupDao.find(1);
         assertEquals(expected, actual);
         Object[] input = { 1 };
-        verify(mockJdbcTemplate, times(1)).queryForObject(eq("SELECT * FROM group WHERE group_id=?;"),
-                eq(input), any(RowMapper.class));
+        verify(mockJdbcTemplate, times(1)).queryForObject(eq("SELECT * FROM group WHERE group_id=?;"), eq(input),
+                any(RowMapper.class));
     }
 
     @Test
@@ -126,14 +121,12 @@ class GroupDaoTest {
         when(mockJdbcTemplate.query(any(String.class), any(RowMapper.class))).thenReturn(expected);
         List<Group> actual = groupDao.findAll();
         assertEquals(expected, actual);
-        verify(mockJdbcTemplate, times(1)).query(eq("SELECT * FROM group;"),
-                any(RowMapper.class));
+        verify(mockJdbcTemplate, times(1)).query(eq("SELECT * FROM group;"), any(RowMapper.class));
     }
 
     @Test
     void removeShouldExecuteOnceWhenDbCallFine() throws SQLException {
         groupDao.remove(1);
-        verify(mockJdbcTemplate, times(1))
-                .update(eq("DELETE FROM group WHERE group_id=?;"), eq(1));
+        verify(mockJdbcTemplate, times(1)).update(eq("DELETE FROM group WHERE group_id=?;"), eq(1));
     }
 }

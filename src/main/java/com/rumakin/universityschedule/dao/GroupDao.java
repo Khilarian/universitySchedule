@@ -18,21 +18,21 @@ public class GroupDao extends Dao<Group> {
     private static final String NAME = "group_name";
 
     private final AuditoriumDao auditoriumDao;
-    private final SubjectDao subjectDao;
+    private final LessonDao lessonDao;
 
     @Autowired
-    public GroupDao(JdbcTemplate jdbcTemplate, AuditoriumDao auditoriumDao, SubjectDao subjectDao) {
+    public GroupDao(JdbcTemplate jdbcTemplate, AuditoriumDao auditoriumDao, LessonDao lessonDao) {
         super(jdbcTemplate);
         this.auditoriumDao = auditoriumDao;
-        this.subjectDao = subjectDao;
+        this.lessonDao = lessonDao;
     }
 
     public List<Auditorium> findAuditoriumOnDate(int groupId, LocalDate date) {
-        String sql = "SELECT l.auditorium_id FROM " + TABLE + " " + ALIAS
-                + " INNER JOIN lesson_group lg ON " + addAlias(ALIAS, ID) + "=" + addAlias("lg", ID)
+        String sql = "SELECT l.auditorium_id FROM " + TABLE + " " + ALIAS + " INNER JOIN lesson_group lg ON "
+                + addAlias(ALIAS, ID) + "=" + addAlias("lg", ID)
                 + " INNER JOIN lesson l ON lg.lesson_id=l.lesson_id WHERE " + addAlias(ALIAS, ID) + "=? AND l.date=?;";
         Object[] input = { groupId, java.sql.Date.valueOf(date) };
-        List<Integer> auditoriumsId = this.jdbcTemplate.queryForList(sql, input, Integer.class);
+        List<Integer> auditoriumsId = jdbcTemplate.queryForList(sql, input, Integer.class);
         List<Auditorium> auditoriums = new ArrayList<>();
         for (Integer id : auditoriumsId) {
             Auditorium auditorium = auditoriumDao.find(id);
@@ -41,20 +41,17 @@ public class GroupDao extends Dao<Group> {
         return auditoriums;
     }
 
-    public List<Map<Subject, LocalDate>> findExamsForGroup(int groupId) {
-        String sql = "SELECT l.subject_id,l.date FROM " + TABLE + " " + ALIAS + " INNER JOIN lesson l ON "
-                + addAlias("l", ID) + "=" + addAlias(ALIAS, ID)
+    public List<Lesson> findExamsForGroup(int groupId) {
+        String sql = "SELECT l.lesson_id FROM " + TABLE + " " + ALIAS + " INNER JOIN lesson_group lg ON "
+                + addAlias("lg", ID) + "=" + addAlias(ALIAS, ID) + " INNER JOIN lesson l ON "
+                + addAlias("l", "lesson_id") + "=" + addAlias("lg", "lesson_id")
                 + " INNER JOIN lessonType lt ON l.lesson_type_id=lt.lesson_type_id WHERE " + ID
                 + "=? AND lt.lesson_type_name=EXAM;";
         Object[] args = { groupId };
-        SqlRowSet rowSet = this.jdbcTemplate.queryForRowSet(sql, args);
-        List<Map<Subject, LocalDate>> exams = new ArrayList<>();
-        while (rowSet.next()) {
-            int subjectId = rowSet.getInt("subject_id");
-            Subject subject = subjectDao.find(subjectId);
-            LocalDate date = rowSet.getDate("date").toLocalDate();
-            Map<Subject, LocalDate> exam = new HashMap<>();
-            exam.put(subject, date);
+        List<Integer> examsId = jdbcTemplate.queryForList(sql, args, Integer.class);
+        List<Lesson> exams = new ArrayList<>();
+        for (Integer id : examsId) {
+            Lesson exam = lessonDao.find(id);
             exams.add(exam);
         }
         return exams;

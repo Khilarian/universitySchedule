@@ -1,29 +1,18 @@
 package com.rumakin.universityschedule.dao;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.*;
 
 import java.sql.SQLException;
 import java.util.*;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
+import org.mockito.*;
+import org.springframework.jdbc.core.*;
 
-import com.rumakin.universityschedule.exceptions.DaoException;
-import com.rumakin.universityschedule.models.Auditorium;
-import com.rumakin.universityschedule.models.Building;
+import com.rumakin.universityschedule.models.*;
 
 class AuditoriumDaoTest {
 
@@ -50,10 +39,9 @@ class AuditoriumDaoTest {
         when(mockJdbcTemplate.queryForObject(anyString(), any(), eq(Integer.class))).thenReturn(1);
         auditoriumDao.add(auditorium);
         verify(mockBuilding, times(1)).getId();
-        verify(mockJdbcTemplate, times(1))
-                .queryForObject(eq(
-                        "INSERT INTO auditorium a (a.number_id,a.capacity,a.building_id) VALUES (?,?,?) RETURNING auditorium_id;"),
-                        eq(new Object[] { 1, 35, 1 }), eq(Integer.class));
+        verify(mockJdbcTemplate, times(1)).queryForObject(eq(
+                "INSERT INTO auditorium a (a.number_id,a.capacity,a.building_id) VALUES (?,?,?) RETURNING auditorium_id;"),
+                eq(new Object[] { 1, 35, 1 }), eq(Integer.class));
     }
 
     @Test
@@ -62,25 +50,23 @@ class AuditoriumDaoTest {
         Auditorium auditoriumTwo = new Auditorium(2, 15, mockBuildingTwo);
         when(mockBuilding.getId()).thenReturn(1);
         when(mockBuildingTwo.getId()).thenReturn(2);
-        when(mockJdbcTemplate.queryForObject(anyString(), any(), eq(Integer.class))).thenReturn(1,2);
+        when(mockJdbcTemplate.queryForObject(anyString(), any(), eq(Integer.class))).thenReturn(1, 2);
         Auditorium[] data = { auditorium, auditoriumTwo };
         List<Auditorium> expected = Arrays.asList(new Auditorium(1, 1, 35, mockBuilding),
                 new Auditorium(2, 2, 15, mockBuildingTwo));
         List<Auditorium> actual = auditoriumDao.addAll(Arrays.asList(data));
         assertEquals(expected, actual);
-        verify(mockJdbcTemplate, times(1))
-        .queryForObject(eq(
+        verify(mockJdbcTemplate, times(1)).queryForObject(eq(
                 "INSERT INTO auditorium a (a.number_id,a.capacity,a.building_id) VALUES (?,?,?) RETURNING auditorium_id;"),
                 eq(new Object[] { 1, 35, 1 }), eq(Integer.class));
-        verify(mockJdbcTemplate, times(1))
-        .queryForObject(eq(
+        verify(mockJdbcTemplate, times(1)).queryForObject(eq(
                 "INSERT INTO auditorium a (a.number_id,a.capacity,a.building_id) VALUES (?,?,?) RETURNING auditorium_id;"),
                 eq(new Object[] { 2, 15, 2 }), eq(Integer.class));
     }
 
     @Test
     void findShouldReturnPersonIfIdExists() throws SQLException {
-        Auditorium expected = new Auditorium(1,1, 35, mockBuilding);
+        Auditorium expected = new Auditorium(1, 1, 35, mockBuilding);
         when(mockJdbcTemplate.queryForObject(any(String.class), (Object[]) any(Object.class),
                 (RowMapper<Auditorium>) any(RowMapper.class))).thenReturn(expected);
         Auditorium actual = auditoriumDao.find(1);
@@ -90,25 +76,21 @@ class AuditoriumDaoTest {
                 eq(input), any(RowMapper.class));
     }
 
-
     @Test
     void findAllShouldReturnListOfCoursesIfAtLeastOneExists() throws SQLException {
-        Auditorium auditorium = new Auditorium(1,1, 35, mockBuilding);
-        Auditorium auditoriumTwo = new Auditorium(2,2, 15, mockBuildingTwo);
+        Auditorium auditorium = new Auditorium(1, 1, 35, mockBuilding);
+        Auditorium auditoriumTwo = new Auditorium(2, 2, 15, mockBuildingTwo);
         List<Auditorium> expected = Arrays.asList(auditorium, auditoriumTwo);
         when(mockJdbcTemplate.query(any(String.class), any(RowMapper.class))).thenReturn(expected);
         List<Auditorium> actual = auditoriumDao.findAll();
         assertEquals(expected, actual);
-        verify(mockJdbcTemplate, times(1)).query(eq("SELECT * FROM auditorium;"),
-                any(RowMapper.class));
+        verify(mockJdbcTemplate, times(1)).query(eq("SELECT * FROM auditorium;"), any(RowMapper.class));
     }
 
-    
     @Test
     void removeShouldExecuteOnceWhenDbCallFine() throws SQLException {
         auditoriumDao.remove(1);
-        verify(mockJdbcTemplate, times(1))
-                .update(eq("DELETE FROM auditorium WHERE auditorium_id=?;"),eq(1));
+        verify(mockJdbcTemplate, times(1)).update(eq("DELETE FROM auditorium WHERE auditorium_id=?;"), eq(1));
     }
 
 }

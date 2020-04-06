@@ -40,7 +40,7 @@ public abstract class Dao<T> {
         Object[] input = getFieldValues(entity);
         String sql = String.format(ADD, getTableName(), getTableAlias(), formatFieldsList(),
                 inputFieldPrepare(input.length), getEntityIdName());
-        int id = this.jdbcTemplate.queryForObject(sql, input, Integer.class);
+        int id = jdbcTemplate.queryForObject(sql, input, Integer.class);
         ((Entity) entity).setId(id);
         return entity;
     }
@@ -54,17 +54,17 @@ public abstract class Dao<T> {
 
     public T find(int id) {
         String sql = String.format(FIND_BY_ID, getTableName(), getEntityIdName());
-        return this.jdbcTemplate.queryForObject(sql, new Object[] { id }, mapRow());
+        return jdbcTemplate.queryForObject(sql, new Object[] { id }, mapRow());
     }
 
     public List<T> findAll() {
         String sql = String.format(FIND_ALL, getTableName());
-        return this.jdbcTemplate.query(sql, mapRow());
+        return jdbcTemplate.query(sql, mapRow());
     }
 
     public void remove(int id) {
         String sql = String.format(REMOVE_BY_ID, getTableName(), getEntityIdName());
-        this.jdbcTemplate.update(sql, id);
+        jdbcTemplate.update(sql, id);
     }
 
     protected String formatFieldsList() {

@@ -45,7 +45,7 @@ public class LessonDao extends Dao<Lesson> {
     @Autowired
     public LessonDao(JdbcTemplate jdbcTemplate, AuditoriumDao auditoriumDao, SubjectDao subjectDao,
             TeacherDao teacherDao, GroupDao groupDao) {
-        this.jdbcTemplate = jdbcTemplate;
+        super(jdbcTemplate);
         this.auditoriumDao = auditoriumDao;
         this.subjectDao = subjectDao;
         this.teacherDao = teacherDao;
@@ -90,20 +90,13 @@ public class LessonDao extends Dao<Lesson> {
     @Override
     public RowMapper<Lesson> mapRow() {
         return (ResultSet rs, int rowNumber) -> new Lesson(rs.getInt(ID), subjectDao.find(rs.getInt(SUBJECT)),
-                LessonType.valueOf(rs.getString(TYPE)),
-                auditoriumDao.find(rs.getInt(AUDITORIUM_ID)), ((java.sql.Date) rs.getObject(DATE)).toLocalDate(),
-                TimeSlot.valueOf(rs.getString(TIME_SLOT)));
+                LessonType.valueOf(rs.getString(TYPE)), auditoriumDao.find(rs.getInt(AUDITORIUM_ID)),
+                ((java.sql.Date) rs.getObject(DATE)).toLocalDate(), TimeSlot.valueOf(rs.getString(TIME_SLOT)));
     }
 
     @Override
     public void remove(int id) {
         this.jdbcTemplate.update(REMOVE_BY_ID, id);
-    }
-
-    @Override
-    public String getFieldsList(String alias) {
-        List<String> fields = Arrays.asList(ID, SUBJECT, TYPE, AUDITORIUM_ID, DATE, TIME_SLOT);
-        return formatFieldsList(alias, fields);
     }
 
     private int addWithDepende(Lesson lesson) {
@@ -177,7 +170,7 @@ public class LessonDao extends Dao<Lesson> {
     }
 
     @Override
-    protected  String getEntityIdName() {
+    protected String getEntityIdName() {
         return ID;
     }
 
