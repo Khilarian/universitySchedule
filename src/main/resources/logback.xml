@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<configuration debug="true">
+
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <property name="PATH" value="C:/trash" />
+
+    <appender name="FILE" class="ch.qos.logback.core.FileAppender">
+
+        <file>${PATH}/myApp.log</file>
+        <append>true</append>
+        <encoder>
+            <pattern>%date %-5level [%thread] %logger{10} [%file : %line] %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <logger name="com.rumakin.universityschedule.dao">
+        <appender-ref ref="FILE" />
+    </logger>
+    <logger name="com.rumakin.universityschedule" level="DEBUG" additivity="false" />
+
+    <root level="debug">
+        <appender-ref ref="STDOUT" />
+    </root>
+</configuration>

@@ -1,4 +1,4 @@
-package com.rumakin.universityschedule;
+package com.rumakin.universityschedule.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.*;

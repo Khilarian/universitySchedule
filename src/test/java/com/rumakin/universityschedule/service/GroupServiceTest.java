@@ -12,6 +12,8 @@ import org.mockito.*;
 
 import com.rumakin.universityschedule.dao.*;
 import com.rumakin.universityschedule.models.*;
+import com.rumakin.universityschedule.models.enums.LessonType;
+import com.rumakin.universityschedule.models.enums.TimeSlot;
 
 class GroupServiceTest {
     
@@ -38,13 +40,17 @@ class GroupServiceTest {
     
     @Test 
     void findExamsForGroupShouldReturnListOfMapsWithSubjectAndDateOfExams() {
-        List<Map<Subject,LocalDate>> expected = new ArrayList<>();
-        Map<Subject,LocalDate> exam = new HashMap<>();
-        exam.put(new Subject("history", new Faculty("smth")), LocalDate.of(2020, 6, 1));
-        expected.add(exam);
+        List<Lesson> expected = new ArrayList<>();
+        Subject subject = new Subject("history", new Faculty("smth"));
+        Auditorium auditorium = new Auditorium(1,5,25,new Building(1,"First","Canter"));
+        LessonType type =LessonType.EXAM;
+        LocalDate date = LocalDate.of(2020, 6, 1);
+        TimeSlot timeSlot = TimeSlot.FIRST;
+        Lesson lesson = new Lesson(155,subject,type,auditorium,date,timeSlot);
+        expected.add(lesson);
         when(mockGroupDao.findExamsForGroup(anyInt())).thenReturn(expected);
         Group group = new Group(7,"testGroup");
-        List<Map<Subject,LocalDate>> actual = groupService.findExamsForGroup(group);
+        List<Lesson> actual = groupService.findExamsForGroup(group);
         assertEquals(expected, actual);
         verify(mockGroupDao, times(1)).findExamsForGroup(eq(7));
     }

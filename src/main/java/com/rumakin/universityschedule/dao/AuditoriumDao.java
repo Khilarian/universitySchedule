@@ -18,7 +18,7 @@ public class AuditoriumDao extends Dao<Auditorium> {
     private static final String NUMBER = "number_id";
     private static final String CAPACITY = "capacity";
     private static final String BUILDING_ID = "building_id";
-
+    
     private final BuildingDao buildingDao;
 
     @Autowired
