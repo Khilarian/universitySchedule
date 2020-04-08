@@ -20,10 +20,13 @@
         </encoder>
     </appender>
 
-    <logger name="com.rumakin.universityschedule.dao">
+    <!--logger name="com.rumakin.universityschedule.dao">
         <appender-ref ref="FILE" />
-    </logger>
-    <logger name="com.rumakin.universityschedule" level="DEBUG" additivity="false" />
+    </logger-->
+    
+    <logger name="com.rumakin.universityschedule" level="DEBUG" additivity="false"> 
+    <appender-ref ref="FILE" />
+    </logger>/>
 
     <root level="debug">
         <appender-ref ref="STDOUT" />
