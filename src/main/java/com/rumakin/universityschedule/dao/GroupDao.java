@@ -6,7 +6,6 @@ import java.util.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.*;
-import org.springframework.jdbc.support.rowset.SqlRowSet;
 
 import com.rumakin.universityschedule.models.*;
 
@@ -28,20 +27,26 @@ public class GroupDao extends Dao<Group> {
     }
 
     public List<Auditorium> findAuditoriumOnDate(int groupId, LocalDate date) {
+        logger.debug("findAuditoriumOnDate() for groupId {} and date {}", groupId, date);
         String sql = "SELECT l.auditorium_id FROM " + TABLE + " " + ALIAS + " INNER JOIN lesson_group lg ON "
                 + addAlias(ALIAS, ID) + "=" + addAlias("lg", ID)
                 + " INNER JOIN lesson l ON lg.lesson_id=l.lesson_id WHERE " + addAlias(ALIAS, ID) + "=? AND l.date=?;";
         Object[] input = { groupId, java.sql.Date.valueOf(date) };
+        //do we need to check that this groupId was created in data base?
         List<Integer> auditoriumsId = jdbcTemplate.queryForList(sql, input, Integer.class);
         List<Auditorium> auditoriums = new ArrayList<>();
-        for (Integer id : auditoriumsId) {
-            Auditorium auditorium = auditoriumDao.find(id);
-            auditoriums.add(auditorium);
+        if (!auditoriumsId.isEmpty()) {
+            for (Integer id : auditoriumsId) {
+                Auditorium auditorium = auditoriumDao.find(id);
+                auditoriums.add(auditorium);
+            }
         }
+        logger.trace("found {} exams", auditoriums.size());
         return auditoriums;
     }
 
     public List<Lesson> findExamsForGroup(int groupId) {
+        logger.debug("findExamsForGroup({})",groupId);
         String sql = "SELECT l.lesson_id FROM " + TABLE + " " + ALIAS + " INNER JOIN lesson_group lg ON "
                 + addAlias("lg", ID) + "=" + addAlias(ALIAS, ID) + " INNER JOIN lesson l ON "
                 + addAlias("l", "lesson_id") + "=" + addAlias("lg", "lesson_id")
@@ -54,6 +59,7 @@ public class GroupDao extends Dao<Group> {
             Lesson exam = lessonDao.find(id);
             exams.add(exam);
         }
+        logger.trace("found {}", exams.size());
         return exams;
     }
 

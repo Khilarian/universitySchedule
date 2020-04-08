@@ -8,11 +8,12 @@
         </encoder>
     </appender>
 
-    <property name="PATH" value="C:/trash" />
+    <!--property name="PATH" value="C:/trash" /-->
+     <property file="src/main/resources/config.properties" />
 
     <appender name="FILE" class="ch.qos.logback.core.FileAppender">
 
-        <file>${PATH}/myApp.log</file>
+        <file>${log.path}/myApp.log</file>
         <append>true</append>
         <encoder>
             <pattern>%date %-5level [%thread] %logger{10} [%file : %line] %msg%n</pattern>

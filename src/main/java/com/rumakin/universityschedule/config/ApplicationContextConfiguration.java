@@ -1,5 +1,6 @@
 package com.rumakin.universityschedule.config;
 
+import org.slf4j.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.*;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -19,10 +20,14 @@ public class ApplicationContextConfiguration {
     @Value("${db.password}")
     private String password;
 
+    private Logger logger = LoggerFactory.getLogger(ApplicationContextConfiguration.class);
+
     @Bean
     @Scope("singleton")
     public DriverManagerDataSource getDataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
+        logger.info("getDataSource() connect to database: driver {}, url {}, username {}, password {}", driver, url,
+                login, password);
         dataSource.setDriverClassName(driver);
         dataSource.setUrl(url);
         dataSource.setUsername(login);

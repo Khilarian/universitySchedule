@@ -6,7 +6,7 @@ import org.slf4j.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.*;
 
-import com.rumakin.universityschedule.exceptions.InvalidEntityException;
+import com.rumakin.universityschedule.exceptions.*;
 import com.rumakin.universityschedule.models.Entity;
 
 public abstract class Dao<T> {
@@ -46,7 +46,7 @@ public abstract class Dao<T> {
                 inputFieldPrepare(input.length), getEntityIdName());
         int id = jdbcTemplate.queryForObject(sql, input, Integer.class);
         ((Entity) entity).setId(id);
-        logger.trace("add() was complete for  {}", entity);
+        logger.trace("add() was complete for {}", entity);
         return entity;
     }
 
@@ -55,26 +55,39 @@ public abstract class Dao<T> {
         for (T entity : entities) {
             add(entity);
         }
-        logger.trace("addAll() was complete");
+        logger.trace("addAll() was complete for {} objects", entities.size());
         return entities;
     }
 
     public T find(int id) {
         logger.debug("find() '{}'", id);
         String sql = String.format(FIND_BY_ID, getTableName(), getEntityIdName());
-        return jdbcTemplate.queryForObject(sql, new Object[] { id }, mapRow());
+        T result = jdbcTemplate.queryForObject(sql, new Object[] { id }, mapRow());
+        if (result == null) {
+            throw new DaoException(getModelClassName() + " with id " + id + "was not found.");
+        }
+        logger.trace("found {}", result);
+        return result;
     }
 
     public List<T> findAll() {
         logger.debug("findAll()");
         String sql = String.format(FIND_ALL, getTableName());
-        return jdbcTemplate.query(sql, mapRow());
+        List<T> result = jdbcTemplate.query(sql, mapRow());
+        logger.trace("findAll() found {} entry.", result.size());//if result.size.isEmpty() == true do we need to throw exception?
+        return result;
     }
 
-    public void remove(int id) {
+    public boolean remove(int id) {
         logger.debug("remove() '{}'", id);
         String sql = String.format(REMOVE_BY_ID, getTableName(), getEntityIdName());
-        jdbcTemplate.update(sql, id);
+        boolean result = jdbcTemplate.update(sql, id) == 1;
+        if (result) {
+            logger.trace("remove(): entry {} was removed.", id);
+        } else {
+            logger.trace("remove(): entry {} was not found.", id);
+        }
+        return result;
     }
 
     protected String formatFieldsList() {

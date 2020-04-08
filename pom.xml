@@ -101,6 +101,5 @@
             <version>${logback}</version>
             <scope>test</scope>
         </dependency>
-
     </dependencies>
 </project>
