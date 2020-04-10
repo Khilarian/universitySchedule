@@ -52,6 +52,23 @@ public class LessonDao extends Dao<Lesson> {
         this.groupDao = groupDao;
     }
 
+    public List<Lesson> findExamsForGroup(int groupId) {
+        logger.debug("findExamsForGroup({})", groupId);
+        String sql = "SELECT " + addAlias(ALIAS, ID) + " FROM " + TABLE + " " + ALIAS
+                + " INNER JOIN lesson_group lg ON " + addAlias(ALIAS, ID) + "=" + addAlias("lg", ID)
+                + " INNER JOIN lessonType lt ON " + addAlias(ALIAS, TYPE) + "=" + addAlias("lt", TYPE)
+                + " WHERE lg.group_id=? AND lt.lesson_type_name=EXAM;";
+        Object[] args = { groupId };
+        List<Integer> examsId = jdbcTemplate.queryForList(sql, args, Integer.class);
+        List<Lesson> exams = new ArrayList<>();
+        for (Integer id : examsId) {
+            Lesson exam = find(id);
+            exams.add(exam);
+        }
+        logger.trace("found {}", exams.size());
+        return exams;
+    }
+
     @Override
     public Lesson add(Lesson lesson) {
         int id = addWithDepende(lesson);
@@ -92,11 +109,6 @@ public class LessonDao extends Dao<Lesson> {
         return (ResultSet rs, int rowNumber) -> new Lesson(rs.getInt(ID), subjectDao.find(rs.getInt(SUBJECT)),
                 LessonType.valueOf(rs.getString(TYPE)), auditoriumDao.find(rs.getInt(AUDITORIUM_ID)),
                 ((java.sql.Date) rs.getObject(DATE)).toLocalDate(), TimeSlot.valueOf(rs.getString(TIME_SLOT)));
-    }
-
-    @Override
-    public void remove(int id) {
-        this.jdbcTemplate.update(REMOVE_BY_ID, id);
     }
 
     private int addWithDepende(Lesson lesson) {
@@ -176,14 +188,13 @@ public class LessonDao extends Dao<Lesson> {
 
     @Override
     protected List<String> getFieldsNames() {
-        // TODO Auto-generated method stub
-        return null;
+        return Arrays.asList(SUBJECT,TYPE,AUDITORIUM_ID,DATE,TIME_SLOT);
     }
 
     @Override
-    protected Object[] getFieldValues(Lesson entity) {
-        // TODO Auto-generated method stub
-        return null;
+    protected Object[] getFieldValues(Lesson lesson) {
+        //here must be something else, waiting for hibernate
+        return new Object[] {lesson.getSubject().getId(), lesson.getLessonType().name(),lesson.getAuditorium().getId(),lesson.getDate(),lesson.getTimeSlot().name()};
     }
 
     @Override

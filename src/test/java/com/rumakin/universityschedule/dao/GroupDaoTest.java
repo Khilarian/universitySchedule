@@ -37,42 +37,6 @@ class GroupDaoTest {
     }
 
     @Test
-    void findAuditoriumOnDateShouldExecuteOnceIfDbCallFine() {
-        when(mockJdbcTemplate.queryForList(anyString(), any(), eq(Integer.class))).thenReturn(Arrays.asList(1, 2));
-        when(mockAuditoriumDao.find(anyInt())).thenReturn(new Auditorium(1, 1, 15, new Building(1, "First", "Moscow")),
-                new Auditorium(2, 2, 20, new Building(1, "First", "Moscow")));
-        List<Auditorium> expected = Arrays.asList(new Auditorium(1, 1, 15, new Building(1, "First", "Moscow")),
-                new Auditorium(2, 2, 20, new Building(1, "First", "Moscow")));
-        Group group = new Group(1, "Best Group");
-        LocalDate date = LocalDate.of(2015, 3, 2);
-        List<Auditorium> actual = groupDao.findAuditoriumOnDate(group.getId(), date);
-        assertEquals(expected, actual);
-        verify(mockJdbcTemplate, times(1)).queryForList(
-                eq("SELECT l.auditorium_id FROM group g INNER JOIN lesson_group lg ON g.group_id=lg.group_id "
-                        + "INNER JOIN lesson l ON lg.lesson_id=l.lesson_id WHERE g.group_id=? AND l.date=?;"),
-                eq(new Object[] { 1, java.sql.Date.valueOf(date) }), eq(Integer.class));
-        verify(mockAuditoriumDao, times(1)).find(1);
-        verify(mockAuditoriumDao, times(1)).find(2);
-    }
-
-    @Test
-    void findExamsForGroupShouldExecuteOnceIfDbCallFineAndReturnListOfExamsIfAtLeastOneExists() {
-        List<Lesson> expected = new ArrayList<>();
-        Subject subject = new Subject("history", new Faculty("smth"));
-        Auditorium auditorium = new Auditorium(1,5,25,new Building(1,"First","Canter"));
-        LessonType type =LessonType.EXAM;
-        LocalDate date = LocalDate.of(2020, 6, 1);
-        TimeSlot timeSlot = TimeSlot.FIRST;
-        Lesson lesson = new Lesson(155,subject,type,auditorium,date,timeSlot);
-        expected.add(lesson);
-        when(mockJdbcTemplate.queryForList(anyString(), any(), eq(Integer.class))).thenReturn(Arrays.asList(155));
-        when(mockLessonDao.find(anyInt())).thenReturn(lesson);
-        List<Lesson> actual = groupDao.findExamsForGroup(5);
-        assertEquals(expected, actual);
-        verify(mockLessonDao,times(1)).find(155);
-    }
-
-    @Test
     void addShouldExecuteOnceWhenDbCallFine() throws SQLException {
         Group group = new Group("First Group");
         when(mockJdbcTemplate.queryForObject(anyString(), any(), eq(Integer.class))).thenReturn(1);

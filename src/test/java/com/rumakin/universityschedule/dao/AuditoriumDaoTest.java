@@ -5,6 +5,7 @@ import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.*;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -30,6 +31,25 @@ class AuditoriumDaoTest {
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.initMocks(this);
+    }
+
+    @Test
+    void findAuditoriumOnDateShouldExecuteOnceIfDbCallFine() {
+        when(mockJdbcTemplate.queryForList(anyString(), any(), eq(Integer.class))).thenReturn(Arrays.asList(1, 2));
+        Auditorium one = new Auditorium(1, 1, 15, new Building(1, "First", "Moscow"));
+        Auditorium two = new Auditorium(2, 2, 20, new Building(1, "First", "Moscow"));
+        when(mockJdbcTemplate.queryForObject(any(String.class), (Object[]) any(Object.class),
+                (RowMapper<Auditorium>) any(RowMapper.class))).thenReturn(one, two);
+        List<Auditorium> expected = Arrays.asList(new Auditorium(1, 1, 15, new Building(1, "First", "Moscow")),
+                new Auditorium(2, 2, 20, new Building(1, "First", "Moscow")));
+        Group group = new Group(1, "Best Group");
+        LocalDate date = LocalDate.of(2015, 3, 2);
+        List<Auditorium> actual = auditoriumDao.findAuditoriumOnDate(group.getId(), date);
+        assertEquals(expected, actual);
+        verify(mockJdbcTemplate, times(1)).queryForList(eq(
+                "SELECT a.auditorium_id FROM auditorium a INNER JOIN lesson l ON a.auditorium_id=l.auditorium_id "
+                + "INNER JOIN lesson_group lg ON l.lesson_id=lg.lesson_id WHERE lg.group_id=? AND l.date=?;"),
+                eq(new Object[] { 1, java.sql.Date.valueOf(date) }), eq(Integer.class));
     }
 
     @Test

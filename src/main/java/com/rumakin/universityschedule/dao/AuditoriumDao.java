@@ -1,6 +1,7 @@
 package com.rumakin.universityschedule.dao;
 
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,13 +19,31 @@ public class AuditoriumDao extends Dao<Auditorium> {
     private static final String NUMBER = "number_id";
     private static final String CAPACITY = "capacity";
     private static final String BUILDING_ID = "building_id";
-    
+
     private final BuildingDao buildingDao;
 
     @Autowired
     public AuditoriumDao(JdbcTemplate jdbcTemplate, BuildingDao buildingDao) {
         super(jdbcTemplate);
         this.buildingDao = buildingDao;
+    }
+
+    public List<Auditorium> findAuditoriumOnDate(int groupId, LocalDate date) {
+        logger.debug("findAuditoriumOnDate() for groupId {} and date {}", groupId, date);
+        String sql = "SELECT " + addAlias(ALIAS, ID) + " FROM " + TABLE + " " + ALIAS + " INNER JOIN lesson l ON "
+                + addAlias(ALIAS, ID) + "=" + addAlias("l", ID)
+                + " INNER JOIN lesson_group lg ON l.lesson_id=lg.lesson_id WHERE lg.group_id=? AND l.date=?;";
+        Object[] input = { groupId, java.sql.Date.valueOf(date) };
+        List<Integer> auditoriumsId = jdbcTemplate.queryForList(sql, input, Integer.class);
+        List<Auditorium> auditoriums = new ArrayList<>();
+        if (!auditoriumsId.isEmpty()) {
+            for (Integer id : auditoriumsId) {
+                Auditorium auditorium = find(id);
+                auditoriums.add(auditorium);
+            }
+        }
+        logger.trace("found {} exams", auditoriums.size());
+        return auditoriums;
     }
 
     @Override
@@ -49,8 +68,8 @@ public class AuditoriumDao extends Dao<Auditorium> {
 
     @Override
     public RowMapper<Auditorium> mapRow() {
-        return (ResultSet rs, int rowNumber) -> new Auditorium(rs.getInt(ID), rs.getInt(NUMBER),
-                rs.getInt(CAPACITY), buildingDao.find(rs.getInt(BUILDING_ID)));
+        return (ResultSet rs, int rowNumber) -> new Auditorium(rs.getInt(ID), rs.getInt(NUMBER), rs.getInt(CAPACITY),
+                buildingDao.find(rs.getInt(BUILDING_ID)));
     }
 
     @Override

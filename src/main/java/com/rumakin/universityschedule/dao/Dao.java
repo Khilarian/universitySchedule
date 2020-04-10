@@ -74,7 +74,7 @@ public abstract class Dao<T> {
         logger.debug("findAll()");
         String sql = String.format(FIND_ALL, getTableName());
         List<T> result = jdbcTemplate.query(sql, mapRow());
-        logger.trace("findAll() found {} entry.", result.size());//if result.size.isEmpty() == true do we need to throw exception?
+        logger.trace("findAll() found {} entry.", result.size());
         return result;
     }
 
