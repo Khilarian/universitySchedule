@@ -1,20 +1,15 @@
 package com.rumakin.universityschedule.dao;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
 import java.time.LocalDate;
 import java.util.*;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
+import org.junit.jupiter.api.*;
+import org.mockito.*;
+import org.springframework.jdbc.core.*;
 
 import com.rumakin.universityschedule.models.*;
 import com.rumakin.universityschedule.models.enums.*;

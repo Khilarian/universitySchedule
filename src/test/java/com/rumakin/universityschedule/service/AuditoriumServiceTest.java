@@ -1,28 +1,16 @@
 package com.rumakin.universityschedule.service;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.*;
 
 import java.time.LocalDate;
-import java.util.Arrays;
-import java.util.List;
-
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import java.util.*;
+import org.junit.jupiter.api.*;
+import org.mockito.*;
 
 import com.rumakin.universityschedule.dao.AuditoriumDao;
-import com.rumakin.universityschedule.models.Auditorium;
-import com.rumakin.universityschedule.models.Building;
-import com.rumakin.universityschedule.models.Group;
+import com.rumakin.universityschedule.models.*;
 
 class AuditoriumServiceTest {
 

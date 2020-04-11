@@ -1,21 +1,16 @@
 package com.rumakin.universityschedule.dao;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
 import java.sql.SQLException;
 import java.util.*;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.junit.jupiter.api.*;
+import org.mockito.*;
 import org.springframework.jdbc.core.*;
 
-import com.rumakin.universityschedule.exceptions.DaoException;
 import com.rumakin.universityschedule.models.Faculty;
 
 class FacultyDaoTest {
@@ -37,8 +32,9 @@ class FacultyDaoTest {
         Faculty expected = new Faculty(1, "Math");
         Faculty actual = facultyDao.add(faculty);
         assertEquals(expected, actual);
-        verify(mockJdbcTemplate, times(1)).queryForObject(eq("INSERT INTO faculty f (f.faculty_name) VALUES (?) RETURNING faculty_id;"),
-                eq(new Object[] {faculty.getName()}),eq(Integer.class));
+        verify(mockJdbcTemplate, times(1)).queryForObject(
+                eq("INSERT INTO faculty f (f.faculty_name) VALUES (?) RETURNING faculty_id;"),
+                eq(new Object[] { faculty.getName() }), eq(Integer.class));
     }
 
     @Test
@@ -46,14 +42,16 @@ class FacultyDaoTest {
         Faculty faculty = new Faculty("Math");
         Faculty facultyTwo = new Faculty("History");
         Faculty[] data = { faculty, facultyTwo };
-        when(mockJdbcTemplate.queryForObject(anyString(), any(), eq(Integer.class))).thenReturn(1,2);
-        List<Faculty> expected = Arrays.asList(new Faculty(1,"Math"),new Faculty(2,"History"));
-        List<Faculty> actual =facultyDao.addAll(Arrays.asList(data));
+        when(mockJdbcTemplate.queryForObject(anyString(), any(), eq(Integer.class))).thenReturn(1, 2);
+        List<Faculty> expected = Arrays.asList(new Faculty(1, "Math"), new Faculty(2, "History"));
+        List<Faculty> actual = facultyDao.addAll(Arrays.asList(data));
         assertEquals(expected, actual);
-        verify(mockJdbcTemplate, times(1)).queryForObject(eq("INSERT INTO faculty f (f.faculty_name) VALUES (?) RETURNING faculty_id;"),
-                eq(new Object[] {faculty.getName()}),eq(Integer.class));
-        verify(mockJdbcTemplate, times(1)).queryForObject(eq("INSERT INTO faculty f (f.faculty_name) VALUES (?) RETURNING faculty_id;"),
-                eq(new Object[] {facultyTwo.getName()}),eq(Integer.class));
+        verify(mockJdbcTemplate, times(1)).queryForObject(
+                eq("INSERT INTO faculty f (f.faculty_name) VALUES (?) RETURNING faculty_id;"),
+                eq(new Object[] { faculty.getName() }), eq(Integer.class));
+        verify(mockJdbcTemplate, times(1)).queryForObject(
+                eq("INSERT INTO faculty f (f.faculty_name) VALUES (?) RETURNING faculty_id;"),
+                eq(new Object[] { facultyTwo.getName() }), eq(Integer.class));
     }
 
     @Test
@@ -64,8 +62,8 @@ class FacultyDaoTest {
         Faculty actual = facultyDao.find(1);
         assertEquals(expected, actual);
         Object[] input = { 1 };
-        verify(mockJdbcTemplate, times(1)).queryForObject(eq("SELECT * FROM faculty WHERE faculty_id=?;"),
-                eq(input), any(RowMapper.class));
+        verify(mockJdbcTemplate, times(1)).queryForObject(eq("SELECT * FROM faculty WHERE faculty_id=?;"), eq(input),
+                any(RowMapper.class));
     }
 
     @Test
@@ -76,15 +74,13 @@ class FacultyDaoTest {
         when(mockJdbcTemplate.query(any(String.class), any(RowMapper.class))).thenReturn(expected);
         List<Faculty> actual = facultyDao.findAll();
         assertEquals(expected, actual);
-        verify(mockJdbcTemplate, times(1)).query(eq("SELECT * FROM faculty;"),
-                any(RowMapper.class));
+        verify(mockJdbcTemplate, times(1)).query(eq("SELECT * FROM faculty;"), any(RowMapper.class));
     }
 
     @Test
     void removeShouldExecuteOnceWhenDbCallFine() throws SQLException {
         facultyDao.remove(1);
-        verify(mockJdbcTemplate, times(1))
-                .update(eq("DELETE FROM faculty WHERE faculty_id=?;"), eq(1));
+        verify(mockJdbcTemplate, times(1)).update(eq("DELETE FROM faculty WHERE faculty_id=?;"), eq(1));
     }
 
 }

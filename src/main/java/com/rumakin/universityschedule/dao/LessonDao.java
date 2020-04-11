@@ -1,8 +1,6 @@
 package com.rumakin.universityschedule.dao;
 
 import java.sql.*;
-import java.sql.Date;
-import java.time.LocalDate;
 import java.util.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -190,13 +188,14 @@ public class LessonDao extends Dao<Lesson> {
 
     @Override
     protected List<String> getFieldsNames() {
-        return Arrays.asList(SUBJECT,TYPE,AUDITORIUM_ID,DATE,TIME_SLOT);
+        return Arrays.asList(SUBJECT, TYPE, AUDITORIUM_ID, DATE, TIME_SLOT);
     }
 
     @Override
     protected Object[] getFieldValues(Lesson lesson) {
-        //here must be something else, waiting for hibernate
-        return new Object[] {lesson.getSubject().getId(), lesson.getLessonType().name(),lesson.getAuditorium().getId(),lesson.getDate(),lesson.getTimeSlot().name()};
+        // here must be something else, waiting for hibernate
+        return new Object[] { lesson.getSubject().getId(), lesson.getLessonType().name(),
+                lesson.getAuditorium().getId(), lesson.getDate(), lesson.getTimeSlot().name() };
     }
 
     @Override

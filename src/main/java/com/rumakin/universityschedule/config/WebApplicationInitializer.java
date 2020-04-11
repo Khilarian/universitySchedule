@@ -9,7 +9,7 @@ import org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver;
 import org.thymeleaf.spring5.view.ThymeleafViewResolver;
 
 @Configuration
-@ComponentScan
+@ComponentScan("com.rumakin.universityschedule")
 @EnableWebMvc
 @PropertySource("classpath:config.properties")
 public class WebApplicationInitializer implements WebMvcConfigurer {

@@ -1,7 +1,6 @@
 package com.rumakin.universityschedule.dao;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
@@ -12,7 +11,6 @@ import org.junit.jupiter.api.*;
 import org.mockito.*;
 import org.springframework.jdbc.core.*;
 
-import com.rumakin.universityschedule.exceptions.DaoException;
 import com.rumakin.universityschedule.models.Person;
 
 class PersonDaoTest {
@@ -34,10 +32,9 @@ class PersonDaoTest {
         Person expected = new Person(1, "Lexx", "Luger");
         Person actual = personDao.add(person);
         assertEquals(expected, actual);
-        verify(mockJdbcTemplate, times(1))
-                .queryForObject(eq(
-                        "INSERT INTO person p (p.person_first_name,p.person_last_name) VALUES (?,?) RETURNING person_id;"),
-                        eq(new Object[] { "Lexx", "Luger" }), eq(Integer.class));
+        verify(mockJdbcTemplate, times(1)).queryForObject(
+                eq("INSERT INTO person p (p.person_first_name,p.person_last_name) VALUES (?,?) RETURNING person_id;"),
+                eq(new Object[] { "Lexx", "Luger" }), eq(Integer.class));
     }
 
     @Test
@@ -48,13 +45,12 @@ class PersonDaoTest {
         Person[] data = { person, personTwo };
         List<Person> expected = Arrays.asList(new Person(1, "Lexx", "Luger"), new Person(2, "Hulk", "Hogan"));
         List<Person> actual = personDao.addAll(Arrays.asList(data));
-        verify(mockJdbcTemplate, times(1))
-        .queryForObject(eq(
-                "INSERT INTO person p (p.person_first_name,p.person_last_name) VALUES (?,?) RETURNING person_id;"),
+        assertEquals(expected, actual);
+        verify(mockJdbcTemplate, times(1)).queryForObject(
+                eq("INSERT INTO person p (p.person_first_name,p.person_last_name) VALUES (?,?) RETURNING person_id;"),
                 eq(new Object[] { "Lexx", "Luger" }), eq(Integer.class));
-        verify(mockJdbcTemplate, times(1))
-        .queryForObject(eq(
-                "INSERT INTO person p (p.person_first_name,p.person_last_name) VALUES (?,?) RETURNING person_id;"),
+        verify(mockJdbcTemplate, times(1)).queryForObject(
+                eq("INSERT INTO person p (p.person_first_name,p.person_last_name) VALUES (?,?) RETURNING person_id;"),
                 eq(new Object[] { "Hulk", "Hogan" }), eq(Integer.class));
     }
 
@@ -66,8 +62,8 @@ class PersonDaoTest {
         Person actual = personDao.find(1);
         assertEquals(expected, actual);
         Object[] input = { 1 };
-        verify(mockJdbcTemplate, times(1)).queryForObject(eq("SELECT * FROM person WHERE person_id=?;"),
-                eq(input), any(RowMapper.class));
+        verify(mockJdbcTemplate, times(1)).queryForObject(eq("SELECT * FROM person WHERE person_id=?;"), eq(input),
+                any(RowMapper.class));
     }
 
     @Test
@@ -78,15 +74,13 @@ class PersonDaoTest {
         when(mockJdbcTemplate.query(any(String.class), any(RowMapper.class))).thenReturn(expected);
         List<Person> actual = personDao.findAll();
         assertEquals(expected, actual);
-        verify(mockJdbcTemplate, times(1)).query(eq("SELECT * FROM person;"),
-                any(RowMapper.class));
+        verify(mockJdbcTemplate, times(1)).query(eq("SELECT * FROM person;"), any(RowMapper.class));
     }
 
     @Test
     void removeShouldExecuteOnceWhenDbCallFine() throws SQLException {
         personDao.remove(1);
-        verify(mockJdbcTemplate, times(1))
-                .update(eq("DELETE FROM person WHERE person_id=?;"), eq(1));
+        verify(mockJdbcTemplate, times(1)).update(eq("DELETE FROM person WHERE person_id=?;"), eq(1));
     }
 
 }

@@ -5,7 +5,6 @@ import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
 import java.sql.*;
-import java.time.LocalDate;
 import java.util.*;
 
 import org.junit.jupiter.api.*;
@@ -14,8 +13,6 @@ import org.springframework.jdbc.core.*;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 
 import com.rumakin.universityschedule.models.*;
-import com.rumakin.universityschedule.models.enums.LessonType;
-import com.rumakin.universityschedule.models.enums.TimeSlot;
 
 class GroupDaoTest {
 
