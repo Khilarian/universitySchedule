@@ -6,8 +6,8 @@ import org.springframework.context.annotation.*;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.*;
 
-@Configuration
-@ComponentScan
+//@Configuration
+//@ComponentScan
 @PropertySource("classpath:config.properties")
 public class SpringConfig {
 
