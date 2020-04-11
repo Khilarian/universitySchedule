@@ -5,9 +5,11 @@ import java.util.List;
 
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Repository;
 
 import com.rumakin.universityschedule.models.Teacher;
 
+@Repository
 public class TeacherDao extends Dao<Teacher> {
     
     private static final String TABLE = "teacher";

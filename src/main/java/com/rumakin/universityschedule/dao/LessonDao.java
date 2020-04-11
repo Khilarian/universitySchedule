@@ -7,10 +7,12 @@ import java.util.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.*;
+import org.springframework.stereotype.Repository;
 
 import com.rumakin.universityschedule.models.*;
 import com.rumakin.universityschedule.models.enums.*;
 
+@Repository
 public class LessonDao extends Dao<Lesson> {
 
     private static final String TABLE = "lesson";

@@ -5,9 +5,11 @@ import java.util.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.*;
+import org.springframework.stereotype.Repository;
 
 import com.rumakin.universityschedule.models.*;
 
+@Repository
 public class StudentDao extends Dao<Student> {
 
     private static final String TABLE = "student";

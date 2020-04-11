@@ -5,9 +5,11 @@ import java.util.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.*;
+import org.springframework.stereotype.Repository;
 
 import com.rumakin.universityschedule.models.*;
 
+@Repository
 public class GroupDao extends Dao<Group> {
 
     private static final String TABLE = "group";
@@ -16,7 +18,7 @@ public class GroupDao extends Dao<Group> {
     private static final String NAME = "group_name";
 
     @Autowired
-    public GroupDao(JdbcTemplate jdbcTemplate, AuditoriumDao auditoriumDao, LessonDao lessonDao) {
+    public GroupDao(JdbcTemplate jdbcTemplate) {
         super(jdbcTemplate);
     }
 

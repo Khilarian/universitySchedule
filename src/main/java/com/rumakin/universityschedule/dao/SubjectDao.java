@@ -5,9 +5,11 @@ import java.util.*;
 
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.jdbc.core.*;
+import org.springframework.stereotype.Repository;
 
 import com.rumakin.universityschedule.models.Subject;
 
+@Repository
 public class SubjectDao extends Dao<Subject> {
 
     private static final String TABLE = "subject";
