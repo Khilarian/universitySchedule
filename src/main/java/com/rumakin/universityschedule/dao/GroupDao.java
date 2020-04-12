@@ -12,7 +12,7 @@ import com.rumakin.universityschedule.models.*;
 @Repository
 public class GroupDao extends Dao<Group> {
 
-    private static final String TABLE = "group";
+    private static final String TABLE = "groups";
     private static final String ALIAS = "g";
     private static final String ID = "group_id";
     private static final String NAME = "group_name";

@@ -15,7 +15,7 @@ CREATE TABLE auditorium(
 auditorium_id SERIAL PRIMARY KEY,
 auditorium_number INTEGER NOT NULL,
 capacity INTEGER NOT NULL,
-building_id INTEGER REFERENCES building(building_id) ON UPDATE CASCADE ON DELETE CASCADE
+building_id INTEGER REFERENCES building(building_id) NOT NULL ON UPDATE CASCADE ON DELETE CASCADE
 );
 CREATE TABLE faculty(
 faculty_id SERIAL PRIMARY KEY,

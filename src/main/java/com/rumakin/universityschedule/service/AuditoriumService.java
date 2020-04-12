@@ -30,4 +30,11 @@ public class AuditoriumService {
         return auditoriums;
     }
 
+    public List<Auditorium> findAll() {
+        logger.debug("findAll() auditoriums");
+        List<Auditorium> auditoriums = auditoriumDao.findAll();
+        logger.trace("found {} auditoriums", auditoriums.size());
+        return auditoriums;
+    }
+
 }

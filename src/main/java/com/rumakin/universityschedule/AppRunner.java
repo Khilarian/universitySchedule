@@ -1,7 +1,10 @@
 package com.rumakin.universityschedule;
 
 import org.slf4j.*;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.support.AbstractApplicationContext;
+
 import com.rumakin.universityschedule.config.SpringConfig;
 
 public class AppRunner {
@@ -10,8 +13,8 @@ public class AppRunner {
 
     public static void main(String[] args) {
         logger.info("Starting application.");
-        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(SpringConfig.class);
-        context.close();
+        ApplicationContext context = new AnnotationConfigApplicationContext(SpringConfig.class);
+        ((AbstractApplicationContext) context).close();
         logger.info("Exiting application.");
     }
 

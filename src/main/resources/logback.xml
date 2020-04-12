@@ -2,24 +2,30 @@
 <configuration debug="true">
 
 
-    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+    <appender name="STDOUT"
+        class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
-            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} -
+                %msg%n</pattern>
         </encoder>
     </appender>
 
-    <appender name="FILE" class="ch.qos.logback.core.FileAppender">
+    <appender name="FILE"
+        class="ch.qos.logback.core.FileAppender">
 
-        <file>university.log</file>
+        <file>D:/Java/logs/university.log</file>
         <append>true</append>
         <encoder>
-            <pattern>%date %-5level [%thread] %logger{10} [%file : %line] %msg%n</pattern>
+            <pattern>%date %-5level [%thread] %logger{10} [%file :
+                %line] %msg%n</pattern>
         </encoder>
     </appender>
-    
-    <logger name="com.rumakin.universityschedule" level="DEBUG" additivity="false"> 
-    <appender-ref ref="FILE" />
-    </logger>/>
+
+    <logger name="com.rumakin.universityschedule" level="DEBUG"
+        additivity="false">
+        <appender-ref ref="FILE" />
+    </logger>
+    />
 
     <root level="debug">
         <appender-ref ref="STDOUT" />

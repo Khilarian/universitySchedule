@@ -16,7 +16,7 @@ public class AuditoriumDao extends Dao<Auditorium> {
     private static final String TABLE = "auditorium";
     private static final String ALIAS = "a";
     private static final String ID = "auditorium_id";
-    private static final String NUMBER = "number_id";
+    private static final String NUMBER = "auditorium_number";
     private static final String CAPACITY = "capacity";
     private static final String BUILDING_ID = "building_id";
 

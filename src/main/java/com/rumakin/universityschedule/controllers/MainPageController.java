@@ -1,14 +1,14 @@
-package com.rumakin.universityschedule;
+package com.rumakin.universityschedule.controllers;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
-public class HelloController {
+public class MainPageController {
 
-    @GetMapping("/hello")
+    @GetMapping("/main_page")
     public String sayHello() {
-        return "hello";
+        return "main_page";
     }
 
 }

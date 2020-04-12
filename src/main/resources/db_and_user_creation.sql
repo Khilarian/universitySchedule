@@ -1,3 +1,3 @@
 CREATE DATABASE university;
 CREATE USER tester WITH PASSWORD 'test';
-GRANT ALL ON DATABASE university TO "tester"; 
+GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO "tester";
