@@ -11,17 +11,19 @@
 <title>List of groups</title>
 </head>
 <body>
-    <H2>All groups are here!</H2>
+    <H2>Groups information</H2>
     <table class="table table-stripped">
         <thead>
-            <tr>
+            <tr class="bg-primary text-white">
                 <td>Id</td>
                 <td>Name</td>
+                <td>Faculty name</td>
             </tr>
         </thead>
         <tr th:each="group:${groups}">
             <td th:text="${group.id}">Id</td>
             <td th:text="${group.name}">Name</td>
+            <td th:text="${group.faculty.name}">Faculty name</td>
         </tr>
     </table>
 </body>

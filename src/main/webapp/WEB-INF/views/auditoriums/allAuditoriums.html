@@ -10,25 +10,27 @@
 
 <title>List of auditoriums</title>
 </head>
-<body>
-    <H2>All auditoriums are here!</H2>
-    <table class="table table-stripped">
-        <thead>
-            <tr>
-                <td>Id</td>
-                <td>Number</td>
-                <td>Capacity</td>
-                <td>Building Name</td>
-                <td>Building address</td>
+<body class="bg-secondary">
+    <div class="container">
+        <h2 class="text-body">List of all auditoriums.</h2>
+        <table class="table table-bordered">
+            <thead class="bg-primary text-white">
+                <tr>
+                    <td>Id</td>
+                    <td>Number</td>
+                    <td>Capacity</td>
+                    <td>Building Name</td>
+                    <td>Building address</td>
+                </tr>
+            </thead>
+            <tr th:each="auditorium:${auditoriums}" class="table-success">
+                <td th:text="${auditorium.id}">Id</td>
+                <td th:text="${auditorium.number}">Number</td>
+                <td th:text="${auditorium.capacity}">Capacity</td>
+                <td th:text="${auditorium.building.name}">Building Name</td>
+                <td th:text="${auditorium.building.address}">Building Address</td>
             </tr>
-        </thead>
-        <tr th:each="auditorium:${auditoriums}">
-            <td th:text="${auditorium.id}">Id</td>
-            <td th:text="${auditorium.number}">Number</td>
-            <td th:text="${auditorium.capacity}">Capacity</td>
-            <td th:text="${auditorium.building.name}">Building Name</td>
-            <td th:text="${auditorium.building.address}">Building Address</td>
-        </tr>
-    </table>
+        </table>
+    </div>
 </body>
 </html>

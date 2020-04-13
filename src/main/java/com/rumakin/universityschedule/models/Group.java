@@ -4,19 +4,17 @@ public class Group implements Entity{
 
     private int id;
     private String name;
-    private Schedule schedule;
+    private Faculty faculty;
 
-    public Group(String name) {
+    public Group(String name, Faculty faculty) {
         this.name = name;
+        this.faculty = faculty;
     }
 
-    public Group(int id, String name) {
+    public Group(int id, String name, Faculty faculty) {
         this.id = id;
         this.name = name;
-    }
-
-    public void setSchedule(Schedule schedule) {
-        this.schedule = schedule;
+        this.faculty = faculty;
     }
 
     @Override
@@ -33,45 +31,39 @@ public class Group implements Entity{
         return name;
     }
 
-    public Schedule getSchedule() {
-        return schedule;
+    public Faculty getFaculty() {
+        return faculty;
     }
 
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
+        result = prime * result + ((faculty == null) ? 0 : faculty.hashCode());
         result = prime * result + id;
         result = prime * result + ((name == null) ? 0 : name.hashCode());
-        result = prime * result + ((schedule == null) ? 0 : schedule.hashCode());
         return result;
     }
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null || getClass() != obj.getClass())
-            return false;
+        if (this == obj) return true;
+        if (obj == null) return false;
+        if (getClass() != obj.getClass()) return false;
         Group other = (Group) obj;
-        if (id != other.id)
-            return false;
+        if (faculty == null) {
+            if (other.faculty != null) return false;
+        } else if (!faculty.equals(other.faculty)) return false;
+        if (id != other.id) return false;
         if (name == null) {
-            if (other.name != null)
-                return false;
-        } else if (!name.equals(other.name))
-            return false;
-        if (schedule == null) {
-            if (other.schedule != null)
-                return false;
-        } else if (!schedule.equals(other.schedule))
-            return false;
+            if (other.name != null) return false;
+        } else if (!name.equals(other.name)) return false;
         return true;
     }
 
     @Override
     public String toString() {
-        return "Group [id=" + id + ", name=" + name + ", schedule=" + schedule + "]";
+        return "Group [id=" + id + ", name=" + name + ", faculty=" + faculty + "]";
     }
 
 }
