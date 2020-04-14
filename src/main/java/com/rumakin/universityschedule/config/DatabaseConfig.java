@@ -9,7 +9,7 @@ import org.springframework.jdbc.datasource.*;
 @Configuration
 @ComponentScan
 @PropertySource("classpath:config.properties")
-public class SpringConfig {
+public class DatabaseConfig {
 
     @Value("${db.driver}")
     private String driver;
@@ -20,7 +20,7 @@ public class SpringConfig {
     @Value("${db.password}")
     private String password;
 
-    private Logger logger = LoggerFactory.getLogger(SpringConfig.class);
+    private Logger logger = LoggerFactory.getLogger(DatabaseConfig.class);
 
     @Bean
     @Scope("singleton")

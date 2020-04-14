@@ -2,7 +2,7 @@ package com.rumakin.universityschedule.config;
 
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
-public class SpringMvcConfiguration extends AbstractAnnotationConfigDispatcherServletInitializer {
+public class MvcConfiguration extends AbstractAnnotationConfigDispatcherServletInitializer {
 
     @Override
     protected Class<?>[] getRootConfigClasses() {
