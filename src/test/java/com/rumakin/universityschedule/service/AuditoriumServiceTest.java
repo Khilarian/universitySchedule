@@ -29,7 +29,8 @@ class AuditoriumServiceTest {
         when(mockAuditoriumDao.findAuditoriumOnDate(anyInt(), any()))
                 .thenReturn(Arrays.asList(new Auditorium(1, 1, 25, new Building(1, "First", "York"))));
         List<Auditorium> expected = Arrays.asList(new Auditorium(1, 1, 25, new Building(1, "First", "York")));
-        Group group = new Group(1, "grrroup");
+        Faculty faculty = new Faculty(1,"faculty");
+        Group group = new Group(1, "grrroup", faculty);
         LocalDate date = LocalDate.of(2020, 4, 1);
         List<Auditorium> actual = auditoriumService.findAuditoriumsForGroupOnDate(group, date);
         assertEquals(expected, actual);

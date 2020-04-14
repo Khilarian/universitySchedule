@@ -54,7 +54,7 @@ public class GroupDao extends Dao<Group> {
 
     @Override
     protected Object[] getFieldValues(Group group) {
-        return new Object[] { group.getName() };
+        return new Object[] { group.getName(), group.getFaculty().getId() };
     }
 
     @Override

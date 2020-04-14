@@ -37,7 +37,8 @@ class LessonServiceTest {
         Lesson lesson = new Lesson(155, subject, type, auditorium, date, timeSlot);
         expected.add(lesson);
         when(mockLessonDao.findExamsForGroup(anyInt())).thenReturn(expected);
-        Group group = new Group(7, "testGroup");
+        Faculty faculty = new Faculty(17, "faculty");
+        Group group = new Group(7, "testGroup", faculty);
         List<Lesson> actual = lessonService.findExamsForGroup(group);
         assertEquals(expected, actual);
         verify(mockLessonDao, times(1)).findExamsForGroup(eq(7));

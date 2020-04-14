@@ -42,7 +42,7 @@ class AuditoriumDaoTest {
                 (RowMapper<Auditorium>) any(RowMapper.class))).thenReturn(one, two);
         List<Auditorium> expected = Arrays.asList(new Auditorium(1, 1, 15, new Building(1, "First", "Moscow")),
                 new Auditorium(2, 2, 20, new Building(1, "First", "Moscow")));
-        Group group = new Group(1, "Best Group");
+        Group group = new Group(1, "Best Group", new Faculty("Faculty"));
         LocalDate date = LocalDate.of(2015, 3, 2);
         List<Auditorium> actual = auditoriumDao.findAuditoriumOnDate(group.getId(), date);
         assertEquals(expected, actual);
@@ -60,7 +60,7 @@ class AuditoriumDaoTest {
         auditoriumDao.add(auditorium);
         verify(mockBuilding, times(1)).getId();
         verify(mockJdbcTemplate, times(1)).queryForObject(eq(
-                "INSERT INTO auditorium a (a.number_id,a.capacity,a.building_id) VALUES (?,?,?) RETURNING auditorium_id;"),
+                "INSERT INTO auditorium a (a.auditorium_number,a.capacity,a.building_id) VALUES (?,?,?) RETURNING auditorium_id;"),
                 eq(new Object[] { 1, 35, 1 }), eq(Integer.class));
     }
 
@@ -77,10 +77,10 @@ class AuditoriumDaoTest {
         List<Auditorium> actual = auditoriumDao.addAll(Arrays.asList(data));
         assertEquals(expected, actual);
         verify(mockJdbcTemplate, times(1)).queryForObject(eq(
-                "INSERT INTO auditorium a (a.number_id,a.capacity,a.building_id) VALUES (?,?,?) RETURNING auditorium_id;"),
+                "INSERT INTO auditorium a (a.auditorium_number,a.capacity,a.building_id) VALUES (?,?,?) RETURNING auditorium_id;"),
                 eq(new Object[] { 1, 35, 1 }), eq(Integer.class));
         verify(mockJdbcTemplate, times(1)).queryForObject(eq(
-                "INSERT INTO auditorium a (a.number_id,a.capacity,a.building_id) VALUES (?,?,?) RETURNING auditorium_id;"),
+                "INSERT INTO auditorium a (a.auditorium_number,a.capacity,a.building_id) VALUES (?,?,?) RETURNING auditorium_id;"),
                 eq(new Object[] { 2, 15, 2 }), eq(Integer.class));
     }
 
