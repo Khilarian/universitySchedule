@@ -24,13 +24,13 @@ public class GroupController {
         this.groupService = groupService;
     }
 
-    @GetMapping("/allGroups")
+    @GetMapping("/getAll")
     public String findAllGroups(Model model) {
         logger.debug("findAll() groups");
         List<Group> groups = groupService.findAll();
         logger.trace("found {} groups.", groups.size());
         model.addAttribute("groups", groups);
-        return "groups/allGroups";
+        return "groups/getAll";
     }
 
 }

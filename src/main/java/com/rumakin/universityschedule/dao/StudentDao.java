@@ -65,8 +65,8 @@ public class StudentDao extends Dao<Student> {
     }
 
     @Override
-    public void remove(int id) {
-        personDao.remove(id);
+    public void delete(int id) {
+        personDao.delete(id);
     }
 
     @Override

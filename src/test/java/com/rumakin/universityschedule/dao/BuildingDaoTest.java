@@ -82,7 +82,7 @@ class BuildingDaoTest {
 
     @Test
     void removeShouldExecuteOnceWhenDbCallFine() throws SQLException {
-        buildingDao.remove(1);
+        buildingDao.delete(1);
         verify(mockJdbcTemplate, times(1))
                 .update(eq("DELETE FROM building WHERE building_id=?;"), eq(1));
     }

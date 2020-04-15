@@ -7,7 +7,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.*;
 
 @Configuration
-@ComponentScan
+@ComponentScan("com.rumakin.universityschedule")
 @PropertySource("classpath:config.properties")
 public class DatabaseConfig {
 

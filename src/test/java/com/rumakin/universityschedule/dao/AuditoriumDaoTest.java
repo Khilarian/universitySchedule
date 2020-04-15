@@ -109,7 +109,7 @@ class AuditoriumDaoTest {
 
     @Test
     void removeShouldExecuteOnceWhenDbCallFine() throws SQLException {
-        auditoriumDao.remove(1);
+        auditoriumDao.delete(1);
         verify(mockJdbcTemplate, times(1)).update(eq("DELETE FROM auditorium WHERE auditorium_id=?;"), eq(1));
     }
 

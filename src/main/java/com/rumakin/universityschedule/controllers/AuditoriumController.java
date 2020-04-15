@@ -23,13 +23,25 @@ public class AuditoriumController {
         this.auditoriumService = auditoriumService;
     }
 
-    @GetMapping("/allAuditoriums")
-    public String findAllAuditoriums(Model model) {
+    @GetMapping("/getAll")
+    public String findAll(Model model) {
         logger.debug("findAll() auditoriums");
         List<Auditorium> auditoriums = auditoriumService.findAll();
         logger.trace("found {} auditoriums.", auditoriums.size());
         model.addAttribute("auditoriums", auditoriums);
-        return "auditoriums/allAuditoriums";
+        return "auditoriums/getAll";
+    }
+    
+    @GetMapping("/find")
+    @ResponseBody
+    public Auditorium find(int id) {
+        return auditoriumService.find(id);
+    }
+    
+    @PostMapping("/add")
+    public String add(Auditorium auditorium) {
+        auditoriumService.add(auditorium);
+        return "redirect:/auditoriums/getAll";
     }
 
 }

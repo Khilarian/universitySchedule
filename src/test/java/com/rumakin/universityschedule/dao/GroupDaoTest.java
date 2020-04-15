@@ -92,7 +92,7 @@ class GroupDaoTest {
 
     @Test
     void removeShouldExecuteOnceWhenDbCallFine() throws SQLException {
-        groupDao.remove(1);
+        groupDao.delete(1);
         verify(mockJdbcTemplate, times(1)).update(eq("DELETE FROM groups WHERE group_id=?;"), eq(1));
     }
 }

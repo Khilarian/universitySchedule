@@ -11,10 +11,11 @@ import com.rumakin.universityschedule.models.Entity;
 
 public abstract class Dao<T> {
 
-    protected static final String ADD = "INSERT INTO %s %s (%s) VALUES (%s) RETURNING %s;";
+    protected static final String ADD = "INSERT INTO %s (%s) VALUES (%s) RETURNING %s;";
     protected static final String FIND_ALL = "SELECT * FROM %s;";
     protected static final String FIND_BY_ID = "SELECT * FROM %s WHERE %s=?;";
-    protected static final String REMOVE_BY_ID = "DELETE FROM %s WHERE %s=?;";
+    protected static final String DELETE_BY_ID = "DELETE FROM %s WHERE %s=?;";
+    protected static final String UPDATE = "UPDATE %s SET %s WHERE %s=?";
 
     protected JdbcTemplate jdbcTemplate;
     protected final Logger logger;
@@ -42,8 +43,8 @@ public abstract class Dao<T> {
     public T add(T entity) {
         logger.debug("add() {}", entity);
         Object[] input = getFieldValues(entity);
-        String sql = String.format(ADD, getTableName(), getTableAlias(), formatFieldsList(),
-                inputFieldPrepare(input.length), getEntityIdName());
+        String sql = String.format(ADD, getTableName(), formatFieldsList(), inputFieldPrepare(input.length),
+                getEntityIdName());
         int id = jdbcTemplate.queryForObject(sql, input, Integer.class);
         ((Entity) entity).setId(id);
         logger.trace("add() was complete for {}", entity);
@@ -74,29 +75,40 @@ public abstract class Dao<T> {
         logger.debug("findAll()");
         String sql = String.format(FIND_ALL, getTableName());
         List<T> result = jdbcTemplate.query(sql, mapRow());
-        logger.trace("findAll() found {} entry.", result.size());
+        logger.trace("findAll() found {} entries.", result.size());
         return result;
     }
 
-    public boolean remove(int id) {
-        logger.debug("remove() '{}'", id);
-        String sql = String.format(REMOVE_BY_ID, getTableName(), getEntityIdName());
+    public boolean delete(int id) {
+        logger.debug("delete() '{}'", id);
+        String sql = String.format(DELETE_BY_ID, getTableName(), getEntityIdName());
         boolean result = jdbcTemplate.update(sql, id) == 1;
         if (result) {
-            logger.trace("remove(): entry {} was removed.", id);
+            logger.trace("delete(): entry {} was removed.", id);
         } else {
-            logger.trace("remove(): entry {} was not found.", id);
+            logger.trace("delete(): entry {} was not found.", id);
         }
         return result;
     }
 
-    protected String formatFieldsList() {
-        return getFieldsNames().stream().map(a -> addAlias(getTableAlias(), a)).reduce((a, b) -> a + ',' + b)
-                .orElseThrow(() -> new InvalidEntityException(getModelClassName()));
+    public void update(T entity) {
+        logger.debug("update() {}", entity);
+        String sql = String.format(UPDATE, getTableName(), prepareFieldsForUpdate(), getEntityIdName());
+        jdbcTemplate.update(sql, ((Entity) entity).getId());
     }
 
     protected String addAlias(String alias, String text) {
         return alias + "." + text;
+    }
+
+    private String formatFieldsList() {
+        return getFieldsNames().stream().reduce((a, b) -> a + ',' + b)
+                .orElseThrow(() -> new InvalidEntityException(getModelClassName()));
+    }
+
+    private String prepareFieldsForUpdate() {
+        return getFieldsNames().stream().map(a -> a + "=").reduce((a, b) -> a + ',' + b)
+                .orElseThrow(() -> new InvalidEntityException(getModelClassName()));
     }
 
     private static String inputFieldPrepare(int size) {

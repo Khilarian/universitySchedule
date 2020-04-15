@@ -79,7 +79,7 @@ class PersonDaoTest {
 
     @Test
     void removeShouldExecuteOnceWhenDbCallFine() throws SQLException {
-        personDao.remove(1);
+        personDao.delete(1);
         verify(mockJdbcTemplate, times(1)).update(eq("DELETE FROM person WHERE person_id=?;"), eq(1));
     }
 

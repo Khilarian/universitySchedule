@@ -36,5 +36,18 @@ public class AuditoriumService {
         logger.trace("found {} auditoriums", auditoriums.size());
         return auditoriums;
     }
+    
+    public Auditorium find(int id) {
+        logger.debug("find() id {}", id);
+        Auditorium auditorium = auditoriumDao.find(id);
+        logger.trace("found {}", auditorium);
+        return auditorium;
+    }
+    
+    public void add(Auditorium auditorium) {
+        logger.debug("add() {}", auditorium);
+        int id = auditoriumDao.add(auditorium).getId();
+        logger.trace("auditorium was added, id ={}", id);
+    }
 
 }
