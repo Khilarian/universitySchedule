@@ -1,6 +1,6 @@
 package com.rumakin.universityschedule.models;
 
-public class Person implements Entity{
+public class Person implements ModelEntity{
 
     private int id;
     private String firstName;

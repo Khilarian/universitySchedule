@@ -8,9 +8,9 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
-
+<link rel="shortcut icon" src="../resources/images/favicon2.ico" th:src="@{/resources/images/favicon2.ico}">
 <title>University schedule</title>
-<link rel="icon" href="/universityschedule/images/favicon.ico" type="image/x-icon">
+
 </head>
 
 <body class="bg-secondary">
@@ -21,9 +21,9 @@
         <nav class="navbar navbar-expand-sm bg-success navbar-light">
             <ul class="navbar-nav  text-white">
                 <li class="nav-item"><a class="nav-link active" href="#">Home</a></li>
-                <li class="nav-item"><a class="nav-link" href="/universityschedule/buildings/getAll">Buildings</a></li>
-                <li class="nav-item"><a class="nav-link" href="auditoriums/getAll">Auditoriums</a></li>
-                <li class="nav-item"><a class="nav-link" href="groups/getAll">Groups</a></li>
+                <li class="nav-item"><a class="nav-link" th:href="@{/buildings/getAll}">Buildings</a></li>
+                <li class="nav-item"><a class="nav-link" th:href="@{/auditoriums/getAll}">Auditoriums</a></li>
+                <li class="nav-item"><a class="nav-link" th:href="@{/groups/getAll}">Groups</a></li>
                 <li class="nav-item"><a class="nav-link disabled" href="#"> Departments</a></li>
                 <li class="nav-item"><a class="nav-link disabled" href="#">Faculties</a></li>
             </ul>

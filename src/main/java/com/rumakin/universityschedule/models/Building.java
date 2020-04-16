@@ -1,6 +1,6 @@
 package com.rumakin.universityschedule.models;
 
-public class Building implements Entity{
+public class Building implements ModelEntity {
 
     private int id;
     private String name;
@@ -20,6 +20,14 @@ public class Building implements Entity{
     @Override
     public void setId(int id) {
         this.id = id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     @Override

@@ -1,6 +1,6 @@
 package com.rumakin.universityschedule.models;
 
-public interface Entity {
+public interface ModelEntity {
 
     void setId(int id);
 

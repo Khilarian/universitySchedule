@@ -1,6 +1,6 @@
 package com.rumakin.universityschedule.models;
 
-public class Auditorium implements Entity{
+public class Auditorium implements ModelEntity{
 
     private int id;
     private int number;

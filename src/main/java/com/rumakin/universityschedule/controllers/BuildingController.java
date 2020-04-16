@@ -1,6 +1,6 @@
 package com.rumakin.universityschedule.controllers;
 
-import java.util.List;
+import java.util.*;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,7 +35,10 @@ public class BuildingController {
     @GetMapping("/find")
     @ResponseBody
     public Building find(int id) {
-        return buildingService.find(id);
+        Building building = buildingService.find(id);
+        // model.addAttribute("building", building);
+        return building;
+
     }
 
     @PostMapping("/add")
@@ -45,14 +48,14 @@ public class BuildingController {
         return "redirect:/buildings/getAll";
     }
 
-    @PutMapping("/update")
-    public String update(String name, String address) {
-        Building building = new Building(name, address);
+    @RequestMapping(value = "/update", method = { RequestMethod.PUT, RequestMethod.GET })
+    public String update(int id, String name, String address) {
+        Building building = new Building(id, name, address);
         buildingService.update(building);
         return "redirect:/buildings/getAll";
     }
 
-    @DeleteMapping("/delete")
+    @RequestMapping(value = "/delete", method = { RequestMethod.DELETE, RequestMethod.GET })
     public String delete(int id) {
         buildingService.delete(id);
         return "redirect:/buildings/getAll";

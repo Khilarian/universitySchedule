@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.*;
 
 import com.rumakin.universityschedule.exceptions.*;
-import com.rumakin.universityschedule.models.Entity;
+import com.rumakin.universityschedule.models.ModelEntity;
 
 public abstract class Dao<T> {
 
@@ -15,7 +15,7 @@ public abstract class Dao<T> {
     protected static final String FIND_ALL = "SELECT * FROM %s;";
     protected static final String FIND_BY_ID = "SELECT * FROM %s WHERE %s=?;";
     protected static final String DELETE_BY_ID = "DELETE FROM %s WHERE %s=?;";
-    protected static final String UPDATE = "UPDATE %s SET %s WHERE %s=?";
+    protected static final String UPDATE = "UPDATE %s SET %s WHERE %s=%s";
 
     protected JdbcTemplate jdbcTemplate;
     protected final Logger logger;
@@ -46,7 +46,7 @@ public abstract class Dao<T> {
         String sql = String.format(ADD, getTableName(), formatFieldsList(), inputFieldPrepare(input.length),
                 getEntityIdName());
         int id = jdbcTemplate.queryForObject(sql, input, Integer.class);
-        ((Entity) entity).setId(id);
+        ((ModelEntity) entity).setId(id);
         logger.trace("add() was complete for {}", entity);
         return entity;
     }
@@ -92,9 +92,10 @@ public abstract class Dao<T> {
     }
 
     public void update(T entity) {
+        System.out.println("from dao:" + entity.toString());
         logger.debug("update() {}", entity);
-        String sql = String.format(UPDATE, getTableName(), prepareFieldsForUpdate(), getEntityIdName());
-        jdbcTemplate.update(sql, ((Entity) entity).getId());
+        String sql = String.format(UPDATE, getTableName(), prepareFieldsForUpdate(), getEntityIdName(),((ModelEntity) entity).getId());
+        jdbcTemplate.update(sql, getFieldValues(entity));
     }
 
     protected String addAlias(String alias, String text) {
@@ -107,7 +108,7 @@ public abstract class Dao<T> {
     }
 
     private String prepareFieldsForUpdate() {
-        return getFieldsNames().stream().map(a -> a + "=").reduce((a, b) -> a + ',' + b)
+        return getFieldsNames().stream().map(a -> a + "=?").reduce((a, b) -> a + ',' + b)
                 .orElseThrow(() -> new InvalidEntityException(getModelClassName()));
     }
 

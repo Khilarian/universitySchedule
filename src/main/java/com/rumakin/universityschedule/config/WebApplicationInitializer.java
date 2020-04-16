@@ -44,5 +44,9 @@ public class WebApplicationInitializer implements WebMvcConfigurer {
         resolver.setTemplateEngine(templateEngine());
         registry.viewResolver(resolver);
     }
+    
+    public void addResourceHandlers(final ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/resources/**").addResourceLocations("/WEB-INF/resources/");
+    }
 
 }
