@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html>
 <head>
-<div  th:insert="/fragments/common :: common_head"></div>
-<script type="text/javascript" src="../../resources/js/buildings.js" th:src="@{/resources/js/buildings.js}"></script>
-<title>Buildings</title>
+<div th:insert="/fragments/common :: common_head"></div>
+<script type="text/javascript" src="../../resources/js/faculties.js" th:src="@{/resources/js/faculties.js}"></script>
+<title>Faculties</title>
 </head>
 <body class="bg-secondary">
     <div class="container">
@@ -14,11 +14,10 @@
         <nav class="navbar navbar-expand-sm bg-success navbar-light">
             <ul class="navbar-nav  text-white">
                 <li class="nav-item"><a class="nav-link" th:href="@{/main_page}">Home</a></li>
-                <li class="nav-item"><a class="nav-link active" href="#">Buildings</a></li>
+                <li class="nav-item"><a class="nav-link" href="@{/buildings/getAll}">Buildings</a></li>
                 <li class="nav-item"><a class="nav-link" th:href="@{/auditoriums/getAll}">Auditoriums</a></li>
                 <li class="nav-item"><a class="nav-link" th:href="@{/groups/getAll}">Groups</a></li>
-                <li class="nav-item"><a class="nav-link disabled" href="#"> Departments</a></li>
-                <li class="nav-item"><a class="nav-link disabled" href="#">Faculties</a></li>
+                <li class="nav-item"><a class="nav-link active" href="#">Faculties</a></li>
             </ul>
         </nav>
     </div>
@@ -29,39 +28,33 @@
         <thead class="bg-primary text-white">
             <tr>
                 <td>Id</td>
-                <td>Building Name</td>
-                <td>Building address</td>
+                <td>Faculty Name</td>
                 <td>Edit</td>
                 <td>Delete</td>
             </tr>
         </thead>
-        <tr th:each="building:${buildings}" class="table-success">
-            <td th:text="${building.id}">Id</td>
-            <td th:text="${building.name}">Building Name</td>
-            <td th:text="${building.address}">Building Address</td>
-            <td><a th:href="@{/buildings/find/(id=${building.id})}" class="btn btn-warning">Edit</a></td>
-            <td><a th:href="@{/buildings/delete/(id=${building.id})}" class="btn btn-danger">Delete</a></td>
+        <tr th:each="faculty:${faculties}" class="table-success">
+            <td th:text="${faculty.id}">Id</td>
+            <td th:text="${faculty.name}">Faculty Name</td>
+            <td><a th:href="@{/faculties/find/(id=${faculty.id})}" class="btn btn-warning">Edit</a></td>
+            <td><a th:href="@{/faculties/delete/(id=${faculty.id})}" class="btn btn-danger">Delete</a></td>
         </tr>
     </table>
 
     <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModal" aria-hidden="true">
-        <form th:action="@{/buildings/add}" method="post">
+        <form th:action="@{/faculties/add}" method="post">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="addModal">Add building</h5>
+                        <h5 class="modal-title" id="addModal">Add faculty</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div class="modal-body">
                         <div class="form-group">
-                            <label for="recipient-name" class="col-form-label">Building Name</label> <input type="text"
+                            <label for="recipient-name" class="col-form-label">Faculty Name</label> <input type="text"
                                 class="form-control" id="addName" name="name">
-                        </div>
-                        <div class="form-group">
-                            <label for="recipient-name" class="col-form-label">Building Address</label> <input
-                                type="text" class="form-control" id="addAddress" name="address">
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -74,27 +67,23 @@
     </div>
 
     <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModal" aria-hidden="true">
-        <form th:action="@{/buildings/update}" method="put">
+        <form th:action="@{/faculties/update}" method="put">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="editModalLabel">Edit building</h5>
+                        <h5 class="modal-title" id="editModalLabel">Edit faculty</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div class="modal-body">
                         <div class="form-group">
-                            <label for="recipient-name" class="col-form-label">Building Id</label> <input type="text"
+                            <label for="recipient-name" class="col-form-label">Faculty Id</label> <input type="text"
                                 class="form-control" id="idEdit" name="id" readonly>
                         </div>
                         <div class="form-group">
-                            <label for="recipient-name" class="col-form-label">Building Name</label> <input type="text"
+                            <label for="recipient-name" class="col-form-label">Faculty Name</label> <input type="text"
                                 class="form-control" id="nameEdit" name="name">
-                        </div>
-                        <div class="form-group">
-                            <label for="recipient-name" class="col-form-label">Building Address</label> <input
-                                type="text" class="form-control" id="addressEdit" name="address">
                         </div>
                     </div>
                     <div class="modal-footer">
