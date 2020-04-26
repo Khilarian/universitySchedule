@@ -21,8 +21,7 @@
                 <li class="nav-item"><a class="nav-link" href="/universityschedule/buildings/getAll">Buildings</a></li>
                 <li class="nav-item"><a class="nav-link" href="/universityschedule/auditoriums/getAll">Auditoriums</a></li>
                 <li class="nav-item"><a class="nav-link active" href="#">Groups</a></li>
-                <li class="nav-item"><a class="nav-link disabled" href="#"> Departments</a></li>
-                <li class="nav-item"><a class="nav-link disabled" href="#">Faculties</a></li>
+                <li class="nav-item"><a class="nav-link" th:href="@{/faculties/getAll}">Faculties</a></li>
             </ul>
         </nav>
     </div>
@@ -33,14 +32,20 @@
                     <td>Id</td>
                     <td>Name</td>
                     <td>Faculty name</td>
+                    <td>Edit</td>
+                    <td>Delete</td>
                 </tr>
             </thead>
             <tr th:each="group:${groups}" class="table-success">
                 <td th:text="${group.id}">Id</td>
                 <td th:text="${group.name}">Name</td>
                 <td th:text="${group.faculty.name}">Faculty name</td>
+                <td><a th:href="@{/group/find/(id=${group.id})}" class="btn btn-warning">Edit</a></td>
+                <td><a th:href="@{/group/delete/(id=${group.id})}" class="btn btn-danger">Delete</a></td>
             </tr>
         </table>
     </div>
+    
+    
 </body>
 </html>

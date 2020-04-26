@@ -16,8 +16,7 @@
                 <li class="nav-item"><a class="nav-link" th:href="@{/buildings/getAll}">Buildings</a></li>
                 <li class="nav-item"><a class="nav-link active" href="#">Auditoriums</a></li>
                 <li class="nav-item"><a class="nav-link" th:href="@{/groups/getAll}">Groups</a></li>
-                <li class="nav-item"><a class="nav-link disabled" href="#"> Departments</a></li>
-                <li class="nav-item"><a class="nav-link disabled" href="#">Faculties</a></li>
+                <li class="nav-item"><a class="nav-link" th:href="@{/faculties/getAll}">Faculties</a></li>
             </ul>
         </nav>
     </div>
@@ -31,6 +30,8 @@
                     <td>Capacity</td>
                     <td>Building Name</td>
                     <td>Building address</td>
+                    <td>Edit</td>
+                    <td>Delete</td>
                 </tr>
             </thead>
             <tr th:each="auditorium:${auditoriums}" class="table-success">
@@ -39,6 +40,9 @@
                 <td th:text="${auditorium.capacity}">Capacity</td>
                 <td th:text="${auditorium.building.name}">Building Name</td>
                 <td th:text="${auditorium.building.address}">Building Address</td>
+                <td><a th:href="@{/auditorium/find/(id=${auditorium.id})}" class="btn btn-warning">Edit</a></td>
+                <td><a th:href="@{/auditorium/delete/(id=${auditorium.id})}" class="btn btn-danger">Delete</a></td>
+
             </tr>
         </table>
 
@@ -86,6 +90,9 @@
                 </div>
             </form>
         </div>
+
+        <div th:insert="fragments/common :: deleteEntry"></div>
+
 
     </div>
 </body>
