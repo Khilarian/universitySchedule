@@ -43,7 +43,7 @@ public class BuildingService {
     public void update(Building building) {
         logger.debug("update() {}.", building);
         buildingDao.update(building);
-        logger.trace("building was updated.");
+        logger.trace("building {} was updated.", building);
     }
     
     public void delete(int id) {

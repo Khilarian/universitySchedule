@@ -1,14 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="ISO-8859-1">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
-
-<title>Groups</title>
+<div th:insert="/fragments/common :: common_head"></div>
 </head>
 <body class="bg-secondary">
     <div class="container">
@@ -17,14 +10,17 @@
     <div>
         <nav class="navbar navbar-expand-sm bg-success navbar-light">
             <ul class="navbar-nav  text-white">
-                <li class="nav-item"><a class="nav-link" href="/universityschedule/main_page">Home</a></li>
-                <li class="nav-item"><a class="nav-link" href="/universityschedule/buildings/getAll">Buildings</a></li>
-                <li class="nav-item"><a class="nav-link" href="/universityschedule/auditoriums/getAll">Auditoriums</a></li>
+                <li class="nav-item"><a class="nav-link" th:href="@{/main_page}">Home</a></li>
+                <li class="nav-item"><a class="nav-link" th:href="@{/buildings/getAll}">Buildings</a></li>
+                <li class="nav-item"><a class="nav-link" th:href="@{/auditoriums/getAll}">Auditoriums</a></li>
                 <li class="nav-item"><a class="nav-link active" href="#">Groups</a></li>
                 <li class="nav-item"><a class="nav-link" th:href="@{/faculties/getAll}">Faculties</a></li>
             </ul>
         </nav>
     </div>
+
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addModal">Add group</button>
+
     <div>
         <table class="table table-bordered">
             <thead>
@@ -45,7 +41,98 @@
             </tr>
         </table>
     </div>
-    
-    
+
+    <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModal" aria-hidden="true">
+        <form th:action="@{/group/add}" method="post">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="addModal">Add building</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="recipient-name" class="col-form-label">Group Name</label> <input type="text"
+                                class="form-control" id="addName" name="name">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="recipient-name" class="col-form-label">
+
+                                <div class="dropdown">
+                                    <a id="selected" aria-expanded="false" aria-haspopup="true" role="button"
+                                        data-toggle="dropdown" class="dropdown-toggle">Chose faculty</a>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="#">Option 1</a></li>
+                                        <li><a href="#">Option 2</a></li>
+                                        <li><a href="#">Option 3</a></li>
+                                    </ul>
+                                </div> <span class="caret"></span>
+                            </label> <input type="text" class="form-control" id="addFaculty" name="address">
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModal" aria-hidden="true">
+        <form th:action="@{/buildings/update}" method="put">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="editModalLabel">Edit building</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="recipient-name" class="col-form-label">Group Id</label> <input type="text"
+                                class="form-control" id="idEdit" name="id" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="recipient-name" class="col-form-label">Group Name</label> <input type="text"
+                                class="form-control" id="nameEdit" name="name">
+                        </div>
+                        <div class="form-group">
+                            <label for="recipient-name" class="col-form-label">Faculty should be chosen</label> <input
+                                type="text" class="form-control" id="facultyEdit" name="address">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Save</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div th:insert="fragments/common :: deleteEntry"></div>
+
 </body>
+
+<script>
+	$('.dropdown-menu li a').click(function() {
+		$('#addFaculty').text($(this).text());
+	});
+</script>
+
+<script>
+	$(document).ready(function() {
+		$('.dropdown-menu li a').click(function() {
+			$('#addFaculty').text($(this).text());
+		});
+	});
+</script>
+
 </html>
+

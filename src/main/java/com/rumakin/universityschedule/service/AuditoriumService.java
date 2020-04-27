@@ -49,5 +49,10 @@ public class AuditoriumService {
         int id = auditoriumDao.add(auditorium).getId();
         logger.trace("auditorium was added, id ={}", id);
     }
+    
+    public void delete(int id) {
+        logger.debug("delete() id {}.", id);
+        auditoriumDao.delete(id);
+    }
 
 }

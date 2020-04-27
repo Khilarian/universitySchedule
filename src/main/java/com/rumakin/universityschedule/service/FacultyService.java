@@ -43,7 +43,7 @@ public class FacultyService {
     public void update(Faculty faculty) {
         logger.debug("update() {}.", faculty);
         facultyDao.update(faculty);
-        logger.trace("faculty was updated.");
+        logger.trace("faculty {} was updated.", faculty);
     }
 
     public void delete(int id) {

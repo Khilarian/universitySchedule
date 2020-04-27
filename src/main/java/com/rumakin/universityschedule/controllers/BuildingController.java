@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
+
 import com.rumakin.universityschedule.models.Building;
 import com.rumakin.universityschedule.service.BuildingService;
 
@@ -32,12 +34,22 @@ public class BuildingController {
         return "buildings/getAll";
     }
 
+    //this version passed tests, but don't work with update. I add it just because of tests. Maybe it can be another way to test controllers?
+//    @GetMapping("/find")
+//    @ResponseBody
+//    public ModelAndView find(int id) {
+//        Building building = buildingService.find(id);
+//        ModelAndView model = new ModelAndView("/buildings");
+//        model.addObject("building", building);
+//        return model;
+//    }
+    
+    //this version perfectly work with js and update, but doesn't pass test
     @GetMapping("/find")
     @ResponseBody
     public Building find(int id) {
         Building building = buildingService.find(id);
         return building;
-
     }
 
     @PostMapping("/add")
