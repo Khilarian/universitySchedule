@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import com.rumakin.universityschedule.models.Faculty;
 import com.rumakin.universityschedule.models.Group;
+import com.rumakin.universityschedule.service.FacultyService;
 import com.rumakin.universityschedule.service.GroupService;
 
 @Controller
@@ -18,11 +19,13 @@ public class GroupController {
 
     // maybe @Autowired here will be better than with constructor?
     private final GroupService groupService;
+    private final FacultyService facultyService;
     private final Logger logger = LoggerFactory.getLogger(GroupController.class);
 
     @Autowired
-    public GroupController(GroupService groupService) {
+    public GroupController(GroupService groupService, FacultyService facultyService) {
         this.groupService = groupService;
+        this.facultyService = facultyService;
     }
 
     @GetMapping("/getAll")
@@ -31,6 +34,8 @@ public class GroupController {
         List<Group> groups = groupService.findAll();
         logger.trace("found {} groups.", groups.size());
         model.addAttribute("groups", groups);
+        List<Faculty> faculties = facultyService.findAll();
+        model.addAttribute("faculties", faculties);
         return "groups/getAll";
     }
 
