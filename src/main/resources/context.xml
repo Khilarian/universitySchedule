@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!--copy into <Context> element in <tomcat_home>/conf/context.xml-->
-<ResourceLink
-  name="jdbc/universityDatabase"
-  global="jdbc/universityDatabase"
-  type="javax.sql.DataSource"/>
-  
