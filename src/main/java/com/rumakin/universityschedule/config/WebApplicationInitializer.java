@@ -11,7 +11,7 @@ import org.thymeleaf.spring5.view.ThymeleafViewResolver;
 @Configuration
 @ComponentScan("com.rumakin.universityschedule")
 @EnableWebMvc
-@PropertySource("classpath:config.properties")
+@PropertySource("classpath:persistence-jndi.properties")
 public class WebApplicationInitializer implements WebMvcConfigurer {
 
     private final ApplicationContext applicationContext;

@@ -65,8 +65,8 @@ public class StudentDao extends Dao<Student> {
     }
 
     @Override
-    public void delete(int id) {
-        personDao.delete(id);
+    public boolean delete(int id) {
+        return personDao.delete(id);
     }
 
     @Override
@@ -99,6 +99,21 @@ public class StudentDao extends Dao<Student> {
     @Override
     protected String getModelClassName() {
         return Student.class.getSimpleName();
+    }
+
+    private String prepareSqlAdd(String id2) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    private String prepareSqlFind(String id2) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    private String prepareSqlFindAll() {
+        // TODO Auto-generated method stub
+        return null;
     }
 
 }
