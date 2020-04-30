@@ -1,9 +1,20 @@
 package com.rumakin.universityschedule.models;
 
-public class Faculty implements ModelEntity{
+import javax.persistence.*;
 
+@Entity
+@Table
+public class Faculty implements ModelEntity {
+
+    @Id
+    @Column(name = "faculty_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+    @Column(name = "faculty_name")
     private String name;
+
+    public Faculty() {
+    }
 
     public Faculty(String name) {
         this.name = name;
@@ -17,6 +28,10 @@ public class Faculty implements ModelEntity{
     @Override
     public void setId(int id) {
         this.id = id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     @Override
@@ -39,18 +54,13 @@ public class Faculty implements ModelEntity{
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null || getClass() != obj.getClass())
-            return false;
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
         Faculty other = (Faculty) obj;
-        if (id != other.id)
-            return false;
+        if (id != other.id) return false;
         if (name == null) {
-            if (other.name != null)
-                return false;
-        } else if (!name.equals(other.name))
-            return false;
+            if (other.name != null) return false;
+        } else if (!name.equals(other.name)) return false;
         return true;
     }
 

@@ -3,6 +3,7 @@ package com.rumakin.universityschedule.dao;
 import java.sql.*;
 import java.util.*;
 
+import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.*;
 import org.springframework.stereotype.Repository;
@@ -19,8 +20,8 @@ public class PersonDao extends Dao<Person> {
     private static final String LAST_NAME = "person_last_name";
 
     @Autowired
-    public PersonDao(JdbcTemplate jdbcTemplate) {
-        super(jdbcTemplate);
+    public PersonDao(JdbcTemplate jdbcTemplate, SessionFactory sessionFactory) {
+        super(jdbcTemplate, sessionFactory);
     }
 
     @Override

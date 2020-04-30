@@ -3,6 +3,7 @@ package com.rumakin.universityschedule.dao;
 import java.sql.*;
 import java.util.*;
 
+import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.*;
 import org.springframework.stereotype.Repository;
@@ -21,8 +22,8 @@ public class GroupDao extends Dao<Group> {
     private final FacultyDao facultyDao;
 
     @Autowired
-    public GroupDao(JdbcTemplate jdbcTemplate, FacultyDao facultyDao) {
-        super(jdbcTemplate);
+    public GroupDao(JdbcTemplate jdbcTemplate, SessionFactory sessionFactory, FacultyDao facultyDao) {
+        super(jdbcTemplate, sessionFactory);
         this.facultyDao = facultyDao;
     }
 

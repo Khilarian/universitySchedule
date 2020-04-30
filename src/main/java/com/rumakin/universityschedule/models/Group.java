@@ -1,10 +1,23 @@
 package com.rumakin.universityschedule.models;
 
-public class Group implements ModelEntity{
+import javax.persistence.*;
 
+@Entity
+@Table(name = "groups")
+public class Group implements ModelEntity {
+
+    @Id
+    @Column(name = "group_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+    @Column(name = "group_id")
     private String name;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "faculty_id")
     private Faculty faculty;
+
+    public Group() {
+    }
 
     public Group(String name, Faculty faculty) {
         this.name = name;
@@ -20,6 +33,14 @@ public class Group implements ModelEntity{
     @Override
     public void setId(int id) {
         this.id = id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setFaculty(Faculty faculty) {
+        this.faculty = faculty;
     }
 
     @Override

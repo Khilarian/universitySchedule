@@ -3,6 +3,7 @@ package com.rumakin.universityschedule.dao;
 import java.sql.*;
 import java.util.*;
 
+import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.*;
 import org.springframework.stereotype.Repository;
@@ -19,8 +20,8 @@ public class BuildingDao extends Dao<Building> {
     private static final String ADDRESS = "building_address";
 
     @Autowired
-    public BuildingDao(JdbcTemplate jdbcTemplate) {
-        super(jdbcTemplate);
+    public BuildingDao(JdbcTemplate jdbcTemplate, SessionFactory sessionFactory) {
+        super(jdbcTemplate, sessionFactory);
     }
 
     @Override
@@ -45,8 +46,7 @@ public class BuildingDao extends Dao<Building> {
 
     @Override
     public RowMapper<Building> mapRow() {
-        return (ResultSet rs, int rowNumber) -> new Building(rs.getInt(ID), rs.getString(NAME),
-                rs.getString(ADDRESS));
+        return (ResultSet rs, int rowNumber) -> new Building(rs.getInt(ID), rs.getString(NAME), rs.getString(ADDRESS));
     }
 
     @Override

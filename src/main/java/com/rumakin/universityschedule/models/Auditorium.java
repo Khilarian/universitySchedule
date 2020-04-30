@@ -1,11 +1,25 @@
 package com.rumakin.universityschedule.models;
 
-public class Auditorium implements ModelEntity{
+import javax.persistence.*;
 
+@Entity
+@Table
+public class Auditorium implements ModelEntity {
+
+    @Id
+    @Column(name = "auditorium_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+    @Column(name = "auditorium_number")
     private int number;
+    @Column(name = "auditorium_capacity")
     private int capacity;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "building_id")
     private Building building;
+
+    public Auditorium() {
+    }
 
     public Auditorium(int number, int capacity, Building building) {
         this.number = number;
@@ -59,20 +73,14 @@ public class Auditorium implements ModelEntity{
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null || getClass() != obj.getClass())
-            return false;
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
         Auditorium other = (Auditorium) obj;
         if (building == null) {
-            if (other.building != null)
-                return false;
-        } else if (!building.equals(other.building))
-            return false;
-        if (capacity != other.capacity)
-            return false;
-        if (id != other.id)
-            return false;
+            if (other.building != null) return false;
+        } else if (!building.equals(other.building)) return false;
+        if (capacity != other.capacity) return false;
+        if (id != other.id) return false;
         return number == other.number;
     }
 

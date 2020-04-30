@@ -1,10 +1,22 @@
 package com.rumakin.universityschedule.models;
 
+import javax.persistence.*;
+
+@Entity
+@Table
 public class Building implements ModelEntity {
 
+    @Id
+    @Column(name = "building_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+    @Column(name = "building_name")
     private String name;
+    @Column(name = "building_address")
     private String address;
+
+    public Building() {
+    }
 
     public Building(String name, String address) {
         this.name = name;

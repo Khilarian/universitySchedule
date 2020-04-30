@@ -46,8 +46,14 @@ public class BuildingService {
         logger.trace("building {} was updated.", building);
     }
     
+//    public void delete(int id) {
+//        logger.debug("delete() id {}.", id);
+//        buildingDao.delete(id);
+//    }
+    
     public void delete(int id) {
         logger.debug("delete() id {}.", id);
-        buildingDao.delete(id);
+        Building building = buildingDao.find(id);
+        buildingDao.delete(building);
     }
 }

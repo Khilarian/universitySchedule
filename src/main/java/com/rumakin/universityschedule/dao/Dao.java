@@ -2,12 +2,14 @@ package com.rumakin.universityschedule.dao;
 
 import java.util.List;
 
+import org.hibernate.*;
 import org.slf4j.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.*;
 
 import com.rumakin.universityschedule.exceptions.*;
 import com.rumakin.universityschedule.models.ModelEntity;
+import com.rumakin.universityschedule.utils.HibernateSessionFactory;
 
 public abstract class Dao<T> {
 
@@ -18,12 +20,15 @@ public abstract class Dao<T> {
     protected static final String UPDATE = "UPDATE %s SET %s WHERE %s=%s";
 
     protected JdbcTemplate jdbcTemplate;
+    protected SessionFactory sessionFactory;
     protected final Logger logger;
+    
 
     @Autowired
-    protected Dao(JdbcTemplate jdbcTemplate) {
+    protected Dao(JdbcTemplate jdbcTemplate, SessionFactory sessionFactory) {
         this.jdbcTemplate = jdbcTemplate;
-        logger = LoggerFactory.getLogger(this.getClass());
+        this.sessionFactory = sessionFactory;
+        this.logger = LoggerFactory.getLogger(this.getClass());
     }
 
     protected abstract String getTableName();
@@ -40,14 +45,23 @@ public abstract class Dao<T> {
 
     protected abstract String getModelClassName();
 
+//    public T add(T entity) {
+//        logger.debug("add() {}", entity);
+//        Object[] input = getFieldValues(entity);
+//        String sql = String.format(ADD, getTableName(), formatFieldsList(), inputFieldPrepare(input.length),
+//                getEntityIdName());
+//        int id = jdbcTemplate.queryForObject(sql, input, Integer.class);
+//        ((ModelEntity) entity).setId(id);
+//        logger.trace("add() was complete for {}", entity);
+//        return entity;
+//    }
+    
     public T add(T entity) {
-        logger.debug("add() {}", entity);
-        Object[] input = getFieldValues(entity);
-        String sql = String.format(ADD, getTableName(), formatFieldsList(), inputFieldPrepare(input.length),
-                getEntityIdName());
-        int id = jdbcTemplate.queryForObject(sql, input, Integer.class);
-        ((ModelEntity) entity).setId(id);
-        logger.trace("add() was complete for {}", entity);
+        Session session = sessionFactory.openSession();
+        Transaction tx1 = session.beginTransaction();
+        entity = (T) session.save(entity);
+        tx1.commit();
+        session.close();
         return entity;
     }
 
@@ -89,12 +103,25 @@ public abstract class Dao<T> {
             logger.trace("delete(): entry {} was not found.", id);
         }
         return result;
+//        Transaction tx1 = session.beginTransaction();
+//        session.delete(user);
+//        tx1.commit();
+//        session.close();
+    }
+    
+    public void delete(T entity) {
+        Session session = sessionFactory.openSession();
+        Transaction transactaion = session.beginTransaction();
+        session.delete(entity);
+        transactaion.commit();
+        session.close();
     }
 
     public void update(T entity) {
         System.out.println("from dao:" + entity.toString());
         logger.debug("update() {}", entity);
-        String sql = String.format(UPDATE, getTableName(), prepareFieldsForUpdate(), getEntityIdName(),((ModelEntity) entity).getId());
+        String sql = String.format(UPDATE, getTableName(), prepareFieldsForUpdate(), getEntityIdName(),
+                ((ModelEntity) entity).getId());
         jdbcTemplate.update(sql, getFieldValues(entity));
     }
 

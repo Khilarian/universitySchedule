@@ -2,22 +2,45 @@ package com.rumakin.universityschedule.models;
 
 import java.util.*;
 
+import javax.persistence.*;
+
 import com.rumakin.universityschedule.models.enums.*;
 
 import java.time.*;
 
-public class Lesson implements ModelEntity{
+@Entity
+@Table
+public class Lesson implements ModelEntity {
 
+    @Id
+    @Column(name = "lesson_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private final Subject subject;
-    private final LessonType type;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @Column(name = "subject_id")
+    private Subject subject;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @Column(name = "lesson_type_id")
+    private LessonType type;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @Column(name = "auditorium_id")
     private Auditorium auditorium;
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "lesson_teacher", joinColumns = @JoinColumn(name = "lesson_id"), inverseJoinColumns = @JoinColumn(name = "person_id"))
     private List<Teacher> teachers = new ArrayList<>();
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "lesson_group", joinColumns = @JoinColumn(name = "lesson_id"), inverseJoinColumns = @JoinColumn(name = "group_id"))
     private List<Group> groups = new ArrayList<>();
     private LocalDate date;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @Column(name = "time_slot_id")
     private TimeSlot timeSlot;
 
+    public Lesson() {
+    }
+
     public Lesson(Subject subject, LessonType type, Auditorium auditorium, LocalDate date, TimeSlot timeSlot) {
+        this.type = null;
         this.subject = subject;
         this.type = type;
         this.auditorium = auditorium;
@@ -26,11 +49,28 @@ public class Lesson implements ModelEntity{
     }
 
     public Lesson(int id, Subject subject, LessonType type, Auditorium auditorium, LocalDate date, TimeSlot timeSlot) {
+        this.type = null;
         this.id = id;
         this.subject = subject;
         this.type = type;
         this.auditorium = auditorium;
         this.date = date;
+        this.timeSlot = timeSlot;
+    }
+
+    public void setSubject(Subject subject) {
+        this.subject = subject;
+    }
+
+    public void setType(LessonType type) {
+        this.type = type;
+    }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
+
+    public void setTimeSlot(TimeSlot timeSlot) {
         this.timeSlot = timeSlot;
     }
 
@@ -76,6 +116,7 @@ public class Lesson implements ModelEntity{
         return groups;
     }
 
+    @Temporal(TemporalType.DATE)
     public LocalDate getDate() {
         return date;
     }
@@ -101,40 +142,26 @@ public class Lesson implements ModelEntity{
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null || getClass() != obj.getClass())
-            return false;
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
         Lesson other = (Lesson) obj;
         if (auditorium == null) {
-            if (other.auditorium != null)
-                return false;
-        } else if (!auditorium.equals(other.auditorium))
-            return false;
+            if (other.auditorium != null) return false;
+        } else if (!auditorium.equals(other.auditorium)) return false;
         if (date == null) {
-            if (other.date != null)
-                return false;
-        } else if (!date.equals(other.date))
-            return false;
+            if (other.date != null) return false;
+        } else if (!date.equals(other.date)) return false;
         if (groups == null) {
-            if (other.groups != null)
-                return false;
-        } else if (!groups.equals(other.groups))
-            return false;
-        if (id != other.id)
-            return false;
+            if (other.groups != null) return false;
+        } else if (!groups.equals(other.groups)) return false;
+        if (id != other.id) return false;
         if (subject == null) {
-            if (other.subject != null)
-                return false;
-        } else if (!subject.equals(other.subject))
-            return false;
+            if (other.subject != null) return false;
+        } else if (!subject.equals(other.subject)) return false;
         if (teachers == null) {
-            if (other.teachers != null)
-                return false;
-        } else if (!teachers.equals(other.teachers))
-            return false;
-        if (timeSlot != other.timeSlot)
-            return false;
+            if (other.teachers != null) return false;
+        } else if (!teachers.equals(other.teachers)) return false;
+        if (timeSlot != other.timeSlot) return false;
         return type == other.type;
     }
 

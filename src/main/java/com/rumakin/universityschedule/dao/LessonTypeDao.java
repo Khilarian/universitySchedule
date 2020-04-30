@@ -3,6 +3,7 @@ package com.rumakin.universityschedule.dao;
 import java.sql.*;
 import java.util.*;
 
+import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.*;
 import org.springframework.stereotype.Repository;
@@ -18,8 +19,8 @@ public class LessonTypeDao extends Dao<LessonType> {
     private static final String NAME = "lesson_type_name";
 
     @Autowired
-    public LessonTypeDao(JdbcTemplate jdbcTemplate) {
-        super(jdbcTemplate);
+    public LessonTypeDao(JdbcTemplate jdbcTemplate, SessionFactory sessionFactory) {
+        super(jdbcTemplate, sessionFactory);
     }
 
     @Override

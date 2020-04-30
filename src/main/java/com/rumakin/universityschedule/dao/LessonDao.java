@@ -3,6 +3,7 @@ package com.rumakin.universityschedule.dao;
 import java.sql.*;
 import java.util.*;
 
+import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.*;
 import org.springframework.stereotype.Repository;
@@ -36,16 +37,15 @@ public class LessonDao extends Dao<Lesson> {
     private static final String FIND_GROUP_BY_LESSON_ID = "SELECT " + GROUP_ID + " FROM " + LESSON_GROUP_TABLE
             + " WHERE " + ID + "=?;";
 
-    private JdbcTemplate jdbcTemplate;
     private AuditoriumDao auditoriumDao;
     private SubjectDao subjectDao;
     private TeacherDao teacherDao;
     private GroupDao groupDao;
 
     @Autowired
-    public LessonDao(JdbcTemplate jdbcTemplate, AuditoriumDao auditoriumDao, SubjectDao subjectDao,
-            TeacherDao teacherDao, GroupDao groupDao) {
-        super(jdbcTemplate);
+    public LessonDao(JdbcTemplate jdbcTemplate, SessionFactory sessionFactory, AuditoriumDao auditoriumDao,
+            SubjectDao subjectDao, TeacherDao teacherDao, GroupDao groupDao) {
+        super(jdbcTemplate, sessionFactory);
         this.auditoriumDao = auditoriumDao;
         this.subjectDao = subjectDao;
         this.teacherDao = teacherDao;

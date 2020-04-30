@@ -1,10 +1,23 @@
 package com.rumakin.universityschedule.models;
 
-public class Subject implements ModelEntity{
+import javax.persistence.*;
 
+@Entity
+@Table
+public class Subject implements ModelEntity {
+
+    @Id
+    @Column(name = "subject_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+    @Column(name = "subject_name")
     private String name;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "faculty_id")
     private Faculty faculty;
+
+    public Subject() {
+    }
 
     public Subject(String name, Faculty faculty) {
         this.name = name;
@@ -20,6 +33,14 @@ public class Subject implements ModelEntity{
     @Override
     public void setId(int id) {
         this.id = id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setFaculty(Faculty faculty) {
+        this.faculty = faculty;
     }
 
     @Override
@@ -47,23 +68,16 @@ public class Subject implements ModelEntity{
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null || getClass() != obj.getClass())
-            return false;
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
         Subject other = (Subject) obj;
         if (faculty == null) {
-            if (other.faculty != null)
-                return false;
-        } else if (!faculty.equals(other.faculty))
-            return false;
-        if (id != other.id)
-            return false;
+            if (other.faculty != null) return false;
+        } else if (!faculty.equals(other.faculty)) return false;
+        if (id != other.id) return false;
         if (name == null) {
-            if (other.name != null)
-                return false;
-        } else if (!name.equals(other.name))
-            return false;
+            if (other.name != null) return false;
+        } else if (!name.equals(other.name)) return false;
         return true;
     }
 

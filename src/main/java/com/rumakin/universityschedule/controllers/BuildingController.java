@@ -34,7 +34,8 @@ public class BuildingController {
         return "buildings/getAll";
     }
 
-    //this version passed tests, but don't work with update. I add it just because of tests. Maybe it can be another way to test controllers?
+    // this version passed tests, but don't work with update. I add it just because
+    // of tests. Maybe it can be another way to test controllers?
 //    @GetMapping("/find")
 //    @ResponseBody
 //    public ModelAndView find(int id) {
@@ -43,8 +44,8 @@ public class BuildingController {
 //        model.addObject("building", building);
 //        return model;
 //    }
-    
-    //this version perfectly work with js and update, but doesn't pass test
+
+    // this version perfectly work with js and update, but doesn't pass test
     @GetMapping("/find")
     @ResponseBody
     public Building find(int id) {
@@ -67,6 +68,8 @@ public class BuildingController {
     }
 
     @RequestMapping(value = "/delete", method = { RequestMethod.DELETE, RequestMethod.GET })
+    // public String delete(int id) {
+    // buildingService.delete(id);
     public String delete(int id) {
         buildingService.delete(id);
         return "redirect:/buildings/getAll";

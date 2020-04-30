@@ -1,11 +1,24 @@
 package com.rumakin.universityschedule.models;
 
+import javax.persistence.*;
+
+@Entity
+@Table
 public class Student extends Person {
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "group_id")
     private Group group;
+
+    public Student() {
+    }
 
     public Student(String firstName, String lastName) {
         super(firstName, lastName);
+    }
+
+    public Student(int id, String firstName, String lastName) {
+        super(id, firstName, lastName);
     }
 
     public Student(String firstName, String lastName, Group group) {
@@ -36,16 +49,12 @@ public class Student extends Person {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (!super.equals(obj) || getClass() != obj.getClass())
-            return false;
+        if (this == obj) return true;
+        if (!super.equals(obj) || getClass() != obj.getClass()) return false;
         Student other = (Student) obj;
         if (group == null) {
-            if (other.group != null)
-                return false;
-        } else if (!group.equals(other.group))
-            return false;
+            if (other.group != null) return false;
+        } else if (!group.equals(other.group)) return false;
         return true;
     }
 

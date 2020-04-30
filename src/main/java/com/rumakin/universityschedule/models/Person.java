@@ -1,10 +1,22 @@
 package com.rumakin.universityschedule.models;
 
-public class Person implements ModelEntity{
+import javax.persistence.*;
 
+@Entity
+@Table
+public class Person implements ModelEntity {
+
+    @Id
+    @Column(name = "person_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+    @Column(name = "person_first_name")
     private String firstName;
+    @Column(name = "person_last_name")
     private String lastName;
+
+    public Person() {
+    }
 
     public Person(String firstName, String lastName) {
         this.firstName = firstName;
@@ -20,6 +32,14 @@ public class Person implements ModelEntity{
     @Override
     public void setId(int id) {
         this.id = id;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     @Override
@@ -47,23 +67,16 @@ public class Person implements ModelEntity{
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null || getClass() != obj.getClass())
-            return false;
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
         Person other = (Person) obj;
         if (firstName == null) {
-            if (other.firstName != null)
-                return false;
-        } else if (!firstName.equals(other.firstName))
-            return false;
-        if (id != other.id)
-            return false;
+            if (other.firstName != null) return false;
+        } else if (!firstName.equals(other.firstName)) return false;
+        if (id != other.id) return false;
         if (lastName == null) {
-            if (other.lastName != null)
-                return false;
-        } else if (!lastName.equals(other.lastName))
-            return false;
+            if (other.lastName != null) return false;
+        } else if (!lastName.equals(other.lastName)) return false;
         return true;
     }
 

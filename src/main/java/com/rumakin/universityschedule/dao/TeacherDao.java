@@ -3,6 +3,7 @@ package com.rumakin.universityschedule.dao;
 import java.util.Arrays;
 import java.util.List;
 
+import org.hibernate.SessionFactory;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -11,14 +12,14 @@ import com.rumakin.universityschedule.models.Teacher;
 
 @Repository
 public class TeacherDao extends Dao<Teacher> {
-    
+
     private static final String TABLE = "teacher";
     private static final String ALIAS = "t";
     private static final String ID = "person_id";
     private static final String FACULTY_ID = "faculty_id";
 
-    protected TeacherDao(JdbcTemplate jdbcTemplate) {
-        super(jdbcTemplate);
+    protected TeacherDao(JdbcTemplate jdbcTemplate, SessionFactory sessionFactory) {
+        super(jdbcTemplate, sessionFactory);
     }
 
     @Override

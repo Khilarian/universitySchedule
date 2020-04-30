@@ -3,6 +3,7 @@ package com.rumakin.universityschedule.dao;
 import java.sql.*;
 import java.util.*;
 
+import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.*;
 import org.springframework.stereotype.Repository;
@@ -18,8 +19,8 @@ public class TimeSlotDao extends Dao<TimeSlot> {
     private static final String NAME = "time_slot_name";
 
     @Autowired
-    public TimeSlotDao(JdbcTemplate jdbcTemplate) {
-        super(jdbcTemplate);
+    public TimeSlotDao(JdbcTemplate jdbcTemplate, SessionFactory sessionFactory) {
+        super(jdbcTemplate, sessionFactory);
     }
 
     @Override

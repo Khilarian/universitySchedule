@@ -4,6 +4,7 @@ import java.sql.*;
 import java.time.LocalDate;
 import java.util.*;
 
+import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.*;
 import org.springframework.stereotype.*;
@@ -23,8 +24,8 @@ public class AuditoriumDao extends Dao<Auditorium> {
     private final BuildingDao buildingDao;
 
     @Autowired
-    public AuditoriumDao(JdbcTemplate jdbcTemplate, BuildingDao buildingDao) {
-        super(jdbcTemplate);
+    public AuditoriumDao(JdbcTemplate jdbcTemplate, SessionFactory sessionFactory, BuildingDao buildingDao) {
+        super(jdbcTemplate, sessionFactory);
         this.buildingDao = buildingDao;
     }
 
