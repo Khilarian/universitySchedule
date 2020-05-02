@@ -11,6 +11,7 @@ public class Teacher extends Person {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "faculty_id")
     private Faculty faculty;
+    
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "teacher_subject", joinColumns = @JoinColumn(name = "person_id"), inverseJoinColumns = @JoinColumn(name = "subject_id"))
     private List<Subject> subjects;

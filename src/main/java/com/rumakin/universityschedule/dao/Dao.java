@@ -2,67 +2,38 @@ package com.rumakin.universityschedule.dao;
 
 import java.util.List;
 
-import org.hibernate.*;
+import javax.persistence.*;
+import javax.persistence.criteria.*;
+
 import org.slf4j.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.*;
 
 import com.rumakin.universityschedule.exceptions.*;
-import com.rumakin.universityschedule.models.ModelEntity;
-import com.rumakin.universityschedule.utils.HibernateSessionFactory;
 
 public abstract class Dao<T> {
 
-    protected static final String ADD = "INSERT INTO %s (%s) VALUES (%s) RETURNING %s;";
-    protected static final String FIND_ALL = "SELECT * FROM %s;";
-    protected static final String FIND_BY_ID = "SELECT * FROM %s WHERE %s=?;";
-    protected static final String DELETE_BY_ID = "DELETE FROM %s WHERE %s=?;";
-    protected static final String UPDATE = "UPDATE %s SET %s WHERE %s=%s";
-
-    protected JdbcTemplate jdbcTemplate;
-    protected SessionFactory sessionFactory;
-    protected final Logger logger;
-    
+    protected final EntityManagerFactory entityManagerFactory;
+    protected final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
-    protected Dao(JdbcTemplate jdbcTemplate, SessionFactory sessionFactory) {
-        this.jdbcTemplate = jdbcTemplate;
-        this.sessionFactory = sessionFactory;
-        this.logger = LoggerFactory.getLogger(this.getClass());
+    protected Dao(EntityManagerFactory entityManagerFactory) {
+        this.entityManagerFactory = entityManagerFactory;
     }
 
-    protected abstract String getTableName();
-
-    protected abstract String getTableAlias();
-
-    protected abstract String getEntityIdName();
-
-    protected abstract List<String> getFieldsNames();
-
-    protected abstract RowMapper<T> mapRow();
-
-    protected abstract Object[] getFieldValues(T entity);
+    protected abstract Class<?> getEntityClass();
 
     protected abstract String getModelClassName();
 
-//    public T add(T entity) {
-//        logger.debug("add() {}", entity);
-//        Object[] input = getFieldValues(entity);
-//        String sql = String.format(ADD, getTableName(), formatFieldsList(), inputFieldPrepare(input.length),
-//                getEntityIdName());
-//        int id = jdbcTemplate.queryForObject(sql, input, Integer.class);
-//        ((ModelEntity) entity).setId(id);
-//        logger.trace("add() was complete for {}", entity);
-//        return entity;
-//    }
-    
-    public T add(T entity) {
-        Session session = sessionFactory.openSession();
-        Transaction tx1 = session.beginTransaction();
-        entity = (T) session.save(entity);
-        tx1.commit();
-        session.close();
-        return entity;
+    protected String addAlias(String alias, String text) {
+        return alias + "." + text;
+    }
+
+    public void add(T entity) {
+        logger.debug("add() {}", entity);
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        entityManager.getTransaction().begin();
+        entityManager.persist(entity);
+        entityManager.getTransaction().commit();
     }
 
     public List<T> addAll(List<T> entities) {
@@ -74,10 +45,11 @@ public abstract class Dao<T> {
         return entities;
     }
 
+    @SuppressWarnings("unchecked")
     public T find(int id) {
         logger.debug("find() '{}'", id);
-        String sql = String.format(FIND_BY_ID, getTableName(), getEntityIdName());
-        T result = jdbcTemplate.queryForObject(sql, new Object[] { id }, mapRow());
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        T result = (T) entityManager.find(getEntityClass(), id);
         if (result == null) {
             throw new DaoException(getModelClassName() + " with id " + id + "was not found.");
         }
@@ -85,66 +57,36 @@ public abstract class Dao<T> {
         return result;
     }
 
+    @SuppressWarnings("unchecked")
     public List<T> findAll() {
         logger.debug("findAll()");
-        String sql = String.format(FIND_ALL, getTableName());
-        List<T> result = jdbcTemplate.query(sql, mapRow());
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<T> criteriaQuery = (CriteriaQuery<T>) criteriaBuilder.createQuery(getEntityClass());
+        Root<T> rootEntry = (Root<T>) criteriaQuery.from(getEntityClass());
+        CriteriaQuery<T> all = criteriaQuery.select(rootEntry);
+        TypedQuery<T> allQuery = entityManager.createQuery(all);
+        List<T> result = allQuery.getResultList();
         logger.trace("findAll() found {} entries.", result.size());
         return result;
     }
 
-    public boolean delete(int id) {
+    @SuppressWarnings("unchecked")
+    public void delete(int id) {
         logger.debug("delete() '{}'", id);
-        String sql = String.format(DELETE_BY_ID, getTableName(), getEntityIdName());
-        boolean result = jdbcTemplate.update(sql, id) == 1;
-        if (result) {
-            logger.trace("delete(): entry {} was removed.", id);
-        } else {
-            logger.trace("delete(): entry {} was not found.", id);
-        }
-        return result;
-//        Transaction tx1 = session.beginTransaction();
-//        session.delete(user);
-//        tx1.commit();
-//        session.close();
-    }
-    
-    public void delete(T entity) {
-        Session session = sessionFactory.openSession();
-        Transaction transactaion = session.beginTransaction();
-        session.delete(entity);
-        transactaion.commit();
-        session.close();
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        entityManager.getTransaction().begin();
+        T entity = (T) entityManager.find(getEntityClass(), id);
+        entityManager.remove(entity);
+        entityManager.getTransaction().commit();
     }
 
     public void update(T entity) {
-        System.out.println("from dao:" + entity.toString());
         logger.debug("update() {}", entity);
-        String sql = String.format(UPDATE, getTableName(), prepareFieldsForUpdate(), getEntityIdName(),
-                ((ModelEntity) entity).getId());
-        jdbcTemplate.update(sql, getFieldValues(entity));
-    }
-
-    protected String addAlias(String alias, String text) {
-        return alias + "." + text;
-    }
-
-    private String formatFieldsList() {
-        return getFieldsNames().stream().reduce((a, b) -> a + ',' + b)
-                .orElseThrow(() -> new InvalidEntityException(getModelClassName()));
-    }
-
-    private String prepareFieldsForUpdate() {
-        return getFieldsNames().stream().map(a -> a + "=?").reduce((a, b) -> a + ',' + b)
-                .orElseThrow(() -> new InvalidEntityException(getModelClassName()));
-    }
-
-    private static String inputFieldPrepare(int size) {
-        StringBuilder builder = new StringBuilder("?");
-        for (int i = 1; i < size; i++) {
-            builder.append(",").append("?");
-        }
-        return builder.toString();
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        entityManager.getTransaction().begin();
+        entityManager.merge(entity);
+        entityManager.getTransaction().commit();
     }
 
 }

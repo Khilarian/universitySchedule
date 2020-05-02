@@ -5,8 +5,9 @@
 </head>
 <body class="bg-secondary">
     <div class="container">
-        <H2 class="text-body">Groups information</H2>
+        <H2 class="text-body">List of groups</H2>
     </div>
+
     <div>
         <nav class="navbar navbar-expand-sm bg-success navbar-light">
             <ul class="navbar-nav  text-white">
@@ -21,33 +22,31 @@
 
     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addModal">Add group</button>
 
-    <div>
-        <table class="table table-bordered">
-            <thead>
-                <tr class="bg-primary text-white">
-                    <td>Id</td>
-                    <td>Name</td>
-                    <td>Faculty name</td>
-                    <td>Edit</td>
-                    <td>Delete</td>
-                </tr>
-            </thead>
-            <tr th:each="group:${groups}" class="table-success">
-                <td th:text="${group.id}">Id</td>
-                <td th:text="${group.name}">Name</td>
-                <td th:text="${group.faculty.name}">Faculty name</td>
-                <td><a th:href="@{/group/find/(id=${group.id})}" class="btn btn-warning">Edit</a></td>
-                <td><a th:href="@{/group/delete/(id=${group.id})}" class="btn btn-danger">Delete</a></td>
+    <table class="table table-bordered">
+        <thead class="bg-primary text-white">
+            <tr>
+                <td>Id</td>
+                <td>Group Name</td>
+                <td>Faculty name</td>
+                <td>Edit</td>
+                <td>Delete</td>
             </tr>
-        </table>
-    </div>
+        </thead>
+        <tr th:each="group:${groups}" class="table-success">
+            <td th:text="${group.id}">Id</td>
+            <td th:text="${group.name}">Name</td>
+            <td th:text="${group.faculty.name}">Faculty name</td>
+            <td><a th:href="@{/groups/find/(id=${group.id})}" class="btn btn-warning">Edit</a></td>
+            <td><a th:href="@{/groups/delete/(id=${group.id})}" class="btn btn-danger">Delete</a></td>
+        </tr>
+    </table>
 
     <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModal" aria-hidden="true">
-        <form th:action="@{/group/add}" method="post">
+        <form th:action="@{/groups/add}" method="post">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="addModal">Add building</h5>
+                        <h5 class="modal-title" id="addModal">Add group</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -57,17 +56,14 @@
                             <label for="recipient-name" class="col-form-label">Group Name</label> <input type="text"
                                 class="form-control" id="addName" name="name">
                         </div>
-
-                        <div>
-                        <label for="recipient-name" class="col-form-label">Faculty</label>
-                            <select class="form-control">
-                                <option th:value=0>Faculty not assign<option th:each="faculty : ${faculties}" th:value="${faculty.id}"
-                                    th:utext="$
-                                {faculty.name}">Faculty</option>
+                        <div class="form-group">
+                            <label for="recipient-name" class="col-form-label">Faculty</label> <select
+                                class="form-control">
+                                <option th:value=0>Faculty not assign</option>
+                                <option th:each="faculty : ${faculties}" th:value="${faculty.id}"
+                                    th:utext="${faculty.name}">Faculty</option>
                             </select>
                         </div>
-                        
-
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -79,7 +75,7 @@
     </div>
 
     <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModal" aria-hidden="true">
-        <form th:action="@{/buildings/update}" method="put">
+        <form th:action="@{/groups/update}" method="put">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">

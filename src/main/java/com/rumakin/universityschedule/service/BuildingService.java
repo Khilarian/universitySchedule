@@ -36,24 +36,26 @@ public class BuildingService {
 
     public void add(Building building) {
         logger.debug("add() {}.", building);
-        int id = buildingDao.add(building).getId();
-        logger.trace("building was added, id={}.", id);
+        // int id = buildingDao.add(building).getId();
+        // logger.trace("building was added, id={}.", id);
+        buildingDao.add(building);
+        System.out.println("Service " + building);
     }
-    
+
     public void update(Building building) {
         logger.debug("update() {}.", building);
         buildingDao.update(building);
         logger.trace("building {} was updated.", building);
     }
-    
+
 //    public void delete(int id) {
 //        logger.debug("delete() id {}.", id);
 //        buildingDao.delete(id);
 //    }
-    
+
     public void delete(int id) {
         logger.debug("delete() id {}.", id);
-        Building building = buildingDao.find(id);
-        buildingDao.delete(building);
+        System.out.println("Service " + id);
+        buildingDao.delete(id);
     }
 }

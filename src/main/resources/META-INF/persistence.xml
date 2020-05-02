@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<persistence xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence
+                                 http://xmlns.jcp.org/xml/ns/persistence/persistence_2_2.xsd" version="2.2">
+    <persistence-unit name="com.rumakin.universityschedule">
+        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+        <class>com.rumakin.universityschedule.models.Auditorium</class>
+        <class>com.rumakin.universityschedule.models.Building</class>
+        <class>com.rumakin.universityschedule.models.Faculty</class>
+        <class>com.rumakin.universityschedule.models.Group</class>
+        <class>com.rumakin.universityschedule.models.Lesson</class>
+        <class>com.rumakin.universityschedule.models.Person</class>
+        <class>com.rumakin.universityschedule.models.Student</class>
+        <class>com.rumakin.universityschedule.models.Subject</class>
+        <class>com.rumakin.universityschedule.models.Teacher</class>
+        <exclude-unlisted-classes>true</exclude-unlisted-classes>
+        <properties>
+            <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect" />
+            <!--property name="hibernate.hbm2ddl.auto" value="update" /-->
+            <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver" />
+            <property name="hibernate.show_sql" value="true"/>
+            <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost/university" />
+            <property name="javax.persistence.jdbc.user" value="tester" />
+            <property name="javax.persistence.jdbc.password" value="test" />
+            <property name="hibernate.max_fetch_depth" value="3"/>
+        </properties>
+    </persistence-unit>
+</persistence>

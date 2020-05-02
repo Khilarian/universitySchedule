@@ -22,13 +22,13 @@ public class AuditoriumService {
         this.auditoriumDao = auditoriumDao;
     }
 
-    public List<Auditorium> findAuditoriumsForGroupOnDate(Group group, LocalDate date) {
-        logger.debug("findAuditoriumsForGroupOnDate() for group{} date {}", group, date);
-        int groupId = group.getId();
-        List<Auditorium> auditoriums = auditoriumDao.findAuditoriumOnDate(groupId, date);
-        logger.trace("found {} auditoriums", auditoriums.size());
-        return auditoriums;
-    }
+//    public List<Auditorium> findAuditoriumsForGroupOnDate(Group group, LocalDate date) {
+//        logger.debug("findAuditoriumsForGroupOnDate() for group{} date {}", group, date);
+//        int groupId = group.getId();
+//        List<Auditorium> auditoriums = auditoriumDao.findAuditoriumOnDate(groupId, date);
+//        logger.trace("found {} auditoriums", auditoriums.size());
+//        return auditoriums;
+//    }
 
     public List<Auditorium> findAll() {
         logger.debug("findAll() auditoriums");
@@ -36,20 +36,24 @@ public class AuditoriumService {
         logger.trace("found {} auditoriums", auditoriums.size());
         return auditoriums;
     }
-    
+
     public Auditorium find(int id) {
         logger.debug("find() id {}", id);
         Auditorium auditorium = auditoriumDao.find(id);
         logger.trace("found {}", auditorium);
         return auditorium;
     }
-    
+
     public void add(Auditorium auditorium) {
         logger.debug("add() {}", auditorium);
-        int id = auditoriumDao.add(auditorium).getId();
-        logger.trace("auditorium was added, id ={}", id);
+//        int id = auditoriumDao.add(auditorium).getId();
+//        logger.trace("auditorium was added, id ={}", id);
     }
     
+    public void update(Auditorium auditorium) {
+        auditoriumDao.update(auditorium);
+    }
+
     public void delete(int id) {
         logger.debug("delete() id {}.", id);
         auditoriumDao.delete(id);

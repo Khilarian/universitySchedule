@@ -8,10 +8,13 @@ public class Group implements ModelEntity {
 
     @Id
     @Column(name = "group_id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "groups_seq")
+    @SequenceGenerator(name = "groups_seq", sequenceName = "groups_group_id_seq", allocationSize = 1)
     private int id;
-    @Column(name = "group_id")
+    
+    @Column(name = "group_name")
     private String name;
+    
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "faculty_id")
     private Faculty faculty;

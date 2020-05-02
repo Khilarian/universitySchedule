@@ -8,10 +8,11 @@ public class Person implements ModelEntity {
 
     @Id
     @Column(name = "person_id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+    
     @Column(name = "person_first_name")
     private String firstName;
+    
     @Column(name = "person_last_name")
     private String lastName;
 

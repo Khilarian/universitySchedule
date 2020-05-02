@@ -9,18 +9,26 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import com.rumakin.universityschedule.models.Auditorium;
+import com.rumakin.universityschedule.models.Building;
+import com.rumakin.universityschedule.models.Faculty;
+import com.rumakin.universityschedule.models.Group;
 import com.rumakin.universityschedule.service.AuditoriumService;
+import com.rumakin.universityschedule.service.BuildingService;
 
 @Controller
 @RequestMapping("/auditoriums")
 public class AuditoriumController {
 
+    private static final String REDIRECT_PAGE = "redirect:auditoriums/getAll";
+
     private final AuditoriumService auditoriumService;
+    private final BuildingService buildingService;
     private final Logger logger = LoggerFactory.getLogger(AuditoriumController.class);
 
     @Autowired
-    public AuditoriumController(AuditoriumService auditoriumService) {
+    public AuditoriumController(AuditoriumService auditoriumService, BuildingService buildingService) {
         this.auditoriumService = auditoriumService;
+        this.buildingService = buildingService;
     }
 
     @GetMapping("/getAll")
@@ -31,17 +39,32 @@ public class AuditoriumController {
         model.addAttribute("auditoriums", auditoriums);
         return "auditoriums/getAll";
     }
-    
+
     @GetMapping("/find")
     @ResponseBody
     public Auditorium find(int id) {
         return auditoriumService.find(id);
     }
-    
+
     @PostMapping("/add")
     public String add(Auditorium auditorium) {
         auditoriumService.add(auditorium);
-        return "redirect:/auditoriums/getAll";
+        return REDIRECT_PAGE;
+    }
+    
+
+    @RequestMapping(value = "/update", method = { RequestMethod.PUT, RequestMethod.GET })
+    public String update(int number, int capacity, int facultyId, String facultyName) {
+        Building building =buildingService.find(facultyId);
+        Auditorium auditorium = new Auditorium(number, capacity, building);
+        auditoriumService.update(auditorium);
+        return REDIRECT_PAGE;
+    }
+
+    @RequestMapping(value = "/delete", method = { RequestMethod.DELETE, RequestMethod.GET })
+    public String delete(int id) {
+        auditoriumService.delete(id);
+        return REDIRECT_PAGE;
     }
 
 }

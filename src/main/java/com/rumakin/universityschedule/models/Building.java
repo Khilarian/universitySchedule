@@ -8,10 +8,13 @@ public class Building implements ModelEntity {
 
     @Id
     @Column(name = "building_id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "building_seq")
+    @SequenceGenerator(name = "building_seq", sequenceName = "building_building_id_seq", allocationSize = 1)
     private int id;
+
     @Column(name = "building_name")
     private String name;
+
     @Column(name = "building_address")
     private String address;
 
@@ -42,6 +45,10 @@ public class Building implements ModelEntity {
         this.address = address;
     }
 
+//    public void setAuditoriums(List<Auditorium> auditoriums) {
+//        this.auditoriums = auditoriums;
+//    }
+
     @Override
     public int getId() {
         return id;
@@ -54,6 +61,10 @@ public class Building implements ModelEntity {
     public String getAddress() {
         return address;
     }
+
+//    public List<Auditorium> getAuditoriums() {
+//        return auditoriums;
+//    }
 
     @Override
     public int hashCode() {

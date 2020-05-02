@@ -36,8 +36,8 @@ public class GroupService {
 
     public void add(Group group) {
         logger.debug("add() {}.", group);
-        int id = groupDao.add(group).getId();
-        logger.trace("group was added, id={}.", id);
+        // int id = groupDao.add(group).getId();
+        // logger.trace("group was added, id={}.", id);
     }
 
     public void update(Group group) {

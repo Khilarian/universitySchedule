@@ -24,12 +24,12 @@ public class LessonService {
         this.lessonDao = lessonDao;
     }
 
-    public List<Lesson> findExamsForGroup(Group group) {
-        logger.debug("findExamsForGroup() for group {}", group);
-        int groupId = group.getId();
-        List<Lesson> exams = lessonDao.findExamsForGroup(groupId);
-        logger.info("found {} exams", exams.size());
-        return exams;
-    }
+//    public List<Lesson> findExamsForGroup(Group group) {
+//        logger.debug("findExamsForGroup() for group {}", group);
+//        int groupId = group.getId();
+//        List<Lesson> exams = lessonDao.findExamsForGroup(groupId);
+//        logger.info("found {} exams", exams.size());
+//        return exams;
+//    }
 
 }

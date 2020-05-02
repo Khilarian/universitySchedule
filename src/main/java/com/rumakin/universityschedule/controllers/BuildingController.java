@@ -17,6 +17,8 @@ import com.rumakin.universityschedule.service.BuildingService;
 @RequestMapping("/buildings")
 public class BuildingController {
 
+    private static final String REDIRECT_PAGE = "redirect:/buildings/getAll";
+
     private BuildingService buildingService;
     private Logger logger = LoggerFactory.getLogger(BuildingController.class);
 
@@ -54,24 +56,21 @@ public class BuildingController {
     }
 
     @PostMapping("/add")
-    public String add(String name, String address) {
-        Building building = new Building(name, address);
+    public String add(Building building) {
         buildingService.add(building);
-        return "redirect:/buildings/getAll";
+        return REDIRECT_PAGE;
     }
 
     @RequestMapping(value = "/update", method = { RequestMethod.PUT, RequestMethod.GET })
     public String update(int id, String name, String address) {
         Building building = new Building(id, name, address);
         buildingService.update(building);
-        return "redirect:/buildings/getAll";
+        return REDIRECT_PAGE;
     }
 
     @RequestMapping(value = "/delete", method = { RequestMethod.DELETE, RequestMethod.GET })
-    // public String delete(int id) {
-    // buildingService.delete(id);
     public String delete(int id) {
         buildingService.delete(id);
-        return "redirect:/buildings/getAll";
+        return REDIRECT_PAGE;
     }
 }

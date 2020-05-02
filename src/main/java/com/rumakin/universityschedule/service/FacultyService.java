@@ -36,8 +36,7 @@ public class FacultyService {
 
     public void add(Faculty faculty) {
         logger.debug("add() {}.", faculty);
-        int id = facultyDao.add(faculty).getId();
-        logger.trace("faculty was added, id={}.", id);
+        facultyDao.add(faculty);
     }
 
     public void update(Faculty faculty) {

@@ -14,26 +14,32 @@ public class Lesson implements ModelEntity {
 
     @Id
     @Column(name = "lesson_id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
     @ManyToOne(fetch = FetchType.LAZY)
-    @Column(name = "subject_id")
+    @JoinColumn(name = "subject_id")
     private Subject subject;
-    @ManyToOne(fetch = FetchType.LAZY)
-    @Column(name = "lesson_type_id")
+
+    // @ManyToOne(fetch = FetchType.LAZY)
+    // @JoinColumn(name = "lesson_type_id")
     private LessonType type;
+
     @ManyToOne(fetch = FetchType.LAZY)
-    @Column(name = "auditorium_id")
+    @JoinColumn(name = "auditorium_id")
     private Auditorium auditorium;
+
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "lesson_teacher", joinColumns = @JoinColumn(name = "lesson_id"), inverseJoinColumns = @JoinColumn(name = "person_id"))
     private List<Teacher> teachers = new ArrayList<>();
+
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "lesson_group", joinColumns = @JoinColumn(name = "lesson_id"), inverseJoinColumns = @JoinColumn(name = "group_id"))
     private List<Group> groups = new ArrayList<>();
+
     private LocalDate date;
-    @ManyToOne(fetch = FetchType.LAZY)
-    @Column(name = "time_slot_id")
+
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "time_slot_id")
     private TimeSlot timeSlot;
 
     public Lesson() {
@@ -116,7 +122,6 @@ public class Lesson implements ModelEntity {
         return groups;
     }
 
-    @Temporal(TemporalType.DATE)
     public LocalDate getDate() {
         return date;
     }

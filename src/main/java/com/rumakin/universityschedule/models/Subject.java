@@ -1,5 +1,7 @@
 package com.rumakin.universityschedule.models;
 
+import java.util.List;
+
 import javax.persistence.*;
 
 @Entity
@@ -8,13 +10,17 @@ public class Subject implements ModelEntity {
 
     @Id
     @Column(name = "subject_id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+    
     @Column(name = "subject_name")
     private String name;
+    
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "faculty_id")
     private Faculty faculty;
+    
+    @OneToMany(mappedBy = "subject")
+    List<Lesson> lessons;
 
     public Subject() {
     }

@@ -17,7 +17,8 @@ import com.rumakin.universityschedule.service.GroupService;
 @RequestMapping("/groups")
 public class GroupController {
 
-    // maybe @Autowired here will be better than with constructor?
+    private static final String REDIRECT_PAGE = "redirect:groups/getAll";
+
     private final GroupService groupService;
     private final FacultyService facultyService;
     private final Logger logger = LoggerFactory.getLogger(GroupController.class);
@@ -44,15 +45,16 @@ public class GroupController {
     public Group find(int id) {
         Group group = groupService.find(id);
         return group;
-
     }
 
     @PostMapping("/add")
-    public String add(String name, int facultyId, String facultyName) {
-        Faculty faculty = new Faculty(facultyId, facultyName);
-        Group group = new Group(name, faculty);
-        groupService.add(group);
-        return "redirect:/groups/getAll";
+    // public String add(String name, int facultyId) {
+    public String add(String name, String facultyId) {
+        System.err.println(name + " " + facultyId);
+//        Faculty faculty = facultyService.find(Integer.valueOf(args[1]));
+//        Group group = new Group(args[0], faculty);
+//        groupService.add(group);
+        return REDIRECT_PAGE;
     }
 
     @RequestMapping(value = "/update", method = { RequestMethod.PUT, RequestMethod.GET })
@@ -60,12 +62,12 @@ public class GroupController {
         Faculty faculty = new Faculty(facultyId, facultyName);
         Group group = new Group(name, faculty);
         groupService.update(group);
-        return "redirect:/groups/getAll";
+        return REDIRECT_PAGE;
     }
 
     @RequestMapping(value = "/delete", method = { RequestMethod.DELETE, RequestMethod.GET })
     public String delete(int id) {
         groupService.delete(id);
-        return "redirect:/groups/getAll";
+        return REDIRECT_PAGE;
     }
 }

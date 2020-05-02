@@ -14,6 +14,8 @@ import com.rumakin.universityschedule.service.FacultyService;
 @Controller
 @RequestMapping("/faculties")
 public class FacultyController {
+    
+    private static final String REDIRECT_PAGE="redirect:faculties/getAll";
 
     private FacultyService facultyService;
     private Logger logger = LoggerFactory.getLogger(FacultyController.class);
@@ -41,22 +43,21 @@ public class FacultyController {
     }
 
     @PostMapping("/add")
-    public String add(String name) {
-        Faculty faculty = new Faculty(name);
+    public String add(Faculty faculty) {
         facultyService.add(faculty);
-        return "redirect:/faculties/getAll";
+        return REDIRECT_PAGE;
     }
 
     @RequestMapping(value = "/update", method = { RequestMethod.PUT, RequestMethod.GET })
     public String update(int id, String name) {
         Faculty faculty = new Faculty(id, name);
         facultyService.update(faculty);
-        return "redirect:/faculties/getAll";
+        return REDIRECT_PAGE;
     }
 
     @RequestMapping(value = "/delete", method = { RequestMethod.DELETE, RequestMethod.GET })
     public String delete(int id) {
         facultyService.delete(id);
-        return "redirect:/faculties/getAll";
+        return REDIRECT_PAGE;
     }
 }

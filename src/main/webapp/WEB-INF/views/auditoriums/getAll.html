@@ -40,8 +40,8 @@
                 <td th:text="${auditorium.capacity}">Capacity</td>
                 <td th:text="${auditorium.building.name}">Building Name</td>
                 <td th:text="${auditorium.building.address}">Building Address</td>
-                <td><a th:href="@{/auditorium/find/(id=${auditorium.id})}" class="btn btn-warning">Edit</a></td>
-                <td><a th:href="@{/auditorium/delete/(id=${auditorium.id})}" class="btn btn-danger">Delete</a></td>
+                <td><a th:href="@{/auditoriums/find/(id=${auditorium.id})}" class="btn btn-warning">Edit</a></td>
+                <td><a th:href="@{/auditoriums/delete/(id=${auditorium.id})}" class="btn btn-danger">Delete</a></td>
 
             </tr>
         </table>

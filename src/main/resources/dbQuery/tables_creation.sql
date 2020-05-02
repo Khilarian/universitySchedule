@@ -14,7 +14,7 @@ building_address VARCHAR(200) NOT NULL UNIQUE
 CREATE TABLE auditorium(
 auditorium_id SERIAL PRIMARY KEY,
 auditorium_number INTEGER NOT NULL,
-capacity INTEGER NOT NULL,
+auditorium_capacity INTEGER NOT NULL,
 building_id INTEGER REFERENCES building(building_id) NOT NULL ON UPDATE CASCADE ON DELETE CASCADE
 );
 CREATE TABLE faculty(
