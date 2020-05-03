@@ -1,5 +1,9 @@
 package com.rumakin.universityschedule.dao;
 
+import java.time.LocalDate;
+import java.util.*;
+
+import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,36 +28,16 @@ public class LessonDao extends Dao<Lesson> {
     private static final String TEACHER_ID = "teacher_id";
     private static final String GROUP_ID = "group_id";
 
-    private static final String ADD_TEACHER = "INSERT INTO " + LESSON_TEACHER_TABLE + " (" + ID + "," + TEACHER_ID
-            + ") values (?,?);";
-    private static final String ADD_GROUP = "INSERT INTO " + LESSON_GROUP_TABLE + " (" + ID + "," + GROUP_ID
-            + ") values (?,?);";
-    private static final String FIND_TEACHER_BY_LESSON_ID = "SELECT " + TEACHER_ID + " FROM " + LESSON_TEACHER_TABLE
-            + " WHERE " + ID + "=?;";
-    private static final String FIND_GROUP_BY_LESSON_ID = "SELECT " + GROUP_ID + " FROM " + LESSON_GROUP_TABLE
-            + " WHERE " + ID + "=?;";
-
-    private AuditoriumDao auditoriumDao;
-    private SubjectDao subjectDao;
-    private TeacherDao teacherDao;
-    private GroupDao groupDao;
-
     @Autowired
-    public LessonDao(EntityManagerFactory entityManagerFactory, AuditoriumDao auditoriumDao, SubjectDao subjectDao,
-            TeacherDao teacherDao, GroupDao groupDao) {
+    public LessonDao(EntityManagerFactory entityManagerFactory) {
         super(entityManagerFactory);
-        this.auditoriumDao = auditoriumDao;
-        this.subjectDao = subjectDao;
-        this.teacherDao = teacherDao;
-        this.groupDao = groupDao;
     }
 
 //    public List<Lesson> findExamsForGroup(int groupId) {
 //        logger.debug("findExamsForGroup({})", groupId);
-//        String sql = "SELECT " + addAlias(ALIAS, ID) + " FROM " + TABLE + " " + ALIAS
-//                + " INNER JOIN lesson_group lg ON " + addAlias(ALIAS, ID) + "=" + addAlias("lg", ID)
-//                + " INNER JOIN lessonType lt ON " + addAlias(ALIAS, TYPE) + "=" + addAlias("lt", TYPE)
-//                + " WHERE lg.group_id=? AND lt.lesson_type_name=EXAM;";
+    String sql = "SELECT " + addAlias(ALIAS, ID) + " FROM " + TABLE + " " + ALIAS + " INNER JOIN lesson_group lg ON "
+            + addAlias(ALIAS, ID) + "=" + addAlias("lg", ID) + " INNER JOIN lessonType lt ON " + addAlias(ALIAS, TYPE)
+            + "=" + addAlias("lt", TYPE) + " WHERE lg.group_id=? AND lt.lesson_type_name=EXAM;";
 //        Object[] args = { groupId };
 //        List<Integer> examsId = jdbcTemplate.queryForList(sql, args, Integer.class);
 //        List<Lesson> exams = new ArrayList<>();
@@ -64,6 +48,28 @@ public class LessonDao extends Dao<Lesson> {
 //        logger.trace("found {}", exams.size());
 //        return exams;
 //    }
+
+    public List<Lesson> findLessonsGroupDate(int groupId, LocalDate date) {
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        logger.debug("findExamsForGroup({})", groupId);
+        String sql = "SELECT " + addAlias(ALIAS, ID) + " FROM " + TABLE + " " + ALIAS
+                + " INNER JOIN lesson_group lg ON " + addAlias(ALIAS, ID) + "=" + addAlias("lg", ID)
+                + " WHERE lg.group_id=" + groupId + " AND l.date=" + date + ";";
+        List<Lesson> lessons = (List<Lesson>) entityManager.createQuery(sql, Lesson.class);
+        return lessons;
+    }
+
+    public List<Lesson> findScheduleGroupMonth(int groupId, int monthId) {
+        return null;
+    }
+
+    public List<Lesson> findLessonsTeacherDate(int teacherId, LocalDate date) {
+        return null;
+    }
+
+    public List<Lesson> findScheduleTeacherMonth(int teacherId, int monthId) {
+        return null;
+    }
 
     @Override
     protected String getModelClassName() {

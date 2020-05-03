@@ -20,8 +20,8 @@ public class Lesson implements ModelEntity {
     @JoinColumn(name = "subject_id")
     private Subject subject;
 
-    // @ManyToOne(fetch = FetchType.LAZY)
-    // @JoinColumn(name = "lesson_type_id")
+    @Enumerated
+    @Column(columnDefinition = "serial")
     private LessonType type;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -38,8 +38,8 @@ public class Lesson implements ModelEntity {
 
     private LocalDate date;
 
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "time_slot_id")
+    @Enumerated
+    @Column(columnDefinition = "serial")
     private TimeSlot timeSlot;
 
     public Lesson() {
