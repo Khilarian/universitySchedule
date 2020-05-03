@@ -49,7 +49,7 @@
 
         <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModalLabel"
             aria-hidden="true">
-            <form th:action="@{/auditoriums/addAuditorium}" method="post">
+            <form th:action="@{/auditoriums/add}" method="post">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -69,18 +69,14 @@
                                 <label for="recipient-name" class="col-form-label">Capacity</label> <input type="text"
                                     class="form-control" id="recipient-name" name="capacity">
                             </div>
-
                             <div class="form-group">
-                                <label for="recipient-name" class="col-form-label">Building Name</label> <input
-                                    type="text" class="form-control" id="recipient-name" name="building_name">
+                                <label for="recipient-name" class="col-form-label">Building</label> <select
+                                    class="form-control">
+                                    <option th:value=0>Building not assign</option>
+                                    <option th:each="building : ${buildings}" th:value="${building.id}"
+                                        th:utext="${building.name}">Faculty</option>
+                                </select>
                             </div>
-
-                            <div class="form-group">
-                                <label for="recipient-name" class="col-form-label">Building Address</label> <input
-                                    type="text" class="form-control" id="recipient-name" name="building_address">
-                            </div>
-
-
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -90,6 +86,43 @@
                 </div>
             </form>
         </div>
+        
+        <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModal" aria-hidden="true">
+        <form th:action="@{/auditoriums/update}" method="put">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="editModalLabel">Edit auditorium</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="recipient-name" class="col-form-label">Auditorium Id</label> <input type="text"
+                                class="form-control" id="idEdit" name="id" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="recipient-name" class="col-form-label">Auditorium Number</label> <input type="text"
+                                class="form-control" id="nameEdit" name="name">
+                        </div>
+                        <div class="form-group">
+                            <label for="recipient-name" class="col-form-label">Auditorium Capacity</label> <input type="text"
+                                class="form-control" id="nameEdit" name="name">
+                        </div>
+                        <div class="form-group">
+                            <label for="recipient-name" class="col-form-label">Building should be chosen</label> <input
+                                type="text" class="form-control" id="facultyEdit" name="address">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Save</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
 
         <div th:insert="fragments/common :: deleteEntry"></div>
 

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import com.rumakin.universityschedule.dto.GroupDTO;
 import com.rumakin.universityschedule.models.Faculty;
 import com.rumakin.universityschedule.models.Group;
 import com.rumakin.universityschedule.service.FacultyService;
@@ -49,11 +50,8 @@ public class GroupController {
 
     @PostMapping("/add")
     // public String add(String name, int facultyId) {
-    public String add(String name, String facultyId) {
-        System.err.println(name + " " + facultyId);
-//        Faculty faculty = facultyService.find(Integer.valueOf(args[1]));
-//        Group group = new Group(args[0], faculty);
-//        groupService.add(group);
+    public String add(GroupDTO dto) {
+        System.err.println(dto);
         return REDIRECT_PAGE;
     }
 
