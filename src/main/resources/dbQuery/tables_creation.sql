@@ -15,7 +15,7 @@ CREATE TABLE auditorium(
 auditorium_id SERIAL PRIMARY KEY,
 auditorium_number INTEGER NOT NULL,
 auditorium_capacity INTEGER NOT NULL,
-building_id INTEGER REFERENCES building(building_id) NOT NULL ON UPDATE CASCADE ON DELETE CASCADE
+building_id INTEGER REFERENCES building(building_id) NOT NULL ON UPDATE CASCADE ON DELETE SET NULL
 );
 CREATE TABLE faculty(
 faculty_id SERIAL PRIMARY KEY,
@@ -24,7 +24,7 @@ faculty_name VARCHAR(100) NOT NULL UNIQUE
 CREATE TABLE subject(
 subject_id SERIAL PRIMARY KEY,
 subject_name VARCHAR(30) NOT NULL UNIQUE,
-faculty_id INTEGER REFERENCES faculty(faculty_id)
+faculty_id INTEGER REFERENCES faculty(faculty_id) NOT NULL ON UPDATE CASCADE ON DELETE SET NULL
 );
 CREATE TABLE person(
 person_id SERIAL PRIMARY KEY,
@@ -33,12 +33,12 @@ person_last_name VARCHAR(30) NOT NULL
 );
 CREATE TABLE teacher(
 teacher_id INTEGER REFERENCES person(person_id) ON UPDATE CASCADE ON DELETE CASCADE PRIMARY KEY,
-faculty_id INTEGER REFERENCES faculty(faculty_id) ON UPDATE CASCADE ON DELETE CASCADE
+faculty_id INTEGER REFERENCES faculty(faculty_id) ON UPDATE CASCADE ON DELETE SET NULL
 );
 CREATE TABLE groups(
 group_id SERIAL PRIMARY KEY,
 group_name VARCHAR(10) NOT NULL UNIQUE,
-faculty_id INTEGER REFERENCES faculty(faculty_id) ON UPDATE CASCADE ON DELETE CASCADE
+faculty_id INTEGER REFERENCES faculty(faculty_id) ON UPDATE CASCADE ON DELETE SET NULL
 );
 CREATE TABLE student(
 student_id INTEGER REFERENCES person(person_id) ON UPDATE CASCADE ON DELETE CASCADE PRIMARY KEY,
@@ -46,11 +46,11 @@ group_id INTEGER REFERENCES groups(group_id) ON UPDATE CASCADE ON DELETE SET NUL
 );
 CREATE TABLE lesson(
 lesson_id SERIAL PRIMARY KEY,
-subject_id INTEGER REFERENCES subject(subject_id) ON UPDATE CASCADE ON DELETE CASCADE,
-lesson_type_id INTEGER REFERENCES lesson_type(lesson_type_id) ON UPDATE CASCADE ON DELETE CASCADE,
-auditorium_id INTEGER REFERENCES auditorium(auditorium_id) ON UPDATE CASCADE ON DELETE CASCADE,
+subject_id INTEGER REFERENCES subject(subject_id) ON UPDATE CASCADE ON DELETE SET NULL,
+lesson_type_id INTEGER REFERENCES lesson_type(lesson_type_id) ON UPDATE CASCADE ON DELETE SET NULL,
+auditorium_id INTEGER REFERENCES auditorium(auditorium_id) ON UPDATE CASCADE ON DELETE SET NULL,
 date DATE,
-time_slot_id INTEGER REFERENCES time_slot(time_slot_id) ON UPDATE CASCADE ON DELETE CASCADE
+time_slot_id INTEGER REFERENCES time_slot(time_slot_id) ON UPDATE CASCADE ON DELETE SET NULL
 );
 CREATE TABLE teacher_subject(
 teacher_id INTEGER REFERENCES teacher(teacher_id) ON UPDATE CASCADE ON DELETE CASCADE,

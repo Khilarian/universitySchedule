@@ -15,7 +15,7 @@ import com.rumakin.universityschedule.service.FacultyService;
 @RequestMapping("/faculties")
 public class FacultyController {
     
-    private static final String REDIRECT_PAGE="redirect:faculties/getAll";
+    private static final String REDIRECT_PAGE="redirect:/faculties/getAll";
 
     private FacultyService facultyService;
     private Logger logger = LoggerFactory.getLogger(FacultyController.class);

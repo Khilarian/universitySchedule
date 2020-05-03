@@ -19,7 +19,7 @@ import com.rumakin.universityschedule.service.BuildingService;
 @RequestMapping("/auditoriums")
 public class AuditoriumController {
 
-    private static final String REDIRECT_PAGE = "redirect:auditoriums/getAll";
+    private static final String REDIRECT_PAGE = "redirect:/auditoriums/getAll";
 
     private final AuditoriumService auditoriumService;
     private final BuildingService buildingService;

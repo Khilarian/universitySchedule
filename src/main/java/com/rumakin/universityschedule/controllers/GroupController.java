@@ -18,7 +18,7 @@ import com.rumakin.universityschedule.service.GroupService;
 @RequestMapping("/groups")
 public class GroupController {
 
-    private static final String REDIRECT_PAGE = "redirect:groups/getAll";
+    private static final String REDIRECT_PAGE = "redirect:/groups/getAll";
 
     private final GroupService groupService;
     private final FacultyService facultyService;
@@ -43,15 +43,22 @@ public class GroupController {
 
     @GetMapping("/find")
     @ResponseBody
-    public Group find(int id) {
+    public GroupDTO find(int id) {
         Group group = groupService.find(id);
-        return group;
+        GroupDTO dto = new GroupDTO(group.getId(), group.getName(), group.getFaculty().getId());
+        System.out.println(group);
+        return dto;
     }
 
     @PostMapping("/add")
-    // public String add(String name, int facultyId) {
-    public String add(GroupDTO dto) {
-        System.err.println(dto);
+    public String add(String name, int facultyId) {
+        // public String add(Model model, @ModelAttribute("groupDto") GroupDTO dto) {
+        System.err.println(name + " " + facultyId);
+        // Faculty faculty = facultyService.find(dto.getFacultyId());
+        // Group group = new Group(dto.getName(), faculty);
+        Faculty faculty = facultyService.find(facultyId);
+        Group group = new Group(name, faculty);
+        groupService.add(group);
         return REDIRECT_PAGE;
     }
 

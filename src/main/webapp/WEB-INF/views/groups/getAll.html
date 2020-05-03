@@ -2,6 +2,7 @@
 <html>
 <head>
 <div th:insert="/fragments/common :: common_head"></div>
+<script type="text/javascript" src="../../resources/js/groups.js" th:src="@{/resources/js/groups.js}"></script>
 <title>Groups</title>
 </head>
 <body class="bg-secondary">
@@ -43,37 +44,35 @@
     </table>
 
     <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModal" aria-hidden="true">
-        <form action="#" th:action="@{/groups/add}" method="post" th:object ="${obj}">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="addModal">Add group</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
+        <form th:action="@{/groups/add}" method="post">
+            <div class=" modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addModal">Add group</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">Group Name</label> <input type="text"
+                            class="form-control" id="addName" name="name">
                     </div>
-                    <div class="modal-body">
-                        <div class="form-group">
-                            <label for="recipient-name" class="col-form-label">Group Name</label> <input type="text"
-                                class="form-control" id="addName" name="name" th:field="*{name}">
-                        </div>
-                        <div class="form-group">
-                            <label for="recipient-name" class="col-form-label">Faculty</label> 
-                           <select class="form-control" th:field="*{facultyId}">
-                                <option th:value=0>Faculty not assign</option>
-                                <option th:each="faculty : ${faculties}" th:value="${faculty.id}"
-                                    th:utext="${faculty.name}">Faculty</option>
-                            </select>
-                        </div>
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">Faculty</label> <select class="form-control">
+                            <option th:value=0>Faculty not assign</option>
+                            <option th:each="faculty : ${faculties}" th:value="${faculty.id}" th:utext="${faculty.name}">Faculty</option>
+                        </select>
+                    </div>
 
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Save</button>
-                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save</button>
                 </div>
             </div>
-        </form>
+    </div>
+    </form>
     </div>
 
     <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModal" aria-hidden="true">
@@ -96,8 +95,11 @@
                                 class="form-control" id="nameEdit" name="name">
                         </div>
                         <div class="form-group">
-                            <label for="recipient-name" class="col-form-label">Faculty should be chosen</label> <input
-                                type="text" class="form-control" id="facultyEdit" name="address">
+                            <label for="recipient-name" class="col-form-label">Faculty</label> <select
+                                class="form-control" id="facultyEdit" name="faculty">
+                                <option th:each="faculty : ${faculties}" th:value="${faculty.id}"
+                                    th:utext="${faculty.name}" th:selected="${faculty.id}==facultyEdit">Faculty</option>
+                            </select>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -112,20 +114,6 @@
     <div th:insert="fragments/common :: deleteEntry"></div>
 
 </body>
-
-<script>
-	$('.dropdown-menu li a').click(function() {
-		$('#addFaculty').text($(this).text());
-	});
-</script>
-
-<script>
-	$(document).ready(function() {
-		$('.dropdown-menu li a').click(function() {
-			$('#addFaculty').text($(this).text());
-		});
-	});
-</script>
 
 </html>
 
