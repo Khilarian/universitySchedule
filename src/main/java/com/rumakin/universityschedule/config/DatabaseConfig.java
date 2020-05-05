@@ -38,4 +38,10 @@ public class DatabaseConfig {
     public EntityManagerFactory getEntityManagerFactory() {
         return Persistence.createEntityManagerFactory("com.rumakin.universityschedule");
     }
+    
+    @Bean
+    @Scope("singleton")
+    public EntityManager getEntityManager() {
+        return getEntityManagerFactory().createEntityManager();
+    }
 }

@@ -14,12 +14,12 @@ import com.rumakin.universityschedule.exceptions.*;
 
 public abstract class Dao<T> {
 
-    protected final EntityManagerFactory entityManagerFactory;
+    protected final EntityManager entityManager;
     protected final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
-    protected Dao(EntityManagerFactory entityManagerFactory) {
-        this.entityManagerFactory = entityManagerFactory;
+    protected Dao(EntityManager entityManager) {
+        this.entityManager = entityManager;
     }
 
     protected abstract Class<?> getEntityClass();
@@ -32,7 +32,6 @@ public abstract class Dao<T> {
 
     public void add(T entity) {
         logger.debug("add() {}", entity);
-        EntityManager entityManager = entityManagerFactory.createEntityManager();
         entityManager.getTransaction().begin();
         entityManager.persist(entity);
         entityManager.getTransaction().commit();
@@ -50,7 +49,6 @@ public abstract class Dao<T> {
     @SuppressWarnings("unchecked")
     public T find(int id) {
         logger.debug("find() '{}'", id);
-        EntityManager entityManager = entityManagerFactory.createEntityManager();
         T result = (T) entityManager.find(getEntityClass(), id);
         if (result == null) {
             throw new DaoException(getModelClassName() + " with id " + id + "was not found.");
@@ -62,7 +60,6 @@ public abstract class Dao<T> {
     @SuppressWarnings("unchecked")
     public List<T> findAll() {
         logger.debug("findAll()");
-        EntityManager entityManager = entityManagerFactory.createEntityManager();
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<T> criteriaQuery = (CriteriaQuery<T>) criteriaBuilder.createQuery(getEntityClass());
         Root<T> rootEntry = (Root<T>) criteriaQuery.from(getEntityClass());
@@ -76,7 +73,6 @@ public abstract class Dao<T> {
     @SuppressWarnings("unchecked")
     public void delete(int id) {
         logger.debug("delete() '{}'", id);
-        EntityManager entityManager = entityManagerFactory.createEntityManager();
         entityManager.getTransaction().begin();
         T entity = (T) entityManager.find(getEntityClass(), id);
         entityManager.remove(entity);
@@ -85,7 +81,6 @@ public abstract class Dao<T> {
 
     public void update(T entity) {
         logger.debug("update() {}", entity);
-        EntityManager entityManager = entityManagerFactory.createEntityManager();
         entityManager.getTransaction().begin();
         entityManager.merge(entity);
         entityManager.getTransaction().commit();

@@ -1,6 +1,6 @@
 package com.rumakin.universityschedule.dao;
 
-import javax.persistence.EntityManagerFactory;
+import javax.persistence.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -11,8 +11,8 @@ import com.rumakin.universityschedule.models.*;
 public class GroupDao extends Dao<Group> {
 
     @Autowired
-    public GroupDao(EntityManagerFactory entityManagerFactory) {
-        super(entityManagerFactory);
+    public GroupDao(EntityManager entityManager) {
+        super(entityManager);
     }
 
     @Override

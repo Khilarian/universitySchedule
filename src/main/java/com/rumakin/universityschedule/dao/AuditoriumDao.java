@@ -11,8 +11,8 @@ import com.rumakin.universityschedule.models.*;
 public class AuditoriumDao extends Dao<Auditorium> {
 
     @Autowired
-    public AuditoriumDao(EntityManagerFactory entityManagerFactory) {
-        super(entityManagerFactory);
+    public AuditoriumDao(EntityManager entityManager) {
+        super(entityManager);
     }
 
 //    public List<Auditorium> findAuditoriumOnDate(int groupId, LocalDate date) {

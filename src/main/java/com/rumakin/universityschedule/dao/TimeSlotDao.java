@@ -1,6 +1,6 @@
 package com.rumakin.universityschedule.dao;
 
-import javax.persistence.EntityManagerFactory;
+import javax.persistence.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -11,8 +11,8 @@ import com.rumakin.universityschedule.models.enums.TimeSlot;
 public class TimeSlotDao extends Dao<TimeSlot> {
 
     @Autowired
-    public TimeSlotDao(EntityManagerFactory entityManagerFactory) {
-        super(entityManagerFactory);
+    public TimeSlotDao(EntityManager entityManager) {
+        super(entityManager);
     }
 
     @Override

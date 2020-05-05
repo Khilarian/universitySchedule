@@ -29,8 +29,8 @@ public class LessonDao extends Dao<Lesson> {
     private static final String GROUP_ID = "group_id";
 
     @Autowired
-    public LessonDao(EntityManagerFactory entityManagerFactory) {
-        super(entityManagerFactory);
+    public LessonDao(EntityManager entityManager) {
+        super(entityManager);
     }
 
 //    public List<Lesson> findExamsForGroup(int groupId) {
@@ -50,7 +50,6 @@ public class LessonDao extends Dao<Lesson> {
 //    }
 
     public List<Lesson> findLessonsGroupDate(int groupId, LocalDate date) {
-        EntityManager entityManager = entityManagerFactory.createEntityManager();
         logger.debug("findExamsForGroup({})", groupId);
         String sql = "SELECT " + addAlias(ALIAS, ID) + " FROM " + TABLE + " " + ALIAS
                 + " INNER JOIN lesson_group lg ON " + addAlias(ALIAS, ID) + "=" + addAlias("lg", ID)

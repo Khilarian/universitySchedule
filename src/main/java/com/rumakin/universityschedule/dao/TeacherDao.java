@@ -1,6 +1,6 @@
 package com.rumakin.universityschedule.dao;
 
-import javax.persistence.EntityManagerFactory;
+import javax.persistence.*;
 
 import org.springframework.stereotype.Repository;
 
@@ -9,8 +9,8 @@ import com.rumakin.universityschedule.models.Teacher;
 @Repository
 public class TeacherDao extends Dao<Teacher> {
 
-    protected TeacherDao(EntityManagerFactory entityManagerFactory) {
-        super(entityManagerFactory);
+    protected TeacherDao(EntityManager entityManager) {
+        super(entityManager);
     }
 
     @Override
