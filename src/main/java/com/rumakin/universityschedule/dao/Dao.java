@@ -4,9 +4,11 @@ import java.util.List;
 
 import javax.persistence.*;
 import javax.persistence.criteria.*;
+import javax.transaction.Transactional;
 
 import org.slf4j.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Propagation;
 
 import com.rumakin.universityschedule.exceptions.*;
 

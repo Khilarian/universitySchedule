@@ -5,10 +5,10 @@ import javax.persistence.EntityManagerFactory;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.stereotype.Repository;
 
-import com.rumakin.universityschedule.models.Subject;
+import com.rumakin.universityschedule.models.Course;
 
 @Repository
-public class SubjectDao extends Dao<Subject> {
+public class SubjectDao extends Dao<Course> {
 
     @Autowired
     public SubjectDao(EntityManagerFactory entityManagerFactory) {
@@ -17,12 +17,12 @@ public class SubjectDao extends Dao<Subject> {
 
     @Override
     protected String getModelClassName() {
-        return Subject.class.getSimpleName();
+        return Course.class.getSimpleName();
     }
 
     @Override
-    protected Class<Subject> getEntityClass() {
-        return Subject.class;
+    protected Class<Course> getEntityClass() {
+        return Course.class;
     }
 
 }

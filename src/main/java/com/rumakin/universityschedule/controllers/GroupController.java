@@ -8,7 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import com.rumakin.universityschedule.dto.GroupDTO;
+import com.rumakin.universityschedule.dto.GroupDto;
 import com.rumakin.universityschedule.models.Faculty;
 import com.rumakin.universityschedule.models.Group;
 import com.rumakin.universityschedule.service.FacultyService;
@@ -43,9 +43,9 @@ public class GroupController {
 
     @GetMapping("/find")
     @ResponseBody
-    public GroupDTO find(int id) {
+    public GroupDto find(int id) {
         Group group = groupService.find(id);
-        GroupDTO dto = new GroupDTO(group.getId(), group.getName(), group.getFaculty().getId());
+        GroupDto dto = new GroupDto(group.getId(), group.getName(), group.getFaculty().getId());
         System.out.println(group);
         return dto;
     }

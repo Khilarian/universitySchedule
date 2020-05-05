@@ -38,7 +38,7 @@ class LessonDaoTest {
     @Test
     void findExamsForGroupShouldExecuteOnceIfDbCallFineAndReturnListOfExamsIfAtLeastOneExists() {
         List<Lesson> expected = new ArrayList<>();
-        Subject subject = new Subject("history", new Faculty("smth"));
+        Course subject = new Course("history", new Faculty("smth"));
         Auditorium auditorium = new Auditorium(1, 5, 25, new Building(1, "First", "Canter"));
         LessonType type = LessonType.EXAM;
         LocalDate date = LocalDate.of(2020, 6, 1);

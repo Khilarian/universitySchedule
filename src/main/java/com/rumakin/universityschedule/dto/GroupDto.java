@@ -1,20 +1,20 @@
 package com.rumakin.universityschedule.dto;
 
-public class GroupDTO {
+public class GroupDto {
 
-    int id;
-    String name;
-    int facultyId;
+    private int id;
+    private String name;
+    private int facultyId;
 
-    GroupDTO() {
+    GroupDto() {
     }
 
-    public GroupDTO(int id, String name, int facultyId) {
-        this.id= id;
+    public GroupDto(int id, String name, int facultyId) {
+        this.id = id;
         this.name = name;
         this.facultyId = facultyId;
     }
-    
+
     public int getId() {
         return id;
     }
@@ -26,9 +26,9 @@ public class GroupDTO {
     public int getFacultyId() {
         return facultyId;
     }
-    
+
     public void setId(int id) {
-        this.id=id;
+        this.id = id;
     }
 
     public void setName(String name) {
@@ -58,7 +58,7 @@ public class GroupDTO {
         if (this == obj) return true;
         if (obj == null) return false;
         if (getClass() != obj.getClass()) return false;
-        GroupDTO other = (GroupDTO) obj;
+        GroupDto other = (GroupDto) obj;
         if (facultyId != other.facultyId) return false;
         if (name == null) {
             if (other.name != null) return false;

@@ -1,36 +1,33 @@
 package com.rumakin.universityschedule.models;
 
-import java.util.List;
-
 import javax.persistence.*;
 
 @Entity
 @Table
-public class Subject implements ModelEntity {
+public class Course implements ModelEntity {
 
     @Id
-    @Column(name = "subject_id")
+    @Column(name = "course_id")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "course_seq")
+    @SequenceGenerator(name = "course_seq", sequenceName = "course_course_id_seq", allocationSize = 1)
     private int id;
     
-    @Column(name = "subject_name")
+    @Column(name = "course_name")
     private String name;
     
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "faculty_id")
     private Faculty faculty;
-    
-    @OneToMany(mappedBy = "subject")
-    List<Lesson> lessons;
 
-    public Subject() {
+    public Course() {
     }
 
-    public Subject(String name, Faculty faculty) {
+    public Course(String name, Faculty faculty) {
         this.name = name;
         this.faculty = faculty;
     }
 
-    public Subject(int id, String name, Faculty faculty) {
+    public Course(int id, String name, Faculty faculty) {
         this.id = id;
         this.name = name;
         this.faculty = faculty;
@@ -76,7 +73,7 @@ public class Subject implements ModelEntity {
     public boolean equals(Object obj) {
         if (this == obj) return true;
         if (obj == null || getClass() != obj.getClass()) return false;
-        Subject other = (Subject) obj;
+        Course other = (Course) obj;
         if (faculty == null) {
             if (other.faculty != null) return false;
         } else if (!faculty.equals(other.faculty)) return false;

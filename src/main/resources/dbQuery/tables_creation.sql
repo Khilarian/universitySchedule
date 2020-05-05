@@ -21,9 +21,9 @@ CREATE TABLE faculty(
 faculty_id SERIAL PRIMARY KEY,
 faculty_name VARCHAR(100) NOT NULL UNIQUE
 );
-CREATE TABLE subject(
-subject_id SERIAL PRIMARY KEY,
-subject_name VARCHAR(30) NOT NULL UNIQUE,
+CREATE TABLE course(
+course_id SERIAL PRIMARY KEY,
+course_name VARCHAR(30) NOT NULL UNIQUE,
 faculty_id INTEGER REFERENCES faculty(faculty_id) NOT NULL ON UPDATE CASCADE ON DELETE SET NULL
 );
 CREATE TABLE person(
@@ -52,9 +52,9 @@ auditorium_id INTEGER REFERENCES auditorium(auditorium_id) ON UPDATE CASCADE ON 
 date DATE,
 time_slot_id INTEGER REFERENCES time_slot(time_slot_id) ON UPDATE CASCADE ON DELETE SET NULL
 );
-CREATE TABLE teacher_subject(
+CREATE TABLE teacher_course(
 teacher_id INTEGER REFERENCES teacher(teacher_id) ON UPDATE CASCADE ON DELETE CASCADE,
-subject_id INTEGER REFERENCES subject(subject_id) ON UPDATE CASCADE ON DELETE CASCADE
+subject_id INTEGER REFERENCES course(course_id) ON UPDATE CASCADE ON DELETE CASCADE
 );
 CREATE TABLE lesson_teacher(
 teacher_id INTEGER REFERENCES teacher(teacher_id) ON UPDATE CASCADE ON DELETE CASCADE,

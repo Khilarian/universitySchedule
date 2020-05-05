@@ -8,6 +8,8 @@ public class Person implements ModelEntity {
 
     @Id
     @Column(name = "person_id")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "person_seq")
+    @SequenceGenerator(name = "person_seq", sequenceName = "person_person_id_seq", allocationSize = 1)
     private int id;
     
     @Column(name = "person_first_name")

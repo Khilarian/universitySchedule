@@ -14,11 +14,13 @@ public class Lesson implements ModelEntity {
 
     @Id
     @Column(name = "lesson_id")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "lesson_seq")
+    @SequenceGenerator(name = "lesson_seq", sequenceName = "lesson_lesson_id_seq", allocationSize = 1)
     private int id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "subject_id")
-    private Subject subject;
+    @JoinColumn(name = "course_id")
+    private Course course;
 
     @Enumerated
     @Column(columnDefinition = "serial")
@@ -45,27 +47,27 @@ public class Lesson implements ModelEntity {
     public Lesson() {
     }
 
-    public Lesson(Subject subject, LessonType type, Auditorium auditorium, LocalDate date, TimeSlot timeSlot) {
+    public Lesson(Course course, LessonType type, Auditorium auditorium, LocalDate date, TimeSlot timeSlot) {
         this.type = null;
-        this.subject = subject;
+        this.course = course;
         this.type = type;
         this.auditorium = auditorium;
         this.date = date;
         this.timeSlot = timeSlot;
     }
 
-    public Lesson(int id, Subject subject, LessonType type, Auditorium auditorium, LocalDate date, TimeSlot timeSlot) {
+    public Lesson(int id, Course course, LessonType type, Auditorium auditorium, LocalDate date, TimeSlot timeSlot) {
         this.type = null;
         this.id = id;
-        this.subject = subject;
+        this.course = course;
         this.type = type;
         this.auditorium = auditorium;
         this.date = date;
         this.timeSlot = timeSlot;
     }
 
-    public void setSubject(Subject subject) {
-        this.subject = subject;
+    public void setSubject(Course course) {
+        this.course = course;
     }
 
     public void setType(LessonType type) {
@@ -102,8 +104,8 @@ public class Lesson implements ModelEntity {
         return id;
     }
 
-    public Subject getSubject() {
-        return subject;
+    public Course getSubject() {
+        return course;
     }
 
     public LessonType getLessonType() {
@@ -138,7 +140,7 @@ public class Lesson implements ModelEntity {
         result = prime * result + ((date == null) ? 0 : date.hashCode());
         result = prime * result + ((groups == null) ? 0 : groups.hashCode());
         result = prime * result + id;
-        result = prime * result + ((subject == null) ? 0 : subject.hashCode());
+        result = prime * result + ((course == null) ? 0 : course.hashCode());
         result = prime * result + ((teachers == null) ? 0 : teachers.hashCode());
         result = prime * result + ((timeSlot == null) ? 0 : timeSlot.hashCode());
         result = prime * result + ((type == null) ? 0 : type.hashCode());
@@ -160,9 +162,9 @@ public class Lesson implements ModelEntity {
             if (other.groups != null) return false;
         } else if (!groups.equals(other.groups)) return false;
         if (id != other.id) return false;
-        if (subject == null) {
-            if (other.subject != null) return false;
-        } else if (!subject.equals(other.subject)) return false;
+        if (course == null) {
+            if (other.course != null) return false;
+        } else if (!course.equals(other.course)) return false;
         if (teachers == null) {
             if (other.teachers != null) return false;
         } else if (!teachers.equals(other.teachers)) return false;
@@ -172,7 +174,7 @@ public class Lesson implements ModelEntity {
 
     @Override
     public String toString() {
-        return "Lesson [id=" + id + ", subject=" + subject + ", type=" + type + ", auditorium=" + auditorium
+        return "Lesson [id=" + id + ", course=" + course + ", type=" + type + ", auditorium=" + auditorium
                 + ", teachers=" + teachers + ", groups=" + groups + ", date=" + date + ", timeSlot=" + timeSlot + "]";
     }
 

@@ -10,14 +10,14 @@
         <class>com.rumakin.universityschedule.models.Lesson</class>
         <class>com.rumakin.universityschedule.models.Person</class>
         <class>com.rumakin.universityschedule.models.Student</class>
-        <class>com.rumakin.universityschedule.models.Subject</class>
+        <class>com.rumakin.universityschedule.models.Course</class>
         <class>com.rumakin.universityschedule.models.Teacher</class>
         <exclude-unlisted-classes>true</exclude-unlisted-classes>
         <properties>
             <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect" />
             <!--property name="hibernate.hbm2ddl.auto" value="update" /-->
             <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver" />
-            <property name="hibernate.show_sql" value="true"/>
+            <property name="hibernate.show_sql" value="false"/>
             <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost/university" />
             <property name="javax.persistence.jdbc.user" value="tester" />
             <property name="javax.persistence.jdbc.password" value="test" />
