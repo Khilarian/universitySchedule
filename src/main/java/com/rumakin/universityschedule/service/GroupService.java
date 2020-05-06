@@ -7,17 +7,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.rumakin.universityschedule.dao.GroupDao;
+import com.rumakin.universityschedule.dto.GroupDto;
+import com.rumakin.universityschedule.models.Faculty;
 import com.rumakin.universityschedule.models.Group;
 
 @Service
 public class GroupService {
 
     private GroupDao groupDao;
+    private FacultyService facultyService;
     private Logger logger = LoggerFactory.getLogger(GroupService.class);
 
     @Autowired
-    public GroupService(GroupDao groupDao) {
+    public GroupService(GroupDao groupDao, FacultyService facultyService) {
         this.groupDao = groupDao;
+        this.facultyService = facultyService;
     }
 
     public List<Group> findAll() {
@@ -34,10 +38,14 @@ public class GroupService {
         return group;
     }
 
-    public void add(Group group) {
-        logger.debug("add() {}.", group);
+    public void add(GroupDto groupDto) {
+        logger.debug("add() {}.", groupDto);
         // int id = groupDao.add(group).getId();
         // logger.trace("group was added, id={}.", id);
+        Faculty faculty = facultyService.find(groupDto.getFacultyId());
+        Group group = new Group(groupDto.getName(), faculty);
+        System.out.println("Service " + group);
+        groupDao.add(group);
     }
 
     public void update(Group group) {

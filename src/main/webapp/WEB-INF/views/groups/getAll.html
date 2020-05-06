@@ -44,35 +44,37 @@
     </table>
 
     <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModal" aria-hidden="true">
-        <form th:action="@{/groups/add}" method="post">
-            <div class=" modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="addModal">Add group</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label for="recipient-name" class="col-form-label">Group Name</label> <input type="text"
-                            class="form-control" id="addName" name="name">
+        <form action="#" th:action="@{/groups/add}" th:object="${group}" method="post">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="addModal">Add group</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
                     </div>
-                    <div class="form-group">
-                        <label for="recipient-name" class="col-form-label">Faculty</label> <select class="form-control">
-                            <option th:value=0>Faculty not assign</option>
-                            <option th:each="faculty : ${faculties}" th:value="${faculty.id}" th:utext="${faculty.name}">Faculty</option>
-                        </select>
-                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="recipient-name" class="col-form-label">Group Name</label> <input type="text"
+                                class="form-control" id="addName" name="name" th:field="${group.name}" required="required">
+                        </div>
+                        <div class="form-group">
+                            <label for="recipient-name" class="col-form-label">Faculty</label> <select
+                                class="form-control" th:field="${group.facultyId}">
+                                <option th:value=0>Faculty not assign</option>
+                                <option th:each="faculty : ${faculties}" th:value="${faculty.id}"
+                                    th:utext="${faculty.name}">Faculty</option>
+                            </select>
+                        </div>
 
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Save</button>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save</button>
+                    </div>
                 </div>
             </div>
-    </div>
-    </form>
+        </form>
     </div>
 
     <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModal" aria-hidden="true">
@@ -103,8 +105,8 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary">Save</button>
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save</button>
                     </div>
                 </div>
             </div>

@@ -62,8 +62,7 @@ public class BuildingController {
     }
 
     @RequestMapping(value = "/update", method = { RequestMethod.PUT, RequestMethod.GET })
-    public String update(int id, String name, String address) {
-        Building building = new Building(id, name, address);
+        public String update(Building building) {
         buildingService.update(building);
         return REDIRECT_PAGE;
     }

@@ -49,8 +49,7 @@ public class FacultyController {
     }
 
     @RequestMapping(value = "/update", method = { RequestMethod.PUT, RequestMethod.GET })
-    public String update(int id, String name) {
-        Faculty faculty = new Faculty(id, name);
+    public String update(Faculty faculty) {
         facultyService.update(faculty);
         return REDIRECT_PAGE;
     }

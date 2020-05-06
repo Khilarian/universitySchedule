@@ -1,18 +1,26 @@
 package com.rumakin.universityschedule.dto;
 
+import com.rumakin.universityschedule.models.Group;
+
 public class GroupDto {
 
     private int id;
     private String name;
     private int facultyId;
 
-    GroupDto() {
+    public GroupDto() {
     }
 
     public GroupDto(int id, String name, int facultyId) {
         this.id = id;
         this.name = name;
         this.facultyId = facultyId;
+    }
+
+    public GroupDto(Group group) {
+        this.id = group.getId();
+        this.name = group.getName();
+        this.facultyId = group.getFaculty().getId();
     }
 
     public int getId() {

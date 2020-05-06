@@ -45,20 +45,21 @@ public class GroupController {
     @ResponseBody
     public GroupDto find(int id) {
         Group group = groupService.find(id);
-        GroupDto dto = new GroupDto(group.getId(), group.getName(), group.getFaculty().getId());
-        System.out.println(group);
+        GroupDto dto = new GroupDto(group);
         return dto;
     }
 
     @PostMapping("/add")
-    public String add(String name, int facultyId) {
+    public String add(Model model, @ModelAttribute("group") GroupDto groupDto) {
         // public String add(Model model, @ModelAttribute("groupDto") GroupDTO dto) {
-        System.err.println(name + " " + facultyId);
+//        model.addAttribute("group", new GroupDto());
+//        System.err.println("Controller " + groupDto);
         // Faculty faculty = facultyService.find(dto.getFacultyId());
         // Group group = new Group(dto.getName(), faculty);
-        Faculty faculty = facultyService.find(facultyId);
-        Group group = new Group(name, faculty);
-        groupService.add(group);
+//        Faculty faculty = facultyService.find(facultyId);
+//        Group group = new Group(name, faculty);
+
+        groupService.add(groupDto);
         return REDIRECT_PAGE;
     }
 

@@ -4,11 +4,9 @@ import java.util.List;
 
 import javax.persistence.*;
 import javax.persistence.criteria.*;
-import javax.transaction.Transactional;
 
 import org.slf4j.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Propagation;
 
 import com.rumakin.universityschedule.exceptions.*;
 
@@ -82,6 +80,7 @@ public abstract class Dao<T> {
     public void update(T entity) {
         logger.debug("update() {}", entity);
         entityManager.getTransaction().begin();
+        System.out.println("Dao " + entity);
         entityManager.merge(entity);
         entityManager.getTransaction().commit();
     }

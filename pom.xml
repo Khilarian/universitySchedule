@@ -19,7 +19,7 @@
         <mockito.core.version>3.2.4</mockito.core.version>
         <mockito.junit.version>3.2.4</mockito.junit.version>
         <postgresql.version>42.2.11</postgresql.version>
-        <hibernate.version>6.0.0.Alpha5</hibernate.version>
+        <hibernate.version>5.4.15.Final</hibernate.version>
         <spring.version>5.2.5.RELEASE</spring.version>
         <slf4j.api>2.0.0-alpha1</slf4j.api>
         <logback.version>1.3.0-alpha5</logback.version>
@@ -82,7 +82,7 @@
             <version>${postgresql.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.hibernate.orm</groupId>
+            <groupId>org.hibernate</groupId>
             <artifactId>hibernate-core</artifactId>
             <version>${hibernate.version}</version>
         </dependency>
