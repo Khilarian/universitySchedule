@@ -48,6 +48,13 @@ public class GroupController {
         GroupDto dto = new GroupDto(group);
         return dto;
     }
+    
+    @GetMapping("/add")
+    public String add(Model model) {
+        GroupDto groupDto = new GroupDto();
+        model.addAttribute("group", groupDto);
+        return REDIRECT_PAGE;
+    }
 
     @PostMapping("/add")
     public String add(Model model, @ModelAttribute("group") GroupDto groupDto) {
