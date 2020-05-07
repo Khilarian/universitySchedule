@@ -35,8 +35,10 @@ public class AuditoriumController {
     public String findAll(Model model) {
         logger.debug("findAll() auditoriums");
         List<Auditorium> auditoriums = auditoriumService.findAll();
+        List<Building> buildings = buildingService.findAll();
         logger.trace("found {} auditoriums.", auditoriums.size());
         model.addAttribute("auditoriums", auditoriums);
+        model.addAttribute("buildings", buildings);
         return "auditoriums/getAll";
     }
 
@@ -51,11 +53,10 @@ public class AuditoriumController {
         auditoriumService.add(auditorium);
         return REDIRECT_PAGE;
     }
-    
 
     @RequestMapping(value = "/update", method = { RequestMethod.PUT, RequestMethod.GET })
     public String update(int number, int capacity, int facultyId, String facultyName) {
-        Building building =buildingService.find(facultyId);
+        Building building = buildingService.find(facultyId);
         Auditorium auditorium = new Auditorium(number, capacity, building);
         auditoriumService.update(auditorium);
         return REDIRECT_PAGE;

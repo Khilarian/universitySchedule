@@ -2,6 +2,7 @@
 <html>
 <head>
 <div th:insert="/fragments/common :: common_head"></div>
+<script type="text/javascript" src="../../resources/js/auditoriums.js" th:src="@{/resources/js/auditoriums.js}"></script>
 <title>Auditoriums</title>
 </head>
 <body class="bg-secondary">
@@ -104,15 +105,18 @@
                         </div>
                         <div class="form-group">
                             <label for="recipient-name" class="col-form-label">Auditorium Number</label> <input type="text"
-                                class="form-control" id="nameEdit" name="name">
+                                class="form-control" id="numberEdit" name="name">
                         </div>
                         <div class="form-group">
                             <label for="recipient-name" class="col-form-label">Auditorium Capacity</label> <input type="text"
-                                class="form-control" id="nameEdit" name="name">
+                                class="form-control" id="capacityEdit" name="name">
                         </div>
                         <div class="form-group">
-                            <label for="recipient-name" class="col-form-label">Building should be chosen</label> <input
-                                type="text" class="form-control" id="facultyEdit" name="address">
+                            <label for="recipient-name" class="col-form-label">Building</label> <select
+                                class="form-control" id="buildingEdit" name="faculty">
+                                <option th:each="building : ${buildings}" th:value="${building.id}"
+                                    th:utext="${building.name}" th:selected="${building.id}==buildingEdit">Faculty</option>
+                            </select>
                         </div>
                     </div>
                     <div class="modal-footer">

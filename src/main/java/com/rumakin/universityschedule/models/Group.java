@@ -2,6 +2,8 @@ package com.rumakin.universityschedule.models;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 @Entity
 @Table(name = "groups")
 public class Group implements ModelEntity {
@@ -17,6 +19,7 @@ public class Group implements ModelEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "faculty_id")
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Faculty faculty;
 
     public Group() {
