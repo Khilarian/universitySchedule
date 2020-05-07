@@ -1,7 +1,5 @@
 package com.rumakin.universityschedule.dao;
 
-import javax.persistence.*;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -11,8 +9,7 @@ import com.rumakin.universityschedule.models.Building;
 public class BuildingDao extends Dao<Building> {
 
     @Autowired
-    public BuildingDao(EntityManager entityManager) {
-        super(entityManager);
+    public BuildingDao() {
     }
 
     @Override

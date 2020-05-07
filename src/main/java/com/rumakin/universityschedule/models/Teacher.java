@@ -5,7 +5,7 @@ import java.util.*;
 import javax.persistence.*;
 
 @Entity
-@Table
+@Table(name = "teacher")
 public class Teacher extends Person {
 
     @ManyToOne(fetch = FetchType.LAZY)

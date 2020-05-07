@@ -3,9 +3,6 @@ package com.rumakin.universityschedule.dao;
 import java.time.LocalDate;
 import java.util.*;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -29,8 +26,7 @@ public class LessonDao extends Dao<Lesson> {
     private static final String GROUP_ID = "group_id";
 
     @Autowired
-    public LessonDao(EntityManager entityManager) {
-        super(entityManager);
+    public LessonDao() {
     }
 
 //    public List<Lesson> findExamsForGroup(int groupId) {

@@ -3,7 +3,7 @@ package com.rumakin.universityschedule.models;
 import javax.persistence.*;
 
 @Entity
-@Table
+@Table(name = "student")
 public class Student extends Person {
 
     @ManyToOne(fetch = FetchType.LAZY)

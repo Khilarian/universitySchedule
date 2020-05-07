@@ -12,13 +12,11 @@ import com.rumakin.universityschedule.exceptions.*;
 
 public abstract class Dao<T> {
 
-    protected final EntityManager entityManager;
+    
     protected final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
-    protected Dao(EntityManager entityManager) {
-        this.entityManager = entityManager;
-    }
+    protected EntityManager entityManager;
 
     protected abstract Class<?> getEntityClass();
 

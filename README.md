@@ -6,3 +6,5 @@ Students or teachers can get their timetable for a day or for a month.
 2020-04-13: Start to adding Spring MVC/Thymeleaf/Bootstrap
 2020-04-29: Add jndi, put config files for Tomcat into resorces
 2020-04-30: Start to implement Hibernate instead of Spring JDBC
+2020-05-06: Hibernate implemented
+2020-05-07: Start project migration to Spring Boot
