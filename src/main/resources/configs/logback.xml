@@ -12,7 +12,7 @@
     <appender name="FILE"
         class="ch.qos.logback.core.FileAppender">
 
-        <file>D:/Java/logs/university.log</file>
+        <file>../logs/university.log</file>
         <append>true</append>
         <encoder>
             <pattern>%date %-5level [%thread] %logger{10} [%file :
