@@ -31,3 +31,19 @@ spring:
             ddl-auto: none
         database-platform: org.hibernate.dialect.PostgreSQLDialect
         show-sql: true
+        
+logging:
+    path: logs
+    file: ${logging.path}/log.log
+    level:
+        root: info
+        com.rumakin.universityschedule: debug
+
+    pattern:
+        file: "%d{dd-MM-yyyy HH:mm:ss.SSS} [%thread] %-5level [%file :%line] - %msg%n"        
+        console: "%d{dd-MM-yyyy HH:mm:ss.SSS} [%thread] %-5level [%file :%line] -%msg%n"
+        
+        
+        
+        
+        
