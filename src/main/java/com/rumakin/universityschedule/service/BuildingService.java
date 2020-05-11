@@ -22,40 +22,31 @@ public class BuildingService {
 
     public List<Building> findAll() {
         logger.debug("findAll() buildings.");
-        List<Building> buildings = buildingDao.findAll();
+        List<Building> buildings = (List<Building>) buildingDao.findAll();
         logger.trace("found {} buildings.", buildings.size());
         return buildings;
     }
 
     public Building find(int id) {
         logger.debug("find() id {}.", id);
-        Building building = buildingDao.find(id);
+        Building building = buildingDao.findById(id).get();
         logger.trace("found {}.", building);
         return building;
     }
 
     public void add(Building building) {
         logger.debug("add() {}.", building);
-        // int id = buildingDao.add(building).getId();
-        // logger.trace("building was added, id={}.", id);
-        buildingDao.add(building);
-        System.out.println("Service " + building);
+        buildingDao.save(building);
     }
 
     public void update(Building building) {
         logger.debug("update() {}.", building);
-        buildingDao.update(building);
+        buildingDao.save(building);
         logger.trace("building {} was updated.", building);
     }
 
-//    public void delete(int id) {
-//        logger.debug("delete() id {}.", id);
-//        buildingDao.delete(id);
-//    }
-
     public void delete(int id) {
         logger.debug("delete() id {}.", id);
-        System.out.println("Service " + id);
-        buildingDao.delete(id);
+        buildingDao.deleteById(id);
     }
 }

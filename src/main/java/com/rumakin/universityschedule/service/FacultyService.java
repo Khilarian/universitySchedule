@@ -22,31 +22,31 @@ public class FacultyService {
 
     public List<Faculty> findAll() {
         logger.debug("findAll() facultys.");
-        List<Faculty> facultys = facultyDao.findAll();
+        List<Faculty> facultys = (List<Faculty>) facultyDao.findAll();
         logger.trace("found {} faculties.", facultys.size());
         return facultys;
     }
 
     public Faculty find(int id) {
         logger.debug("find() id {}.", id);
-        Faculty faculty = facultyDao.find(id);
+        Faculty faculty = facultyDao.findById(id).get();
         logger.trace("found {}.", faculty);
         return faculty;
     }
 
     public void add(Faculty faculty) {
         logger.debug("add() {}.", faculty);
-        facultyDao.add(faculty);
+        facultyDao.save(faculty);
     }
 
     public void update(Faculty faculty) {
         logger.debug("update() {}.", faculty);
-        facultyDao.update(faculty);
+        facultyDao.save(faculty);
         logger.trace("faculty {} was updated.", faculty);
     }
 
     public void delete(int id) {
         logger.debug("delete() id {}.", id);
-        facultyDao.delete(id);
+        facultyDao.deleteById(id);
     }
 }

@@ -23,6 +23,7 @@
     </div>
 
     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addModal">Add group</button>
+    <a href="/groups/add">Add a new group</a>
 
     <table class="table table-bordered">
         <thead class="bg-primary text-white">
@@ -37,14 +38,14 @@
         <tr th:each="group:${groups}" class="table-success">
             <td th:text="${group.id}">Id</td>
             <td th:text="${group.name}">Name</td>
-            <td th:text="${group.faculty.name}">Faculty name</td>
+            <td th:text="${group.facultyName}">Faculty name</td>
             <td><a th:href="@{/groups/find/(id=${group.id})}" class="btn btn-warning">Edit</a></td>
             <td><a th:href="@{/groups/delete/(id=${group.id})}" class="btn btn-danger">Delete</a></td>
         </tr>
     </table>
 
-    <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModal" aria-hidden="true">
-        <form action="#" th:action="@{/groups/add}" th:object="${group}" method="post">
+    <!-- div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModal" aria-hidden="true">
+        <form action="#" th:action="@{/groups/add}" th:object="${groupDto}" method="post">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -55,17 +56,19 @@
                     </div>
                     <div class="modal-body">
                         <div class="form-group">
-                            <label for="recipient-name" class="col-form-label">Group Name</label> <input type="text"
-                                class="form-control" id="addName" name="name" th:field="${group.name}" required="required">
+                            <label for="name" class="col-form-label">Group Name</label> <input type="text"
+                                class="form-control" id="addName" th:field="*{name}" placeholder=" Group Name">
                         </div>
                         <div class="form-group">
-                            <label for="recipient-name" class="col-form-label">Faculty</label> <select
-                                class="form-control" th:field="${group.facultyId}">
+                            <label for="faculyId" class="col-form-label">Faculty</label> <select
+                                class="form-control">
                                 <option th:value=0>Faculty not assign</option>
                                 <option th:each="faculty : ${faculties}" th:value="${faculty.id}"
-                                    th:utext="${faculty.name}">Faculty</option>
+                                    th:utext="${faculty.name}" th:field="*{facultyId}" id="addFacultyId" placeholder="Faculty">Faculty</option>
                             </select>
                         </div>
+                                              
+                      
 
                     </div>
                     <div class="modal-footer">
@@ -75,7 +78,7 @@
                 </div>
             </div>
         </form>
-    </div>
+    </div-->
 
     <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModal" aria-hidden="true">
         <form th:action="@{/groups/update}" method="put">

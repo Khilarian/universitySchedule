@@ -1,25 +1,9 @@
-package com.rumakin.universityschedule.dao;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
-
-import com.rumakin.universityschedule.models.enums.LessonType;
-
-@Repository
-public class LessonTypeDao extends Dao<LessonType> {
-
-    @Autowired
-    public LessonTypeDao() {
-    }
-
-    @Override
-    protected String getModelClassName() {
-        return LessonType.class.getSimpleName();
-    }
-
-    @Override
-    protected Class<LessonType> getEntityClass() {
-        return LessonType.class;
-    }
-
-}
+//package com.rumakin.universityschedule.dao;
+//
+//import org.springframework.stereotype.Repository;
+//
+//import com.rumakin.universityschedule.models.enums.LessonType;
+//
+//@Repository
+//public interface LessonTypeDao extends Dao<LessonType, Integer> {
+//}

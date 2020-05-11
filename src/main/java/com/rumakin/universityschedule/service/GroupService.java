@@ -1,6 +1,7 @@
 package com.rumakin.universityschedule.service;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 import org.slf4j.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,38 +25,43 @@ public class GroupService {
         this.facultyService = facultyService;
     }
 
-    public List<Group> findAll() {
+    public List<GroupDto> findAll() {
         logger.debug("findAll() starts");
-        List<Group> groups = groupDao.findAll();
+        List<Group> groups = (List<Group>) groupDao.findAll();
         logger.trace("found {} groups.", groups.size());
-        return groups;
+        List<GroupDto> groupDtos = groups.stream().map(g-> new GroupDto(g)).collect(Collectors.toList());
+        return groupDtos;
     }
 
-    public Group find(int id) {
+    public GroupDto find(int id) {
         logger.debug("find() id {}.", id);
-        Group group = groupDao.find(id);
+        Group group = groupDao.findById(id).get();
         logger.trace("found {}.", group);
-        return group;
+        GroupDto groupDto= new GroupDto(group);
+        return groupDto;
     }
 
     public void add(GroupDto groupDto) {
         logger.debug("add() {}.", groupDto);
-        // int id = groupDao.add(group).getId();
-        // logger.trace("group was added, id={}.", id);
         Faculty faculty = facultyService.find(groupDto.getFacultyId());
         Group group = new Group(groupDto.getName(), faculty);
-        System.out.println("Service " + group);
-        groupDao.add(group);
+        groupDao.save(group);
     }
 
-    public void update(Group group) {
+    public void update(GroupDto groupDto) {
+        Faculty faculty = facultyService.find(groupDto.getFacultyId());
+        Group group = new Group(groupDto.getId(), groupDto.getName(), faculty);
         logger.debug("update() {}.", group);
-        groupDao.update(group);
+        groupDao.save(group);
         logger.trace("grup {} was updated.", group);
     }
 
     public void delete(int id) {
         logger.debug("delete() id {}.", id);
-        groupDao.delete(id);
+        groupDao.deleteById(id);
+    }
+    
+    public List<Faculty> getFaculties(){
+        return facultyService.findAll();
     }
 }

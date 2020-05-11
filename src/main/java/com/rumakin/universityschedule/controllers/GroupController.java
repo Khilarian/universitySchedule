@@ -2,10 +2,13 @@ package com.rumakin.universityschedule.controllers;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.slf4j.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import com.rumakin.universityschedule.dto.GroupDto;
@@ -21,22 +24,20 @@ public class GroupController {
     private static final String REDIRECT_PAGE = "redirect:/groups/getAll";
 
     private final GroupService groupService;
-    private final FacultyService facultyService;
     private final Logger logger = LoggerFactory.getLogger(GroupController.class);
 
     @Autowired
-    public GroupController(GroupService groupService, FacultyService facultyService) {
+    public GroupController(GroupService groupService) {
         this.groupService = groupService;
-        this.facultyService = facultyService;
     }
 
     @GetMapping("/getAll")
     public String findAllGroups(Model model) {
-        logger.debug("findAll() groups");
-        List<Group> groups = groupService.findAll();
-        logger.trace("found {} groups.", groups.size());
-        model.addAttribute("groups", groups);
-        List<Faculty> faculties = facultyService.findAll();
+        logger.debug("findAll() groupDtos");
+        List<GroupDto> groupDtos = groupService.findAll();
+        logger.trace("found {} groups.", groupDtos.size());
+        model.addAttribute("groups", groupDtos);
+        List<Faculty> faculties = groupService.getFaculties();
         model.addAttribute("faculties", faculties);
         return "groups/getAll";
     }
@@ -44,37 +45,30 @@ public class GroupController {
     @GetMapping("/find")
     @ResponseBody
     public GroupDto find(int id) {
-        Group group = groupService.find(id);
-        GroupDto dto = new GroupDto(group);
-        return dto;
+        GroupDto groupDto = groupService.find(id);
+        return groupDto;
     }
     
     @GetMapping("/add")
-    public String add(Model model) {
-        GroupDto groupDto = new GroupDto();
-        model.addAttribute("group", groupDto);
-        return REDIRECT_PAGE;
+    public String createForm(Model model ) {
+        model.addAttribute("faculties", groupService.getFaculties());
+        model.addAttribute("groupDto", new GroupDto());
+        return "groups/group_add";
     }
-
+    
     @PostMapping("/add")
-    public String add(Model model, @ModelAttribute("group") GroupDto groupDto) {
-        // public String add(Model model, @ModelAttribute("groupDto") GroupDTO dto) {
-//        model.addAttribute("group", new GroupDto());
-//        System.err.println("Controller " + groupDto);
-        // Faculty faculty = facultyService.find(dto.getFacultyId());
-        // Group group = new Group(dto.getName(), faculty);
-//        Faculty faculty = facultyService.find(facultyId);
-//        Group group = new Group(name, faculty);
-
+    public String add(GroupDto groupDto) { 
+        System.err.println(groupDto);
         groupService.add(groupDto);
         return REDIRECT_PAGE;
     }
+    
+    
 
     @RequestMapping(value = "/update", method = { RequestMethod.PUT, RequestMethod.GET })
-    public String update(int id, String name, int facultyId, String facultyName) {
-        Faculty faculty = new Faculty(facultyId, facultyName);
-        Group group = new Group(name, faculty);
-        groupService.update(group);
+    public String update(GroupDto groupDto) {
+        //GroupDto groupDto = new GroupDto(id, name, facultyId);
+        groupService.update(groupDto);
         return REDIRECT_PAGE;
     }
 

@@ -1,6 +1,5 @@
 package com.rumakin.universityschedule.service;
 
-import java.time.LocalDate;
 import java.util.List;
 
 import org.slf4j.*;
@@ -22,41 +21,34 @@ public class AuditoriumService {
         this.auditoriumDao = auditoriumDao;
     }
 
-//    public List<Auditorium> findAuditoriumsForGroupOnDate(Group group, LocalDate date) {
-//        logger.debug("findAuditoriumsForGroupOnDate() for group{} date {}", group, date);
-//        int groupId = group.getId();
-//        List<Auditorium> auditoriums = auditoriumDao.findAuditoriumOnDate(groupId, date);
-//        logger.trace("found {} auditoriums", auditoriums.size());
-//        return auditoriums;
-//    }
-
     public List<Auditorium> findAll() {
         logger.debug("findAll() auditoriums");
-        List<Auditorium> auditoriums = auditoriumDao.findAll();
+        List<Auditorium> auditoriums = (List<Auditorium>) auditoriumDao.findAll();
         logger.trace("found {} auditoriums", auditoriums.size());
         return auditoriums;
     }
 
     public Auditorium find(int id) {
         logger.debug("find() id {}", id);
-        Auditorium auditorium = auditoriumDao.find(id);
+        Auditorium auditorium = auditoriumDao.findById(id).get();
         logger.trace("found {}", auditorium);
         return auditorium;
     }
 
     public void add(Auditorium auditorium) {
         logger.debug("add() {}", auditorium);
-//        int id = auditoriumDao.add(auditorium).getId();
-//        logger.trace("auditorium was added, id ={}", id);
+        auditoriumDao.save(auditorium);
     }
-    
+
     public void update(Auditorium auditorium) {
-        auditoriumDao.update(auditorium);
+        logger.debug("update() {}.", auditorium);
+        auditoriumDao.save(auditorium);
+        logger.trace("auditorium {} was updated.", auditorium);
     }
 
     public void delete(int id) {
         logger.debug("delete() id {}.", id);
-        auditoriumDao.delete(id);
+        auditoriumDao.deleteById(id);
     }
 
 }

@@ -7,7 +7,7 @@
         <class>com.rumakin.universityschedule.models.Building</class>
         <class>com.rumakin.universityschedule.models.Faculty</class>
         <class>com.rumakin.universityschedule.models.Group</class>
-        <class>com.rumakin.universityschedule.models.Lesson</class>
+        <!--class>com.rumakin.universityschedule.models.Lesson</class-->
         <class>com.rumakin.universityschedule.models.Person</class>
         <class>com.rumakin.universityschedule.models.Student</class>
         <class>com.rumakin.universityschedule.models.Course</class>
