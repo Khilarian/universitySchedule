@@ -27,7 +27,6 @@
     <table class="table table-bordered">
         <thead class="bg-primary text-white">
             <tr>
-                <td>Id</td>
                 <td>Building Name</td>
                 <td>Building address</td>
                 <td>Edit</td>
@@ -35,7 +34,6 @@
             </tr>
         </thead>
         <tr th:each="building:${buildings}" class="table-success">
-            <td th:text="${building.id}">Id</td>
             <td th:text="${building.name}">Building Name</td>
             <td th:text="${building.address}">Building Address</td>
             <td><a th:href="@{/buildings/find/(id=${building.id})}" class="btn btn-warning">Edit</a></td>

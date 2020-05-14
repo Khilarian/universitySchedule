@@ -27,14 +27,12 @@
     <table class="table table-bordered">
         <thead class="bg-primary text-white">
             <tr>
-                <td>Id</td>
                 <td>Faculty Name</td>
                 <td>Edit</td>
                 <td>Delete</td>
             </tr>
         </thead>
         <tr th:each="faculty:${faculties}" class="table-success">
-            <td th:text="${faculty.id}">Id</td>
             <td th:text="${faculty.name}">Faculty Name</td>
             <td><a th:href="@{/faculties/find/(id=${faculty.id})}" class="btn btn-warning">Edit</a></td>
             <td><a th:href="@{/faculties/delete/(id=${faculty.id})}" class="btn btn-danger">Delete</a></td>

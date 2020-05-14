@@ -26,7 +26,6 @@
         <table class="table table-bordered">
             <thead class="bg-primary text-white">
                 <tr>
-                    <td>Id</td>
                     <td>Number</td>
                     <td>Capacity</td>
                     <td>Building Name</td>
@@ -36,7 +35,6 @@
                 </tr>
             </thead>
             <tr th:each="auditorium:${auditoriums}" class="table-success">
-                <td th:text="${auditorium.id}">Id</td>
                 <td th:text="${auditorium.number}">Number</td>
                 <td th:text="${auditorium.capacity}">Capacity</td>
                 <td th:text="${auditorium.building.name}">Building Name</td>

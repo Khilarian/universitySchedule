@@ -28,7 +28,6 @@
     <table class="table table-bordered">
         <thead class="bg-primary text-white">
             <tr>
-                <td>Id</td>
                 <td>Group Name</td>
                 <td>Faculty name</td>
                 <td>Edit</td>
@@ -36,7 +35,6 @@
             </tr>
         </thead>
         <tr th:each="group:${groups}" class="table-success">
-            <td th:text="${group.id}">Id</td>
             <td th:text="${group.name}">Name</td>
             <td th:text="${group.facultyName}">Faculty name</td>
             <td><a th:href="@{/groups/find/(id=${group.id})}" class="btn btn-warning">Edit</a></td>
