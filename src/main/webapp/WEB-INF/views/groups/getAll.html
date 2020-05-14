@@ -22,7 +22,7 @@
         </nav>
     </div>
 
-    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addModal">Add group</button>
+    <!-- button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addModal">Add group</button-->
     <a href="/groups/add">Add a new group</a>
 
     <table class="table table-bordered">
@@ -44,7 +44,7 @@
         </tr>
     </table>
 
-    <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModal" aria-hidden="true">
+    <!-- div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModal" aria-hidden="true">
         <form action="#" th:action="@{/groups/add}" th:object="${groupDto}" method="post">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
@@ -77,7 +77,7 @@
                 </div>
             </div>
         </form>
-    </div>
+    </div-->
 
     <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModal" aria-hidden="true">
         <form th:action="@{/groups/update}" method="put">
