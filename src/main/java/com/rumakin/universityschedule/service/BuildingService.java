@@ -34,15 +34,16 @@ public class BuildingService {
         return building;
     }
 
-    public void add(Building building) {
+    public Building add(Building building) {
         logger.debug("add() {}.", building);
-        buildingDao.save(building);
+        return buildingDao.save(building);
     }
 
-    public void update(Building building) {
+    public Building update(Building building) {
         logger.debug("update() {}.", building);
-        buildingDao.save(building);
+        Building result = buildingDao.save(building);
         logger.trace("building {} was updated.", building);
+        return building;
     }
 
     public void delete(int id) {

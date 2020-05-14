@@ -48,26 +48,33 @@ public class GroupController {
         GroupDto groupDto = groupService.find(id);
         return groupDto;
     }
-    
-    @GetMapping("/add")
-    public String createForm(Model model ) {
-        model.addAttribute("faculties", groupService.getFaculties());
+
+//    @GetMapping("/add")
+//    public void createForm(Model model ) {
+//        model.addAttribute("faculties", groupService.getFaculties());
+//        model.addAttribute("groupDto", new GroupDto());
+//        //return REDIRECT_PAGE;
+//    }
+//    
+//    @PostMapping("/add")
+//    public String add(GroupDto groupDto) { 
+//        System.err.println(groupDto);
+//        groupService.add(groupDto);
+//        return REDIRECT_PAGE;
+//    }
+
+    @RequestMapping(value = "/add", method = { RequestMethod.POST, RequestMethod.GET })
+    public String add(Model model, @ModelAttribute("groupDto") GroupDto groupDto) {
         model.addAttribute("groupDto", new GroupDto());
-        return "groups/group_add";
-    }
-    
-    @PostMapping("/add")
-    public String add(GroupDto groupDto) { 
+        model.addAttribute("faculties", groupService.getFaculties());
         System.err.println(groupDto);
         groupService.add(groupDto);
         return REDIRECT_PAGE;
     }
-    
-    
 
     @RequestMapping(value = "/update", method = { RequestMethod.PUT, RequestMethod.GET })
     public String update(GroupDto groupDto) {
-        //GroupDto groupDto = new GroupDto(id, name, facultyId);
+        // GroupDto groupDto = new GroupDto(id, name, facultyId);
         groupService.update(groupDto);
         return REDIRECT_PAGE;
     }

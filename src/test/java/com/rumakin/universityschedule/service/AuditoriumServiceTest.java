@@ -1,40 +1,77 @@
-//package com.rumakin.universityschedule.service;
-//
-//import static org.junit.Assert.assertEquals;
-//import static org.mockito.ArgumentMatchers.*;
-//import static org.mockito.Mockito.*;
-//
-//import java.time.LocalDate;
-//import java.util.*;
-//import org.junit.jupiter.api.*;
-//import org.mockito.*;
-//
-//import com.rumakin.universityschedule.dao.AuditoriumDao;
-//import com.rumakin.universityschedule.models.*;
-//
-//class AuditoriumServiceTest {
-//
-//    @Mock
-//    private AuditoriumDao mockAuditoriumDao;
-//    @InjectMocks
-//    private AuditoriumService auditoriumService = new AuditoriumService(mockAuditoriumDao);
-//
-//    @BeforeEach
-//    public void setUp() {
-//        MockitoAnnotations.initMocks(this);
-//    }
-//
-//    @Test
-//    void findAuditoriumsForGroupOnDateShouldReturnListOfAuditoriumIfAtLeastOneLessonIsPlannedForIputDate() {
-//        when(mockAuditoriumDao.findAuditoriumOnDate(anyInt(), any()))
-//                .thenReturn(Arrays.asList(new Auditorium(1, 1, 25, new Building(1, "First", "York"))));
-//        List<Auditorium> expected = Arrays.asList(new Auditorium(1, 1, 25, new Building(1, "First", "York")));
-//        Faculty faculty = new Faculty(1,"faculty");
-//        Group group = new Group(1, "grrroup", faculty);
-//        LocalDate date = LocalDate.of(2020, 4, 1);
-//        List<Auditorium> actual = auditoriumService.findAuditoriumsForGroupOnDate(group, date);
-//        assertEquals(expected, actual);
-//        verify(mockAuditoriumDao, times(1)).findAuditoriumOnDate(eq(group.getId()), eq(date));
-//    }
-//
-//}
+package com.rumakin.universityschedule.service;
+
+import static org.junit.Assert.*;
+import java.util.*;
+import org.junit.jupiter.api.*;
+import org.junit.runner.RunWith;
+import org.mockito.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.junit4.SpringRunner;
+
+import com.rumakin.universityschedule.dao.AuditoriumDao;
+import com.rumakin.universityschedule.models.*;
+
+@RunWith(SpringRunner.class)
+@SpringBootTest
+class AuditoriumServiceTest {
+
+    @Autowired
+    private AuditoriumService auditoriumService;
+
+    @MockBean
+    private AuditoriumDao mockAuditoriumDao;
+
+    @Test
+    public void addShouldExecuteOnceWhenDbCallFine() {
+        Auditorium expected = new Auditorium(1, 1, 25, new Building(1, "First", "York"));
+        Mockito.when(mockAuditoriumDao.save(expected)).thenReturn(expected);
+        assertEquals(auditoriumService.add(expected), expected);
+    }
+
+    @Test
+    public void findByIdhouldExecuteOnceWhenDbCallFineAndRweturnAuditorium() {
+        Auditorium expected = new Auditorium(1, 1, 25, new Building(1, "First", "York"));
+        Mockito.when(mockAuditoriumDao.findById(1)).thenReturn(Optional.of(expected));
+        assertEquals(auditoriumService.find(1), expected);
+    }
+
+    @Test
+    public void findAllShouldReturnListOfAuditoriumIfAtLeastOneExists() {
+        Building building = new Building(10, "First", "Building");
+        Auditorium auditorium = new Auditorium(15, 35, building);
+        Auditorium auditoriumTwo = new Auditorium(16, 30, building);
+
+        List<Auditorium> auditoriums = Arrays.asList(auditorium, auditoriumTwo);
+
+        Mockito.when(mockAuditoriumDao.findAll()).thenReturn(auditoriums);
+
+        assertEquals(auditoriumService.findAll(), auditoriums);
+    }
+
+    @Test
+    public void delteteShouldExecuteOnceWhenDbCallFine() {
+        Building building = new Building(10, "First", "Building");
+        Auditorium auditorium = new Auditorium(15, 35, building);
+
+        Mockito.when(mockAuditoriumDao.findById(1)).thenReturn(Optional.of(auditorium));
+        Mockito.when(mockAuditoriumDao.existsById(auditorium.getId())).thenReturn(false);
+        assertFalse(mockAuditoriumDao.existsById(auditorium.getId()));
+    }
+
+    @Test
+    public void updateShouldExecuteOnceWhenDbCallFineAndUodateEntityField() {
+        Building building = new Building(10, "First", "Building");
+        Auditorium auditorium = new Auditorium(15, 35, building);
+
+        Mockito.when(mockAuditoriumDao.findById(1)).thenReturn(Optional.of(auditorium));
+
+        auditorium.setCapacity(20);
+        Mockito.when(mockAuditoriumDao.save(auditorium)).thenReturn(auditorium);
+        
+        assertEquals(auditoriumService.update(auditorium), auditorium);
+
+    }
+
+}

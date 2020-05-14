@@ -35,15 +35,16 @@ public class AuditoriumService {
         return auditorium;
     }
 
-    public void add(Auditorium auditorium) {
+    public Auditorium add(Auditorium auditorium) {
         logger.debug("add() {}", auditorium);
-        auditoriumDao.save(auditorium);
+        return auditoriumDao.save(auditorium);
     }
 
-    public void update(Auditorium auditorium) {
+    public Auditorium update(Auditorium auditorium) {
         logger.debug("update() {}.", auditorium);
-        auditoriumDao.save(auditorium);
+        Auditorium updateAuditorium = auditoriumDao.save(auditorium);
         logger.trace("auditorium {} was updated.", auditorium);
+        return updateAuditorium;
     }
 
     public void delete(int id) {
