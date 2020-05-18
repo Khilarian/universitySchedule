@@ -24,8 +24,9 @@
 
     <!-- button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addModal">Add group</button-->
     <a href="/groups/add">Add a new group</a>
+    <a href="/groups/edit/?id=7">Try edit</a>
 
-    <table class="table table-bordered">
+    <!-- table class="table table-bordered">
         <thead class="bg-primary text-white">
             <tr>
                 <td>Group Name</td>
@@ -37,10 +38,42 @@
         <tr th:each="group:${groups}" class="table-success">
             <td th:text="${group.name}">Name</td>
             <td th:text="${group.facultyName}">Faculty name</td>
-            <td><a th:href="@{/groups/find/(id=${group.id})}" class="btn btn-warning">Edit</a></td>
+            <td><a th:href="@{/groups/edit/(id=${group.id})}" class="btn btn-warning">Edit</a></td>
             <td><a th:href="@{/groups/delete/(id=${group.id})}" class="btn btn-danger">Delete</a></td>
         </tr>
-    </table>
+    </table-->
+    <div>
+        <table class="table table-bordered">
+            <thead class="bg-primary text-white">
+                <tr>
+                    <td><strong>Group name</strong></td>
+                    <td><strong>Faculty Name</strong></td>
+                    <td><strong>Edit</strong></td>
+                    <td><strong>Delete</strong></td>
+                </tr>
+            </thead>
+            <th:block th:each="group:${groups}">
+                <tr class="table-success">
+                    <td th:text="${group.name}"></td>
+                    <td th:text="${group.facultyName}"></td>
+                    <td><a th:href="@{/groups/edit/(id=${group.id})}" id="editButton" type="button">Edit</a></td>
+                    <td><a th:href="@{/groups/delete/(id=${group.id})}" id="deleteButton" type="button">Delete</a></td>
+
+                    <td>
+                        <div class="btn-group btn-group-sm">
+                            <button type="button" class="btn btn-warning dropdown-toggle" data-toggle="dropdown">Action</button>
+                            <div class="dropdown-menu">
+                                <a th:href="@{/groups/edit/(id=${group.id})}" class="dropdown-item">Edit</a> <a
+                                    th:href="@{/groups/delete/(id=${group.id})}"
+                                    class="dropdown-item text-danger font-weight-bold" id="deleteButton">Delete</a>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+
+            </th:block>
+        </table>
+    </div>
 
     <!-- div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModal" aria-hidden="true">
         <form action="#" th:action="@{/groups/add}" th:object="${groupDto}" method="post">
@@ -77,7 +110,7 @@
         </form>
     </div-->
 
-    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModal" aria-hidden="true">
+    <!-- div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModal" aria-hidden="true">
         <form th:action="@{/groups/update}" method="put">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
@@ -111,7 +144,7 @@
                 </div>
             </div>
         </form>
-    </div>
+    </div-->
 
     <div th:insert="fragments/common :: deleteEntry"></div>
 

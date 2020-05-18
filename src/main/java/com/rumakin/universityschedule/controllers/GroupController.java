@@ -1,20 +1,16 @@
 package com.rumakin.universityschedule.controllers;
 
-import java.util.List;
-
-import javax.validation.Valid;
+import java.util.*;
 
 import org.slf4j.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import com.rumakin.universityschedule.dto.GroupDto;
+import com.rumakin.universityschedule.exceptions.ResourceNotFoundException;
 import com.rumakin.universityschedule.models.Faculty;
-import com.rumakin.universityschedule.models.Group;
-import com.rumakin.universityschedule.service.FacultyService;
 import com.rumakin.universityschedule.service.GroupService;
 
 @Controller
@@ -42,44 +38,35 @@ public class GroupController {
         return "groups/getAll";
     }
 
-    @GetMapping("/find")
-    @ResponseBody
-    public GroupDto find(int id) {
-        GroupDto groupDto = groupService.find(id);
-        return groupDto;
+    @GetMapping("/add")
+    public void createForm(Model model) {
+        model.addAttribute("faculties", groupService.getFaculties());
+        model.addAttribute("group", new GroupDto());
     }
 
-    @GetMapping("/add")
-    public void createForm(Model model ) {
-        model.addAttribute("faculties", groupService.getFaculties());
-        model.addAttribute("groupDto", new GroupDto());
-        //return REDIRECT_PAGE;
-    }
-    
     @PostMapping("/add")
-    public String add(GroupDto groupDto) { 
-        System.err.println(groupDto);
+    public String add(GroupDto groupDto) {
         groupService.add(groupDto);
         return REDIRECT_PAGE;
     }
 
-//    @RequestMapping(value = "/add", method = { RequestMethod.POST, RequestMethod.GET })
-//    public String add(Model model, @ModelAttribute("groupDto") GroupDto groupDto) {
-//        model.addAttribute("groupDto", new GroupDto());
-//        model.addAttribute("faculties", groupService.getFaculties());
-//        groupService.add(groupDto);
-//        return REDIRECT_PAGE;
-//    }
+    @GetMapping("/edit")
+    public void edit(int id, Model model) {
+        GroupDto group = groupService.find(id);
+        if (group == null) throw new ResourceNotFoundException();
+        model.addAttribute("faculties", groupService.getFaculties());
+        model.addAttribute("group", group);
+        //return "groups/edit";
+    }
 
-    @RequestMapping(value = "/update", method = { RequestMethod.PUT, RequestMethod.GET })
-    public String update(GroupDto groupDto) {
-        // GroupDto groupDto = new GroupDto(id, name, facultyId);
-        groupService.update(groupDto);
+    @PostMapping("/edit")
+    public String edit(GroupDto group) {
+        groupService.update(group);
         return REDIRECT_PAGE;
     }
 
-    @RequestMapping(value = "/delete", method = { RequestMethod.DELETE, RequestMethod.GET })
-    public String delete(int id) {
+    @GetMapping("/delete")
+    public String deleteUser( int id) {
         groupService.delete(id);
         return REDIRECT_PAGE;
     }

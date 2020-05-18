@@ -9,7 +9,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.http.HttpStatus;
 
+import com.rumakin.universityschedule.exceptions.*;
 import com.rumakin.universityschedule.models.Building;
 import com.rumakin.universityschedule.service.BuildingService;
 
@@ -26,6 +28,13 @@ public class BuildingController {
     public BuildingController(BuildingService buildingService) {
         this.buildingService = buildingService;
     }
+    
+    @ExceptionHandler(ResourceNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public String handleResourceNotFoundException() {
+        return "groups/notfound";
+    }
+    
 
     @GetMapping("/getAll")
     public String findAll(Model model) {

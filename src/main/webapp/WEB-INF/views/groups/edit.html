@@ -1,17 +1,17 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Add group</title>
+<div th:insert="/fragments/common :: common_head"></div>
+<title>Update group</title>
 </head>
 <body>
-    <form action="#" th:action="@{/groups/add}" th:object="${group}" method="post">
+    <form action="#" th:action="@{/groups/edit}" th:object="${group}" method="post">
         <label for="name">Name</label> <input type="text" th:field="*{name}" id="name" placeholder="Name"> 
         <label for="faculyId" class="col-form-label">Faculty</label> 
         <select class="form-control" th:field="*{facultyId}">
-            <option th:value=0>Faculty not assign</option>
             <option th:each="faculty : ${faculties}" th:value="${faculty.id}" th:utext="${faculty.name}"
-                id="addFacultyId" placeholder="Faculty">Faculty</option>
-        </select> <input type="submit" value="Add Group">
+                th:selected="${faculty.id}==facultyEdit" id="facultyEdit" placeholder="Faculty">Faculty</option>
+        </select> <input type="submit" value="Update Group">
     </form>
 </body>
 </html>
