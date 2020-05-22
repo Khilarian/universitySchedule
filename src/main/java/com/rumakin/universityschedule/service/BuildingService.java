@@ -2,6 +2,7 @@ package com.rumakin.universityschedule.service;
 
 import java.util.List;
 
+import org.modelmapper.ModelMapper;
 import org.slf4j.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

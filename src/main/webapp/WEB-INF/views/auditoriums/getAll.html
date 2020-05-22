@@ -3,11 +3,12 @@
 <head>
 <div th:insert="/fragments/common :: common_head"></div>
 <script type="text/javascript" src="../../resources/js/auditoriums.js" th:src="@{/resources/js/auditoriums.js}"></script>
+<script type="text/javascript" src="../../resources/js/common.js" th:src="@{/resources/js/common.js}"></script>
 <title>Auditoriums</title>
 </head>
 <body class="bg-secondary">
     <div class="container">
-        <h2 class="text-body">List of all auditoriums.</h2>
+        <h2 class="text-body">List of auditoriums</h2>
     </div>
 
     <div>
@@ -37,8 +38,8 @@
             <tr th:each="auditorium:${auditoriums}" class="table-success">
                 <td th:text="${auditorium.number}">Number</td>
                 <td th:text="${auditorium.capacity}">Capacity</td>
-                <td th:text="${auditorium.building.name}">Building Name</td>
-                <td th:text="${auditorium.building.address}">Building Address</td>
+                <td th:text="${auditorium.buildingName}">Building Name</td>
+                <td th:text="${auditorium.buildingAddress}">Building Address</td>
                 <td><a th:href="@{/auditoriums/find/(id=${auditorium.id})}" class="btn btn-warning">Edit</a></td>
                 <td><a th:href="@{/auditoriums/delete/(id=${auditorium.id})}" class="btn btn-danger">Delete</a></td>
 
@@ -48,29 +49,27 @@
 
         <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModalLabel"
             aria-hidden="true">
-            <form th:action="@{/auditoriums/add}" method="post">
+            <form action="#" th:action="@{/auditoriums/add}" method="post">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="addModalLabel">Add auditorium</h5>
+                            <h5 class="modal-title" id="addModal">Add auditorium</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
                         <div class="modal-body">
-
                             <div class="form-group">
-                                <label for="recipient-name" class="col-form-label">Number</label> <input type="text"
-                                    class="form-control" id="recipient-name" name="number">
-                            </div>
-
-                            <div class="form-group">
-                                <label for="recipient-name" class="col-form-label">Capacity</label> <input type="text"
-                                    class="form-control" id="recipient-name" name="capacity">
+                                <label for="number" class="col-form-label">Number</label> <input type="text"
+                                    class="form-control" id="addNumber" name="number" placeholder="Number">
                             </div>
                             <div class="form-group">
-                                <label for="recipient-name" class="col-form-label">Building</label> <select
-                                    class="form-control">
+                                <label for="capacity" class="col-form-label">Capacity</label> <input type="text"
+                                    class="form-control" id="addCapacity" name="capacity" placeholder="Capacity">
+                            </div>
+                            <div class="form-group">
+                                <label for="buildingId" class="col-form-label">Building</label> <select
+                                    class="form-control" id="addBuilding" name="buildingId">
                                     <option th:value=0>Building not assign</option>
                                     <option th:each="building : ${buildings}" th:value="${building.id}"
                                         th:utext="${building.name}">Faculty</option>
@@ -103,18 +102,18 @@
                         </div>
                         <div class="form-group">
                             <label for="recipient-name" class="col-form-label">Auditorium Number</label> <input type="text"
-                                class="form-control" id="numberEdit" name="name">
+                                class="form-control" id="numberEdit" name="number">
                         </div>
                         <div class="form-group">
                             <label for="recipient-name" class="col-form-label">Auditorium Capacity</label> <input type="text"
-                                class="form-control" id="capacityEdit" name="name">
+                                class="form-control" id="capacityEdit" name="capacity">
                         </div>
                         <div class="form-group">
-                            <label for="recipient-name" class="col-form-label">Building</label> <select
-                                class="form-control" id="buildingEdit" name="faculty">
+                            <label for="buildingId" class="col-form-label">Building</label> <select
+                                class="form-control" id="buildingEdit" name="buildingId">
                                 <option th:each="building : ${buildings}" th:value="${building.id}"
-                                    th:utext="${building.name}" th:selected="${building.id}==buildingEdit">Faculty</option>
-                            </select>
+                                    th:utext="${building.name}" th:selected="${building.id}==buildingEdit">Building</option>
+                            </select>                           
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -128,7 +127,7 @@
 
         <div th:insert="fragments/common :: deleteEntry"></div>
 
-
     </div>
+    
 </body>
 </html>

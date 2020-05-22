@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import org.slf4j.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.rumakin.universityschedule.dao.GroupDao;
 import com.rumakin.universityschedule.dto.GroupDto;
@@ -29,16 +30,14 @@ public class GroupService {
         logger.debug("findAll() starts");
         List<Group> groups = (List<Group>) groupDao.findAll();
         logger.trace("found {} groups.", groups.size());
-        List<GroupDto> groupDtos = groups.stream().map(g-> new GroupDto(g)).collect(Collectors.toList());
-        return groupDtos;
+        return groups.stream().map(g-> new GroupDto(g)).collect(Collectors.toList());
     }
 
     public GroupDto find(int id) {
         logger.debug("find() id {}.", id);
         Group group = groupDao.findById(id).get();
         logger.trace("found {}.", group);
-        GroupDto groupDto= new GroupDto(group);
-        return groupDto;
+        return new GroupDto(group);
     }
 
     public void add(GroupDto groupDto) {
@@ -48,12 +47,13 @@ public class GroupService {
         groupDao.save(group);
     }
 
+    @Transactional
     public void update(GroupDto groupDto) {
+        logger.debug("update() {}.", groupDto);
         Faculty faculty = facultyService.find(groupDto.getFacultyId());
         Group group = new Group(groupDto.getId(), groupDto.getName(), faculty);
-        logger.debug("update() {}.", group);
         groupDao.save(group);
-        logger.trace("grup {} was updated.", group);
+        logger.trace("group {} was updated.", group);
     }
 
     public void delete(int id) {

@@ -14,19 +14,10 @@ $('document').ready(function() {
 			$('#idEdit').val(auditorium.id);
 			$('#numberEdit').val(auditorium.number);
 			$('#capacityEdit').val(auditorium.capacity);
-			$('#buildingEdit').val(auditorium.building.id);
+			$('#buildingEdit').val(auditorium.buildingId);
 		});	
 		
 		$('#editModal').modal();
 		
-	});
-	
-	$('.table .btn-danger').on('click',function(event) {
-		event.preventDefault();
-		var href = $(this).attr('href');
-		$('#deleteModal #delRef').attr('href', href);
-		$('#deleteModal').modal();
-		
-	});
-	
+	});	
 });
