@@ -10,17 +10,6 @@
     <div class="container">
         <h2 class="text-body">University schedule application</h2>
     </div>
-    <div>
-        <nav class="navbar navbar-expand-sm bg-success navbar-light">
-            <ul class="navbar-nav  text-white">
-                <li class="nav-item"><a class="nav-link active" href="#">Home</a></li>
-                <li class="nav-item"><a class="nav-link" th:href="@{/buildings/getAll}">Buildings</a></li>
-                <li class="nav-item"><a class="nav-link" th:href="@{/auditoriums/getAll}">Auditoriums</a></li>
-                <li class="nav-item"><a class="nav-link" th:href="@{/groups/getAll}">Groups</a></li>
-                <li class="nav-item"><a class="nav-link" th:href="@{/faculties/getAll}">Faculties</a></li>
-            </ul>
-        </nav>
-    </div>
 
     <div th:insert="/fragments/common :: nav_menu"></div>
 

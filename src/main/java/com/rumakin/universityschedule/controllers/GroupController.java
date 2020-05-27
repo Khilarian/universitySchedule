@@ -1,6 +1,7 @@
 package com.rumakin.universityschedule.controllers;
 
-import java.util.*;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.slf4j.*;
@@ -34,9 +35,9 @@ public class GroupController {
     @GetMapping("/getAll")
     public String findAllGroups(Model model) {
         logger.debug("findAll() groupDtos");
-        List<GroupDto> groupDtos = groupService.findAll();
-        logger.trace("found {} groups.", groupDtos.size());
-        model.addAttribute("groups", groupDtos);
+        List<GroupDto> groups = groupService.findAll().stream().map(g -> convertToDto(g)).collect(Collectors.toList());
+        logger.trace("found {} groups.", groups.size());
+        model.addAttribute("groups", groups);
         List<Faculty> faculties = groupService.getFaculties();
         model.addAttribute("faculties", faculties);
         return "groups/getAll";
@@ -44,23 +45,25 @@ public class GroupController {
 
     @PostMapping("/add")
     public String add(GroupDto groupDto) {
-        groupService.add(groupDto);
+        groupService.add(convertToEntity(groupDto));
         return REDIRECT_PAGE;
     }
 
     @GetMapping("/find")
     @ResponseBody
     public GroupDto find(int id) {
-        GroupDto groupDto = groupService.find(id);
-        if (groupDto == null) {
-            throw new ResourceNotFoundException();
+        Group group = groupService.find(id);
+        if (group == null) {
+            logger.warn("id {} not found", id);
+            String message = String.format("Group with id %d not found", id);
+            throw new ResourceNotFoundException(message);
         }
-        return groupDto;
+        return convertToDto(group);
     }
 
-    @RequestMapping(value = "/update", method = { RequestMethod.PUT, RequestMethod.GET })
+    @PostMapping(value = "/update")
     public String update(GroupDto groupDto) {
-        groupService.update(groupDto);
+        groupService.update(convertToEntity(groupDto));
         return REDIRECT_PAGE;
     }
 
@@ -74,5 +77,8 @@ public class GroupController {
         return modelMapper.map(group, GroupDto.class);
     }
     
+    private Group convertToEntity(GroupDto groupDto) {
+        return modelMapper.map(groupDto, Group.class);
+    }
     
 }

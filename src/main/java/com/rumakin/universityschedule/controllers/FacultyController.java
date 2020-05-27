@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import com.rumakin.universityschedule.exceptions.ResourceNotFoundException;
 import com.rumakin.universityschedule.models.Faculty;
 import com.rumakin.universityschedule.service.FacultyService;
 
@@ -38,6 +40,11 @@ public class FacultyController {
     @ResponseBody
     public Faculty find(int id) {
         Faculty faculty = facultyService.find(id);
+        if (faculty == null) {
+            logger.warn("id {} not found", id);
+            String message = String.format("Faculty with id %d not found", id);
+            throw new ResourceNotFoundException(message);
+        }
         return faculty;
 
     }
@@ -48,13 +55,13 @@ public class FacultyController {
         return REDIRECT_PAGE;
     }
 
-    @RequestMapping(value = "/update", method = { RequestMethod.PUT, RequestMethod.GET })
+    @PostMapping(value = "/update")
     public String update(Faculty faculty) {
         facultyService.update(faculty);
         return REDIRECT_PAGE;
     }
 
-    @RequestMapping(value = "/delete", method = { RequestMethod.DELETE, RequestMethod.GET })
+    @GetMapping(value = "/delete")
     public String delete(int id) {
         facultyService.delete(id);
         return REDIRECT_PAGE;

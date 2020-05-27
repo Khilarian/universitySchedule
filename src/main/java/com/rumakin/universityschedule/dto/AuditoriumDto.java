@@ -1,7 +1,5 @@
 package com.rumakin.universityschedule.dto;
 
-import com.rumakin.universityschedule.models.Auditorium;
-
 public class AuditoriumDto {
 
     private int id;
@@ -12,25 +10,6 @@ public class AuditoriumDto {
     private String buildingAddress;
 
     public AuditoriumDto() {
-    }
-
-    public AuditoriumDto(int id, int number, int capacity, int buildingId, String buildingName,
-            String buildingAddress) {
-        this.id = id;
-        this.number = number;
-        this.capacity = capacity;
-        this.buildingId = buildingId;
-        this.buildingName = buildingName;
-        this.buildingAddress = buildingAddress;
-    }
-
-    public AuditoriumDto(Auditorium auditorium) {
-        this.id = auditorium.getId();
-        this.number = auditorium.getNumber();
-        this.capacity = auditorium.getCapacity();
-        this.buildingId = auditorium.getBuilding().getId();
-        this.buildingName = auditorium.getBuilding().getName();
-        this.buildingAddress = auditorium.getBuilding().getAddress();
     }
 
     public String getBuildingName() {

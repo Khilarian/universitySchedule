@@ -48,6 +48,11 @@ public class BuildingController {
     @ResponseBody
     public Building find(int id) {
         Building building = buildingService.find(id);
+        if (building == null) {
+            logger.warn("id {} not found", id);
+            String message = String.format("Building with id %d not found", id);
+            throw new ResourceNotFoundException(message);
+        }
         return building;
     }
 
@@ -57,13 +62,13 @@ public class BuildingController {
         return REDIRECT_PAGE;
     }
 
-    @RequestMapping(value = "/update", method = { RequestMethod.PUT, RequestMethod.GET })
+    @PostMapping(value = "/update")
         public String update(Building building) {
         buildingService.update(building);
         return REDIRECT_PAGE;
     }
 
-    @RequestMapping(value = "/delete", method = { RequestMethod.DELETE, RequestMethod.GET })
+    @GetMapping(value = "/delete")
     public String delete(int id) {
         buildingService.delete(id);
         return REDIRECT_PAGE;

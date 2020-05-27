@@ -29,7 +29,7 @@ public class FacultyService {
 
     public Faculty find(int id) {
         logger.debug("find() id {}.", id);
-        Faculty faculty = facultyDao.findById(id).get();
+        Faculty faculty = facultyDao.findById(id).orElse(null);
         logger.trace("found {}.", faculty);
         return faculty;
     }

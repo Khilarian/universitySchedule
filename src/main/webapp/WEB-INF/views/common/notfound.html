@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+<div th:insert="/fragments/common :: common_head"></div>
+<title>Resource not found</title>
+</head>
+<body class="bg-secondary">
+    <div class="container">
+        <h2 class="text-body">Error</h2>
+    </div>
+
+    <div>
+        <nav class="navbar navbar-expand-sm bg-success navbar-light">
+            <ul class="navbar-nav  text-white">
+                <li class="nav-item"><a class="nav-link" th:href="@{/main_page}">Home</a></li>
+                <li class="nav-item"><a class="nav-link" th:href="@{/buildings/getAll}">Buildings</a></li>
+                <li class="nav-item"><a class="nav-link" th:href="@{/auditoriums/getAll}">Auditoriums</a></li>
+                <li class="nav-item"><a class="nav-link" th:href="@{/groups/getAll}">Groups</a></li>
+                <li class="nav-item"><a class="nav-link" th:href="@{/faculties/getAll}">Faculties</a></li>
+            </ul>
+        </nav>
+    </div>
+    
+    <div th:insert="fragments/common :: notification"></div>
+    
+</body>
+</html>

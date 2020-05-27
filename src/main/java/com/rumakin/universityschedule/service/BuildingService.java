@@ -2,7 +2,6 @@ package com.rumakin.universityschedule.service;
 
 import java.util.List;
 
-import org.modelmapper.ModelMapper;
 import org.slf4j.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,7 +29,7 @@ public class BuildingService {
 
     public Building find(int id) {
         logger.debug("find() id {}.", id);
-        Building building = buildingDao.findById(id).get();
+        Building building = buildingDao.findById(id).orElse(null);
         logger.trace("found {}.", building);
         return building;
     }
@@ -44,7 +43,7 @@ public class BuildingService {
         logger.debug("update() {}.", building);
         Building result = buildingDao.save(building);
         logger.trace("building {} was updated.", building);
-        return building;
+        return result;
     }
 
     public void delete(int id) {

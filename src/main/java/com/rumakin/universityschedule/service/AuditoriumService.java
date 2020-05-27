@@ -1,14 +1,12 @@
 package com.rumakin.universityschedule.service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.slf4j.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.rumakin.universityschedule.dao.AuditoriumDao;
-import com.rumakin.universityschedule.dto.AuditoriumDto;
 import com.rumakin.universityschedule.models.*;
 
 @Service
@@ -24,31 +22,27 @@ public class AuditoriumService {
         this.buildingService=buildingService;
     }
 
-    public List<AuditoriumDto> findAll() {
+    public List<Auditorium> findAll() {
         logger.debug("findAll() auditoriums");
         List<Auditorium> auditoriums = (List<Auditorium>) auditoriumDao.findAll();
         logger.trace("found {} auditoriums", auditoriums.size());
-        return auditoriums.stream().map(a-> new AuditoriumDto(a)).collect(Collectors.toList());
+        return auditoriums;
     }
 
-    public AuditoriumDto find(int id) {
+    public Auditorium find(int id) {
         logger.debug("find() id {}", id);
-        Auditorium auditorium = auditoriumDao.findById(id).get();
+        Auditorium auditorium = auditoriumDao.findById(id).orElse(null);
         logger.trace("found {}", auditorium);
-        return new AuditoriumDto(auditorium);
+        return auditorium;
     }
 
-    public Auditorium add(AuditoriumDto auditoriumDto) {
-        logger.debug("add() {}", auditoriumDto);
-        Building building = buildingService.find(auditoriumDto.getBuildingId());
-        Auditorium auditorium = new Auditorium(auditoriumDto.getNumber(),auditoriumDto.getCapacity(),building);
+    public Auditorium add(Auditorium auditorium) {
+        logger.debug("add() {}", auditorium);
         return auditoriumDao.save(auditorium);
     }
 
-    public void update(AuditoriumDto auditoriumDto) {
-        logger.debug("update() {}.", auditoriumDto);
-        Building building = buildingService.find(auditoriumDto.getBuildingId());
-        Auditorium auditorium = new Auditorium(auditoriumDto.getId(), auditoriumDto.getNumber(),auditoriumDto.getCapacity(),building);
+    public void update(Auditorium auditorium) {
+        logger.debug("update() {}.", auditorium);
         auditoriumDao.save(auditorium);
         logger.trace("auditorium {} was updated.", auditorium);
     }
