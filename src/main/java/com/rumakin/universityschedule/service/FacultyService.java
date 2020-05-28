@@ -34,15 +34,16 @@ public class FacultyService {
         return faculty;
     }
 
-    public void add(Faculty faculty) {
+    public Faculty add(Faculty faculty) {
         logger.debug("add() {}.", faculty);
-        facultyDao.save(faculty);
+        return facultyDao.save(faculty);
     }
 
-    public void update(Faculty faculty) {
+    public Faculty update(Faculty faculty) {
         logger.debug("update() {}.", faculty);
-        facultyDao.save(faculty);
+        faculty = facultyDao.save(faculty);
         logger.trace("faculty {} was updated.", faculty);
+        return faculty;
     }
 
     public void delete(int id) {

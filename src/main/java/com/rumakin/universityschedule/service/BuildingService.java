@@ -41,9 +41,9 @@ public class BuildingService {
 
     public Building update(Building building) {
         logger.debug("update() {}.", building);
-        Building result = buildingDao.save(building);
+        building = buildingDao.save(building);
         logger.trace("building {} was updated.", building);
-        return result;
+        return building;
     }
 
     public void delete(int id) {

@@ -5,7 +5,6 @@ import java.util.*;
 import org.slf4j.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.rumakin.universityschedule.dao.GroupDao;
 import com.rumakin.universityschedule.models.*;
@@ -37,24 +36,24 @@ public class GroupService {
         return group;
     }
 
-    public void add(Group group) {
+    public Group add(Group group) {
         logger.debug("add() {}.", group);
-        groupDao.save(group);
+        return groupDao.save(group);
     }
 
-    @Transactional
-    public void update(Group group) {
+    public Group update(Group group) {
         logger.debug("update() {}.", group);
-        groupDao.save(group);
+        group = groupDao.save(group);
         logger.trace("group {} was updated.", group);
+        return group;
     }
 
     public void delete(int id) {
         logger.debug("delete() id {}.", id);
         groupDao.deleteById(id);
     }
-    
-    public List<Faculty> getFaculties(){
+
+    public List<Faculty> getFaculties() {
         return facultyService.findAll();
     }
 }

@@ -40,12 +40,12 @@ class AuditoriumDaoTest {
 
     @Test
     public void findAllShouldReturnListOfAuditoriumIfAtLeastOneExists() {
-        Building building = new Building(10, "First", "Building");
+        Building building = new Building("First", "Building");
+        building = entityManager.persist(building);
         Auditorium auditorium = new Auditorium(15, 35, building);
         Auditorium auditoriumTwo = new Auditorium(16, 30, building);
         Auditorium savedInDb = entityManager.persist(auditorium);
         Auditorium savedInDbTwo = entityManager.persist(auditoriumTwo);
-
         List<Auditorium> auditoriumsFromDb = (List<Auditorium>) auditoriumDao.findAll();
         List<Auditorium> auditoriumsSaveInDb = Arrays.asList(savedInDb, savedInDbTwo);
 
@@ -54,12 +54,12 @@ class AuditoriumDaoTest {
 
     @Test
     public void delteteShouldExecuteOnceWhenDbCallFine() {
-        Building building = new Building(10, "First", "Building");
+        Building building = new Building("First", "Building");
+        building = entityManager.persist(building);
         Auditorium auditorium = new Auditorium(15, 35, building);
         Auditorium auditoriumTwo = new Auditorium(16, 30, building);
         Auditorium savedInDb = entityManager.persist(auditorium);
         Auditorium savedInDbTwo = entityManager.persist(auditoriumTwo);
-
         entityManager.remove(savedInDb);
 
         List<Auditorium> auditoriumsFromDb = (List<Auditorium>) auditoriumDao.findAll();
@@ -75,10 +75,11 @@ class AuditoriumDaoTest {
         entityManager.persist(auditorium);
 
         Auditorium getFromDb = auditoriumDao.findById(auditorium.getId()).get();
-        getFromDb.setCapacity(50);
+        int actual = 50;
+        getFromDb.setCapacity(actual);
         entityManager.persist(getFromDb);
-
-        assertEquals(getFromDb.getCapacity(), 50);
+        int expected = getFromDb.getCapacity();
+        assertEquals(expected, actual);
     }
 
 }

@@ -31,7 +31,7 @@ class AuditoriumServiceTest {
     }
 
     @Test
-    public void findByIdhouldExecuteOnceWhenDbCallFineAndRweturnAuditorium() {
+    public void findByIdShouldExecuteOnceWhenDbCallFineAndRweturnAuditorium() {
         Auditorium expected = new Auditorium(1, 1, 25, new Building(1, "First", "York"));
         Mockito.when(mockAuditoriumDao.findById(1)).thenReturn(Optional.of(expected));
         assertEquals(auditoriumService.find(1), expected);

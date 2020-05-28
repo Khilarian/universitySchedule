@@ -41,10 +41,11 @@ public class AuditoriumService {
         return auditoriumDao.save(auditorium);
     }
 
-    public void update(Auditorium auditorium) {
+    public Auditorium update(Auditorium auditorium) {
         logger.debug("update() {}.", auditorium);
-        auditoriumDao.save(auditorium);
+        auditorium = auditoriumDao.save(auditorium);
         logger.trace("auditorium {} was updated.", auditorium);
+        return auditorium;
     }
 
     public void delete(int id) {

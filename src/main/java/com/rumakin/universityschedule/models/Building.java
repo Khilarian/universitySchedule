@@ -45,10 +45,6 @@ public class Building implements ModelEntity {
         this.address = address;
     }
 
-//    public void setAuditoriums(List<Auditorium> auditoriums) {
-//        this.auditoriums = auditoriums;
-//    }
-
     @Override
     public int getId() {
         return id;
@@ -61,10 +57,6 @@ public class Building implements ModelEntity {
     public String getAddress() {
         return address;
     }
-
-//    public List<Auditorium> getAuditoriums() {
-//        return auditoriums;
-//    }
 
     @Override
     public int hashCode() {
