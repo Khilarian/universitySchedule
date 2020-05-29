@@ -48,7 +48,6 @@ class AuditoriumDaoTest {
         Auditorium savedInDbTwo = entityManager.persist(auditoriumTwo);
         List<Auditorium> auditoriumsFromDb = (List<Auditorium>) auditoriumDao.findAll();
         List<Auditorium> auditoriumsSaveInDb = Arrays.asList(savedInDb, savedInDbTwo);
-
         assertEquals(auditoriumsFromDb, auditoriumsSaveInDb);
     }
 
@@ -61,7 +60,6 @@ class AuditoriumDaoTest {
         Auditorium savedInDb = entityManager.persist(auditorium);
         Auditorium savedInDbTwo = entityManager.persist(auditoriumTwo);
         entityManager.remove(savedInDb);
-
         List<Auditorium> auditoriumsFromDb = (List<Auditorium>) auditoriumDao.findAll();
         List<Auditorium> auditoriums = Arrays.asList(savedInDbTwo);
         assertEquals(auditoriumsFromDb, auditoriums);
@@ -71,9 +69,7 @@ class AuditoriumDaoTest {
     public void updateShouldExecuteOnceWhenDbCallFineAndUodateEntityField() {
         Building building = new Building(10, "First", "Building");
         Auditorium auditorium = new Auditorium(15, 35, building);
-
         entityManager.persist(auditorium);
-
         Auditorium getFromDb = auditoriumDao.findById(auditorium.getId()).get();
         int actual = 50;
         getFromDb.setCapacity(actual);

@@ -18,7 +18,7 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ModelAndView handleResourceNotFoundException(ResourceNotFoundException e) {
         logger.error("{} - '{}'", e.getClass().getSimpleName(), e.getMessage());
-        ModelAndView model = new ModelAndView("common/notfound");
+        ModelAndView model = new ModelAndView("/common/notfound");
         model.addObject("errorMessage", e.getMessage());
         return model;
     }

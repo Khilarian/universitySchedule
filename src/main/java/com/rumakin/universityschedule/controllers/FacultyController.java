@@ -9,15 +9,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import com.rumakin.universityschedule.exceptions.ResourceNotFoundException;
 import com.rumakin.universityschedule.models.Faculty;
 import com.rumakin.universityschedule.service.FacultyService;
 
 @Controller
 @RequestMapping("/faculties")
 public class FacultyController {
-    
-    private static final String REDIRECT_PAGE="redirect:/faculties/getAll";
+
+    private static final String REDIRECT_PAGE = "redirect:/faculties/getAll";
 
     private FacultyService facultyService;
     private Logger logger = LoggerFactory.getLogger(FacultyController.class);
@@ -39,14 +38,7 @@ public class FacultyController {
     @GetMapping("/find")
     @ResponseBody
     public Faculty find(int id) {
-        Faculty faculty = facultyService.find(id);
-        if (faculty == null) {
-            logger.warn("id {} not found", id);
-            String message = String.format("Faculty with id %d not found", id);
-            throw new ResourceNotFoundException(message);
-        }
-        return faculty;
-
+        return facultyService.find(id);
     }
 
     @PostMapping("/add")

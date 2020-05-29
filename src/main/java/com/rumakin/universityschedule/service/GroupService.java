@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.rumakin.universityschedule.dao.GroupDao;
+import com.rumakin.universityschedule.exceptions.ResourceNotFoundException;
 import com.rumakin.universityschedule.models.*;
 
 @Service
@@ -31,7 +32,7 @@ public class GroupService {
 
     public Group find(int id) {
         logger.debug("find() id {}.", id);
-        Group group = groupDao.findById(id).orElse(null);
+        Group group = groupDao.findById(id).orElseThrow(()->new ResourceNotFoundException(String.format("Group with id %d not found", id)));
         logger.trace("found {}.", group);
         return group;
     }

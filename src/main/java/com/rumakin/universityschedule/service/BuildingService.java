@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.rumakin.universityschedule.dao.BuildingDao;
+import com.rumakin.universityschedule.exceptions.ResourceNotFoundException;
 import com.rumakin.universityschedule.models.Building;
 
 @Service
@@ -29,7 +30,7 @@ public class BuildingService {
 
     public Building find(int id) {
         logger.debug("find() id {}.", id);
-        Building building = buildingDao.findById(id).orElse(null);
+        Building building = buildingDao.findById(id).orElseThrow(()->new ResourceNotFoundException(String.format("Building with id %d not found", id)));
         logger.trace("found {}.", building);
         return building;
     }

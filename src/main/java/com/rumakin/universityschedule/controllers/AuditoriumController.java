@@ -11,9 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import com.rumakin.universityschedule.dto.AuditoriumDto;
-import com.rumakin.universityschedule.exceptions.ResourceNotFoundException;
-import com.rumakin.universityschedule.models.Auditorium;
-import com.rumakin.universityschedule.models.Building;
+import com.rumakin.universityschedule.models.*;
 import com.rumakin.universityschedule.service.AuditoriumService;
 
 @Controller
@@ -35,14 +33,15 @@ public class AuditoriumController {
     @GetMapping("/getAll")
     public String findAll(Model model) {
         logger.debug("findAll() auditoriums");
-        List<AuditoriumDto> auditoriumDtos = auditoriumService.findAll().stream().map(a->convertToDto(a)).collect(Collectors.toList());
+        List<AuditoriumDto> auditoriumDtos = auditoriumService.findAll().stream().map(a -> convertToDto(a))
+                .collect(Collectors.toList());
         logger.trace("found {} auditoriums.", auditoriumDtos.size());
         model.addAttribute("auditoriums", auditoriumDtos);
         List<Building> buildings = auditoriumService.getBuildings();
         model.addAttribute("buildings", buildings);
         return "auditoriums/getAll";
     }
-    
+
     @PostMapping("/add")
     public String add(AuditoriumDto auditoriumDto) {
         auditoriumService.add(convertToEntity(auditoriumDto));
@@ -52,16 +51,8 @@ public class AuditoriumController {
     @GetMapping("/find")
     @ResponseBody
     public AuditoriumDto find(int id) {
-        Auditorium auditorium = auditoriumService.find(id);
-        if (auditorium == null) {
-            logger.warn("id {} not found", id);
-            String message = String.format("Auditorium with id %d not found", id);
-            throw new ResourceNotFoundException(message);
-        }
-        return convertToDto(auditorium);
+        return convertToDto(auditoriumService.find(id));
     }
-
-    
 
     @PostMapping(value = "/update")
     public String update(AuditoriumDto auditoriumDto) {
@@ -74,11 +65,11 @@ public class AuditoriumController {
         auditoriumService.delete(id);
         return REDIRECT_PAGE;
     }
-    
+
     private AuditoriumDto convertToDto(Auditorium auditorium) {
         return modelMapper.map(auditorium, AuditoriumDto.class);
     }
-    
+
     private Auditorium convertToEntity(AuditoriumDto auditoriumDto) {
         return modelMapper.map(auditoriumDto, Auditorium.class);
     }

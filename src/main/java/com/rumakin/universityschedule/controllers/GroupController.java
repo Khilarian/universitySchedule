@@ -11,9 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import com.rumakin.universityschedule.dto.GroupDto;
-import com.rumakin.universityschedule.exceptions.ResourceNotFoundException;
-import com.rumakin.universityschedule.models.Faculty;
-import com.rumakin.universityschedule.models.Group;
+import com.rumakin.universityschedule.models.*;
 import com.rumakin.universityschedule.service.GroupService;
 
 @Controller
@@ -52,13 +50,7 @@ public class GroupController {
     @GetMapping("/find")
     @ResponseBody
     public GroupDto find(int id) {
-        Group group = groupService.find(id);
-        if (group == null) {
-            logger.warn("id {} not found", id);
-            String message = String.format("Group with id %d not found", id);
-            throw new ResourceNotFoundException(message);
-        }
-        return convertToDto(group);
+        return convertToDto(groupService.find(id));
     }
 
     @PostMapping(value = "/update")
@@ -72,13 +64,13 @@ public class GroupController {
         groupService.delete(id);
         return REDIRECT_PAGE;
     }
-    
+
     private GroupDto convertToDto(Group group) {
         return modelMapper.map(group, GroupDto.class);
     }
-    
+
     private Group convertToEntity(GroupDto groupDto) {
         return modelMapper.map(groupDto, Group.class);
     }
-    
+
 }

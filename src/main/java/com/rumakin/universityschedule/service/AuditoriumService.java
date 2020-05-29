@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.rumakin.universityschedule.dao.AuditoriumDao;
+import com.rumakin.universityschedule.exceptions.ResourceNotFoundException;
 import com.rumakin.universityschedule.models.*;
 
 @Service
@@ -19,7 +20,7 @@ public class AuditoriumService {
     @Autowired
     public AuditoriumService(AuditoriumDao auditoriumDao, BuildingService buildingService) {
         this.auditoriumDao = auditoriumDao;
-        this.buildingService=buildingService;
+        this.buildingService = buildingService;
     }
 
     public List<Auditorium> findAll() {
@@ -31,7 +32,7 @@ public class AuditoriumService {
 
     public Auditorium find(int id) {
         logger.debug("find() id {}", id);
-        Auditorium auditorium = auditoriumDao.findById(id).orElse(null);
+        Auditorium auditorium = auditoriumDao.findById(id).orElseThrow(()->new ResourceNotFoundException(String.format("Auditorium with id %d not found", id)));
         logger.trace("found {}", auditorium);
         return auditorium;
     }
@@ -52,8 +53,8 @@ public class AuditoriumService {
         logger.debug("delete() id {}.", id);
         auditoriumDao.deleteById(id);
     }
-    
-    public List<Building> getBuildings(){
+
+    public List<Building> getBuildings() {
         return buildingService.findAll();
     }
 

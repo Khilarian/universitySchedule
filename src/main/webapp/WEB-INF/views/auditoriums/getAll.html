@@ -22,7 +22,9 @@
             </ul>
         </nav>
     </div>
+    
     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addModal">Add auditorium</button>
+    
     <div>
         <table class="table table-bordered">
             <thead class="bg-primary text-white">
@@ -42,11 +44,9 @@
             <td th:text="${auditorium.buildingAddress}">Building Address</td>
             <td><a th:href="@{/auditoriums/find/(id=${auditorium.id})}" class="btn btn-warning">Edit</a></td>
             <td><a th:href="@{/auditoriums/delete/(id=${auditorium.id})}" class="btn btn-danger">Delete</a></td>
-
         </tr>
         </table>
-
-
+        
         <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModalLabel"
             aria-hidden="true">
             <form action="#" th:action="@{/auditoriums/add}" method="post">

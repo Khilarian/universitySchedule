@@ -22,7 +22,6 @@ public class Auditorium implements ModelEntity {
     
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "building_id")
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Building building;
 
     public Auditorium() {

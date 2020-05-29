@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.rumakin.universityschedule.dao.FacultyDao;
+import com.rumakin.universityschedule.exceptions.ResourceNotFoundException;
 import com.rumakin.universityschedule.models.Faculty;
 
 @Service
@@ -29,7 +30,7 @@ public class FacultyService {
 
     public Faculty find(int id) {
         logger.debug("find() id {}.", id);
-        Faculty faculty = facultyDao.findById(id).orElse(null);
+        Faculty faculty = facultyDao.findById(id).orElseThrow(()->new ResourceNotFoundException(String.format("Faculty with id %d not found", id)));
         logger.trace("found {}.", faculty);
         return faculty;
     }

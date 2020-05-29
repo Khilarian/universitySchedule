@@ -8,9 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.http.HttpStatus;
 
-import com.rumakin.universityschedule.exceptions.*;
 import com.rumakin.universityschedule.models.Building;
 import com.rumakin.universityschedule.service.BuildingService;
 
@@ -27,13 +25,6 @@ public class BuildingController {
     public BuildingController(BuildingService buildingService) {
         this.buildingService = buildingService;
     }
-    
-    @ExceptionHandler(ResourceNotFoundException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    public String handleResourceNotFoundException() {
-        return "groups/notfound";
-    }
-    
 
     @GetMapping("/getAll")
     public String findAll(Model model) {
@@ -47,13 +38,7 @@ public class BuildingController {
     @GetMapping("/find")
     @ResponseBody
     public Building find(int id) {
-        Building building = buildingService.find(id);
-        if (building == null) {
-            logger.warn("id {} not found", id);
-            String message = String.format("Building with id %d not found", id);
-            throw new ResourceNotFoundException(message);
-        }
-        return building;
+        return buildingService.find(id);
     }
 
     @PostMapping("/add")
@@ -63,7 +48,7 @@ public class BuildingController {
     }
 
     @PostMapping(value = "/update")
-        public String update(Building building) {
+    public String update(Building building) {
         buildingService.update(building);
         return REDIRECT_PAGE;
     }
