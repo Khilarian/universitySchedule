@@ -4,10 +4,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.*;
 import org.springframework.context.annotation.Import;
 
-import com.rumakin.universityschedule.configs.AdditionalConfig;
+import com.rumakin.universityschedule.configs.UiConfig;
 
 @SpringBootApplication
-@Import({AdditionalConfig.class})
+@Import({UiConfig.class})
 @EnableAutoConfiguration
 public class AppRunner {
 

@@ -32,7 +32,8 @@ public class AuditoriumService {
 
     public Auditorium find(int id) {
         logger.debug("find() id {}", id);
-        Auditorium auditorium = auditoriumDao.findById(id).orElseThrow(()->new ResourceNotFoundException(String.format("Auditorium with id %d not found", id)));
+        Auditorium auditorium = auditoriumDao.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException(String.format("Auditorium with id %d not found", id)));
         logger.trace("found {}", auditorium);
         return auditorium;
     }

@@ -30,7 +30,8 @@ public class FacultyService {
 
     public Faculty find(int id) {
         logger.debug("find() id {}.", id);
-        Faculty faculty = facultyDao.findById(id).orElseThrow(()->new ResourceNotFoundException(String.format("Faculty with id %d not found", id)));
+        Faculty faculty = facultyDao.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException(String.format("Faculty with id %d not found", id)));
         logger.trace("found {}.", faculty);
         return faculty;
     }

@@ -15,6 +15,8 @@ spring:
     resources:
         static-locations: classpath:/WEB-INF/resources/
     datasource:
+        initialization-mode: always
+        platform: postgres
         driverClassName: org.postgresql.Driver
         url: jdbc:postgresql://localhost/university
         username: tester
@@ -27,4 +29,3 @@ spring:
             ddl-auto: none
         database-platform: org.hibernate.dialect.PostgreSQLDialect
         show-sql: true
-        

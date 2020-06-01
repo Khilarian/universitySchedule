@@ -30,7 +30,8 @@ public class BuildingService {
 
     public Building find(int id) {
         logger.debug("find() id {}.", id);
-        Building building = buildingDao.findById(id).orElseThrow(()->new ResourceNotFoundException(String.format("Building with id %d not found", id)));
+        Building building = buildingDao.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException(String.format("Building with id %d not found", id)));
         logger.trace("found {}.", building);
         return building;
     }

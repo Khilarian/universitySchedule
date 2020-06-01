@@ -11,7 +11,9 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.rumakin.universityschedule.dao.AuditoriumDao;
+import com.rumakin.universityschedule.exceptions.ResourceNotFoundException;
 import com.rumakin.universityschedule.models.*;
+
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -31,10 +33,15 @@ class AuditoriumServiceTest {
     }
 
     @Test
-    public void findByIdShouldExecuteOnceWhenDbCallFineAndRweturnAuditorium() {
+    public void findByIdShouldExecuteOnceWhenDbCallFineAndReturnAuditorium() {
         Auditorium expected = new Auditorium(1, 1, 25, new Building(1, "First", "York"));
         Mockito.when(mockAuditoriumDao.findById(1)).thenReturn(Optional.of(expected));
         assertEquals(auditoriumService.find(1), expected);
+    }
+    
+    @Test
+    public void findByIdShouldRaiseExceptionIfIdMissed() {
+        assertThrows(ResourceNotFoundException.class, () -> auditoriumService.find(1));
     }
 
     @Test
@@ -42,11 +49,8 @@ class AuditoriumServiceTest {
         Building building = new Building(10, "First", "Building");
         Auditorium auditorium = new Auditorium(15, 35, building);
         Auditorium auditoriumTwo = new Auditorium(16, 30, building);
-
         List<Auditorium> auditoriums = Arrays.asList(auditorium, auditoriumTwo);
-
         Mockito.when(mockAuditoriumDao.findAll()).thenReturn(auditoriums);
-
         assertEquals(auditoriumService.findAll(), auditoriums);
     }
 
@@ -54,7 +58,6 @@ class AuditoriumServiceTest {
     public void delteteShouldExecuteOnceWhenDbCallFine() {
         Building building = new Building(10, "First", "Building");
         Auditorium auditorium = new Auditorium(15, 35, building);
-
         Mockito.when(mockAuditoriumDao.findById(1)).thenReturn(Optional.of(auditorium));
         Mockito.when(mockAuditoriumDao.existsById(auditorium.getId())).thenReturn(false);
         assertFalse(mockAuditoriumDao.existsById(auditorium.getId()));
@@ -64,12 +67,9 @@ class AuditoriumServiceTest {
     public void updateShouldExecuteOnceWhenDbCallFineAndUodateEntityField() {
         Building building = new Building(10, "First", "Building");
         Auditorium auditorium = new Auditorium(15, 35, building);
-
         Mockito.when(mockAuditoriumDao.findById(1)).thenReturn(Optional.of(auditorium));
-
         auditorium.setCapacity(20);
         Mockito.when(mockAuditoriumDao.save(auditorium)).thenReturn(auditorium);
-        
         assertEquals(auditoriumService.update(auditorium), auditorium);
 
     }
