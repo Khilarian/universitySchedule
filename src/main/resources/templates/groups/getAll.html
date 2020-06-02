@@ -64,7 +64,7 @@
                                 class="form-control" id="addFaculty" name="facultyId">
                                 <option th:value=0>Faculty not assign</option>
                                 <option th:each="faculty : ${faculties}" th:value="${faculty.id}"
-                                    th:utext="${faculty.name}" id="addFacultyId" placeholder="Faculty">Faculty</option>
+                                    th:utext="${faculty.name}">Faculty</option>
                             </select>                           
                         </div>                      
                     </div>

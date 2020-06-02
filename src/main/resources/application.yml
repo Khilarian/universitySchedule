@@ -1,19 +1,4 @@
 spring:
-    mvc:
-        view:
-            prefix: /WEB-INF/views/
-            suffix: .html
-        servlet:
-            path: /
-        static-path-pattern: /resources/**
-    thymeleaf:
-        check-template: true 
-        check-template-location: true
-        enabled: true
-        prefix: /WEB-INF/views/
-        suffix: .html
-    resources:
-        static-locations: classpath:/WEB-INF/resources/
     datasource:
         initialization-mode: always
         platform: postgres

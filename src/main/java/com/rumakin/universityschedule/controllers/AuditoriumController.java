@@ -33,10 +33,10 @@ public class AuditoriumController {
     @GetMapping("/getAll")
     public String findAll(Model model) {
         logger.debug("findAll() auditoriums");
-        List<AuditoriumDto> auditoriumDtos = auditoriumService.findAll().stream().map(a -> convertToDto(a))
+        List<AuditoriumDto> auditoriums = auditoriumService.findAll().stream().map(a -> convertToDto(a))
                 .collect(Collectors.toList());
-        logger.trace("found {} auditoriums.", auditoriumDtos.size());
-        model.addAttribute("auditoriums", auditoriumDtos);
+        logger.trace("found {} auditoriums.", auditoriums.size());
+        model.addAttribute("auditoriums", auditoriums);
         List<Building> buildings = auditoriumService.getBuildings();
         model.addAttribute("buildings", buildings);
         return "auditoriums/getAll";
@@ -71,7 +71,8 @@ public class AuditoriumController {
     }
 
     private Auditorium convertToEntity(AuditoriumDto auditoriumDto) {
-        return modelMapper.map(auditoriumDto, Auditorium.class);
+        Auditorium auditorium = modelMapper.map(auditoriumDto, Auditorium.class);
+        return auditorium;
     }
 
 }
