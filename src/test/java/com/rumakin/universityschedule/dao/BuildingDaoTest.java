@@ -5,14 +5,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.util.*;
 
 import org.junit.jupiter.api.*;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.boot.test.autoconfigure.orm.jpa.*;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import com.rumakin.universityschedule.models.*;
 
-@RunWith(SpringRunner.class)
 @DataJpaTest
 class BuildingDaoTest {
 
