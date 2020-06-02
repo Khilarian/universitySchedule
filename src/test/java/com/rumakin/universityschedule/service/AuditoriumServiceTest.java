@@ -3,19 +3,15 @@ package com.rumakin.universityschedule.service;
 import static org.junit.Assert.*;
 import java.util.*;
 import org.junit.jupiter.api.*;
-import org.junit.runner.RunWith;
 import org.mockito.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import com.rumakin.universityschedule.dao.AuditoriumDao;
 import com.rumakin.universityschedule.exceptions.ResourceNotFoundException;
 import com.rumakin.universityschedule.models.*;
 
-
-@RunWith(SpringRunner.class)
 @SpringBootTest
 class AuditoriumServiceTest {
 
