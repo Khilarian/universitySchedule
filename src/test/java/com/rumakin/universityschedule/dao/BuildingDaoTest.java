@@ -47,7 +47,6 @@ class BuildingDaoTest {
     @Test
     public void delteteShouldExecuteOnceWhenDbCallFine() {
         Building building = new Building("First", "Building");
-        building = entityManager.persist(building);
         Building buildingTwo = new Building("First", "Building");
         Building savedInDb = entityManager.persist(building);
         Building savedInDbTwo = entityManager.persist(buildingTwo);

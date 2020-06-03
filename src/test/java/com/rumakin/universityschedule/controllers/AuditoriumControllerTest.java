@@ -78,12 +78,7 @@ class AuditoriumControllerTest {
     public void addShouldExecuteOnceWhenDbCallFine() throws Exception {
         Building building = new Building(1, "Main", "Khimki");
         Auditorium auditorium = new Auditorium(15, 35, building);
-        AuditoriumDto auditoriumDto = new AuditoriumDto();
-        auditoriumDto.setNumber(15);
-        auditoriumDto.setCapacity(35);
-        auditoriumDto.setBuildingId(1);
-        auditoriumDto.setBuildingName("Main");
-        auditoriumDto.setBuildingAddress("Khimki");
+        AuditoriumDto auditoriumDto = convertToDto(auditorium);
         auditoriumController.add(auditoriumDto);
         Mockito.verify(mockAuditoriumService).add(auditorium);
     }
