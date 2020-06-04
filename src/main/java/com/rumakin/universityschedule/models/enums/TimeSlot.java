@@ -8,5 +8,9 @@ public enum TimeSlot {
     TimeSlot(int i) {
         this.number = i;
     }
+    
+    public int getNumber() {
+        return this.number;
+    }
 
 }

@@ -1,10 +1,21 @@
 package com.rumakin.universityschedule.dto;
 
+import javax.validation.constraints.*;
+
 public class AuditoriumDto {
 
     private int id;
+    @Min(1)
+    @Max(999)
+    @Digits(integer=3, fraction=0, message = "Auditorium number should be between 1 and 999")
+    @Pattern(regexp = "[0-9]{1,3}")
     private int number;
+    @Min(1)
+    @Max(100)
+    @Digits(integer=3, fraction=0, message = "Auditorium number should be between 1 and 100")
+    @Pattern(regexp = "[0-9]{1,2}")
     private int capacity;
+    @NotBlank(message = "Select building")
     private int buildingId;
     private String buildingName;
     private String buildingAddress;

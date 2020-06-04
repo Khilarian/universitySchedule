@@ -1,6 +1,7 @@
 package com.rumakin.universityschedule.models;
 
 import javax.persistence.*;
+import javax.validation.constraints.*;
 
 @Entity
 @Table
@@ -13,9 +14,15 @@ public class Building implements ModelEntity {
     private int id;
 
     @Column(name = "building_name")
+    @NotBlank(message = "Name is mandatory")
+    @Size(min = 2, max = 50, message = "Name length should be between 2 and 50 characters")
+    @Pattern(regexp = "[A-Z][a-z]+(\\s[A-Z][a-z]+)*", message = "Invalid building name format, should be \"Name optional optional etc\"")
     private String name;
 
     @Column(name = "building_address")
+    @NotBlank(message = "Address is mandatory")
+    @Size(min = 2, max = 200, message = "Address length should be between 2 and 200 characters")
+    @Pattern(regexp = "[A-Z][a-z]+(\\s[A-Z][a-z]+)*", message = "Invalid building address format, should be \"Address optional optional etc\"")
     private String address;
 
     public Building() {

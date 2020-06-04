@@ -3,6 +3,8 @@ package com.rumakin.universityschedule.controllers;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.validation.Valid;
+
 import org.modelmapper.ModelMapper;
 import org.slf4j.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,7 +44,7 @@ public class GroupController {
     }
 
     @PostMapping("/add")
-    public String add(GroupDto groupDto) {
+    public String add(@Valid GroupDto groupDto) {
         groupService.add(convertToEntity(groupDto));
         return REDIRECT_PAGE;
     }
@@ -54,7 +56,7 @@ public class GroupController {
     }
 
     @PostMapping(value = "/update")
-    public String update(GroupDto groupDto) {
+    public String update(@Valid GroupDto groupDto) {
         groupService.update(convertToEntity(groupDto));
         return REDIRECT_PAGE;
     }

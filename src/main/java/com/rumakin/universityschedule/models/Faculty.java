@@ -1,6 +1,7 @@
 package com.rumakin.universityschedule.models;
 
 import javax.persistence.*;
+import javax.validation.constraints.*;
 
 @Entity
 @Table
@@ -11,8 +12,11 @@ public class Faculty implements ModelEntity {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "faculty_seq")
     @SequenceGenerator(name = "faculty_seq", sequenceName = "faculty_faculty_id_seq", allocationSize = 1)
     private int id;
-    
+
     @Column(name = "faculty_name")
+    @NotBlank(message = "Name is mandatory")
+    @Size(min = 2, max = 50, message = "Name length should be between 2 and 50 characters")
+    @Pattern(regexp = "[A-Z][a-z]+(\\s[A-Z][a-z]+)*", message = "Invalid faculty name format, should be \"Name optional optional etc\"")
     private String name;
 
     public Faculty() {

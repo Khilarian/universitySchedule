@@ -3,6 +3,8 @@ package com.rumakin.universityschedule.controllers;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.validation.Valid;
+
 import org.modelmapper.ModelMapper;
 import org.slf4j.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,7 +45,7 @@ public class AuditoriumController {
     }
 
     @PostMapping("/add")
-    public String add(AuditoriumDto auditoriumDto) {
+    public String add(@Valid @RequestBody AuditoriumDto auditoriumDto) {
         auditoriumService.add(convertToEntity(auditoriumDto));
         return REDIRECT_PAGE;
     }
@@ -55,7 +57,7 @@ public class AuditoriumController {
     }
 
     @PostMapping(value = "/update")
-    public String update(AuditoriumDto auditoriumDto) {
+    public String update(@Valid @RequestBody AuditoriumDto auditoriumDto) {
         auditoriumService.update(convertToEntity(auditoriumDto));
         return REDIRECT_PAGE;
     }
