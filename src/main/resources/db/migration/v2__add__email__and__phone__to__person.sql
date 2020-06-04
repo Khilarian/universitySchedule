@@ -1,2 +1,2 @@
-ALTER TABLE university.person ADD COLUMN email VARCHAR (50);
-ALTER TABLE university.person ADD COLUMN phone VARCHAR (18);
+ALTER TABLE university.person ADD COLUMN person_email VARCHAR (50) NOT NULL;
+ALTER TABLE university.person ADD COLUMN person_phone VARCHAR (18) NOT NULL;
