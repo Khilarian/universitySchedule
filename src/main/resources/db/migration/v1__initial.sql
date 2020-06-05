@@ -1,6 +1,3 @@
-CREATE DATABASE university;
-CREATE USER tester WITH PASSWORD 'test';
-GRANT ALL PRIVILEGES ON DATABASE TO "tester";
 CREATE TABLE lesson_type(
 lesson_type_id SERIAL PRIMARY KEY,
 lesson_type_name VARCHAR(20) NOT NULL UNIQUE

@@ -1,33 +1,21 @@
-package com.rumakin.universityschedule.models;
+package com.rumakin.universityschedule.dto;
 
-import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
-@Entity
-@Table
-public class Faculty implements ModelEntity {
+public class FacultyDto {
 
-    @Id
-    @Column(name = "faculty_id")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "faculty_seq")
-    @SequenceGenerator(name = "faculty_seq", sequenceName = "faculty_faculty_id_seq", allocationSize = 1)
     private int id;
-
-    @Column(name = "faculty_name")
+    
+    @NotBlank(message = "Name is mandatory")
+    @Size(min = 2, max = 50, message = "Name length should be between 2 and 50 characters")
+    @Pattern(regexp = "[A-Z][a-z]+(\\s[A-Z][a-z]+)*", message = "Invalid faculty name format, should be \"Name optional optional etc\"")
     private String name;
 
-    public Faculty() {
+    public FacultyDto() {
     }
 
-    public Faculty(String name) {
-        this.name = name;
-    }
-
-    public Faculty(int id, String name) {
-        this.id = id;
-        this.name = name;
-    }
-
-    @Override
     public void setId(int id) {
         this.id = id;
     }
@@ -36,13 +24,17 @@ public class Faculty implements ModelEntity {
         this.name = name;
     }
 
-    @Override
     public int getId() {
         return id;
     }
 
     public String getName() {
         return name;
+    }
+
+    @Override
+    public String toString() {
+        return "FacultyDto [id=" + id + ", name=" + name + "]";
     }
 
     @Override
@@ -58,17 +50,12 @@ public class Faculty implements ModelEntity {
     public boolean equals(Object obj) {
         if (this == obj) return true;
         if (obj == null || getClass() != obj.getClass()) return false;
-        Faculty other = (Faculty) obj;
+        FacultyDto other = (FacultyDto) obj;
         if (id != other.id) return false;
         if (name == null) {
             if (other.name != null) return false;
         } else if (!name.equals(other.name)) return false;
         return true;
-    }
-
-    @Override
-    public String toString() {
-        return "Faculty [id=" + id + ", name=" + name + "]";
     }
 
 }

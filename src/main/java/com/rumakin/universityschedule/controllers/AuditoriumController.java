@@ -44,16 +44,16 @@ public class AuditoriumController {
         return "auditoriums/getAll";
     }
 
-    @PostMapping("/add")
-    public String add(@Valid @RequestBody AuditoriumDto auditoriumDto) {
-        auditoriumService.add(convertToEntity(auditoriumDto));
-        return REDIRECT_PAGE;
-    }
-
     @GetMapping("/find")
     @ResponseBody
     public AuditoriumDto find(int id) {
         return convertToDto(auditoriumService.find(id));
+    }
+
+    @PostMapping("/add")
+    public String add(@Valid @RequestBody AuditoriumDto auditoriumDto) {
+        auditoriumService.add(convertToEntity(auditoriumDto));
+        return REDIRECT_PAGE;
     }
 
     @PostMapping(value = "/update")
@@ -73,8 +73,7 @@ public class AuditoriumController {
     }
 
     private Auditorium convertToEntity(AuditoriumDto auditoriumDto) {
-        Auditorium auditorium = modelMapper.map(auditoriumDto, Auditorium.class);
-        return auditorium;
+        return modelMapper.map(auditoriumDto, Auditorium.class);
     }
 
 }
