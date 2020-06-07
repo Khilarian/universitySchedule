@@ -11,14 +11,6 @@ public class TeacherDto {
     public TeacherDto() {
     }
 
-    public TeacherDto(int personId, String firstName, String lastName, int facultyId, String facultyName) {
-        this.personId = personId;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.facultyId = facultyId;
-        this.facultyName = facultyName;
-    }
-
     public int getPersonId() {
         return personId;
     }

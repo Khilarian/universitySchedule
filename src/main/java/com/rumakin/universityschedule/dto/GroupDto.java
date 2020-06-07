@@ -2,13 +2,16 @@ package com.rumakin.universityschedule.dto;
 
 import javax.validation.constraints.*;
 
+import com.rumakin.universityschedule.validators.group.UniqueGroupName;
+
+@UniqueGroupName
 public class GroupDto {
 
     private int id;
     @NotBlank(message = "Name is mandatory")
     @Pattern(regexp = "[A-Z]{2}-[0-9]{3}", message = "Invalid Group name format, should be \"AA-201\"")
     private String name;
-    @NotBlank(message = "Select faculty")
+    @NotNull(message = "Select faculty")
     private int facultyId;
     private String facultyName;
 

@@ -5,18 +5,12 @@ public class StudentDto {
     private int personId;
     private String firstName;
     private String lastName;
+    private String email;
+    private String phone;
     private int groupId;
     private String groupName;
 
     public StudentDto() {
-    }
-
-    public StudentDto(int personId, String firstName, String lastName, int groupId, String groupName) {
-        this.personId = personId;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.groupId = groupId;
-        this.groupName = groupName;
     }
 
     public int getPersonId() {
@@ -57,6 +51,22 @@ public class StudentDto {
 
     public void setGroupName(String groupName) {
         this.groupName = groupName;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
     @Override

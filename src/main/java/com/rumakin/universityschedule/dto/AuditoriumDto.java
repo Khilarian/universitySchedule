@@ -15,7 +15,7 @@ public class AuditoriumDto {
     @Digits(integer=3, fraction=0, message = "Auditorium number should be between 1 and 100")
     @Pattern(regexp = "[0-9]{1,2}")
     private int capacity;
-    @NotBlank(message = "Select building")
+    @NotNull(message = "Select building")
     private int buildingId;
     private String buildingName;
     private String buildingAddress;

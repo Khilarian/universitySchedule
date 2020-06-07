@@ -10,13 +10,6 @@ public class CourseDto {
     public CourseDto() {
     }
 
-    public CourseDto(int courseId, String courseName, int facultyId, String facultyName) {
-        this.courseId = courseId;
-        this.courseName = courseName;
-        this.facultyId = facultyId;
-        this.facultyName = facultyName;
-    }
-
     public int getCourseId() {
         return courseId;
     }

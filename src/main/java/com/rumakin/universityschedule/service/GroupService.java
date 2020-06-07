@@ -34,7 +34,14 @@ public class GroupService {
         logger.debug("find() id {}.", id);
         Group group = groupDao.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(String.format("Group with id %d not found", id)));
-        logger.trace("found {}.", group);
+        logger.trace("foundById {}, {}.", id, group);
+        return group;
+    }
+
+    public Group findByName(String name) {
+        logger.debug("findByName() {}.", name);
+        Group group = groupDao.findByName(name);
+        logger.trace("foundByName {}, {}.", name, group);
         return group;
     }
 

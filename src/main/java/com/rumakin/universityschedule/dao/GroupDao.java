@@ -6,4 +6,6 @@ import com.rumakin.universityschedule.models.*;
 
 @Repository
 public interface GroupDao extends Dao<Group, Integer> {
+    
+    public Group findByName(String name);
 }
