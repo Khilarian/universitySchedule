@@ -39,7 +39,7 @@ public class AuditoriumDto {
         this.buildingAddress = buildingAddress;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 

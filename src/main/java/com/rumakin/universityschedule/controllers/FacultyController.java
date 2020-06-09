@@ -3,12 +3,15 @@ package com.rumakin.universityschedule.controllers;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import javax.validation.Valid;
+
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import com.rumakin.universityschedule.dto.FacultyDto;
@@ -40,23 +43,29 @@ public class FacultyController {
         model.addAttribute("faculties", faculties);
         return "faculties/getAll";
     }
-
-    @GetMapping("/find")
-    @ResponseBody
-    public FacultyDto find(int id) {
-        return convertToDto(facultyService.find(id));
+    
+    @GetMapping("/edit")
+    public String edit(Integer id, Model model) {
+        FacultyDto faculty = new FacultyDto();
+        if (id != null) {
+            faculty = convertToDto(facultyService.find(id));
+        }
+        model.addAttribute("faculty", faculty);
+        return "faculties/edit";
     }
 
-    @PostMapping("/add")
-    public String add(FacultyDto facultyDto) {
-        facultyService.add(convertToEntity(facultyDto));
-        return REDIRECT_PAGE;
-    }
-
-    @PostMapping(value = "/update")
-    public String update(FacultyDto facultyDto) {
-        facultyService.update(convertToEntity(facultyDto));
-        return REDIRECT_PAGE;
+    @PostMapping("/edit")
+    public String edit(@Valid @ModelAttribute(value = "faculty") FacultyDto facultyDto, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "faculties/edit";
+        } else {
+            if (facultyDto.getId() == null) {
+                facultyService.add(convertToEntity(facultyDto));
+            } else {
+                facultyService.update(convertToEntity(facultyDto));
+            }
+            return REDIRECT_PAGE;
+        }
     }
 
     @GetMapping(value = "/delete")

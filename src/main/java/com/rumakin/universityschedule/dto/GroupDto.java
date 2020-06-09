@@ -18,7 +18,7 @@ public class GroupDto {
     public GroupDto() {
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 

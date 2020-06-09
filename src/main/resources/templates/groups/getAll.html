@@ -6,10 +6,8 @@
 <script type="text/javascript" src="../../resources/js/common.js" th:src="@{/resources/js/common.js}"></script>
 <title>Groups</title>
 </head>
-<body class="bg-secondary">
-    <div class="container">
-        <H2 class="text-body">List of groups</H2>
-    </div>
+
+<body class="container-sm">
 
     <div>
         <nav class="navbar navbar-expand-sm bg-success navbar-light">
@@ -23,7 +21,8 @@
         </nav>
     </div>
 
-    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addModal">Add group</button>
+    <h3 align="center">List of groups</h3>
+    <a th:href="@{/groups/edit}" class="btn btn-secondary">Add a new group</a>
 
     <div>
         <table class="table table-bordered">
@@ -38,82 +37,12 @@
             <tr th:each="group:${groups}" class="table-success">
                 <td th:text="${group.name}"></td>
                 <td th:text="${group.facultyName}"></td>
-                <td><a th:href="@{/groups/find/(id=${group.id})}" class="btn btn-warning">Edit</a></td>
+                <td><a th:href="@{/groups/edit/(id=${group.id})}" class="btn btn-info">Edit</a></td>
+                
+                <td><a th:href="@{/groups/edit/(id=${group.id})}" class="btn btn-warning">Edit</a></td>
                 <td><a th:href="@{/groups/delete/(id=${group.id})}" class="btn btn-danger">Delete</a></td>
             </tr>
         </table>
-    </div>
-
-    <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModal" aria-hidden="true">
-        <form action="#" th:action="@{/groups/add}" method="post" th:object="${group}">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="addModal">Add group</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="form-group">
-                            <label for="name" class="col-form-label">Group Name</label> <input type="text"
-                                class="form-control" id="addName" name="name" placeholder="Group Name">
-                            <div class="text text-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
-                        </div>
-                        <div class="form-group">
-                            <label for="faculyId" class="col-form-label">Faculty</label> <select class="form-control"
-                                id="addFaculty" name="facultyId">
-                                <option th:value=0>Faculty not assign</option>
-                                <option th:each="faculty : ${faculties}" th:value="${faculty.id}"
-                                    th:utext="${faculty.name}">Faculty</option>
-                            </select>
-                            <div class="text text-danger" th:if="${#fields.hasErrors('facultyId')}"
-                                th:errors="*{facultyId}"></div>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Save</button>
-                    </div>
-                </div>
-            </div>
-        </form>
-    </div>
-
-    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModal" aria-hidden="true">
-        <form th:action="@{/groups/update}" method="post">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="editModalLabel">Edit building</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="form-group">
-                            <label for="recipient-name" class="col-form-label">Group Id</label> <input type="text"
-                                class="form-control" id="idEdit" name="id" readonly>
-                        </div>
-                        <div class="form-group">
-                            <label for="recipient-name" class="col-form-label">Group Name</label> <input type="text"
-                                class="form-control" id="nameEdit" name="name">
-                        </div>
-                        <div class="form-group">
-                            <label for="facultyId" class="col-form-label">Faculty</label> <select class="form-control"
-                                id="facultyEdit" name="facultyId">
-                                <option th:each="faculty : ${faculties}" th:value="${faculty.id}"
-                                    th:utext="${faculty.name}" th:selected="${faculty.id}==facultyEdit">Faculty</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Save</button>
-                    </div>
-                </div>
-            </div>
-        </form>
     </div>
 
     <div th:insert="fragments/common :: deleteEntry"></div>

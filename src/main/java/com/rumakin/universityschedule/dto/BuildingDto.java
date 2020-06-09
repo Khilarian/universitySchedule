@@ -30,7 +30,7 @@ public class BuildingDto {
         this.address = address;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 

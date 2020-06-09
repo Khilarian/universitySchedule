@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+<div th:insert="/fragments/common :: common_head"></div>
+<title>Add faculty</title>
+</head>
+<body class="container-sm">
+    <div>
+        <nav class="navbar navbar-expand-sm bg-success navbar-light">
+            <ul class="navbar-nav  text-white">
+                <li class="nav-item"><a class="nav-link" th:href="@{/main_page}">Home</a></li>
+                <li class="nav-item"><a class="nav-link" th:href="@{/buildings/getAll}">Buildings</a></li>
+                <li class="nav-item"><a class="nav-link" th:href="@{/auditoriums/getAll}">Auditoriums</a></li>
+                <li class="nav-item"><a class="nav-link" th:href="@{/groups/getAll}">Groups</a></li>
+                <li class="nav-item"><a class="nav-link" th:href="@{/faculties/getAll}">Faculties</a></li>
+            </ul>
+        </nav>
+    </div>
+
+    <h3 class="text-body">Add new faculty</h3>
+
+    <form action="#" th:action="@{/faculties/edit}" th:object="${faculty}" method="post">
+        <div class="form-group row">
+            <label class="col-form-label">Enter faculty name</label> 
+            <input type="hidden" class="form-control" th:field="*{id}" th:value=${id}/>
+             <input type="text" class="form-control" th:field="*{name}" th:value=${name}/> 
+                <span class="font-italic text-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
+        </div>
+        <div class="form-group row">
+            <input type="submit" value="Save">
+            <input type="reset" class="btn btn-warning" value="Reset"/> 
+            <a th:href="@{/groups/getAll}" class="btn btn-danger">Cancel</a>
+        </div>
+    </form>
+
+</body>
+</html>

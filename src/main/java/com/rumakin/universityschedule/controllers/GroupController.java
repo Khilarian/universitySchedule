@@ -12,7 +12,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.rumakin.universityschedule.dto.GroupDto;
 import com.rumakin.universityschedule.models.*;
@@ -45,26 +44,29 @@ public class GroupController {
         return "groups/getAll";
     }
 
-    @PostMapping("/add")
-    public String add(@Valid @ModelAttribute(value= "group") GroupDto groupDto, BindingResult bindingResult) {
+    @GetMapping("/edit")
+    public String edit(Integer id, Model model) {
+        GroupDto group = new GroupDto();
+        if (id != null) {
+            group = convertToDto(groupService.find(id));
+        }
+        model.addAttribute("faculties", groupService.getFaculties());
+        model.addAttribute("group", group);
+        return "groups/edit";
+    }
+
+    @PostMapping("/edit")
+    public String edit(@Valid @ModelAttribute(value = "group") GroupDto groupDto, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            //what I need here to return modal window with errors information?
+            return "groups/edit";
         } else {
-            groupService.add(convertToEntity(groupDto));
+            if (groupDto.getId() == null) {
+                groupService.add(convertToEntity(groupDto));
+            } else {
+                groupService.update(convertToEntity(groupDto));
+            }
             return REDIRECT_PAGE;
         }
-    }
-
-    @GetMapping("/find")
-    @ResponseBody
-    public GroupDto find(int id) {
-        return convertToDto(groupService.find(id));
-    }
-
-    @PostMapping(value = "/update")
-    public String update(@Valid GroupDto groupDto) {
-        groupService.update(convertToEntity(groupDto));
-        return REDIRECT_PAGE;
     }
 
     @GetMapping("/delete")
