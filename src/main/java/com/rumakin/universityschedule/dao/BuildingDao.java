@@ -6,4 +6,8 @@ import com.rumakin.universityschedule.models.Building;
 
 @Repository
 public interface BuildingDao extends Dao<Building, Integer> {
+
+    public Building findByName(String name);
+    
+    public Building findByAddress(String address);
 }

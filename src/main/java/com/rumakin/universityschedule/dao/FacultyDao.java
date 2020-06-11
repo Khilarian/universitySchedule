@@ -6,4 +6,6 @@ import com.rumakin.universityschedule.models.Faculty;
 
 @Repository
 public interface FacultyDao extends Dao<Faculty, Integer> {
+    
+    public Faculty findByName(String name);
 }

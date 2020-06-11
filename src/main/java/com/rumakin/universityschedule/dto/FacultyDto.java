@@ -4,13 +4,16 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
+import com.rumakin.universityschedule.validators.faculty.UniqueFacultyName;
+
+@UniqueFacultyName
 public class FacultyDto {
 
     private int id;
     
-    @NotBlank(message = "Name is mandatory")
-    @Size(min = 2, max = 50, message = "Name length should be between 2 and 50 characters")
-    @Pattern(regexp = "[A-Z][a-z]+(\\s[A-Z][a-z]+)*", message = "Invalid faculty name format, should be \"Name optional optional etc\"")
+    @NotBlank(message = "{com.rumakin.universityschedule.validation.mandatory.name}")
+    @Size(min = 2, max = 50, message = "{com.rumakin.universityschedule.validation.length.name}")
+    @Pattern(regexp = "[A-Za-z]+(\\s[A-Za-z]+)*", message = "{com.rumakin.universityschedule.validation.illegal.facultyname}")
     private String name;
 
     public FacultyDto() {

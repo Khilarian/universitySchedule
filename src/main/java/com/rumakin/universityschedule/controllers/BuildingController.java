@@ -3,6 +3,8 @@ package com.rumakin.universityschedule.controllers;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import javax.validation.Valid;
+
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,25 +43,28 @@ public class BuildingController {
         return "buildings/getAll";
     }
 
-    @GetMapping("/find")
-    @ResponseBody
-    public BuildingDto find(int id) {
-        return convertToDto(buildingService.find(id));
+    @GetMapping("/edit")
+    public String edit(Integer id, Model model) {
+        BuildingDto building = new BuildingDto();
+        if (id != null) {
+            building = convertToDto(buildingService.findById(id));
+        }
+        model.addAttribute("building", building);
+        return "buildings/edit";
     }
 
-    @PostMapping("/add")
-    public String add(BuildingDto buildingDto/*, BindingResult bindingResult*/) {
-//        if (bindingResult.hasErrors()) {
-//            return "/update";
-//        }
-        buildingService.add(convertToEntity(buildingDto));
-        return REDIRECT_PAGE;
-    }
-
-    @PostMapping(value = "/update")
-    public String update(BuildingDto buildingDto) {
-        buildingService.update(convertToEntity(buildingDto));
-        return REDIRECT_PAGE;
+    @PostMapping("/edit")
+    public String edit(@Valid @ModelAttribute(value = "building") BuildingDto buildingDto, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "buildings/edit";
+        } else {
+            if (buildingDto.getId() == null) {
+                buildingService.add(convertToEntity(buildingDto));
+            } else {
+                buildingService.update(convertToEntity(buildingDto));
+            }
+            return REDIRECT_PAGE;
+        }
     }
 
     @GetMapping(value = "/delete")

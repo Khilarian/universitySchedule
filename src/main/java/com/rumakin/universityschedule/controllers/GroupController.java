@@ -48,7 +48,7 @@ public class GroupController {
     public String edit(Integer id, Model model) {
         GroupDto group = new GroupDto();
         if (id != null) {
-            group = convertToDto(groupService.find(id));
+            group = convertToDto(groupService.findById(id));
         }
         model.addAttribute("faculties", groupService.getFaculties());
         model.addAttribute("group", group);
@@ -56,14 +56,19 @@ public class GroupController {
     }
 
     @PostMapping("/edit")
-    public String edit(@Valid @ModelAttribute(value = "group") GroupDto groupDto, BindingResult bindingResult) {
+    public String edit(@Valid @ModelAttribute(value = "group") GroupDto groupDto, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
+            model.addAttribute("faculties", groupService.getFaculties());
             return "groups/edit";
         } else {
+            Group group = convertToEntity(groupDto);
+            if (group.getFaculty().getId() == 0) {
+                group.setFaculty(null);
+            }
             if (groupDto.getId() == null) {
-                groupService.add(convertToEntity(groupDto));
+                groupService.add(group);
             } else {
-                groupService.update(convertToEntity(groupDto));
+                groupService.update(group);
             }
             return REDIRECT_PAGE;
         }
@@ -82,5 +87,4 @@ public class GroupController {
     private Group convertToEntity(GroupDto groupDto) {
         return modelMapper.map(groupDto, Group.class);
     }
-
 }

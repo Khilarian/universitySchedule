@@ -5,4 +5,6 @@ import com.rumakin.universityschedule.models.Auditorium;
 
 @Repository
 public interface AuditoriumDao extends Dao<Auditorium, Integer> {
+    
+    public Auditorium findByNumberAndBuildingId(int number, int buildingId);
 }

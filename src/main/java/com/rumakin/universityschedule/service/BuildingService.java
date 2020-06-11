@@ -28,11 +28,25 @@ public class BuildingService {
         return buildings;
     }
 
-    public Building find(int id) {
+    public Building findById(int id) {
         logger.debug("find() id {}.", id);
         Building building = buildingDao.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(String.format("Building with id %d not found", id)));
         logger.trace("found {}.", building);
+        return building;
+    }
+
+    public Building findByName(String name) {
+        logger.debug("findByName() {}.", name);
+        Building building = buildingDao.findByName(name);
+        logger.trace("foundByName {}, {}.", name, building);
+        return building;
+    }
+    
+    public Building findByAddress(String address) {
+        logger.debug("findByAddress() {}.", address);
+        Building building = buildingDao.findByAddress(address);
+        logger.trace("foundByAddress {}, {}.", address, building);
         return building;
     }
 

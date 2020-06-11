@@ -32,12 +32,12 @@ class AuditoriumServiceTest {
     public void findByIdShouldExecuteOnceWhenDbCallFineAndReturnAuditorium() {
         Auditorium expected = new Auditorium(1, 1, 25, new Building(1, "First", "York"));
         Mockito.when(mockAuditoriumDao.findById(1)).thenReturn(Optional.of(expected));
-        assertEquals(auditoriumService.find(1), expected);
+        assertEquals(auditoriumService.findById(1), expected);
     }
     
     @Test
     public void findByIdShouldRaiseExceptionIfIdMissed() {
-        assertThrows(ResourceNotFoundException.class, () -> auditoriumService.find(1));
+        assertThrows(ResourceNotFoundException.class, () -> auditoriumService.findById(1));
     }
 
     @Test

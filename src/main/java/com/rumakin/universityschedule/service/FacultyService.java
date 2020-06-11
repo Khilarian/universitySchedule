@@ -28,11 +28,18 @@ public class FacultyService {
         return facultys;
     }
 
-    public Faculty find(int id) {
+    public Faculty findById(int id) {
         logger.debug("find() id {}.", id);
         Faculty faculty = facultyDao.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(String.format("Faculty with id %d not found", id)));
         logger.trace("found {}.", faculty);
+        return faculty;
+    }
+    
+    public Faculty findByName(String name) {
+        logger.debug("findByName() {}.", name);
+        Faculty faculty = facultyDao.findByName(name);
+        logger.trace("foundByName {}, {}.", name, faculty);
         return faculty;
     }
 

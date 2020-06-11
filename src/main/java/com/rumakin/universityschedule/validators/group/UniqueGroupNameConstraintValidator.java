@@ -1,7 +1,6 @@
 package com.rumakin.universityschedule.validators.group;
 
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
+import javax.validation.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -19,7 +18,7 @@ public class UniqueGroupNameConstraintValidator implements ConstraintValidator<U
         Group group = groupService.findByName(groupDto.getName());
         if (group != null && group.getName().equals(groupDto.getName()) && group.getId() != groupDto.getId()) {
             context.disableDefaultConstraintViolation();
-            context.buildConstraintViolationWithTemplate("{com.rumakin.universityschedule.validation.unique.groupName}")
+            context.buildConstraintViolationWithTemplate("{com.rumakin.universityschedule.validation.unique.groupname}")
                     .addPropertyNode("name").addConstraintViolation();
             return false;
         }

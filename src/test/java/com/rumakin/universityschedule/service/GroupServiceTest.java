@@ -34,12 +34,12 @@ class GroupServiceTest {
     public void findByIdShouldExecuteOnceWhenDbCallFineAndReturnAuditorium() {
         Group expected = new Group(1, "AA-25", new Faculty(1, "First"));
         Mockito.when(mockGroupDao.findById(1)).thenReturn(Optional.of(expected));
-        assertEquals(groupService.find(1), expected);
+        assertEquals(groupService.findById(1), expected);
     }
 
     @Test
     public void findByIdShouldRaiseExceptionIfIdMissed() {
-        assertThrows(ResourceNotFoundException.class, () -> groupService.find(1));
+        assertThrows(ResourceNotFoundException.class, () -> groupService.findById(1));
     }
 
     @Test

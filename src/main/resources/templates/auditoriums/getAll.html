@@ -2,14 +2,11 @@
 <html lang="en">
 <head>
 <div th:insert="/fragments/common :: common_head"></div>
-<script type="text/javascript" src="../../resources/js/auditoriums.js" th:src="@{/resources/js/auditoriums.js}"></script>
 <script type="text/javascript" src="../../resources/js/common.js" th:src="@{/resources/js/common.js}"></script>
 <title>Auditoriums</title>
 </head>
-<body class="bg-secondary">
-    <div class="container">
-        <h2 class="text-body">List of auditoriums</h2>
-    </div>
+
+<body class="container-sm">
 
     <div>
         <nav class="navbar navbar-expand-sm bg-success navbar-light">
@@ -22,9 +19,11 @@
             </ul>
         </nav>
     </div>
-    
-    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addModal">Add auditorium</button>
-    
+
+    <h3 align="center">List of auditoriums</h3>
+
+    <a th:href="@{/auditoriums/edit}" class="btn btn-secondary">Add new auditorium</a>
+
     <div>
         <table class="table table-bordered">
             <thead class="bg-primary text-white">
@@ -37,94 +36,15 @@
                     <th>Delete</th>
                 </tr>
             </thead>
-        <tr th:each="auditorium:${auditoriums}" class="table-success">
-            <td th:text="${auditorium.number}">Number</td>
-            <td th:text="${auditorium.capacity}">Capacity</td>
-            <td th:text="${auditorium.buildingName}">Building Name</td>
-            <td th:text="${auditorium.buildingAddress}">Building Address</td>
-            <td><a th:href="@{/auditoriums/find/(id=${auditorium.id})}" class="btn btn-warning">Edit</a></td>
-            <td><a th:href="@{/auditoriums/delete/(id=${auditorium.id})}" class="btn btn-danger">Delete</a></td>
-        </tr>
+            <tr th:each="auditorium:${auditoriums}" class="table-success">
+                <td th:text="${auditorium.number}">Number</td>
+                <td th:text="${auditorium.capacity}">Capacity</td>
+                <td th:text="${auditorium.buildingName}">Building Name</td>
+                <td th:text="${auditorium.buildingAddress}">Building Address</td>
+                <td><a th:href="@{/auditoriums/edit/(id=${auditorium.id})}" class="btn btn-warning">Edit</a></td>
+                <td><a th:href="@{/auditoriums/delete/(id=${auditorium.id})}" class="btn btn-danger">Delete</a></td>
+            </tr>
         </table>
-        
-        <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModalLabel"
-            aria-hidden="true">
-            <form action="#" th:action="@{/auditoriums/add}" method="post">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="addModal">Add auditorium</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <div class="form-group">
-                                <label for="number" class="col-form-label">Number</label> <input type="text"
-                                    class="form-control" id="addNumber" name="number" placeholder="Number">
-                            </div>
-                            <div class="form-group">
-                                <label for="capacity" class="col-form-label">Capacity</label> <input type="text"
-                                    class="form-control" id="addCapacity" name="capacity" placeholder="Capacity">
-                            </div>
-                            <div class="form-group">
-                                <label for="buildingId" class="col-form-label">Building</label> <select
-                                    class="form-control" id="addBuilding" name="buildingId">
-                                    <option th:value=0>Building not assign</option>
-                                    <option th:each="building : ${buildings}" th:value="${building.id}"
-                                        th:utext="${building.name}">Building</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary">Save</button>
-                        </div>
-                    </div>
-                </div>
-            </form>
-        </div>
-
-        <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModal"
-            aria-hidden="true">
-            <form th:action="@{/auditoriums/update}" method="post">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="editModalLabel">Edit auditorium</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <div class="form-group">
-                                <label for="recipient-name" class="col-form-label">Auditorium Id</label> <input
-                                    type="text" class="form-control" id="idEdit" name="id" readonly>
-                            </div>
-                            <div class="form-group">
-                                <label for="recipient-name" class="col-form-label">Auditorium Number</label> <input
-                                    type="text" class="form-control" id="numberEdit" name="number">
-                            </div>
-                            <div class="form-group">
-                                <label for="recipient-name" class="col-form-label">Auditorium Capacity</label> <input
-                                    type="text" class="form-control" id="capacityEdit" name="capacity">
-                            </div>
-                            <div class="form-group">
-                                <label for="buildingId" class="col-form-label">Building</label> <select
-                                    class="form-control" id="buildingEdit" name="buildingId">
-                                    <option th:each="building : ${buildings}" th:value="${building.id}"
-                                        th:utext="${building.name}" th:selected="${building.id}==buildingEdit">Building</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary">Save</button>
-                        </div>
-                    </div>
-                </div>
-            </form>
-        </div>
 
         <div th:insert="fragments/common :: deleteEntry"></div>
 

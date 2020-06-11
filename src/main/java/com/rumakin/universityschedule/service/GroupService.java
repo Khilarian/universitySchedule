@@ -30,7 +30,7 @@ public class GroupService {
         return groups;
     }
 
-    public Group find(int id) {
+    public Group findById(int id) {
         logger.debug("find() id {}.", id);
         Group group = groupDao.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(String.format("Group with id %d not found", id)));

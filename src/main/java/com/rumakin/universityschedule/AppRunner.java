@@ -7,12 +7,11 @@ import org.springframework.context.annotation.Import;
 import com.rumakin.universityschedule.configs.UiConfig;
 
 @SpringBootApplication
-@Import({UiConfig.class})
+@Import({ UiConfig.class })
 @EnableAutoConfiguration
 public class AppRunner {
 
     public static void main(String[] args) {
         SpringApplication.run(AppRunner.class, args);
     }
-    
 }

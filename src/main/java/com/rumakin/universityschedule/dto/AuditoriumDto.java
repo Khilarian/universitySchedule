@@ -1,21 +1,21 @@
 package com.rumakin.universityschedule.dto;
 
 import javax.validation.constraints.*;
+import com.rumakin.universityschedule.validators.auditorium.*;
 
+@UniqueAuditorium
+@AuditoriumBuilding
 public class AuditoriumDto {
 
     private int id;
     @Min(1)
     @Max(999)
-    @Digits(integer=3, fraction=0, message = "Auditorium number should be between 1 and 999")
-    @Pattern(regexp = "[0-9]{1,3}")
+    @Digits(integer=3, fraction=0, message = "{com.rumakin.universityschedule.validation.illegal.auditoriumnumber}")
     private int number;
     @Min(1)
     @Max(100)
-    @Digits(integer=3, fraction=0, message = "Auditorium number should be between 1 and 100")
-    @Pattern(regexp = "[0-9]{1,2}")
+    @Digits(integer=3, fraction=0, message = "{com.rumakin.universityschedule.validation.illegal.auditoriumcapacity}")
     private int capacity;
-    @NotNull(message = "Select building")
     private int buildingId;
     private String buildingName;
     private String buildingAddress;

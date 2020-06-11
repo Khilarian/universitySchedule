@@ -65,7 +65,7 @@ class GroupControllerTest {
     public void findShouldExecuteOneAndReturnGroup() throws Exception {
         Faculty faculty = new Faculty(1, "First");
         Group group = new Group("AA_35", faculty);
-        Mockito.when(mockGroupService.find(Mockito.anyInt())).thenReturn(group);
+        Mockito.when(mockGroupService.findById(Mockito.anyInt())).thenReturn(group);
         String URI = "/groups/find/?id=1";
         RequestBuilder requestBuilder = MockMvcRequestBuilders.get(URI).accept(MediaType.APPLICATION_JSON);
         MvcResult result = mockMvc.perform(requestBuilder).andReturn();
@@ -105,7 +105,7 @@ class GroupControllerTest {
 
     @Test
     void testhandleEntityNotFoundException() throws Exception {
-        Mockito.when(mockGroupService.find(2)).thenThrow(ResourceNotFoundException.class);
+        Mockito.when(mockGroupService.findById(2)).thenThrow(ResourceNotFoundException.class);
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders.get("/groups/find/?id=2");
         ResultActions result = mockMvc.perform(request);
         result.andExpect(MockMvcResultMatchers.view().name("/common/notfound"));

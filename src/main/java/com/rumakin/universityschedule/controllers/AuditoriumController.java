@@ -10,6 +10,7 @@ import org.slf4j.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import com.rumakin.universityschedule.dto.AuditoriumDto;
@@ -44,22 +45,32 @@ public class AuditoriumController {
         return "auditoriums/getAll";
     }
 
-    @GetMapping("/find")
-    @ResponseBody
-    public AuditoriumDto find(int id) {
-        return convertToDto(auditoriumService.find(id));
+    @GetMapping("/edit")
+    public String edit(Integer id, Model model) {
+        AuditoriumDto auditorium = new AuditoriumDto();
+        if (id != null) {
+            auditorium = convertToDto(auditoriumService.findById(id));
+        }
+        model.addAttribute("buildings", auditoriumService.getBuildings());
+        model.addAttribute("auditorium", auditorium);
+        return "auditoriums/edit";
     }
 
-    @PostMapping("/add")
-    public String add(@Valid @RequestBody AuditoriumDto auditoriumDto) {
-        auditoriumService.add(convertToEntity(auditoriumDto));
-        return REDIRECT_PAGE;
-    }
-
-    @PostMapping(value = "/update")
-    public String update(@Valid @RequestBody AuditoriumDto auditoriumDto) {
-        auditoriumService.update(convertToEntity(auditoriumDto));
-        return REDIRECT_PAGE;
+    @PostMapping("/edit")
+    public String edit(@Valid @ModelAttribute(value = "auditorium") AuditoriumDto auditoriumDto,
+            BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+            List<Building> buildings = auditoriumService.getBuildings();
+            model.addAttribute("buildings", buildings);
+            return "auditoriums/edit";
+        } else {
+            if (auditoriumDto.getId() == null) {
+                auditoriumService.add(convertToEntity(auditoriumDto));
+            } else {
+                auditoriumService.update(convertToEntity(auditoriumDto));
+            }
+            return REDIRECT_PAGE;
+        }
     }
 
     @GetMapping(value = "/delete")

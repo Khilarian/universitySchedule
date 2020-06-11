@@ -20,13 +20,13 @@
         </encoder>
     </appender>
 
-    <logger name="com.rumakin.universityschedule" level="DEBUG"
+    <logger name="com.rumakin.universityschedule" level="warn"
         additivity="false">
         <appender-ref ref="FILE" />
     </logger>
     />
 
-    <root level="debug">
+    <root level="warn">
         <appender-ref ref="STDOUT" />
     </root>
 </configuration>

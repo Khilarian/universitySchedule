@@ -2,14 +2,11 @@
 <html lang="en">
 <head>
 <div th:insert="/fragments/common :: common_head"></div>
-<script type="text/javascript" src="../../resources/js/buildings.js" th:src="@{/resources/js/buildings.js}"></script>
 <script type="text/javascript" src="../../resources/js/common.js" th:src="@{/resources/js/common.js}"></script>
 <title>Buildings</title>
 </head>
-<body class="bg-secondary">
-    <div class="container">
-        <h2 class="text-body">List of buildings</h2>
-    </div>
+
+<body class="container-sm">
 
     <div>
         <nav class="navbar navbar-expand-sm bg-success navbar-light">
@@ -23,7 +20,9 @@
         </nav>
     </div>
 
-    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addModal">Add building</button>
+    <h3 align="center">List of buildings</h3>
+
+    <a th:href="@{/buildings/edit}" class="btn btn-secondary">Add a new building</a>
 
     <table class="table table-bordered">
         <thead class="bg-primary text-white">
@@ -37,72 +36,10 @@
         <tr th:each="building:${buildings}" class="table-success">
             <td th:text="${building.name}">Building Name</td>
             <td th:text="${building.address}">Building Address</td>
-            <td><a th:href="@{/buildings/find/(id=${building.id})}" class="btn btn-warning">Edit</a></td>
+            <td><a th:href="@{/buildings/edit/(id=${building.id})}" class="btn btn-warning">Edit</a></td>
             <td><a th:href="@{/buildings/delete/(id=${building.id})}" class="btn btn-danger">Delete</a></td>
         </tr>
     </table>
-
-    <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModal" aria-hidden="true">
-        <form th:action="@{/buildings/add}" method="post">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="addModal">Add building</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="form-group">
-                            <label for="recipient-name" class="col-form-label">Building Name</label> <input type="text"
-                                class="form-control" id="addName" name="name">
-                        </div>
-                        <div class="form-group">
-                            <label for="recipient-name" class="col-form-label">Building Address</label> <input
-                                type="text" class="form-control" id="addAddress" name="address">
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Save</button>
-                    </div>
-                </div>
-            </div>
-        </form>
-    </div>
-
-    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModal" aria-hidden="true">
-        <form th:action="@{/buildings/update}" method="post">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="editModalLabel">Edit building</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="form-group">
-                            <label for="recipient-name" class="col-form-label">Building Id</label> <input type="text"
-                                class="form-control" id="idEdit" name="id" readonly>
-                        </div>
-                        <div class="form-group">
-                            <label for="recipient-name" class="col-form-label">Building Name</label> <input type="text"
-                                class="form-control" id="nameEdit" name="name">
-                        </div>
-                        <div class="form-group">
-                            <label for="recipient-name" class="col-form-label">Building Address</label> <input
-                                type="text" class="form-control" id="addressEdit" name="address">
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Save</button>
-                    </div>
-                </div>
-            </div>
-        </form>
-    </div>
 
     <div th:insert="fragments/common :: deleteEntry"></div>
 

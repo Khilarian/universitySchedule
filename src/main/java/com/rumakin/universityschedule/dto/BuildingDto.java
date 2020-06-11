@@ -2,17 +2,21 @@ package com.rumakin.universityschedule.dto;
 
 import javax.validation.constraints.*;
 
+import com.rumakin.universityschedule.validators.building.*;
+
+@UniqueBuildingName
+@UniqueBuildingAddress
 public class BuildingDto {
 
     private int id;
-    @NotBlank(message = "Name is mandatory")
-    @Size(min = 2, max = 50, message = "Name length should be between 2 and 50 characters")
-    @Pattern(regexp = "[A-Z][a-z]+(\\s[A-Z][a-z]+)*", message = "Invalid building name format, should be \"Name optional optional etc\"")
+    @NotBlank(message = "{com.rumakin.universityschedule.validation.mandatory.name}")
+    @Size(min = 2, max = 50, message = "{com.rumakin.universityschedule.validation.length.name}")
+    @Pattern(regexp = "[A-Z][a-z]+(\\s[A-Z][a-z]+)*", message = "{com.rumakin.universityschedule.validation.illegal.buildingname}")
     private String name;
 
-    @NotBlank(message = "Address is mandatory")
-    @Size(min = 2, max = 200, message = "Address length should be between 2 and 200 characters")
-    @Pattern(regexp = "[A-Z][a-z]+(\\s[A-Z][a-z]+)*", message = "Invalid building address format, should be \"Address optional optional etc\"")
+    @NotBlank(message = "{com.rumakin.universityschedule.validation.mandatory.building.address}")
+    @Size(min = 2, max = 200, message = "{com.rumakin.universityschedule.validation.length.address}")
+    @Pattern(regexp = "[A-Z][a-z]+(\\s[A-Z][a-z]+)*", message = "{com.rumakin.universityschedule.validation.illegal.buildingaddress}")
     private String address;
 
     public BuildingDto() {

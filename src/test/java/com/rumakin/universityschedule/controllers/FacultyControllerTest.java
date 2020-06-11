@@ -65,7 +65,7 @@ class FacultyControllerTest {
     @Test
     public void findShouldExecuteOneAndReturnAuditorium() throws Exception {
         Faculty faculty = new Faculty(1, "First");
-        Mockito.when(mockFacultyService.find(Mockito.anyInt())).thenReturn(faculty);
+        Mockito.when(mockFacultyService.findById(Mockito.anyInt())).thenReturn(faculty);
         String URI = "/faculties/find/?id=1";
         RequestBuilder requestBuilder = MockMvcRequestBuilders.get(URI).accept(MediaType.APPLICATION_JSON);
         MvcResult result = mockMvc.perform(requestBuilder).andReturn();
@@ -97,7 +97,7 @@ class FacultyControllerTest {
 
     @Test
     void testhandleEntityNotFoundException() throws Exception {
-        Mockito.when(mockFacultyService.find(2)).thenThrow(ResourceNotFoundException.class);
+        Mockito.when(mockFacultyService.findById(2)).thenThrow(ResourceNotFoundException.class);
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders.get("/faculties/find/?id=2");
         ResultActions result = mockMvc.perform(request);
         result.andExpect(MockMvcResultMatchers.view().name("/common/notfound"));

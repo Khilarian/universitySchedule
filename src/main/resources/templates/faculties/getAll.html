@@ -1,14 +1,12 @@
 <!DOCTYPE html>
-<html>
+<html  lang="en">
 <head>
 <div th:insert="/fragments/common :: common_head"></div>
-<script type="text/javascript" src="../../resources/js/faculties.js" th:src="@{/resources/js/faculties.js}"></script>
 <script type="text/javascript" src="../../resources/js/common.js" th:src="@{/resources/js/common.js}"></script>
 <title>Faculties</title>
 </head>
-<body class="container-sm">
 
-       
+<body class="container-sm">
 
     <div>
         <nav class="navbar navbar-expand-sm bg-success navbar-light">
@@ -23,6 +21,7 @@
     </div>
 
  <h3 align="center">List of faculties</h3>
+ 
  <a th:href="@{/faculties/edit}" class="btn btn-secondary">Add a new faculty</a>
 
     <table class="table table-bordered">
@@ -35,11 +34,10 @@
         </thead>
         <tr th:each="faculty:${faculties}" class="table-success">
             <td th:text="${faculty.name}">Faculty Name</td>
-            <td><a th:href="@{/faculties/edit/(id=${faculty.id})}" class="btn btn-info">Edit</a></td>
+            <td><a th:href="@{/faculties/edit/(id=${faculty.id})}" class="btn btn-warning">Edit</a></td>
             <td><a th:href="@{/faculties/delete/(id=${faculty.id})}" class="btn btn-danger">Delete</a></td>
         </tr>
     </table>
-
 
     <div th:insert="fragments/common :: deleteEntry"></div>
 

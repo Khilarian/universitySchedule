@@ -8,10 +8,9 @@ import com.rumakin.universityschedule.validators.group.UniqueGroupName;
 public class GroupDto {
 
     private int id;
-    @NotBlank(message = "Name is mandatory")
-    @Pattern(regexp = "[A-Z]{2}-[0-9]{3}", message = "Invalid Group name format, should be \"AA-201\"")
+    @NotBlank(message = "{com.rumakin.universityschedule.validation.mandatory.name}")
+    @Pattern(regexp = "[A-Z]{2}-[0-9]{3}", message = "{com.rumakin.universityschedule.validation.illegal.groupname}")
     private String name;
-    @NotNull(message = "Select faculty")
     private int facultyId;
     private String facultyName;
 

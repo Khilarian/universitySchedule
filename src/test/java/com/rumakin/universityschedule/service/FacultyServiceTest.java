@@ -32,12 +32,12 @@ class FacultyServiceTest {
     public void findByIdShouldExecuteOnceWhenDbCallFineAndReturnAuditorium() {
         Faculty expected = new Faculty(1, "First");
         Mockito.when(mockFacultyDao.findById(1)).thenReturn(Optional.of(expected));
-        assertEquals(facultyService.find(1), expected);
+        assertEquals(facultyService.findById(1), expected);
     }
 
     @Test
     public void findByIdShouldRaiseExceptionIfIdMissed() {
-        assertThrows(ResourceNotFoundException.class, () -> facultyService.find(1));
+        assertThrows(ResourceNotFoundException.class, () -> facultyService.findById(1));
     }
 
     @Test

@@ -48,7 +48,7 @@ public class FacultyController {
     public String edit(Integer id, Model model) {
         FacultyDto faculty = new FacultyDto();
         if (id != null) {
-            faculty = convertToDto(facultyService.find(id));
+            faculty = convertToDto(facultyService.findById(id));
         }
         model.addAttribute("faculty", faculty);
         return "faculties/edit";
