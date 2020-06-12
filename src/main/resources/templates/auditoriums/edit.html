@@ -26,12 +26,11 @@
             <label class="col-form-label">Select building</label> <select class="form-control" th:field="*{buildingId}">
                 <option th:value=0>Building not assign</option>
                 <option th:each="building : ${buildings}" th:value="${building.id}" th:utext="${building.name}"
-                    id="addBuildingId" placeholder="Building">Building</option>
-                <span class="font-italic text-danger" th:if="${#fields.hasErrors('buildingId')}"
-                th:errors="*{buildingId}"></span>
-            </select> <input type="submit" value="Save"> <input type="reset" class="btn btn-warning" value="Reset" /> <a
-                th:href="@{/auditoriums/getAll}" class="btn btn-danger">Cancel</a>
+                    id="addBuildingId" placeholder="Building" th:required="required">Building</option></select> 
+                    <span class="font-italic text-danger" th:if="${#fields.hasErrors('buildingId')}" th:errors="*{buildingId}"></span>
         </div>
+        <input type="submit" value="Save"> <input type="reset" class="btn btn-warning" value="Reset" /> <a
+            th:href="@{/auditoriums/getAll}" class="btn btn-danger">Cancel</a>
     </form>
 
 </body>

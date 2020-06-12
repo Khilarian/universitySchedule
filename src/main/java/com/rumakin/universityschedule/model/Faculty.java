@@ -1,22 +1,33 @@
-package com.rumakin.universityschedule.dto;
+package com.rumakin.universityschedule.model;
 
-import javax.validation.constraints.*;
+import javax.persistence.*;
 
-import com.rumakin.universityschedule.validation.annotation.*;
+@Entity
+@Table
+public class Faculty implements ModelEntity {
 
-@UniqueFacultyName
-public class FacultyDto {
-
+    @Id
+    @Column(name = "faculty_id")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "faculty_seq")
+    @SequenceGenerator(name = "faculty_seq", sequenceName = "faculty_faculty_id_seq", allocationSize = 1)
     private int id;
-    
-    @NotBlank(message = "{com.rumakin.universityschedule.validation.mandatory.name}")
-    @Size(min = 2, max = 50, message = "{com.rumakin.universityschedule.validation.length.name}")
-    @Pattern(regexp = "[A-Za-z]+(\\s[A-Za-z]+)*", message = "{com.rumakin.universityschedule.validation.illegal.facultyname}")
+
+    @Column(name = "faculty_name")
     private String name;
 
-    public FacultyDto() {
+    public Faculty() {
     }
 
+    public Faculty(String name) {
+        this.name = name;
+    }
+
+    public Faculty(int id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
+    @Override
     public void setId(int id) {
         this.id = id;
     }
@@ -25,17 +36,13 @@ public class FacultyDto {
         this.name = name;
     }
 
-    public Integer getId() {
+    @Override
+    public int getId() {
         return id;
     }
 
     public String getName() {
         return name;
-    }
-
-    @Override
-    public String toString() {
-        return "FacultyDto [id=" + id + ", name=" + name + "]";
     }
 
     @Override
@@ -51,12 +58,17 @@ public class FacultyDto {
     public boolean equals(Object obj) {
         if (this == obj) return true;
         if (obj == null || getClass() != obj.getClass()) return false;
-        FacultyDto other = (FacultyDto) obj;
+        Faculty other = (Faculty) obj;
         if (id != other.id) return false;
         if (name == null) {
             if (other.name != null) return false;
         } else if (!name.equals(other.name)) return false;
         return true;
+    }
+
+    @Override
+    public String toString() {
+        return "Faculty [id=" + id + ", name=" + name + "]";
     }
 
 }

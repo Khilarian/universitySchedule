@@ -1,27 +1,38 @@
-package com.rumakin.universityschedule.dto;
+package com.rumakin.universityschedule.model;
 
-import javax.validation.constraints.*;
+import javax.persistence.*;
 
-import com.rumakin.universityschedule.validation.annotation.*;
+@Entity
+@Table
+public class Building implements ModelEntity {
 
-@UniqueBuildingName
-@UniqueBuildingAddress
-public class BuildingDto {
-
+    @Id
+    @Column(name = "building_id")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "building_seq")
+    @SequenceGenerator(name = "building_seq", sequenceName = "building_building_id_seq", allocationSize = 1)
     private int id;
-    @NotBlank(message = "{com.rumakin.universityschedule.validation.mandatory.name}")
-    @Size(min = 2, max = 50, message = "{com.rumakin.universityschedule.validation.length.name}")
-    @Pattern(regexp = "[A-Z][a-z]+(\\s[A-Z][a-z]+)*", message = "{com.rumakin.universityschedule.validation.illegal.buildingname}")
+
+    @Column(name = "building_name")
     private String name;
 
-    @NotBlank(message = "{com.rumakin.universityschedule.validation.mandatory.building.address}")
-    @Size(min = 2, max = 200, message = "{com.rumakin.universityschedule.validation.length.address}")
-    @Pattern(regexp = "[A-Z][a-z]+(\\s[A-Z][a-z]+)*", message = "{com.rumakin.universityschedule.validation.illegal.buildingaddress}")
+    @Column(name = "building_address")
     private String address;
 
-    public BuildingDto() {
+    public Building() {
     }
 
+    public Building(String name, String address) {
+        this.name = name;
+        this.address = address;
+    }
+
+    public Building(int id, String name, String address) {
+        this.id = id;
+        this.name = name;
+        this.address = address;
+    }
+
+    @Override
     public void setId(int id) {
         this.id = id;
     }
@@ -34,7 +45,8 @@ public class BuildingDto {
         this.address = address;
     }
 
-    public Integer getId() {
+    @Override
+    public int getId() {
         return id;
     }
 
@@ -44,11 +56,6 @@ public class BuildingDto {
 
     public String getAddress() {
         return address;
-    }
-
-    @Override
-    public String toString() {
-        return "BuildingDto [id=" + id + ", name=" + name + ", address=" + address + "]";
     }
 
     @Override
@@ -64,8 +71,9 @@ public class BuildingDto {
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
-        if (obj == null || getClass() != obj.getClass()) return false;
-        BuildingDto other = (BuildingDto) obj;
+        if (obj == null) return false;
+        if (getClass() != obj.getClass()) return false;
+        Building other = (Building) obj;
         if (address == null) {
             if (other.address != null) return false;
         } else if (!address.equals(other.address)) return false;
@@ -74,6 +82,11 @@ public class BuildingDto {
             if (other.name != null) return false;
         } else if (!name.equals(other.name)) return false;
         return true;
+    }
+
+    @Override
+    public String toString() {
+        return "Building [id=" + id + ", name=" + name + ", address=" + address + "]";
     }
 
 }

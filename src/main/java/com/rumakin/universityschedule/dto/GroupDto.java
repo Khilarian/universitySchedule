@@ -2,7 +2,7 @@ package com.rumakin.universityschedule.dto;
 
 import javax.validation.constraints.*;
 
-import com.rumakin.universityschedule.validators.group.UniqueGroupName;
+import com.rumakin.universityschedule.validation.annotation.*;
 
 @UniqueGroupName
 public class GroupDto {

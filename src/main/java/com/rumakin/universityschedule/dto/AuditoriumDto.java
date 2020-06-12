@@ -1,7 +1,7 @@
 package com.rumakin.universityschedule.dto;
 
 import javax.validation.constraints.*;
-import com.rumakin.universityschedule.validators.auditorium.*;
+import com.rumakin.universityschedule.validation.annotation.*;
 
 @UniqueAuditorium
 @AuditoriumBuilding
@@ -10,12 +10,12 @@ public class AuditoriumDto {
     private int id;
     @Min(1)
     @Max(999)
-    @Digits(integer=3, fraction=0, message = "{com.rumakin.universityschedule.validation.illegal.auditoriumnumber}")
-    private int number;
+    @Digits(integer = 3, fraction = 0, message = "{com.rumakin.universityschedule.validation.illegal.auditoriumnumber}")
+    private Integer number;
     @Min(1)
     @Max(100)
-    @Digits(integer=3, fraction=0, message = "{com.rumakin.universityschedule.validation.illegal.auditoriumcapacity}")
-    private int capacity;
+    @Digits(integer = 3, fraction = 0, message = "{com.rumakin.universityschedule.validation.illegal.auditoriumcapacity}")
+    private Integer capacity;
     private int buildingId;
     private String buildingName;
     private String buildingAddress;
@@ -47,20 +47,28 @@ public class AuditoriumDto {
         this.id = id;
     }
 
-    public int getNumber() {
+    public Integer getNumber() {
         return number;
     }
 
-    public void setNumber(int number) {
-        this.number = number;
+    public void setNumber(Integer number) {
+        if (number == null) {
+            this.number = 0;
+        } else {
+            this.number = number;
+        }
     }
 
-    public int getCapacity() {
+    public Integer getCapacity() {
         return capacity;
     }
 
-    public void setCapacity(int capacity) {
-        this.capacity = capacity;
+    public void setCapacity(Integer capacity) {
+        if (capacity == null) {
+            this.capacity = 0;
+        } else {
+            this.capacity = capacity;
+        }
     }
 
     public int getBuildingId() {

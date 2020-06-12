@@ -7,8 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.rumakin.universityschedule.dao.GroupDao;
-import com.rumakin.universityschedule.exceptions.ResourceNotFoundException;
-import com.rumakin.universityschedule.models.*;
+import com.rumakin.universityschedule.exception.ResourceNotFoundException;
+import com.rumakin.universityschedule.model.*;
 
 @Service
 public class GroupService {

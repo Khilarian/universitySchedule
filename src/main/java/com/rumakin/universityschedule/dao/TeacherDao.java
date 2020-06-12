@@ -2,7 +2,7 @@ package com.rumakin.universityschedule.dao;
 
 import org.springframework.stereotype.Repository;
 
-import com.rumakin.universityschedule.models.Teacher;
+import com.rumakin.universityschedule.model.Teacher;
 
 @Repository
 public interface TeacherDao extends Dao<Teacher, Integer> {
