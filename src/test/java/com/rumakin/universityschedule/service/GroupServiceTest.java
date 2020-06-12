@@ -11,8 +11,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
 import com.rumakin.universityschedule.dao.GroupDao;
-import com.rumakin.universityschedule.exceptions.ResourceNotFoundException;
-import com.rumakin.universityschedule.models.*;
+import com.rumakin.universityschedule.exception.ResourceNotFoundException;
+import com.rumakin.universityschedule.model.*;
 
 @SpringBootTest
 class GroupServiceTest {

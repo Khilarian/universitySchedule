@@ -22,30 +22,29 @@ CREATE TABLE faculty(
 faculty_id SERIAL PRIMARY KEY,
 faculty_name VARCHAR(50) NOT NULL UNIQUE
 );
-CREATE TABLE course(
-course_id SERIAL PRIMARY KEY,
-course_name VARCHAR(30) NOT NULL UNIQUE,
-faculty_id INTEGER NOT NULL REFERENCES faculty(faculty_id) ON UPDATE CASCADE ON DELETE CASCADE
-);
-CREATE TABLE person(
-person_id SERIAL PRIMARY KEY,
-person_first_name VARCHAR(20) NOT NULL,
-person_last_name VARCHAR(30) NOT NULL
-);
-CREATE TABLE teacher(
-teacher_id INTEGER PRIMARY KEY REFERENCES person(person_id) ON UPDATE CASCADE ON DELETE CASCADE,
-faculty_id INTEGER REFERENCES faculty(faculty_id) ON UPDATE CASCADE ON DELETE SET NULL,
-UNIQUE (teacher_id, faculty_id)
-);
 CREATE TABLE groups(
 group_id SERIAL PRIMARY KEY,
 group_name CHAR(6) NOT NULL UNIQUE,
 faculty_id INTEGER REFERENCES faculty(faculty_id) ON UPDATE CASCADE ON DELETE SET NULL
 );
+CREATE TABLE course(
+course_id SERIAL PRIMARY KEY,
+course_name VARCHAR(30) NOT NULL UNIQUE,
+faculty_id INTEGER NOT NULL REFERENCES faculty(faculty_id) ON UPDATE CASCADE ON DELETE CASCADE
+);
+CREATE TABLE teacher(
+person_id SERIAL PRIMARY KEY,
+person_first_name VARCHAR(20) NOT NULL,
+person_last_name VARCHAR(30) NOT NULL,
+faculty_id INTEGER REFERENCES faculty(faculty_id) ON UPDATE CASCADE ON DELETE SET NULL,
+UNIQUE (person_id, faculty_id)
+);
 CREATE TABLE student(
-student_id INTEGER PRIMARY KEY REFERENCES person(person_id) ON UPDATE CASCADE ON DELETE CASCADE,
+person_id SERIAL PRIMARY KEY,
+person_first_name VARCHAR(20) NOT NULL,
+person_last_name VARCHAR(30) NOT NULL,
 group_id INTEGER REFERENCES groups(group_id) ON UPDATE CASCADE ON DELETE SET NULL,
-UNIQUE (student_id, group_id)
+UNIQUE (person_id, group_id)
 );
 CREATE TABLE lesson(
 lesson_id SERIAL PRIMARY KEY,
@@ -56,12 +55,12 @@ date DATE NOT NULL,
 time_slot_id INTEGER REFERENCES time_slot(time_slot_id) ON UPDATE CASCADE ON DELETE SET NULL
 );
 CREATE TABLE teacher_course(
-teacher_id INTEGER REFERENCES teacher(teacher_id) ON UPDATE CASCADE ON DELETE CASCADE,
+teacher_id INTEGER REFERENCES teacher(person_id) ON UPDATE CASCADE ON DELETE CASCADE,
 course_id INTEGER REFERENCES course(course_id) ON UPDATE CASCADE ON DELETE CASCADE,
 UNIQUE (teacher_id, course_id)
 );
 CREATE TABLE lesson_teacher(
-teacher_id INTEGER REFERENCES teacher(teacher_id) ON UPDATE CASCADE ON DELETE SET NULL,
+teacher_id INTEGER REFERENCES teacher(person_id) ON UPDATE CASCADE ON DELETE SET NULL,
 lesson_id INTEGER REFERENCES lesson(lesson_id) ON UPDATE CASCADE ON DELETE CASCADE,
 UNIQUE (teacher_id, lesson_id)
 );

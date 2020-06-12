@@ -13,24 +13,6 @@ public class Student extends Person {
     public Student() {
     }
 
-    public Student(String firstName, String lastName) {
-        super(firstName, lastName);
-    }
-
-    public Student(int id, String firstName, String lastName) {
-        super(id, firstName, lastName);
-    }
-
-    public Student(String firstName, String lastName, Group group) {
-        super(firstName, lastName);
-        this.group = group;
-    }
-
-    public Student(int id, String name, String surname, Group group) {
-        super(id, name, surname);
-        this.group = group;
-    }
-
     public void setGroup(Group group) {
         this.group = group;
     }

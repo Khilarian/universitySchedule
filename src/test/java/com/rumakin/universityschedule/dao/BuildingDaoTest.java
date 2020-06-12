@@ -8,7 +8,7 @@ import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.boot.test.autoconfigure.orm.jpa.*;
 
-import com.rumakin.universityschedule.models.*;
+import com.rumakin.universityschedule.model.*;
 
 @DataJpaTest
 class BuildingDaoTest {

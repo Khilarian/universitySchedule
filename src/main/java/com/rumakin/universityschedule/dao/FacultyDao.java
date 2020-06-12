@@ -1,11 +1,12 @@
 package com.rumakin.universityschedule.dao;
 
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 import com.rumakin.universityschedule.model.Faculty;
 
 @Repository
-public interface FacultyDao extends Dao<Faculty, Integer> {
+public interface FacultyDao extends CrudRepository<Faculty, Integer> {
     
     public Faculty findByName(String name);
 }

@@ -2,8 +2,8 @@ package com.rumakin.universityschedule.model;
 
 import javax.persistence.*;
 
-@Entity
-@Table
+@MappedSuperclass
+@Table(name = "person")
 public class Person implements ModelEntity {
 
     @Id
@@ -25,17 +25,6 @@ public class Person implements ModelEntity {
     private String phone;
 
     public Person() {
-    }
-
-    public Person(String firstName, String lastName) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-    }
-
-    public Person(int id, String firstName, String lastName) {
-        this.id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
     }
 
     @Override

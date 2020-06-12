@@ -19,24 +19,6 @@ public class Teacher extends Person {
     public Teacher() {
     }
 
-    public Teacher(String firstName, String lastName) {
-        super(firstName, lastName);
-    }
-
-    public Teacher(int id, String firstName, String lastName) {
-        super(id, firstName, lastName);
-    }
-
-    public Teacher(String firstName, String lastName, Faculty faculty) {
-        super(firstName, lastName);
-        this.faculty = faculty;
-    }
-
-    public Teacher(int id, String firstName, String lastName, Faculty faculty) {
-        super(id, firstName, lastName);
-        this.faculty = faculty;
-    }
-
     public void setFaculty(Faculty faculty) {
         this.faculty = faculty;
     }

@@ -1,4 +1,4 @@
-package com.rumakin.universityschedule.controllers;
+package com.rumakin.universityschedule.controller;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -16,13 +16,12 @@ import org.springframework.test.web.servlet.*;
 import org.springframework.test.web.servlet.request.*;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.validation.BindingResult;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rumakin.universityschedule.dto.FacultyDto;
-import com.rumakin.universityschedule.exceptions.ResourceNotFoundException;
-import com.rumakin.universityschedule.models.Faculty;
+import com.rumakin.universityschedule.exception.ResourceNotFoundException;
+import com.rumakin.universityschedule.model.Faculty;
 import com.rumakin.universityschedule.service.FacultyService;
 
 @WebMvcTest(value = FacultyController.class)
