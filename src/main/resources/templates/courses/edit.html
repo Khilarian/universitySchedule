@@ -10,15 +10,19 @@
 
     <h3 class="text-body" th:text="${headerString}"></h3>
 
-    <form action="#" th:action="@{/faculties/edit}" th:object="${faculty}" method="post">
+    <form action="#" th:action="@{/cources/edit}" th:object="${course}" method="post">
         <div class="form-group row">
-            <label class="col-form-label">Enter faculty name</label> <input type="hidden" class="form-control"
+            <label class="col-form-label">Enter course name</label> <input type="hidden" class="form-control"
                 th:field="*{id}" th:value=${id} /> <input type="text" class="form-control" th:field="*{name}"
                 th:value=${name} /> <span class="font-italic text-danger" th:if="${#fields.hasErrors('name')}"
                 th:errors="*{name}"></span>
         </div>
         <div class="form-group row">
-            <input type="submit" value="Save"> <input type="reset" class="btn btn-warning" value="Reset" /> <a
+            <label class="col-form-label">Select faculty</label> <select class="form-control" th:field="*{facultyId}">
+                <option th:value=0>Faculty not assign</option>
+                <option th:each="faculty : ${faculties}" th:value="${faculty.id}" th:utext="${faculty.name}"
+                    id="addFacultyId" placeholder="Faculty">Faculty</option>
+            </select> <input type="submit" value="Save"> <input type="reset" class="btn btn-warning" value="Reset" /> <a
                 th:href="@{/groups/getAll}" class="btn btn-danger">Cancel</a>
         </div>
     </form>

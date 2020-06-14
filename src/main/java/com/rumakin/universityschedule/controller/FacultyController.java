@@ -49,6 +49,9 @@ public class FacultyController {
         FacultyDto faculty = new FacultyDto();
         if (id != null) {
             faculty = convertToDto(facultyService.findById(id));
+            model.addAttribute("headerString", "Edit faculty");
+        } else {
+            model.addAttribute("headerString", "Add faculty");
         }
         model.addAttribute("faculty", faculty);
         return "faculties/edit";

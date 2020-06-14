@@ -49,6 +49,9 @@ public class GroupController {
         GroupDto group = new GroupDto();
         if (id != null) {
             group = convertToDto(groupService.findById(id));
+            model.addAttribute("headerString", "Edit group");
+        } else {
+            model.addAttribute("headerString", "Add group");
         }
         model.addAttribute("faculties", groupService.getFaculties());
         model.addAttribute("group", group);

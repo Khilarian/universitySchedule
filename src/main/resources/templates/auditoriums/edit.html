@@ -2,13 +2,13 @@
 <html lang="en">
 <head>
 <div th:insert="/fragments/common :: common_head"></div>
-<title>Add auditorium</title>
+<title class="text-body" th:text="${headerString}"></title>
 </head>
 <body class="container-sm">
 
     <div th:insert="/fragments/common :: nav_menu"></div>
 
-    <h3 class="text-body">Add new auditorium</h3>
+    <h3 class="text-body" th:text="${headerString}"></h3>
 
     <form action="#" th:action="@{/auditoriums/edit}" th:object="${auditorium}" method="post">
         <div class="form-group row">

@@ -7,4 +7,6 @@ import com.rumakin.universityschedule.model.Course;
 
 @Repository
 public interface CourseDao extends CrudRepository<Course, Integer> {
+
+    public Course findByName(String name);
 }

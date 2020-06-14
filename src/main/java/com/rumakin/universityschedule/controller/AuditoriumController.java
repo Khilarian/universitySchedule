@@ -50,6 +50,9 @@ public class AuditoriumController {
         AuditoriumDto auditorium = new AuditoriumDto();
         if (id != null) {
             auditorium = convertToDto(auditoriumService.findById(id));
+            model.addAttribute("headerString", "Edit auditorium");
+        } else {
+            model.addAttribute("headerString", "Add auditorium");
         }
         model.addAttribute("buildings", auditoriumService.getBuildings());
         model.addAttribute("auditorium", auditorium);

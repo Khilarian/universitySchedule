@@ -37,7 +37,8 @@ public class BuildingController {
     @GetMapping("/getAll")
     public String findAll(Model model) {
         logger.debug("findAll() buildings");
-        List<BuildingDto> buildings = buildingService.findAll().stream().map(b->convertToDto(b)).collect(Collectors.toList());
+        List<BuildingDto> buildings = buildingService.findAll().stream().map(b -> convertToDto(b))
+                .collect(Collectors.toList());
         logger.trace("found {} buildings.", buildings.size());
         model.addAttribute("buildings", buildings);
         return "buildings/getAll";
@@ -48,13 +49,17 @@ public class BuildingController {
         BuildingDto building = new BuildingDto();
         if (id != null) {
             building = convertToDto(buildingService.findById(id));
+            model.addAttribute("headerString", "Edit building");
+        } else {
+            model.addAttribute("headerString", "Add building");
         }
         model.addAttribute("building", building);
         return "buildings/edit";
     }
 
     @PostMapping("/edit")
-    public String edit(@Valid @ModelAttribute(value = "building") BuildingDto buildingDto, BindingResult bindingResult) {
+    public String edit(@Valid @ModelAttribute(value = "building") BuildingDto buildingDto,
+            BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return "buildings/edit";
         } else {
