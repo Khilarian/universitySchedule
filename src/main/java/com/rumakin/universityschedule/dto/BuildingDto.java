@@ -64,7 +64,8 @@ public class BuildingDto {
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
-        if (obj == null || getClass() != obj.getClass()) return false;
+        if (obj == null) return false;
+        if (getClass() != obj.getClass()) return false;
         BuildingDto other = (BuildingDto) obj;
         if (address == null) {
             if (other.address != null) return false;

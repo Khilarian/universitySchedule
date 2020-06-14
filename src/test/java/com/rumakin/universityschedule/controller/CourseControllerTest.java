@@ -20,8 +20,8 @@ import com.rumakin.universityschedule.exception.ResourceNotFoundException;
 import com.rumakin.universityschedule.model.*;
 import com.rumakin.universityschedule.service.*;
 
-@WebMvcTest(value = GroupController.class)
-class GroupControllerTest {
+@WebMvcTest(value = CourseController.class)
+class CourseControllerTest {
 
     private MockMvc mockMvc;
 
@@ -34,16 +34,16 @@ class GroupControllerTest {
     private Model model;
 
     @MockBean
-    private GroupService mockGroupService;
+    private CourseService mockCourseService;
 
     @InjectMocks
     @Autowired
-    private GroupController groupController;
+    private CourseController courseController;
 
     @BeforeEach
     public void setUpBeforeClass() throws Exception {
         MockitoAnnotations.initMocks(this);
-        mockMvc = MockMvcBuilders.standaloneSetup(groupController).setControllerAdvice(new GlobalExceptionHandler())
+        mockMvc = MockMvcBuilders.standaloneSetup(courseController).setControllerAdvice(new GlobalExceptionHandler())
                 .build();
         modelMapper = new ModelMapper();
     }
@@ -52,69 +52,69 @@ class GroupControllerTest {
     public void findAllShouldReturnListOfFacultysIfAtLeastOneExist() throws Exception {
         Faculty faculty = new Faculty(1, "First");
         List<Faculty> faculties = Arrays.asList(faculty);
-        Group group = new Group("AA_35", faculty);
-        Group groupTwo = new Group("AA_36", faculty);
-        List<Group> groups = Arrays.asList(group, groupTwo);
-        List<GroupDto> groupsDto = Arrays.asList(convertToDto(group), convertToDto(groupTwo));
-        Mockito.when(mockGroupService.findAll()).thenReturn(groups);
-        Mockito.when(mockGroupService.getFaculties()).thenReturn(faculties);
-        String URI = "/groups/getAll";
+        Course course = new Course("History", faculty);
+        Course courseTwo = new Course("Wrestling", faculty);
+        List<Course> courses = Arrays.asList(course, courseTwo);
+        List<CourseDto> coursesDto = Arrays.asList(convertToDto(course), convertToDto(courseTwo));
+        Mockito.when(mockCourseService.findAll()).thenReturn(courses);
+        Mockito.when(mockCourseService.getFaculties()).thenReturn(faculties);
+        String URI = "/courses/getAll";
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders.get(URI);
         ResultActions result = mockMvc.perform(request);
-        result.andExpect(MockMvcResultMatchers.view().name("groups/getAll"))
-                .andExpect(MockMvcResultMatchers.model().attributeExists("groups"))
-                .andExpect(MockMvcResultMatchers.model().attribute("groups", groupsDto))
+        result.andExpect(MockMvcResultMatchers.view().name("courses/getAll"))
+                .andExpect(MockMvcResultMatchers.model().attributeExists("courses"))
+                .andExpect(MockMvcResultMatchers.model().attribute("courses", coursesDto))
                 .andExpect(MockMvcResultMatchers.model().attribute("faculties", faculties));
     }
 
     @Test
     public void getEditShouldGetEntityFromDataBaseIfItExists() throws Exception {
         Faculty faculty = new Faculty(1, "First");
-        Group group = new Group("AA_35", faculty);
-        GroupDto groupDto = convertToDto(group);
-        Mockito.when(mockGroupService.findById(Mockito.anyInt())).thenReturn(group);
-        String URI = "/groups/edit/?id=1";
+        Course course = new Course("History", faculty);
+        CourseDto courseDto = convertToDto(course);
+        Mockito.when(mockCourseService.findById(Mockito.anyInt())).thenReturn(course);
+        String URI = "/courses/edit/?id=1";
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders.get(URI);
         ResultActions result = mockMvc.perform(request);
-        result.andExpect(MockMvcResultMatchers.view().name("groups/edit"))
-                .andExpect(MockMvcResultMatchers.model().attributeExists("group"))
-                .andExpect(MockMvcResultMatchers.model().attribute("group", groupDto));
+        result.andExpect(MockMvcResultMatchers.view().name("courses/edit"))
+                .andExpect(MockMvcResultMatchers.model().attributeExists("course"))
+                .andExpect(MockMvcResultMatchers.model().attribute("course", courseDto));
     }
 
     @Test
     public void postEditShouldAddEntityIfItDoesNotExistsInDataBase() throws Exception {
         Faculty faculty = new Faculty(1, "First");
-        Group group = new Group("AA_35", faculty);
-        GroupDto groupDto = convertToDto(group);
-        groupController.edit(groupDto, bindingResult, model);
-        Mockito.verify(mockGroupService).add(group);
+        Course course = new Course("History", faculty);
+        CourseDto courseDto = convertToDto(course);
+        courseController.edit(courseDto, bindingResult, model);
+        Mockito.verify(mockCourseService).add(course);
     }
 
     @Test
     void postEditShouldUpdateEntityIfItExistsInDataBase() throws Exception {
         Faculty faculty = new Faculty(10, "First");
-        Group group = new Group(1, "AA_35", faculty);
-        groupController.edit(convertToDto(group), bindingResult, model);
-        Mockito.verify(mockGroupService).update(group);
+        Course course = new Course(1, "History", faculty);
+        courseController.edit(convertToDto(course), bindingResult, model);
+        Mockito.verify(mockCourseService).update(course);
     }
 
     @Test
     void deleteShouldExecuteOnceWhenDbCallFine() throws Exception {
-        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.get("/groups/delete/?id=1");
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.get("/courses/delete/?id=1");
         ResultActions result = mockMvc.perform(request);
-        result.andExpect(MockMvcResultMatchers.view().name("redirect:/groups/getAll"));
+        result.andExpect(MockMvcResultMatchers.view().name("redirect:/courses/getAll"));
     }
 
     @Test
     void testhandleEntityNotFoundException() throws Exception {
-        Mockito.when(mockGroupService.findById(2)).thenThrow(ResourceNotFoundException.class);
-        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.get("/groups/edit/?id=2");
+        Mockito.when(mockCourseService.findById(2)).thenThrow(ResourceNotFoundException.class);
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.get("/courses/edit/?id=2");
         ResultActions result = mockMvc.perform(request);
         result.andExpect(MockMvcResultMatchers.view().name("/common/notfound"));
     }
 
-    private GroupDto convertToDto(Group group) {
-        return modelMapper.map(group, GroupDto.class);
+    private CourseDto convertToDto(Course course) {
+        return modelMapper.map(course, CourseDto.class);
     }
 
 }

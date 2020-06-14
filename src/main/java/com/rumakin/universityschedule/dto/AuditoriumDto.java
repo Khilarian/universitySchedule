@@ -1,7 +1,9 @@
 package com.rumakin.universityschedule.dto;
 
 import javax.validation.constraints.*;
+
 import com.rumakin.universityschedule.validation.annotation.*;
+import java.util.Optional;
 
 @UniqueAuditorium
 @AuditoriumBuilding
@@ -52,11 +54,7 @@ public class AuditoriumDto {
     }
 
     public void setNumber(Integer number) {
-        if (number == null) {
-            this.number = 0;
-        } else {
-            this.number = number;
-        }
+        this.number= Optional.ofNullable(number).orElse(0);
     }
 
     public Integer getCapacity() {
@@ -92,16 +90,17 @@ public class AuditoriumDto {
         result = prime * result + ((buildingAddress == null) ? 0 : buildingAddress.hashCode());
         result = prime * result + buildingId;
         result = prime * result + ((buildingName == null) ? 0 : buildingName.hashCode());
-        result = prime * result + capacity;
+        result = prime * result + ((capacity == null) ? 0 : capacity.hashCode());
         result = prime * result + id;
-        result = prime * result + number;
+        result = prime * result + ((number == null) ? 0 : number.hashCode());
         return result;
     }
 
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
-        if (obj == null || getClass() != obj.getClass()) return false;
+        if (obj == null) return false;
+        if (getClass() != obj.getClass()) return false;
         AuditoriumDto other = (AuditoriumDto) obj;
         if (buildingAddress == null) {
             if (other.buildingAddress != null) return false;
@@ -110,9 +109,14 @@ public class AuditoriumDto {
         if (buildingName == null) {
             if (other.buildingName != null) return false;
         } else if (!buildingName.equals(other.buildingName)) return false;
-        if (capacity != other.capacity) return false;
+        if (capacity == null) {
+            if (other.capacity != null) return false;
+        } else if (!capacity.equals(other.capacity)) return false;
         if (id != other.id) return false;
-        return number == other.number;
+        if (number == null) {
+            if (other.number != null) return false;
+        } else if (!number.equals(other.number)) return false;
+        return true;
     }
 
 }

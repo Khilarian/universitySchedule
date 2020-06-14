@@ -1,0 +1,4 @@
+ALTER TABLE public.teacher ADD COLUMN person_email VARCHAR (50) UNIQUE NOT NULL;
+ALTER TABLE public.teacher ADD COLUMN person_phone VARCHAR (18) UNIQUE NOT NULL;
+ALTER TABLE public.student ADD COLUMN person_email VARCHAR (50) UNIQUE NOT NULL;
+ALTER TABLE public.student ADD COLUMN person_phone VARCHAR (18) UNIQUE NOT NULL;

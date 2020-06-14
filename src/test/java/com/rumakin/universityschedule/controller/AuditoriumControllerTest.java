@@ -1,8 +1,7 @@
 package com.rumakin.universityschedule.controller;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import java.util.*;
+import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.*;
 import org.mockito.*;
@@ -10,14 +9,13 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.*;
 import org.springframework.test.web.servlet.request.*;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rumakin.universityschedule.dto.AuditoriumDto;
 import com.rumakin.universityschedule.exception.ResourceNotFoundException;
 import com.rumakin.universityschedule.model.*;
@@ -29,6 +27,12 @@ class AuditoriumControllerTest {
     private MockMvc mockMvc;
 
     private ModelMapper modelMapper;
+
+    @Mock
+    private BindingResult bindingResult;
+
+    @Mock
+    private Model model;
 
     @MockBean
     private AuditoriumService mockAuditoriumService;
@@ -48,65 +52,70 @@ class AuditoriumControllerTest {
     @Test
     public void findAllShouldReturnListOfBuildingsIfAtLeastOneExist() throws Exception {
         Building building = new Building(1, "Main", "Khimki");
+        Building buildingTwo = new Building(2, "Second", "Moscow");
+        List<Building> buildings = Arrays.asList(building, buildingTwo);
         Auditorium auditorium = new Auditorium(15, 35, building);
         Auditorium auditoriumTwo = new Auditorium(16, 30, building);
-        List<Auditorium> auditoriums = Arrays.asList(auditorium, auditoriumTwo);
-        List<AuditoriumDto> auditoriumsDto = Arrays.asList(convertToDto(auditorium), convertToDto(auditoriumTwo));
+        List<Auditorium> auditoriums = new ArrayList<>();
+        auditoriums.add(auditorium);
+        auditoriums.add(auditoriumTwo);
+        List<AuditoriumDto> auditoriumsDto = auditoriums.stream().map(a -> convertToDto(a))
+                .collect(Collectors.toList());
+
         Mockito.when(mockAuditoriumService.findAll()).thenReturn(auditoriums);
+        Mockito.when(mockAuditoriumService.getBuildings()).thenReturn(buildings);
         String URI = "/auditoriums/getAll";
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders.get(URI);
         ResultActions result = mockMvc.perform(request);
         result.andExpect(MockMvcResultMatchers.view().name("auditoriums/getAll"))
                 .andExpect(MockMvcResultMatchers.model().attributeExists("auditoriums"))
-                .andExpect(MockMvcResultMatchers.model().attribute("auditoriums", auditoriumsDto));
+                .andExpect(MockMvcResultMatchers.model().attribute("auditoriums", auditoriumsDto))
+                .andExpect(MockMvcResultMatchers.model().attribute("buildings", buildings));
     }
 
     @Test
-    public void findShouldExecuteOneAndReturnAuditorium() throws Exception {
+    public void getEditShouldGetEntityFromDataBaseIfItExists() throws Exception {
+        Building building = new Building(1, "Main", "Khimki");
+        Auditorium auditorium = new Auditorium(1, 15, 35, building);
+        Mockito.when(mockAuditoriumService.findById(Mockito.anyInt())).thenReturn(auditorium);
+        AuditoriumDto auditoriumDto = convertToDto(auditorium);
+        String URI = "/auditoriums/edit/?id=1";
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.get(URI);
+        ResultActions result = mockMvc.perform(request);
+        result.andExpect(MockMvcResultMatchers.view().name("auditoriums/edit"))
+                .andExpect(MockMvcResultMatchers.model().attributeExists("auditorium"))
+                .andExpect(MockMvcResultMatchers.model().attribute("auditorium", auditoriumDto));
+    }
+
+    @Test
+    public void postEditShouldAddEntityIfItDoesNotExistsInDataBase() throws Exception {
         Building building = new Building(1, "Main", "Khimki");
         Auditorium auditorium = new Auditorium(15, 35, building);
-        Mockito.when(mockAuditoriumService.findById(Mockito.anyInt())).thenReturn(auditorium);
-        String URI = "/auditoriums/find/?id=1";
-        RequestBuilder requestBuilder = MockMvcRequestBuilders.get(URI).accept(MediaType.APPLICATION_JSON);
-        MvcResult result = mockMvc.perform(requestBuilder).andReturn();
-        String expectedJson = mapToJson(convertToDto(auditorium));
-        String outputInJson = result.getResponse().getContentAsString();
-        assertEquals(expectedJson, outputInJson);
+        AuditoriumDto auditoriumDto = convertToDto(auditorium);
+        auditoriumController.edit(auditoriumDto, bindingResult, model);
+        Mockito.verify(mockAuditoriumService).add(auditorium);
     }
 
-//    @Test
-//    public void addShouldExecuteOnceWhenDbCallFine() throws Exception {
-//        Building building = new Building(1, "Main", "Khimki");
-//        Auditorium auditorium = new Auditorium(15, 35, building);
-//        AuditoriumDto auditoriumDto = convertToDto(auditorium);
-//        auditoriumController.add(auditoriumDto);
-//        Mockito.verify(mockAuditoriumService).add(auditorium);
-//    }
-//
-//    @Test
-//    void updateShouldExecuteOnceWhenDbCallFine() throws Exception {
-//        Building building = new Building(10, "Main", "Khimki");
-//        Auditorium auditorium = new Auditorium(15, 35, building);
-//        auditoriumController.update(convertToDto(auditorium));
-//        Mockito.verify(mockAuditoriumService).update(auditorium);
-//    }
+    @Test
+    public void postEditShouldUpdateEntityIfItExistsInDataBase() throws Exception {
+        Building building = new Building(10, "Main", "Khimki");
+        Auditorium auditorium = new Auditorium(1, 15, 35, building);
+        AuditoriumDto auditoriumDto = convertToDto(auditorium);
+        auditoriumController.edit(auditoriumDto, bindingResult, model);
+        Mockito.verify(mockAuditoriumService).update(auditorium);
+    }
 
     @Test
-    void deleteShouldExecuteOnceWhenDbCallFine() throws Exception {
+    public void deleteShouldExecuteOnceWhenDbCallFine() throws Exception {
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders.get("/auditoriums/delete/?id=1");
         ResultActions result = mockMvc.perform(request);
         result.andExpect(MockMvcResultMatchers.view().name("redirect:/auditoriums/getAll"));
     }
 
-    private String mapToJson(Object object) throws JsonProcessingException {
-        ObjectMapper objectMapper = new ObjectMapper();
-        return objectMapper.writeValueAsString(object);
-    }
-
     @Test
-    void testhandleEntityNotFoundException() throws Exception {
+    public void testHandleEntityNotFoundException() throws Exception {
         Mockito.when(mockAuditoriumService.findById(2)).thenThrow(ResourceNotFoundException.class);
-        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.get("/auditoriums/find/?id=2");
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.get("/auditoriums/edit/?id=2");
         ResultActions result = mockMvc.perform(request);
         result.andExpect(MockMvcResultMatchers.view().name("/common/notfound"));
     }

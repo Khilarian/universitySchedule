@@ -62,7 +62,7 @@ public class FacultyController {
         if (bindingResult.hasErrors()) {
             return "faculties/edit";
         } else {
-            if (facultyDto.getId() == null) {
+            if (facultyDto.getId() == 0) {
                 facultyService.add(convertToEntity(facultyDto));
             } else {
                 facultyService.update(convertToEntity(facultyDto));

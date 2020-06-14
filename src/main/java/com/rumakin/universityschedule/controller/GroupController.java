@@ -68,7 +68,7 @@ public class GroupController {
             if (group.getFaculty().getId() == 0) {
                 group.setFaculty(null);
             }
-            if (groupDto.getId() == null) {
+            if (groupDto.getId() == 0) {
                 groupService.add(group);
             } else {
                 groupService.update(group);

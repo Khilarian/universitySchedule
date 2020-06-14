@@ -4,9 +4,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.*;
 
+import org.flywaydb.core.Flyway;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.boot.test.autoconfigure.orm.jpa.*;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.jdbc.datasource.init.DatabasePopulatorUtils;
+import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 
 import com.rumakin.universityschedule.model.*;
 
@@ -17,6 +21,7 @@ class GroupDaoTest {
     private TestEntityManager entityManager;
     @Autowired
     private GroupDao groupDao;
+    
 
     @Test
     public void addShouldExecuteOnceWhenDbCallFine() {

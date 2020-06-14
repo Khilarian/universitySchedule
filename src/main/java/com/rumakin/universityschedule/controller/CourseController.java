@@ -68,7 +68,7 @@ public class CourseController {
             if (course.getFaculty().getId() == 0) {
                 course.setFaculty(null);
             }
-            if (courseDto.getId() == null) {
+            if (courseDto.getId() == 0) {
                 courseService.add(course);
             } else {
                 courseService.update(course);

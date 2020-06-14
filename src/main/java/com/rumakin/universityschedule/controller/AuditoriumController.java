@@ -67,7 +67,7 @@ public class AuditoriumController {
             model.addAttribute("buildings", buildings);
             return "auditoriums/edit";
         } else {
-            if (auditoriumDto.getId() == null) {
+            if (auditoriumDto.getId() == 0) {
                 auditoriumService.add(convertToEntity(auditoriumDto));
             } else {
                 auditoriumService.update(convertToEntity(auditoriumDto));
