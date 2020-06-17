@@ -38,14 +38,14 @@ public class BuildingService {
 
     public Building findByName(String name) {
         logger.debug("findByName() {}.", name);
-        Building building = buildingDao.findByName(name);
+        Building building = buildingDao.findByName(name).orElseThrow(() -> new ResourceNotFoundException(String.format("Building with name %s not found", name)));
         logger.trace("foundByName {}, {}.", name, building);
         return building;
     }
     
     public Building findByAddress(String address) {
         logger.debug("findByAddress() {}.", address);
-        Building building = buildingDao.findByAddress(address);
+        Building building = buildingDao.findByAddress(address).orElseThrow(() -> new ResourceNotFoundException(String.format("Building with address %d not found", address)));
         logger.trace("foundByAddress {}, {}.", address, building);
         return building;
     }

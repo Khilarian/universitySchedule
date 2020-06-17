@@ -40,7 +40,9 @@ public class AuditoriumService {
 
     public Auditorium findByNumberAndBuildingId(int number, int buildingId) {
         logger.debug("findByNumberAndBuildingId() {},{}.", number, buildingId);
-        Auditorium auditorium = auditoriumDao.findByNumberAndBuildingId(number, buildingId);
+        Auditorium auditorium = auditoriumDao.findByNumberAndBuildingId(number, buildingId)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        String.format("Auditorium with number %d and building id %d not found", number, buildingId)));
         logger.trace("foundByNumberAndBuildingId {},{} result {}.", number, buildingId, auditorium);
         return auditorium;
     }
