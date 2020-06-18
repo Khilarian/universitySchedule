@@ -17,8 +17,8 @@ public class UniqueBuildingAddressConstraintValidator implements ConstraintValid
 
     @Override
     public boolean isValid(BuildingDto buildingDto, ConstraintValidatorContext context) {
-        Building building = buildingService.findByAddress(buildingDto.getName());
-        if (building != null && building.getName().equals(buildingDto.getName())
+        Building building = buildingService.findByAddress(buildingDto.getAddress());
+        if (building != null && building.getAddress().equals(buildingDto.getAddress())
                 && building.getId() != buildingDto.getId()) {
             context.disableDefaultConstraintViolation();
             context.buildConstraintViolationWithTemplate(

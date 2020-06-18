@@ -40,8 +40,7 @@ public class CourseService {
 
     public Course findByName(String name) {
         logger.debug("findByName() {}.", name);
-        Course course = courseDao.findByName(name)
-                .orElseThrow(() -> new ResourceNotFoundException(String.format("Course with name %s not found", name)));
+        Course course = courseDao.findByName(name);
         logger.trace("foundByName {}, {}.", name, course);
         return course;
     }

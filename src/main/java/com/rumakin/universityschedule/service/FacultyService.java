@@ -38,8 +38,7 @@ public class FacultyService {
 
     public Faculty findByName(String name) {
         logger.debug("findByName() {}.", name);
-        Faculty faculty = facultyDao.findByName(name).orElseThrow(
-                () -> new ResourceNotFoundException(String.format("Faculty with name %s not found", name)));
+        Faculty faculty = facultyDao.findByName(name);
         logger.trace("foundByName {}, {}.", name, faculty);
         return faculty;
     }

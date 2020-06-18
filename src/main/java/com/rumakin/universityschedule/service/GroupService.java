@@ -40,8 +40,7 @@ public class GroupService {
 
     public Group findByName(String name) {
         logger.debug("findByName() {}.", name);
-        Group group = groupDao.findByName(name)
-                .orElseThrow(() -> new ResourceNotFoundException(String.format("Group with name %s not found", name)));
+        Group group = groupDao.findByName(name);
         logger.trace("foundByName {}, {}.", name, group);
         return group;
     }
