@@ -50,7 +50,7 @@ class AuditoriumControllerTest {
     }
 
     @Test
-    public void findAllShouldReturnListOfBuildingsIfAtLeastOneExist() throws Exception {
+    public void getAllShouldReturnListOfBuildingsIfAtLeastOneExist() throws Exception {
         Building building = new Building(1, "Main", "Khimki");
         Building buildingTwo = new Building(2, "Second", "Moscow");
         List<Building> buildings = Arrays.asList(building, buildingTwo);
@@ -110,6 +110,7 @@ class AuditoriumControllerTest {
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders.get("/auditoriums/delete/?id=1");
         ResultActions result = mockMvc.perform(request);
         result.andExpect(MockMvcResultMatchers.view().name("redirect:/auditoriums/getAll"));
+        Mockito.verify(mockAuditoriumService).delete(1);
     }
 
     @Test

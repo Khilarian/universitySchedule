@@ -33,7 +33,7 @@ public class AuditoriumRestController {
     }
 
     @GetMapping("/getAll")
-    public List<AuditoriumDto> findAll() {
+    public List<AuditoriumDto> getAll() {
         logger.debug("findAll() auditoriums");
         List<AuditoriumDto> auditoriums = auditoriumService.findAll().stream().map(b -> convertToDto(b))
                 .collect(Collectors.toList());
