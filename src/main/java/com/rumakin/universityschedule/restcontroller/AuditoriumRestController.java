@@ -32,7 +32,7 @@ public class AuditoriumRestController {
         this.modelMapper = modelMapper;
     }
 
-    @GetMapping("/getAll")
+    @GetMapping("")
     public List<AuditoriumDto> getAll() {
         logger.debug("findAll() auditoriums");
         List<AuditoriumDto> auditoriums = auditoriumService.findAll().stream().map(b -> convertToDto(b))
@@ -41,7 +41,7 @@ public class AuditoriumRestController {
         return auditoriums;
     }
 
-    @GetMapping("/findById/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<AuditoriumDto> findById(@PathVariable(value = "id") int id) {
         logger.debug("find() auditorium");
         AuditoriumDto auditoriumDto = convertToDto(auditoriumService.findById(id));
@@ -49,19 +49,19 @@ public class AuditoriumRestController {
         return new ResponseEntity<>(auditoriumDto, HttpStatus.OK);
     }
 
-    @PostMapping("/add")
+    @PostMapping("")
     public ResponseEntity<AuditoriumDto> add(@Valid @RequestBody AuditoriumDto auditoriumDto) {
         Auditorium auditorium = auditoriumService.add(convertToEntity(auditoriumDto));
         return new ResponseEntity<>(convertToDto(auditorium), HttpStatus.CREATED);
     }
 
-    @PutMapping("/update")
+    @PutMapping("")
     public ResponseEntity<AuditoriumDto> update(@Valid @RequestBody AuditoriumDto auditoriumDto) {
         Auditorium auditorium = auditoriumService.update(convertToEntity(auditoriumDto));
         return new ResponseEntity<>(convertToDto(auditorium), HttpStatus.OK);
     }
 
-    @DeleteMapping(value = "/delete/{id}")
+    @DeleteMapping(value = "/{id}")
     public ResponseEntity<AuditoriumDto> delete(@PathVariable(value = "id") int id) {
         auditoriumService.delete(id);
         return new ResponseEntity<>(null, HttpStatus.OK);

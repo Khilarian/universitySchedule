@@ -32,7 +32,7 @@ public class CourseRestController {
         this.modelMapper = modelMapper;
     }
 
-    @GetMapping("/getAll")
+    @GetMapping("")
     public List<CourseDto> findAll() {
         logger.debug("findAll() courses");
         List<CourseDto> courses = courseService.findAll().stream().map(b -> convertToDto(b))
@@ -41,7 +41,7 @@ public class CourseRestController {
         return courses;
     }
 
-    @GetMapping("/findById/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<CourseDto> findById(@PathVariable(value = "id") int id) {
         logger.debug("find() course");
         CourseDto courseDto = convertToDto(courseService.findById(id));
@@ -49,19 +49,19 @@ public class CourseRestController {
         return new ResponseEntity<>(courseDto, HttpStatus.OK);
     }
 
-    @PostMapping("/add")
+    @PostMapping("")
     public ResponseEntity<CourseDto> add(@Valid @RequestBody CourseDto courseDto) {
         Course course = courseService.add(convertToEntity(courseDto));
         return new ResponseEntity<>(convertToDto(course), HttpStatus.CREATED);
     }
 
-    @PutMapping("/update")
+    @PutMapping("")
     public ResponseEntity<CourseDto> update(@Valid @RequestBody CourseDto courseDto) {
         Course course = courseService.update(convertToEntity(courseDto));
         return new ResponseEntity<>(convertToDto(course), HttpStatus.OK);
     }
 
-    @DeleteMapping(value = "/delete/{id}")
+    @DeleteMapping(value = "/{id}")
     public ResponseEntity<CourseDto> delete(@PathVariable(value = "id") int id) {
         courseService.delete(id);
         return new ResponseEntity<>(null, HttpStatus.OK);

@@ -1,6 +1,7 @@
 package com.rumakin.universityschedule.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.slf4j.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +41,7 @@ public class AuditoriumService {
 
     public Auditorium findByNumberAndBuildingId(int number, int buildingId) {
         logger.debug("findByNumberAndBuildingId() {},{}.", number, buildingId);
-        Auditorium auditorium = auditoriumDao.findByNumberAndBuildingId(number, buildingId);
+        Auditorium auditorium = Optional.ofNullable(auditoriumDao.findByNumberAndBuildingId(number, buildingId)).orElse(new Auditorium());
         logger.trace("foundByNumberAndBuildingId {},{} result {}.", number, buildingId, auditorium);
         return auditorium;
     }

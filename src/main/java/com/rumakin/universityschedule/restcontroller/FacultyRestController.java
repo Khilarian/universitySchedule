@@ -19,7 +19,7 @@ import com.rumakin.universityschedule.service.FacultyService;
 
 @RestController
 @Validated
-@RequestMapping("/api/facultys")
+@RequestMapping("/api/faculties")
 public class FacultyRestController {
 
     private FacultyService facultyService;
@@ -32,16 +32,16 @@ public class FacultyRestController {
         this.modelMapper = modelMapper;
     }
 
-    @GetMapping("/getAll")
+    @GetMapping("")
     public List<FacultyDto> findAll() {
-        logger.debug("findAll() facultys");
-        List<FacultyDto> facultys = facultyService.findAll().stream().map(b -> convertToDto(b))
+        logger.debug("findAll() faculties");
+        List<FacultyDto> faculties = facultyService.findAll().stream().map(b -> convertToDto(b))
                 .collect(Collectors.toList());
-        logger.debug("found() {} facultys", facultys.size());
-        return facultys;
+        logger.debug("found() {} faculties", faculties.size());
+        return faculties;
     }
 
-    @GetMapping("/findById/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<FacultyDto> findById(@PathVariable(value = "id") int id) {
         logger.debug("find() faculty");
         FacultyDto facultyDto = convertToDto(facultyService.findById(id));
@@ -49,19 +49,19 @@ public class FacultyRestController {
         return new ResponseEntity<>(facultyDto, HttpStatus.OK);
     }
 
-    @PostMapping("/add")
+    @PostMapping("")
     public ResponseEntity<FacultyDto> add(@Valid @RequestBody FacultyDto facultyDto) {
         Faculty faculty = facultyService.add(convertToEntity(facultyDto));
         return new ResponseEntity<>(convertToDto(faculty), HttpStatus.CREATED);
     }
 
-    @PutMapping("/update")
+    @PutMapping("")
     public ResponseEntity<FacultyDto> update(@Valid @RequestBody FacultyDto facultyDto) {
         Faculty faculty = facultyService.update(convertToEntity(facultyDto));
         return new ResponseEntity<>(convertToDto(faculty), HttpStatus.OK);
     }
 
-    @DeleteMapping(value = "/delete/{id}")
+    @DeleteMapping(value = "/{id}")
     public ResponseEntity<FacultyDto> delete(@PathVariable(value = "id") int id) {
         facultyService.delete(id);
         return new ResponseEntity<>(null, HttpStatus.OK);
