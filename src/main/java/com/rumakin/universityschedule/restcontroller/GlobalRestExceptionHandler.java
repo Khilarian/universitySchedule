@@ -1,34 +1,45 @@
 package com.rumakin.universityschedule.restcontroller;
 
-import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import javax.servlet.http.HttpServletResponse;
-import javax.validation.ConstraintViolationException;
 
 import org.slf4j.*;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import com.rumakin.universityschedule.dto.ValidationError;
+import static org.springframework.http.HttpStatus.*;
 
-@ControllerAdvice
+import com.rumakin.universityschedule.dto.ValidationError;
+import com.rumakin.universityschedule.exception.InvalidEntityException;
+import com.rumakin.universityschedule.exception.ResourceNotFoundException;
+
+@ControllerAdvice(annotations = RestController.class)
 @Order(Ordered.HIGHEST_PRECEDENCE)
 public class GlobalRestExceptionHandler extends ResponseEntityExceptionHandler {
 
     private final Logger loggerApiException = LoggerFactory.getLogger(GlobalRestExceptionHandler.class);
 
-    @ExceptionHandler(ConstraintViolationException.class)
-    public void constraintViolationException(HttpServletResponse response) throws IOException {
-        response.sendError(HttpStatus.BAD_REQUEST.value());
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<Object> handleException(Exception e) {
+        loggerApiException.error("{} - '{}'", e.getClass().getSimpleName(), e.getMessage());
+        HttpStatus status = INTERNAL_SERVER_ERROR;
+        String msg = "";
+        if (e instanceof ResourceNotFoundException) {
+            msg = e.getMessage();
+            status = NOT_FOUND;
+        } else if (e instanceof InvalidEntityException) {
+            msg = e.getMessage();
+            status = BAD_REQUEST;
+        } else {
+            msg = e.getMessage();
+        }
+        return new ResponseEntity<>(msg, status);
     }
 
     @Override

@@ -2,19 +2,18 @@ package com.rumakin.universityschedule.restcontroller;
 
 import java.util.*;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.*;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.*;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import static org.mockito.Mockito.*;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.*;
-import com.rumakin.universityschedule.controller.GlobalExceptionHandler;
+import com.rumakin.universityschedule.dto.FacultyDto;
 import com.rumakin.universityschedule.model.*;
 import com.rumakin.universityschedule.service.FacultyService;
 
@@ -24,24 +23,16 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.hamcrest.collection.IsCollectionWithSize.*;
 import static org.hamcrest.core.Is.*;
 
-@WebMvcTest(value = FacultyRestController.class)
+@WebMvcTest(FacultyRestController.class)
 class FacultyRestControllerTest {
 
+    @Autowired
     private MockMvc mockMvc;
+    
+    private ModelMapper modelMapper = new ModelMapper();
 
     @MockBean
     private FacultyService mockFacultyService;
-
-    @InjectMocks
-    @Autowired
-    private FacultyRestController facultyController;
-
-    @BeforeEach
-    public void setUpBeforeClass() throws Exception {
-        MockitoAnnotations.initMocks(this);
-        mockMvc = MockMvcBuilders.standaloneSetup(facultyController).setControllerAdvice(new GlobalExceptionHandler())
-                .build();
-    }
 
     @Test
     public void getAllShouldReturnListOfEntityIfAtLeastOneExist() throws Exception {
@@ -63,19 +54,30 @@ class FacultyRestControllerTest {
 
     @Test
     public void addShouldAddEntityToDBAndReturnItWithIdWhenDBCallFine() throws Exception {
-        Faculty faculty = new Faculty("IT");
-        Faculty facultyFromDb = new Faculty(1, "IT");
-        Mockito.when(mockFacultyService.add(faculty)).thenReturn(facultyFromDb);
-        mockMvc.perform(post("/api/faculties").content(convertToJson(faculty)).contentType(APPLICATION_JSON)
-                .accept(APPLICATION_JSON)).andExpect(status().isCreated()).andExpect(result -> is(facultyFromDb));
+        FacultyDto dto = new FacultyDto();
+        dto.setId(0);
+        dto.setName("Faculty");
+        Faculty faculty = convertToEntity(dto);
+        
+        FacultyDto dtoDb = new FacultyDto();
+        dtoDb.setId(1);
+        dtoDb.setName("Faculty");
+        Faculty facultyDb = convertToEntity(dtoDb);
+        
+        Mockito.when(mockFacultyService.add(faculty)).thenReturn(facultyDb);
+        mockMvc.perform(post("/api/faculties").content(convertToJson(dto)).contentType(APPLICATION_JSON)
+                .accept(APPLICATION_JSON)).andExpect(status().isCreated()).andExpect(result -> is(dtoDb));
     }
 
     @Test
     public void updateShouldUpdateEntryInDBAndReturnItWhenDBCallFine() throws Exception {
-        Faculty faculty = new Faculty(1, "IT");
+        FacultyDto dto = new FacultyDto();
+        dto.setId(0);
+        dto.setName("Faculty");
+        Faculty faculty = convertToEntity(dto);
         Mockito.when(mockFacultyService.update(faculty)).thenReturn(faculty);
-        mockMvc.perform(put("/api/faculties").content(convertToJson(faculty)).contentType(APPLICATION_JSON)
-                .accept(APPLICATION_JSON)).andExpect(status().isOk()).andExpect(result -> is(faculty));
+        mockMvc.perform(put("/api/faculties").content(convertToJson(dto)).contentType(APPLICATION_JSON)
+                .accept(APPLICATION_JSON)).andExpect(status().isOk()).andExpect(result -> is(dto));
     }
 
     @Test
@@ -84,10 +86,14 @@ class FacultyRestControllerTest {
         mockMvc.perform(delete("/api/faculties/1").contentType(APPLICATION_JSON)).andExpect(status().isOk());
         Mockito.verify(mockFacultyService, times(1)).delete(faculty.getId());
     }
+    
+    private Faculty convertToEntity(FacultyDto facultyDto) {
+        return modelMapper.map(facultyDto, Faculty.class);
+    }
 
-    private String convertToJson(Faculty faculty) throws JsonProcessingException {
+    private String convertToJson(Object object) throws JsonProcessingException {
         ObjectWriter objectWriter = new ObjectMapper().writer().withDefaultPrettyPrinter();
-        return objectWriter.writeValueAsString(faculty);
+        return objectWriter.writeValueAsString(object);
     }
 
 }

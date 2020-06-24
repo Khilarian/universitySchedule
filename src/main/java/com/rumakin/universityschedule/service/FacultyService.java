@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.rumakin.universityschedule.dao.FacultyDao;
+import com.rumakin.universityschedule.exception.InvalidEntityException;
 import com.rumakin.universityschedule.exception.ResourceNotFoundException;
 import com.rumakin.universityschedule.model.Faculty;
 
@@ -45,6 +46,9 @@ public class FacultyService {
 
     public Faculty add(Faculty faculty) {
         logger.debug("add() {}.", faculty);
+        if (faculty.getId() != 0) {
+            throw new InvalidEntityException("Id must be 0 for create");
+        }
         return facultyDao.save(faculty);
     }
 

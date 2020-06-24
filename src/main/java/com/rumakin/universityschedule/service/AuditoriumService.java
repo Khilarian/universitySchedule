@@ -1,13 +1,13 @@
 package com.rumakin.universityschedule.service;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.slf4j.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.rumakin.universityschedule.dao.AuditoriumDao;
+import com.rumakin.universityschedule.exception.InvalidEntityException;
 import com.rumakin.universityschedule.exception.ResourceNotFoundException;
 import com.rumakin.universityschedule.model.*;
 
@@ -41,13 +41,16 @@ public class AuditoriumService {
 
     public Auditorium findByNumberAndBuildingId(int number, int buildingId) {
         logger.debug("findByNumberAndBuildingId() {},{}.", number, buildingId);
-        Auditorium auditorium = Optional.ofNullable(auditoriumDao.findByNumberAndBuildingId(number, buildingId)).orElse(new Auditorium());
+        Auditorium auditorium = auditoriumDao.findByNumberAndBuildingId(number, buildingId);
         logger.trace("foundByNumberAndBuildingId {},{} result {}.", number, buildingId, auditorium);
         return auditorium;
     }
 
     public Auditorium add(Auditorium auditorium) {
         logger.debug("add() {}", auditorium);
+        if (auditorium.getId()!=0) {
+            throw new InvalidEntityException("Id must be 0 for create");
+        }
         return auditoriumDao.save(auditorium);
     }
 

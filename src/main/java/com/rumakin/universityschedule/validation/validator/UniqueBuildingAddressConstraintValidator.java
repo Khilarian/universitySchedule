@@ -10,7 +10,8 @@ import com.rumakin.universityschedule.service.BuildingService;
 
 import com.rumakin.universityschedule.validation.annotation.*;
 
-public class UniqueBuildingAddressConstraintValidator implements ConstraintValidator<UniqueBuildingAddress, BuildingDto> {
+public class UniqueBuildingAddressConstraintValidator
+        implements ConstraintValidator<UniqueBuildingAddress, BuildingDto> {
 
     @Autowired
     private BuildingService buildingService;

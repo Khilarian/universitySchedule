@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.rumakin.universityschedule.dao.CourseDao;
+import com.rumakin.universityschedule.exception.InvalidEntityException;
 import com.rumakin.universityschedule.exception.ResourceNotFoundException;
 import com.rumakin.universityschedule.model.*;
 
@@ -47,6 +48,9 @@ public class CourseService {
 
     public Course add(Course course) {
         logger.debug("add() {}.", course);
+        if (course.getId() != 0) {
+            throw new InvalidEntityException("Id must be 0 for create");
+        }
         return courseDao.save(course);
     }
 

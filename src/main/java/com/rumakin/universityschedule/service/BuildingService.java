@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.rumakin.universityschedule.dao.BuildingDao;
-import com.rumakin.universityschedule.exception.ResourceNotFoundException;
+import com.rumakin.universityschedule.exception.*;
 import com.rumakin.universityschedule.model.Building;
 
 @Service
@@ -52,6 +52,9 @@ public class BuildingService {
 
     public Building add(Building building) {
         logger.debug("add() {}.", building);
+        if (building.getId()!= 0) {
+            throw new InvalidEntityException("Id must be 0 for create");
+        }
         return buildingDao.save(building);
     }
 
