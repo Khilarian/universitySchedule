@@ -14,6 +14,8 @@
         <java.version>11</java.version>
         <modelmapper.version>2.3.7</modelmapper.version>
         <flyway.version>6.4.3</flyway.version>
+        <swagger.version>2.9.2</swagger.version>
+         <swagger-annotation.version>1.6.1</swagger-annotation.version>
     </properties>
 
     <parent>
@@ -96,6 +98,33 @@
             <artifactId>flyway-maven-plugin</artifactId>
             <version>${flyway.version}</version>
             <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger2</artifactId>
+            <version>${swagger.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger-ui</artifactId>
+            <version>${swagger.version}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.swagger</groupId>
+            <artifactId>swagger-annotations</artifactId>
+            <version>${swagger-annotation.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.swagger</groupId>
+            <artifactId>swagger-models</artifactId>
+            <version>${swagger-annotation.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-bean-validators</artifactId>
+            <version>${swagger.version}</version>
         </dependency>
 
     </dependencies>

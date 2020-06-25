@@ -3,23 +3,34 @@ package com.rumakin.universityschedule.dto;
 import javax.validation.constraints.*;
 
 import com.rumakin.universityschedule.validation.annotation.*;
+
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
 import java.util.Optional;
 
 @UniqueAuditorium
 @AuditoriumBuilding
+@ApiModel
 public class AuditoriumDto {
 
+    @ApiModelProperty(notes = "Id of the auditorium")
     private int id;
     @Min(1)
     @Max(999)
     @Digits(integer = 3, fraction = 0, message = "{com.rumakin.universityschedule.validation.illegal.auditoriumnumber}")
+    @ApiModelProperty(notes = "Number of auditorium")
     private Integer number;
     @Min(1)
     @Max(100)
     @Digits(integer = 3, fraction = 0, message = "{com.rumakin.universityschedule.validation.illegal.auditoriumcapacity}")
+    @ApiModelProperty(notes = "Capacity of the auditorium")
     private Integer capacity;
+    @ApiModelProperty(notes = "Building Id of the auditorium")
     private int buildingId;
+    @ApiModelProperty(notes = "Building Name of the auditorium")
     private String buildingName;
+    @ApiModelProperty(notes = "Building Address of the auditorium")
     private String buildingAddress;
 
     public AuditoriumDto() {
