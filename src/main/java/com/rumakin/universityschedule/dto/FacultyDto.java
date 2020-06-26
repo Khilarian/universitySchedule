@@ -4,14 +4,17 @@ import javax.validation.constraints.*;
 
 import com.rumakin.universityschedule.validation.annotation.*;
 
+import io.swagger.annotations.ApiModelProperty;
+
 @UniqueFacultyName
 public class FacultyDto {
 
+    @ApiModelProperty(notes = "Id of the faculty")
     private int id;
-    
     @NotBlank(message = "{com.rumakin.universityschedule.validation.mandatory.name}")
     @Size(min = 2, max = 50, message = "{com.rumakin.universityschedule.validation.length.name}")
     @Pattern(regexp = "[A-Za-z]+(\\s[A-Za-z]+)*", message = "{com.rumakin.universityschedule.validation.illegal.facultyname}")
+    @ApiModelProperty(notes = "Name of the faculty")
     private String name;
 
     public FacultyDto() {

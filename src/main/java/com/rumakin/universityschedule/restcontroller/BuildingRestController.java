@@ -17,9 +17,12 @@ import com.rumakin.universityschedule.dto.BuildingDto;
 import com.rumakin.universityschedule.model.Building;
 import com.rumakin.universityschedule.service.BuildingService;
 
+import io.swagger.annotations.Api;
+
 @RestController
 @Validated
 @RequestMapping("/api/buildings")
+@Api(value = "Building Resourse REST Endpoint")
 public class BuildingRestController {
 
     private BuildingService buildingService;

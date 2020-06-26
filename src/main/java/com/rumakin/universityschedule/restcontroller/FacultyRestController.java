@@ -17,9 +17,12 @@ import com.rumakin.universityschedule.dto.FacultyDto;
 import com.rumakin.universityschedule.model.Faculty;
 import com.rumakin.universityschedule.service.FacultyService;
 
+import io.swagger.annotations.Api;
+
 @RestController
 @Validated
 @RequestMapping("/api/faculties")
+@Api(value = "Faculty Resourse REST Endpoint")
 public class FacultyRestController {
 
     private FacultyService facultyService;

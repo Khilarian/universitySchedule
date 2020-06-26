@@ -18,7 +18,6 @@ import com.rumakin.universityschedule.model.Auditorium;
 import com.rumakin.universityschedule.service.AuditoriumService;
 
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 
 @RestController
 @Validated
@@ -36,7 +35,6 @@ public class AuditoriumRestController {
         this.modelMapper = modelMapper;
     }
 
-    @ApiOperation(value = "${description.operation.auditorium.getall}", responseContainer = "List", response = AuditoriumDto.class)
     @GetMapping("")
     public List<AuditoriumDto> getAll() {
         logger.debug("findAll() auditoriums");
@@ -46,7 +44,6 @@ public class AuditoriumRestController {
         return auditoriums;
     }
 
-    @ApiOperation(value = "${description.operation.auditorium.findbyid}", response = AuditoriumDto.class)
     @GetMapping("/{id}")
     public ResponseEntity<AuditoriumDto> findById(@PathVariable(value = "id") int id) {
         logger.debug("find() auditorium");
@@ -55,21 +52,18 @@ public class AuditoriumRestController {
         return new ResponseEntity<>(auditoriumDto, HttpStatus.OK);
     }
 
-    @ApiOperation(value = "${description.operation.auditorium.add}", response = AuditoriumDto.class)
     @PostMapping("")
     public ResponseEntity<AuditoriumDto> add(@Valid @RequestBody AuditoriumDto auditoriumDto) {
         Auditorium auditorium = auditoriumService.add(convertToEntity(auditoriumDto));
         return new ResponseEntity<>(convertToDto(auditorium), HttpStatus.CREATED);
     }
 
-    @ApiOperation(value = "${description.operation.auditorium.update}", response = AuditoriumDto.class)
     @PutMapping("")
     public ResponseEntity<AuditoriumDto> update(@Valid @RequestBody AuditoriumDto auditoriumDto) {
         Auditorium auditorium = auditoriumService.update(convertToEntity(auditoriumDto));
         return new ResponseEntity<>(convertToDto(auditorium), HttpStatus.OK);
     }
 
-    @ApiOperation(value = "${description.operation.auditorium.delete}", response = AuditoriumDto.class)
     @DeleteMapping(value = "/{id}")
     public HttpStatus delete(@PathVariable(value = "id") int id) {
         auditoriumService.delete(id);

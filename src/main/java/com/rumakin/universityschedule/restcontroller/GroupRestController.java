@@ -17,9 +17,12 @@ import com.rumakin.universityschedule.dto.GroupDto;
 import com.rumakin.universityschedule.model.Group;
 import com.rumakin.universityschedule.service.GroupService;
 
+import io.swagger.annotations.Api;
+
 @RestController
 @Validated
 @RequestMapping("/api/groups")
+@Api(value = "Group Resourse REST Endpoint")
 public class GroupRestController {
 
     private GroupService groupService;

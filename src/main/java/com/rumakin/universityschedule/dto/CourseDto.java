@@ -3,15 +3,21 @@ package com.rumakin.universityschedule.dto;
 import javax.validation.constraints.*;
 import com.rumakin.universityschedule.validation.annotation.*;
 
+import io.swagger.annotations.ApiModelProperty;
+
 @UniqueCourseName
 public class CourseDto {
 
+    @ApiModelProperty(notes = "Id of the course")
     private int id;
     @NotBlank(message = "{com.rumakin.universityschedule.validation.mandatory.name}")
     @Size(min = 2, max = 50, message = "{com.rumakin.universityschedule.validation.length.name}")
     @Pattern(regexp = "[A-Za-z]+(\\s[A-Za-z]+)*", message = "{com.rumakin.universityschedule.validation.illegal.coursename}")
+    @ApiModelProperty(notes = "Name of the course")
     private String name;
+    @ApiModelProperty(notes = "Id of the faculty")
     private int facultyId;
+    @ApiModelProperty(notes = "Name of the faculty")
     private String facultyName;
 
     public CourseDto() {

@@ -1,11 +1,18 @@
 package com.rumakin.universityschedule.dto;
 
+import io.swagger.annotations.ApiModelProperty;
+
 public class TeacherDto {
 
+    @ApiModelProperty(notes = "Id of the teacher")
     private int personId;
+    @ApiModelProperty(notes = "First name of the teacher")
     private String firstName;
+    @ApiModelProperty(notes = "Last name of thr teacher")
     private String lastName;
+    @ApiModelProperty(notes = "Id of the faculty")
     private int facultyId;
+    @ApiModelProperty(notes = "Name of the faculty")
     private String facultyName;
 
     public TeacherDto() {

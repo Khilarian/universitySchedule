@@ -20,8 +20,6 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @Import(BeanValidatorPluginsConfiguration.class)
 public class Swagger2Config {
 
-    @Value("${description.field.response.message.200}")
-    private String message200;
     @Value("${description.field.response.message.201}")
     private String message201;
     @Value("${description.field.response.message.400}")
@@ -58,7 +56,6 @@ public class Swagger2Config {
 
     private List<ResponseMessage> getCustomizedGetResponseMessages() {
         List<ResponseMessage> responseMessages = new ArrayList<>();
-        responseMessages.add(new ResponseMessageBuilder().code(200).message(message200).build());
         responseMessages.add(new ResponseMessageBuilder().code(404).message(message404).build());
         responseMessages.add(new ResponseMessageBuilder().code(500).message(message500).build());
         return responseMessages;
@@ -74,7 +71,6 @@ public class Swagger2Config {
 
     private List<ResponseMessage> getCustomizedPutResponseMessages() {
         List<ResponseMessage> responseMessages = new ArrayList<>();
-        responseMessages.add(new ResponseMessageBuilder().code(200).message(message200).build());
         responseMessages.add(new ResponseMessageBuilder().code(400).message(message400).build());
         responseMessages.add(new ResponseMessageBuilder().code(404).message(message404).build());
         responseMessages.add(new ResponseMessageBuilder().code(500).message(message500).build());
