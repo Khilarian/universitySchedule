@@ -4,24 +4,22 @@ import javax.validation.constraints.*;
 
 import com.rumakin.universityschedule.validation.annotation.*;
 
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.annotations.ApiModel;
 
 @UniqueBuildingName
 @UniqueBuildingAddress
+@ApiModel
 public class BuildingDto {
 
-    @ApiModelProperty(notes = "Id of the building")
     private int id;
     @NotBlank(message = "{com.rumakin.universityschedule.validation.mandatory.name}")
     @Size(min = 2, max = 50, message = "{com.rumakin.universityschedule.validation.length.name}")
     @Pattern(regexp = "[A-Z][a-z]+(\\s[A-Z][a-z]+)*", message = "{com.rumakin.universityschedule.validation.illegal.buildingname}")
-    @ApiModelProperty(notes = "Name of the building")
     private String name;
 
     @NotBlank(message = "{com.rumakin.universityschedule.validation.mandatory.building.address}")
     @Size(min = 2, max = 200, message = "{com.rumakin.universityschedule.validation.length.address}")
     @Pattern(regexp = "[A-Z][a-z]+(\\s[A-Z][a-z]+)*", message = "{com.rumakin.universityschedule.validation.illegal.buildingaddress}")
-    @ApiModelProperty(notes = "Address of the building")
     private String address;
 
     public BuildingDto() {

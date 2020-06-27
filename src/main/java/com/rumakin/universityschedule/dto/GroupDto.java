@@ -4,20 +4,17 @@ import javax.validation.constraints.*;
 
 import com.rumakin.universityschedule.validation.annotation.*;
 
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.annotations.ApiModel;
 
 @UniqueGroupName
+@ApiModel
 public class GroupDto {
 
-    @ApiModelProperty(notes = "Id of the group")
     private int id;
     @NotBlank(message = "{com.rumakin.universityschedule.validation.mandatory.name}")
     @Pattern(regexp = "[A-Z]{2}-[0-9]{3}", message = "{com.rumakin.universityschedule.validation.illegal.groupname}")
-    @ApiModelProperty(notes = "Name of the group")
     private String name;
-    @ApiModelProperty(notes = "Id of the faculty")
     private int facultyId;
-    @ApiModelProperty(notes = "Name of the faculty")
     private String facultyName;
 
     public GroupDto() {

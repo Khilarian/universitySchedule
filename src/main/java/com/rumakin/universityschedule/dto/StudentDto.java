@@ -1,22 +1,16 @@
 package com.rumakin.universityschedule.dto;
 
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.annotations.ApiModel;
 
+@ApiModel
 public class StudentDto {
 
-    @ApiModelProperty(notes = "Id of the student")
     private int personId;
-    @ApiModelProperty(notes = "First name of the student")
     private String firstName;
-    @ApiModelProperty(notes = "Last name of the student")
     private String lastName;
-    @ApiModelProperty(notes = "Email of the student")
     private String email;
-    @ApiModelProperty(notes = "Phone of the student")
     private String phone;
-    @ApiModelProperty(notes = "Id of the group")
     private int groupId;
-    @ApiModelProperty(notes = "Name of the group")
     private String groupName;
 
     public StudentDto() {

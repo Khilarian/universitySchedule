@@ -1,14 +1,12 @@
 package com.rumakin.universityschedule.dto;
 
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.annotations.ApiModel;
 
+@ApiModel
 public class TimeSlotDto {
 
-    @ApiModelProperty(notes = "Id of the time slot")
     private int id;
-    @ApiModelProperty(notes = "Name of the time slot")
     private String name;
-    @ApiModelProperty(notes = "Nymber of the time slot")
     private int number;
 
     public TimeSlotDto() {

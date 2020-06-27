@@ -1,12 +1,11 @@
 package com.rumakin.universityschedule.dto;
 
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.annotations.ApiModel;
 
+@ApiModel
 public class LessonTypeDto {
     
-    @ApiModelProperty(notes = "Id of the lesson type")
     private int id;
-    @ApiModelProperty(notes = "Name of the lesson type")
     private String name;
     
     public LessonTypeDto() {

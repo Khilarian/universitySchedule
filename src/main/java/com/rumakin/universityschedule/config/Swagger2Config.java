@@ -2,7 +2,6 @@ package com.rumakin.universityschedule.config;
 
 import java.util.*;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.*;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -20,14 +19,10 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @Import(BeanValidatorPluginsConfiguration.class)
 public class Swagger2Config {
 
-    @Value("${description.field.response.message.201}")
-    private String message201;
-    @Value("${description.field.response.message.400}")
-    private String message400;
-    @Value("${description.field.response.message.404}")
-    private String message404;
-    @Value("${description.field.response.message.500}")
-    private String message500;
+    private String message201 = "The request has succeeded, entry created";
+    private String message400 = "Bad Request";
+    private String message404 = "The server has not found anything matching the Request-URI";
+    private String message500 = "Internal Server error";
 
     @Bean
     public Docket productApi() {
