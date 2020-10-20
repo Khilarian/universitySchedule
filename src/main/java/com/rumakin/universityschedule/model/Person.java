@@ -3,7 +3,6 @@ package com.rumakin.universityschedule.model;
 import javax.persistence.*;
 
 @MappedSuperclass
-@Table(name = "person")
 public class Person implements ModelEntity {
 
     @Id

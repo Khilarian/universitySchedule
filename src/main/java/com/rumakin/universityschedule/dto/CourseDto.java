@@ -1,5 +1,7 @@
 package com.rumakin.universityschedule.dto;
 
+import java.util.Objects;
+
 import javax.validation.constraints.*;
 import com.rumakin.universityschedule.validation.annotation.*;
 
@@ -9,7 +11,7 @@ import io.swagger.annotations.ApiModel;
 @ApiModel
 public class CourseDto {
 
-    private int id;
+    private Integer id;
     @NotBlank(message = "{com.rumakin.universityschedule.validation.mandatory.name}")
     @Size(min = 2, max = 50, message = "{com.rumakin.universityschedule.validation.length.name}")
     @Pattern(regexp = "[A-Za-z]+(\\s[A-Za-z]+)*", message = "{com.rumakin.universityschedule.validation.illegal.coursename}")
@@ -24,28 +26,32 @@ public class CourseDto {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
     public String getName() {
         return name;
-    }
-
-    public void setCourseName(String name) {
-        this.name = name;
     }
 
     public int getFacultyId() {
         return facultyId;
     }
 
-    public void setFacultyId(int facultyId) {
-        this.facultyId = facultyId;
-    }
-
     public String getFacultyName() {
         return facultyName;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setCourseName(String name) {
+        this.name = name;
+    }
+
+    public void setFacultyId(int facultyId) {
+        this.facultyId = facultyId;
     }
 
     public void setFacultyName(String facultyName) {
@@ -60,30 +66,15 @@ public class CourseDto {
 
     @Override
     public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + facultyId;
-        result = prime * result + ((facultyName == null) ? 0 : facultyName.hashCode());
-        result = prime * result + id;
-        result = prime * result + ((name == null) ? 0 : name.hashCode());
-        return result;
+        return Objects.hash(getId());
     }
 
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
-        if (obj == null) return false;
-        if (getClass() != obj.getClass()) return false;
-        CourseDto other = (CourseDto) obj;
-        if (facultyId != other.facultyId) return false;
-        if (facultyName == null) {
-            if (other.facultyName != null) return false;
-        } else if (!facultyName.equals(other.facultyName)) return false;
-        if (id != other.id) return false;
-        if (name == null) {
-            if (other.name != null) return false;
-        } else if (!name.equals(other.name)) return false;
-        return true;
+        if (!(obj instanceof CourseDto)) return false;
+        CourseDto dto = (CourseDto) obj;
+        return getId().equals(dto.getId());
     }
 
 }

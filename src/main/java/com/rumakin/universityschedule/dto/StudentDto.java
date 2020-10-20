@@ -1,26 +1,40 @@
 package com.rumakin.universityschedule.dto;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
+
+import com.rumakin.universityschedule.validation.annotation.*;
+
 import io.swagger.annotations.ApiModel;
 
+@UniqueStudentEmail
+@UniqueStudentPhone
 @ApiModel
 public class StudentDto {
 
     private int personId;
+    @NotBlank
+    @Pattern(regexp = "[A-Z]?[a-z]+(\\s?[A-Z]?[a-z]+)+", message = "{com.rumakin.universityschedule.validation.illegal.personname}")
     private String firstName;
+    @NotBlank
+    @Pattern(regexp = "[A-Z]?[a-z]+(\\s?[A-Z]?[a-z]+)+", message = "{com.rumakin.universityschedule.validation.illegal.personname}")
     private String lastName;
+    @Pattern(regexp = "^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$", message = "{com.rumakin.universityschedule.validation.illegal.email}")
     private String email;
-    private String phone;
+    @NotBlank
+    @Pattern(regexp = "^(\\+7)\\(\\d{3}\\)\\d{7,10}$", message = "{com.rumakin.universityschedule.validation.illegal.phone}")
+    private String phone; 
     private int groupId;
     private String groupName;
 
     public StudentDto() {
     }
 
-    public int getPersonId() {
+    public int getId() {
         return personId;
     }
 
-    public void setPersonId(int personId) {
+    public void setId(int personId) {
         this.personId = personId;
     }
 
@@ -82,10 +96,6 @@ public class StudentDto {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((firstName == null) ? 0 : firstName.hashCode());
-        result = prime * result + groupId;
-        result = prime * result + ((groupName == null) ? 0 : groupName.hashCode());
-        result = prime * result + ((lastName == null) ? 0 : lastName.hashCode());
         result = prime * result + personId;
         return result;
     }
@@ -93,19 +103,11 @@ public class StudentDto {
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
-        if (obj == null || getClass() != obj.getClass()) return false;
+        if (obj == null) return false;
+        if (getClass() != obj.getClass()) return false;
         StudentDto other = (StudentDto) obj;
-        if (firstName == null) {
-            if (other.firstName != null) return false;
-        } else if (!firstName.equals(other.firstName)) return false;
-        if (groupId != other.groupId) return false;
-        if (groupName == null) {
-            if (other.groupName != null) return false;
-        } else if (!groupName.equals(other.groupName)) return false;
-        if (lastName == null) {
-            if (other.lastName != null) return false;
-        } else if (!lastName.equals(other.lastName)) return false;
-        return personId == other.personId;
+        if (personId != other.personId) return false;
+        return true;
     }
 
 }

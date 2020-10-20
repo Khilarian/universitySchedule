@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<div th:insert="/fragments/common :: common_head"></div>
+<script type="text/javascript" src="../../resources/js/common.js" th:src="@{/resources/js/common.js}"></script>
+<title>Time Slots</title>
+</head>
+
+<body class="container-sm">
+
+    <div>
+        <nav class="navbar navbar-expand-sm bg-success navbar-light">
+            <ul class="navbar-nav  text-white">
+                <li class="nav-item"><a class="nav-link" th:href="@{/main_page}">Home</a></li>
+                <li class="nav-item"><a class="nav-link" th:href="@{/buildings/getAll}">Buildings</a></li>
+                <li class="nav-item"><a class="nav-link" th:href="@{/auditoriums/getAll}">Auditoriums</a></li>
+                <li class="nav-item"><a class="nav-link" th:href="@{/groups/getAll}">Groups</a></li>
+                <li class="nav-item"><a class="nav-link" th:href="@{/faculties/getAll}">Faculties</a></li>
+                <li class="nav-item"><a class="nav-link" th:href="@{/courses/getAll}">Courses</a></li>
+                <li class="nav-item"><a class="nav-link" th:href="@{/students/getAll}">Students</a></li>
+                <li class="nav-item"><a class="nav-link" th:href="@{/teachers/getAll}">Teachers</a></li>
+                <li class="nav-item"><a class="nav-link" th:href="@{/lessons/getAll}">Lessons</a></li>
+                <li class="nav-item"><a class="nav-link" th:href="@{/lessonTypes/getAll}">Lesson Types</a></li>
+                <li class="nav-item"><a class="nav-link active" href="#">Time Slots</a></li>
+            </ul>
+        </nav>
+    </div>
+
+    <h3 align="center">List of Time Slots</h3>
+
+    <a th:href="@{/timeSlots/edit}" class="btn btn-secondary">Add new time slot</a>
+
+    <table class="table table-bordered">
+        <thead class="bg-primary text-white">
+            <tr>
+                <td>Time Slot Name</td>
+                <td>Time Slot Number</td>
+                <td>From time</td>
+                <td>Till time</td>
+                <td>Edit</td>
+                <td>Delete</td>
+            </tr>
+        </thead>
+        <tr th:each="timeSlot:${timeSlots}" class="table-success">
+            <td th:text="${timeSlot.name}">Time Slot Name</td>
+            <td th:text="${timeSlot.number}">Time Slot Number</td>
+            <td th:text="${timeSlot.startTime}">Start time</td>
+            <td th:text="${timeSlot.endTime}">End time</td>
+            <td><a th:href="@{/timeSlots/edit/(id=${timeSlot.id})}" class="btn btn-warning">Edit</a></td>
+            <td><a th:href="@{/timeSlots/delete/(id=${timeSlot.id})}" class="btn btn-danger">Delete</a></td>
+        </tr>
+    </table>
+
+    <div th:insert="fragments/common :: deleteEntry"></div>
+
+</body>
+</html>

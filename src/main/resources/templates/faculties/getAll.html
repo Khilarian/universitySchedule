@@ -17,13 +17,18 @@
                 <li class="nav-item"><a class="nav-link" th:href="@{/groups/getAll}">Groups</a></li>
                 <li class="nav-item"><a class="nav-link active" href="#">Faculties</a></li>
                 <li class="nav-item"><a class="nav-link" th:href="@{/courses/getAll}">Courses</a></li>
+                <li class="nav-item"><a class="nav-link" th:href="@{/students/getAll}">Students</a></li>
+                <li class="nav-item"><a class="nav-link" th:href="@{/teachers/getAll}">Teachers</a></li>
+                <li class="nav-item"><a class="nav-link" th:href="@{/lessons/getAll}">Lessons</a></li>
+                <li class="nav-item"><a class="nav-link" th:href="@{/lessonTypes/getAll}">Lesson Types</a></li>
+                <li class="nav-item"><a class="nav-link" th:href="@{/timeSlots/getAll}">Time Slots</a></li>
             </ul>
         </nav>
     </div>
 
  <h3 align="center">List of faculties</h3>
  
- <a th:href="@{/faculties/edit}" class="btn btn-secondary">Add a new faculty</a>
+ <a th:href="@{/faculties/edit}" class="btn btn-secondary">Add new faculty</a>
 
     <table class="table table-bordered">
         <thead class="bg-primary text-white">

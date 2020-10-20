@@ -23,15 +23,15 @@ public class Teacher extends Person {
         this.faculty = faculty;
     }
 
-    public void setSubjects(List<Course> subjects) {
-        this.courses = subjects;
+    public void setCourses(List<Course> courses) {
+        this.courses = courses;
     }
 
     public Faculty getFaculty() {
         return faculty;
     }
 
-    public List<Course> getSubjects() {
+    public List<Course> getCourses() {
         return courses;
     }
 

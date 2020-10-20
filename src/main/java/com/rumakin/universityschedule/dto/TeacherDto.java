@@ -1,73 +1,120 @@
 package com.rumakin.universityschedule.dto;
 
+import java.util.*;
+
+import javax.validation.constraints.*;
+
+import com.rumakin.universityschedule.validation.annotation.*;
+
 import io.swagger.annotations.ApiModel;
 
+@UniqueTeacherEmail
+@UniqueTeacherPhone
 @ApiModel
 public class TeacherDto {
 
     private int personId;
+    
+    @NotBlank
+    @Pattern(regexp = "[A-Z]?[a-z]+(\\s?[A-Z]?[a-z]+)+", message = "{com.rumakin.universityschedule.validation.illegal.personname}")
     private String firstName;
+    
+    @NotBlank
+    @Pattern(regexp = "[A-Z]?[a-z]+(\\s?[A-Z]?[a-z]+)+", message = "{com.rumakin.universityschedule.validation.illegal.personname}")
     private String lastName;
+   
+    @Pattern(regexp = "^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$", message = "{com.rumakin.universityschedule.validation.illegal.email}")
+    private String email;
+    
+    @NotBlank
+    @Pattern(regexp = "^(\\+7)\\(\\d{3}\\)\\d{7,10}$$", message = "{com.rumakin.universityschedule.validation.illegal.phone}")
+    private String phone;
+    
+    @NotNull
     private int facultyId;
+    
     private String facultyName;
+    
+    private List<CourseDto> courses = new ArrayList<>();
 
     public TeacherDto() {
     }
 
-    public int getPersonId() {
+    public int getId() {
         return personId;
-    }
-
-    public void setPersonId(int personId) {
-        this.personId = personId;
     }
 
     public String getFirstName() {
         return firstName;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
     public String getLastName() {
         return lastName;
     }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public void setId(int personId) {
+        this.personId = personId;
     }
 
     public int getFacultyId() {
         return facultyId;
     }
 
-    public void setFacultyId(int facultyId) {
-        this.facultyId = facultyId;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
     public String getFacultyName() {
         return facultyName;
     }
 
+    public String getPhone() {
+        return phone;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public List<CourseDto> getCourses() {
+        return courses;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public void setFacultyId(int facultyId) {
+        this.facultyId = facultyId;
+    }
+
     public void setFacultyName(String facultyName) {
         this.facultyName = facultyName;
     }
 
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setCourses(List<CourseDto> courses) {
+        this.courses = courses;
+    }
+
     @Override
     public String toString() {
-        return "TeacherDto [personId=" + personId + ", firstName=" + firstName + ", lastName=" + lastName
-                + ", facultyId=" + facultyId + ", facultyName=" + facultyName + "]";
+        return "TeacherDto [personId=" + personId + ", firstName=" + firstName + ", lastName=" + lastName + ", email="
+                + email + ", phone=" + phone + ", facultyId=" + facultyId + ", facultyName=" + facultyName
+                + ", courses=" + courses + "]";
     }
 
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + facultyId;
-        result = prime * result + ((facultyName == null) ? 0 : facultyName.hashCode());
-        result = prime * result + ((firstName == null) ? 0 : firstName.hashCode());
-        result = prime * result + ((lastName == null) ? 0 : lastName.hashCode());
         result = prime * result + personId;
         return result;
     }
@@ -75,19 +122,11 @@ public class TeacherDto {
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
-        if (obj == null || getClass() != obj.getClass()) return false;
+        if (obj == null) return false;
+        if (getClass() != obj.getClass()) return false;
         TeacherDto other = (TeacherDto) obj;
-        if (facultyId != other.facultyId) return false;
-        if (facultyName == null) {
-            if (other.facultyName != null) return false;
-        } else if (!facultyName.equals(other.facultyName)) return false;
-        if (firstName == null) {
-            if (other.firstName != null) return false;
-        } else if (!firstName.equals(other.firstName)) return false;
-        if (lastName == null) {
-            if (other.lastName != null) return false;
-        } else if (!lastName.equals(other.lastName)) return false;
-        return personId == other.personId;
+        if (personId != other.personId) return false;
+        return true;
     }
 
 }

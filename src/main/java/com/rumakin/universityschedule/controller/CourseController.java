@@ -36,7 +36,8 @@ public class CourseController {
     @GetMapping("/getAll")
     public String findAllCourses(Model model) {
         logger.debug("findAll() courseDtos");
-        List<CourseDto> courses = courseService.findAll().stream().map(g -> convertToDto(g)).collect(Collectors.toList());
+        List<CourseDto> courses = courseService.findAll().stream().map(g -> convertToDto(g))
+                .collect(Collectors.toList());
         logger.trace("found {} courses.", courses.size());
         model.addAttribute("courses", courses);
         List<Faculty> faculties = courseService.getFaculties();
@@ -60,6 +61,7 @@ public class CourseController {
 
     @PostMapping("/edit")
     public String edit(@Valid @ModelAttribute(value = "course") CourseDto courseDto, BindingResult bindingResult, Model model) {
+        System.err.println(courseDto);
         if (bindingResult.hasErrors()) {
             model.addAttribute("faculties", courseService.getFaculties());
             return "courses/edit";
@@ -67,8 +69,6 @@ public class CourseController {
             Course course = convertToEntity(courseDto);
             if (course.getFaculty().getId() == 0) {
                 course.setFaculty(null);
-            }
-            if (courseDto.getId() == 0) {
                 courseService.add(course);
             } else {
                 courseService.update(course);

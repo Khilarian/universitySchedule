@@ -7,4 +7,9 @@ import com.rumakin.universityschedule.model.Teacher;
 
 @Repository
 public interface TeacherDao extends CrudRepository<Teacher, Integer> {
+
+    public Teacher findByEmail(String email);
+
+    public Teacher findByPhone(String phone);
+
 }

@@ -11,7 +11,7 @@ import java.util.Optional;
 @UniqueAuditorium
 @AuditoriumBuilding
 @ApiModel
-public class AuditoriumDto {
+public class AuditoriumDto implements Dto{
 
     private int id;
     @Min(1)

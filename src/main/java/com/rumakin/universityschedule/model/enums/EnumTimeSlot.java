@@ -1,11 +1,11 @@
 package com.rumakin.universityschedule.model.enums;
 
-public enum TimeSlot {
+public enum EnumTimeSlot {
     FIRST(1), SECOND(2), THIRD(3), FOURTH(4), FIFTH(5), SIXTH(6), SEVENTH(7), EIGHTH(8);
 
     private int number;
 
-    TimeSlot(int i) {
+    EnumTimeSlot(int i) {
         this.number = i;
     }
     
