@@ -46,7 +46,7 @@ public class BuildingRestController {
 
     @GetMapping("/{id}")
     public ResponseEntity<BuildingDto> findById(@PathVariable(value = "id") int id) {
-        logger.debug("find() building");
+        logger.debug("findById() building");
         BuildingDto buildingDto = convertToDto(buildingService.findById(id));
         logger.debug("found() {} building", buildingDto);
         return new ResponseEntity<>(buildingDto, HttpStatus.OK);

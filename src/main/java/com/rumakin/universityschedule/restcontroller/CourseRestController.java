@@ -46,7 +46,7 @@ public class CourseRestController {
 
     @GetMapping("/{id}")
     public ResponseEntity<CourseDto> findById(@PathVariable(value = "id") int id) {
-        logger.debug("find() course");
+        logger.debug("findById() course");
         CourseDto courseDto = convertToDto(courseService.findById(id));
         logger.debug("found() {} course", courseDto);
         return new ResponseEntity<>(courseDto, HttpStatus.OK);

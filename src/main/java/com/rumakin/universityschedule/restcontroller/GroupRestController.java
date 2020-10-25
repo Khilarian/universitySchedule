@@ -46,7 +46,7 @@ public class GroupRestController {
 
     @GetMapping("/{id}")
     public ResponseEntity<GroupDto> findById(@PathVariable(value = "id") int id) {
-        logger.debug("find() group");
+        logger.debug("findById() group");
         GroupDto groupDto = convertToDto(groupService.findById(id));
         logger.debug("found() {} group", groupDto);
         return new ResponseEntity<>(groupDto, HttpStatus.OK);

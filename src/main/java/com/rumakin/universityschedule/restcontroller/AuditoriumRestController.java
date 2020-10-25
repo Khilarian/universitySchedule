@@ -46,7 +46,7 @@ public class AuditoriumRestController {
 
     @GetMapping("/{id}")
     public ResponseEntity<AuditoriumDto> findById(@PathVariable(value = "id") int id) {
-        logger.debug("find() auditorium");
+        logger.debug("findById() auditorium");
         AuditoriumDto auditoriumDto = convertToDto(auditoriumService.findById(id));
         logger.debug("found() {} auditorium", auditoriumDto);
         return new ResponseEntity<>(auditoriumDto, HttpStatus.OK);

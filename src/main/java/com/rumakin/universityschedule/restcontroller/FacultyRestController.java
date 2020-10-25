@@ -46,7 +46,7 @@ public class FacultyRestController {
 
     @GetMapping("/{id}")
     public ResponseEntity<FacultyDto> findById(@PathVariable(value = "id") int id) {
-        logger.debug("find() faculty");
+        logger.debug("findById() faculty");
         FacultyDto facultyDto = convertToDto(facultyService.findById(id));
         logger.debug("found() {} faculty", facultyDto);
         return new ResponseEntity<>(facultyDto, HttpStatus.OK);
