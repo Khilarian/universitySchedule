@@ -13,15 +13,14 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>11</java.version>
         <modelmapper.version>2.3.7</modelmapper.version>
-        <flyway.version>6.4.3</flyway.version>
         <swagger.version>2.9.2</swagger.version>
-         <swagger-annotation.version>1.6.1</swagger-annotation.version>
+        <swagger-annotation.version>1.6.1</swagger-annotation.version>
     </properties>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.3.0.RELEASE</version>
+        <version>2.3.4.RELEASE</version>
     </parent>
 
     <build>
@@ -95,8 +94,7 @@
         </dependency>
         <dependency>
             <groupId>org.flywaydb</groupId>
-            <artifactId>flyway-maven-plugin</artifactId>
-            <version>${flyway.version}</version>
+            <artifactId>flyway-core</artifactId>
             <scope>runtime</scope>
         </dependency>
 

@@ -8,8 +8,7 @@ public class Building implements ModelEntity {
 
     @Id
     @Column(name = "building_id")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "building_seq")
-    @SequenceGenerator(name = "building_seq", sequenceName = "building_building_id_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     @Column(name = "building_name")

@@ -13,7 +13,7 @@ public class FacultyDto {
     private int id;
     @NotBlank(message = "{com.rumakin.universityschedule.validation.mandatory.name}")
     @Size(min = 2, max = 50, message = "{com.rumakin.universityschedule.validation.length.name}")
-    @Pattern(regexp = "[A-Za-z]+(\\s[A-Za-z]+)*", message = "{com.rumakin.universityschedule.validation.illegal.facultyname}")
+    @Pattern(regexp = "[A-Za-z]+(\\s[A-Z]*[a-z]+)*", message = "{com.rumakin.universityschedule.validation.illegal.facultyname}")
     private String name;
 
     public FacultyDto() {

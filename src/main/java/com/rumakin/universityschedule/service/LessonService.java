@@ -39,26 +39,26 @@ public class LessonService {
         return lesson;
     }
 
-    public Lesson findByAuditoriumIdAndDateAndTimeSlot(int auditoriumId, LocalDate date, int timeSlotId) {
-        logger.debug("findByAuditoriumAndDateAndTimeSlot() {}, {}, {}.", date, timeSlotId);
-        Lesson lesson = lessonDao.findByAuditoriumIdAndDateAndTimeSlotId(auditoriumId, date, timeSlotId);
-        logger.trace("foundByDateAndTimeSlot {}, {}, {}.", auditoriumId, date, timeSlotId);
-        return lesson;
-    }
-
-    public Lesson findByGroupIdAndDateAndTimeSlot(int groupId, LocalDate date, int timeSlotId) {
-        logger.debug("findByGroupIdAndDateAndTimeSlot() {}, {}, {}.", groupId, date, timeSlotId);
-        Lesson lesson = lessonDao.findByGroupIdAndDateAndTimeSlotId(groupId, date, timeSlotId);
-        logger.trace("foundGroupIdAndDateAndTimeSlot {}, {}, {}.", groupId, date, timeSlotId);
-        return lesson;
-    }
-
-    public Lesson findByTeacherIdAndDateAndTimeSlot(int teacherId, LocalDate date, int timeSlotId) {
-        logger.debug("findByTeacherIdAndDateAndTimeSlot() {}, {}, {}.", teacherId, date, timeSlotId);
-        Lesson lesson = lessonDao.findByGroupIdAndDateAndTimeSlotId(teacherId, date, timeSlotId);
-        logger.trace("foundByTeacherIdAndDateAndTimeSlot {}, {}, {}.", teacherId, date, timeSlotId);
-        return lesson;
-    }
+//    public Lesson findByAuditoriumIdAndDateAndTimeSlot(int auditoriumId, LocalDate date, int timeSlotId) {
+//        logger.debug("findByAuditoriumAndDateAndTimeSlot() {}, {}, {}.", date, timeSlotId);
+//        Lesson lesson = lessonDao.findByAuditoriumIdAndDateAndTimeSlotId(auditoriumId, date, timeSlotId);
+//        logger.trace("foundByDateAndTimeSlot {}, {}, {}.", auditoriumId, date, timeSlotId);
+//        return lesson;
+//    }
+//
+//    public Lesson findByGroupIdAndDateAndTimeSlot(int groupId, LocalDate date, int timeSlotId) {
+//        logger.debug("findByGroupIdAndDateAndTimeSlot() {}, {}, {}.", groupId, date, timeSlotId);
+//        Lesson lesson = lessonDao.findByGroupIdAndDateAndTimeSlotId(groupId, date, timeSlotId);
+//        logger.trace("foundGroupIdAndDateAndTimeSlot {}, {}, {}.", groupId, date, timeSlotId);
+//        return lesson;
+//    }
+//
+//    public Lesson findByTeacherIdAndDateAndTimeSlot(int teacherId, LocalDate date, int timeSlotId) {
+//        logger.debug("findByTeacherIdAndDateAndTimeSlot() {}, {}, {}.", teacherId, date, timeSlotId);
+//        Lesson lesson = lessonDao.findByGroupIdAndDateAndTimeSlotId(teacherId, date, timeSlotId);
+//        logger.trace("foundByTeacherIdAndDateAndTimeSlot {}, {}, {}.", teacherId, date, timeSlotId);
+//        return lesson;
+//    }
 
     public Lesson add(Lesson lesson) {
         logger.debug("add() {}.", lesson);

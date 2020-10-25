@@ -16,13 +16,13 @@ public class FreeAuditoriumAtDateAndTimeSlotConstraintValidator implements Const
 
     @Override
     public boolean isValid(LessonDto lessonDto, ConstraintValidatorContext context) {
-        Lesson lesson = lessonService.findByAuditoriumIdAndDateAndTimeSlot(lessonDto.getAuditoriumId(), lessonDto.getDate(), lessonDto.getTimeSlotId());
-        if (lesson != null && lesson.getId() != lessonDto.getId()) {
-            context.disableDefaultConstraintViolation();
-            context.buildConstraintViolationWithTemplate("{com.rumakin.universityschedule.validation.auditorium.booked}")
-                    .addPropertyNode("auditorium").addConstraintViolation();
-            return false;
-        } 
+//        Lesson lesson = lessonService.findByAuditoriumIdAndDateAndTimeSlot(lessonDto.getAuditoriumId(), lessonDto.getDate(), lessonDto.getTimeSlotId());
+//        if (lesson != null && lesson.getId() != lessonDto.getId()) {
+//            context.disableDefaultConstraintViolation();
+//            context.buildConstraintViolationWithTemplate("{com.rumakin.universityschedule.validation.auditorium.booked}")
+//                    .addPropertyNode("auditorium").addConstraintViolation();
+//            return false;
+//        } 
         return true;
     }
 }
