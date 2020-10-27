@@ -25,9 +25,11 @@ class CourseServiceTest {
 
     @Test
     public void addShouldExecuteOnceWhenDbCallFine() {
-        Course expected = new Course(1, "Math", new Faculty(1, "First"));
-        Mockito.when(mockCourseDao.save(expected)).thenReturn(expected);
-        assertEquals(courseService.add(expected), expected);
+        Faculty faculty = new Faculty(1, "First");
+        Course saved = new Course(0, "Math", faculty);
+        Course expected = new Course(1, "Math", faculty);
+        Mockito.when(mockCourseDao.save(saved)).thenReturn(expected);
+        assertEquals(courseService.add(saved), expected);
     }
 
     @Test

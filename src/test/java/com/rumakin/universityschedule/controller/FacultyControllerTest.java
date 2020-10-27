@@ -76,6 +76,17 @@ class FacultyControllerTest {
                 .andExpect(MockMvcResultMatchers.model().attributeExists("faculty"))
                 .andExpect(MockMvcResultMatchers.model().attribute("faculty", facultyDto));
     }
+    
+    @Test
+    public void getEditShouldReturnFormForAddNewEntryIfItDoesNotExist() throws Exception {
+        Mockito.when(mockFacultyService.findById(Mockito.anyInt())).thenReturn(null);
+        String URI = "/faculties/edit";
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.get(URI);
+        ResultActions result = mockMvc.perform(request);
+        result.andExpect(MockMvcResultMatchers.view().name("faculties/edit"))
+                .andExpect(MockMvcResultMatchers.model().attributeExists("headerString"))
+                .andExpect(MockMvcResultMatchers.model().attribute("headerString", "Add faculty"));
+    }
 
     @Test
     public void postEditShouldAddEntityIfItDoesNotExistsInDataBase() throws Exception {
@@ -89,6 +100,17 @@ class FacultyControllerTest {
         Faculty newFaculty = new Faculty(1, "First");
         facultyController.edit(convertToDto(newFaculty), bindingResult);
         Mockito.verify(mockFacultyService).update(newFaculty);
+    }
+    
+    @Test
+    public void postEditShouldReturnEditPageIfAnyErrors() throws Exception {
+        Faculty newFaculty = new Faculty(1, "First");
+        Mockito.when(bindingResult.hasErrors()).thenReturn(true);
+        facultyController.edit(convertToDto(newFaculty), bindingResult);
+        String URI = "/faculties/edit";
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.get(URI);
+        ResultActions result = mockMvc.perform(request);
+        result.andExpect(MockMvcResultMatchers.view().name("faculties/edit"));
     }
 
     @Test

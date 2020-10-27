@@ -12,6 +12,16 @@ public class Student extends Person {
 
     public Student() {
     }
+    
+    public Student(String firstName, String lastName, String email, String phone, Group group) {
+        super(firstName, lastName, email, phone);
+        this.group = group;
+    }
+
+    public Student(int id, String firstName, String lastName, String email, String phone, Group group) {
+        super(id, firstName, lastName, email, phone);
+        this.group = group;
+    }
 
     public void setGroup(Group group) {
         this.group = group;
@@ -31,13 +41,7 @@ public class Student extends Person {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (!super.equals(obj) || getClass() != obj.getClass()) return false;
-        Student other = (Student) obj;
-        if (group == null) {
-            if (other.group != null) return false;
-        } else if (!group.equals(other.group)) return false;
-        return true;
+        return super.equals(obj);
     }
 
     @Override

@@ -1,7 +1,5 @@
 package com.rumakin.universityschedule.dto;
 
-import java.util.Objects;
-
 import javax.validation.constraints.*;
 
 import com.rumakin.universityschedule.validation.annotation.VerifiedLessonType;
@@ -38,16 +36,26 @@ public class LessonTypeDto {
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId());
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((id == null) ? 0 : id.hashCode());
+        result = prime * result + ((name == null) ? 0 : name.hashCode());
+        return result;
     }
 
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
         if (obj == null) return false;
-        if (!(obj instanceof CourseDto)) return false;
-        LessonTypeDto dto = (LessonTypeDto) obj;
-        return getId().equals(dto.getId());
+        if (getClass() != obj.getClass()) return false;
+        LessonTypeDto other = (LessonTypeDto) obj;
+        if (id == null) {
+            if (other.id != null) return false;
+        } else if (!id.equals(other.id)) return false;
+        if (name == null) {
+            if (other.name != null) return false;
+        } else if (!name.equals(other.name)) return false;
+        return true;
     }
 
     @Override

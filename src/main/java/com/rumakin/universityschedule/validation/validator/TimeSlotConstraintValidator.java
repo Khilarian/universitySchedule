@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.google.common.base.Enums;
 import com.rumakin.universityschedule.dto.*;
 import com.rumakin.universityschedule.model.TimeSlot;
-import com.rumakin.universityschedule.model.enums.EnumTimeSlot;
+import com.rumakin.universityschedule.model.enums.TimeSlotEnum;
 import com.rumakin.universityschedule.service.TimeSlotService;
 import com.rumakin.universityschedule.validation.annotation.*;
 
@@ -18,14 +18,14 @@ public class TimeSlotConstraintValidator implements ConstraintValidator<Verified
 
     @Override
     public boolean isValid(TimeSlotDto timeSlotDto, ConstraintValidatorContext context) {
-        if (!Enums.getIfPresent(EnumTimeSlot.class, timeSlotDto.getName()).isPresent()) {
+        if (!Enums.getIfPresent(TimeSlotEnum.class, timeSlotDto.getName()).isPresent()) {
             context.disableDefaultConstraintViolation();
             context.buildConstraintViolationWithTemplate("{com.rumakin.universityschedule.validation.illegal.timeslot}")
                     .addPropertyNode("name").addConstraintViolation();
             return false;
         }
         
-        if (Enums.getIfPresent(EnumTimeSlot.class, timeSlotDto.getName()).get().getNumber() != timeSlotDto.getNumber()) {
+        if (Enums.getIfPresent(TimeSlotEnum.class, timeSlotDto.getName()).get().getNumber() != timeSlotDto.getNumber()) {
             context.disableDefaultConstraintViolation();
             context.buildConstraintViolationWithTemplate("{com.rumakin.universityschedule.validation.illegal.timeslot.number}")
                     .addPropertyNode("number").addConstraintViolation();

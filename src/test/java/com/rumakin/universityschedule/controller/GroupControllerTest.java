@@ -80,6 +80,17 @@ class GroupControllerTest {
                 .andExpect(MockMvcResultMatchers.model().attributeExists("group"))
                 .andExpect(MockMvcResultMatchers.model().attribute("group", groupDto));
     }
+    
+    @Test
+    public void getEditShouldReturnFormForAddNewEntryIfItDoesNotExist() throws Exception {
+        Mockito.when(mockGroupService.findById(Mockito.anyInt())).thenReturn(null);
+        String URI = "/groups/edit";
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.get(URI);
+        ResultActions result = mockMvc.perform(request);
+        result.andExpect(MockMvcResultMatchers.view().name("groups/edit"))
+                .andExpect(MockMvcResultMatchers.model().attributeExists("headerString"))
+                .andExpect(MockMvcResultMatchers.model().attribute("headerString", "Add group"));
+    }
 
     @Test
     public void postEditShouldAddEntityIfItDoesNotExistsInDataBase() throws Exception {
@@ -89,24 +100,50 @@ class GroupControllerTest {
         groupController.edit(groupDto, bindingResult, model);
         Mockito.verify(mockGroupService).add(group);
     }
+    
+    @Test
+    public void postEditShouldAddEntityWithWithoutFacultyIfItDoesNotExistsInDataBase() throws Exception {
+        Faculty faculty = new Faculty(0, "First");
+        Group group = new Group("AA_35", faculty);
+        GroupDto groupDto = convertToDto(group);
+        Group newGroup = new Group("AA_35", null);
+        groupController.edit(groupDto, bindingResult, model);
+        Mockito.verify(mockGroupService).add(newGroup);
+    }
 
     @Test
-    void postEditShouldUpdateEntityIfItExistsInDataBase() throws Exception {
+    public void postEditShouldUpdateEntityIfItExistsInDataBase() throws Exception {
         Faculty faculty = new Faculty(10, "First");
         Group group = new Group(1, "AA_35", faculty);
         groupController.edit(convertToDto(group), bindingResult, model);
         Mockito.verify(mockGroupService).update(group);
     }
+    
+    @Test
+    public void postEditShouldReturnEditPageIfAnyErrors() throws Exception {
+        Faculty faculty = new Faculty(10, "First");
+        List<Faculty> faculties = Arrays.asList(faculty);
+        Group group = new Group(1, "AA_35", faculty);
+        Mockito.when(bindingResult.hasErrors()).thenReturn(true);
+        Mockito.when(mockGroupService.getFaculties()).thenReturn(faculties);
+        groupController.edit(convertToDto(group), bindingResult, model);
+        String URI = "/groups/edit";
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.get(URI);
+        ResultActions result = mockMvc.perform(request);
+        result.andExpect(MockMvcResultMatchers.view().name("groups/edit"))
+        .andExpect(MockMvcResultMatchers.model().attributeExists("faculties"))
+        .andExpect(MockMvcResultMatchers.model().attribute("faculties", faculties));
+    }
 
     @Test
-    void deleteShouldExecuteOnceWhenDbCallFine() throws Exception {
+    public void deleteShouldExecuteOnceWhenDbCallFine() throws Exception {
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders.get("/groups/delete/?id=1");
         ResultActions result = mockMvc.perform(request);
         result.andExpect(MockMvcResultMatchers.view().name("redirect:/groups/getAll"));
     }
 
     @Test
-    void testhandleEntityNotFoundException() throws Exception {
+    public void testhandleEntityNotFoundException() throws Exception {
         Mockito.when(mockGroupService.findById(2)).thenThrow(ResourceNotFoundException.class);
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders.get("/groups/edit/?id=2");
         ResultActions result = mockMvc.perform(request);

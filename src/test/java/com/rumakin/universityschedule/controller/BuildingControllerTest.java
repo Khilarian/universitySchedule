@@ -76,6 +76,17 @@ class BuildingControllerTest {
                 .andExpect(MockMvcResultMatchers.model().attributeExists("building"))
                 .andExpect(MockMvcResultMatchers.model().attribute("building", buildingDto));
     }
+    
+    @Test
+    public void getEditShouldReturnFormForAddNewEntryIfItDoesNotExist() throws Exception {
+        Mockito.when(mockBuildingService.findById(Mockito.anyInt())).thenReturn(null);
+        String URI = "/buildings/edit";
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.get(URI);
+        ResultActions result = mockMvc.perform(request);
+        result.andExpect(MockMvcResultMatchers.view().name("buildings/edit"))
+                .andExpect(MockMvcResultMatchers.model().attributeExists("headerString"))
+                .andExpect(MockMvcResultMatchers.model().attribute("headerString", "Add building"));
+    }
 
     @Test
     public void postEditShouldAddEntityIfItDoesNotExistsInDataBase() throws Exception {
@@ -96,6 +107,17 @@ class BuildingControllerTest {
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders.get("/buildings/delete/?id=1");
         ResultActions result = mockMvc.perform(request);
         result.andExpect(MockMvcResultMatchers.view().name("redirect:/buildings/getAll"));
+    }
+    
+    @Test
+    public void postEditShouldReturnEditPageIfAnyErrors() throws Exception {
+        Building building = new Building(1, "First", "MAin");
+        Mockito.when(bindingResult.hasErrors()).thenReturn(true);
+        buildingController.edit(convertToDto(building), bindingResult);
+        String URI = "/buildings/edit";
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.get(URI);
+        ResultActions result = mockMvc.perform(request);
+        result.andExpect(MockMvcResultMatchers.view().name("buildings/edit"));
     }
 
     @Test

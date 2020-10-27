@@ -1,5 +1,5 @@
 package com.rumakin.universityschedule.model.enums;
 
-public enum EnumLessonType {
+public enum LessonTypeEnum {
     LECTURE, SEMINAR, LABORATORY, EXAM;
 }

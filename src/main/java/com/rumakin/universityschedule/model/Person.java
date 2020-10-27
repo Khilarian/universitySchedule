@@ -25,6 +25,21 @@ public class Person implements ModelEntity {
 
     public Person() {
     }
+    
+    public Person(String firstName, String lastName, String email, String phone) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.phone = phone;
+    }
+    
+    public Person(int id, String firstName, String lastName, String email, String phone) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.phone = phone;
+    }
 
     @Override
     public void setId(int id) {

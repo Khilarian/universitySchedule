@@ -23,21 +23,21 @@ For Windows psql -u postgres -f user_creation.sql<br>
 3-4. For insert example database entries:<br>
 For Unix-like: $ sudo -u postgres psql -d university -f test_data.sql<br>
 For Windows psql -u postgres -d university -f test_data.sql<br>
-
 4. Run in Console mvn spring-boot:run<br>
 5. Enter <span>http://127.0.0.1:8080/university</span> in browser<br>
 <hr>
 Enjoy!!!
 
-Changelog:
-2020-04-07: Add logging system
-2020-04-13: Start to adding Spring MVC/Thymeleaf/Bootstrap
-2020-04-29: Add jndi, put config files for Tomcat into resorces
-2020-04-30: Start to implement Hibernate instead of Spring JDBC
-2020-05-06: Hibernate implemented
-2020-05-07: Start project migration to Spring Boot
-2020-06-04: Flyway implementation
-2020-06-12: Start validation implementtation
-2020-06-18: Start REST implementation
-2020-06-24: Start Swagger implementation
-2020-10-25: Next step planning
+<h1 align="center"> Changelog: </h1>
+2020-04-07: Add logging system<br>
+2020-04-13: Start to adding Spring MVC/Thymeleaf/Bootstrap<br>
+2020-04-29: Add jndi, put config files for Tomcat into resorces<br>
+2020-04-30: Start to implement Hibernate instead of Spring JDBC<br>
+2020-05-06: Hibernate implemented<br>
+2020-05-07: Start project migration to Spring Boot<br>
+2020-06-04: Flyway implementation<br>
+2020-06-12: Start validation implementtation<br>
+2020-06-18: Start REST implementation<br>
+2020-06-24: Start Swagger implementation<br>
+2020-10-25: Next step planning<br>
+2020-10-27: JaCoCo implemented

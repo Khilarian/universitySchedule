@@ -54,7 +54,6 @@ public class BuildingRestController {
 
     @PostMapping("")
     public ResponseEntity<BuildingDto> add(@Valid @RequestBody BuildingDto buildingDto) {
-        System.err.println("controller " + buildingDto);
         Building building = buildingService.add(convertToEntity(buildingDto));
         return new ResponseEntity<>(convertToDto(building), HttpStatus.CREATED);
     }

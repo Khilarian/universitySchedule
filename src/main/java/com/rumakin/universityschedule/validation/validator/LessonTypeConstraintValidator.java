@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.google.common.base.Enums;
 import com.rumakin.universityschedule.dto.*;
 import com.rumakin.universityschedule.model.*;
-import com.rumakin.universityschedule.model.enums.EnumLessonType;
+import com.rumakin.universityschedule.model.enums.LessonTypeEnum;
 import com.rumakin.universityschedule.service.LessonTypeService;
 import com.rumakin.universityschedule.validation.annotation.*;
 
@@ -18,7 +18,7 @@ public class LessonTypeConstraintValidator implements ConstraintValidator<Verifi
 
     @Override
     public boolean isValid(LessonTypeDto lessonTypeDto, ConstraintValidatorContext context) {
-        if (!Enums.getIfPresent(EnumLessonType.class, lessonTypeDto.getName()).isPresent()) {
+        if (!Enums.getIfPresent(LessonTypeEnum.class, lessonTypeDto.getName()).isPresent()) {
             context.disableDefaultConstraintViolation();
             context.buildConstraintViolationWithTemplate(
                     "{com.rumakin.universityschedule.validation.illegal.lessontype}").addPropertyNode("name")

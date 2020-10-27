@@ -80,6 +80,17 @@ class CourseControllerTest {
                 .andExpect(MockMvcResultMatchers.model().attributeExists("course"))
                 .andExpect(MockMvcResultMatchers.model().attribute("course", courseDto));
     }
+    
+    @Test
+    public void getEditShouldReturnFormForAddNewEntryIfItDoesNotExist() throws Exception {
+        Mockito.when(mockCourseService.findById(Mockito.anyInt())).thenReturn(null);
+        String URI = "/courses/edit";
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.get(URI);
+        ResultActions result = mockMvc.perform(request);
+        result.andExpect(MockMvcResultMatchers.view().name("courses/edit"))
+                .andExpect(MockMvcResultMatchers.model().attributeExists("headerString"))
+                .andExpect(MockMvcResultMatchers.model().attribute("headerString", "Add course"));
+    }
 
     @Test
     public void postEditShouldAddEntityIfItDoesNotExistsInDataBase() throws Exception {
@@ -89,6 +100,16 @@ class CourseControllerTest {
         courseController.edit(courseDto, bindingResult, model);
         Mockito.verify(mockCourseService).add(course);
     }
+    
+    @Test
+    public void postEditShouldAddEntityWithWithoutFacultyIfItDoesNotExistsInDataBase() throws Exception {
+        Faculty faculty = new Faculty(0, "First");
+        Course course = new Course("Course", faculty);
+        CourseDto courseDto = convertToDto(course);
+        Course newCourse = new Course("Course", null);
+        courseController.edit(courseDto, bindingResult, model);
+        Mockito.verify(mockCourseService).add(newCourse);
+    }
 
     @Test
     void postEditShouldUpdateEntityIfItExistsInDataBase() throws Exception {
@@ -96,6 +117,22 @@ class CourseControllerTest {
         Course course = new Course(1, "History", faculty);
         courseController.edit(convertToDto(course), bindingResult, model);
         Mockito.verify(mockCourseService).update(course);
+    }
+    
+    @Test
+    public void postEditShouldReturnEditPageIfAnyErrors() throws Exception {
+        Faculty faculty = new Faculty(10, "First");
+        List<Faculty> faculties = Arrays.asList(faculty);
+        Course course = new Course(1, "Course", faculty);
+        Mockito.when(bindingResult.hasErrors()).thenReturn(true);
+        Mockito.when(mockCourseService.getFaculties()).thenReturn(faculties);
+        courseController.edit(convertToDto(course), bindingResult, model);
+        String URI = "/courses/edit";
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.get(URI);
+        ResultActions result = mockMvc.perform(request);
+        result.andExpect(MockMvcResultMatchers.view().name("courses/edit"))
+        .andExpect(MockMvcResultMatchers.model().attributeExists("faculties"))
+        .andExpect(MockMvcResultMatchers.model().attribute("faculties", faculties));
     }
 
     @Test

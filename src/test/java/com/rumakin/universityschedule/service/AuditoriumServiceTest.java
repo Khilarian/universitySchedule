@@ -23,9 +23,11 @@ class AuditoriumServiceTest {
 
     @Test
     public void addShouldExecuteOnceWhenDbCallFine() {
-        Auditorium expected = new Auditorium(1, 1, 25, new Building(1, "First", "York"));
-        Mockito.when(mockAuditoriumDao.save(expected)).thenReturn(expected);
-        assertEquals(auditoriumService.add(expected), expected);
+        Building building = new Building(1, "First", "York");
+        Auditorium saved = new Auditorium(0, 1, 25, building);
+        Auditorium expected = new Auditorium(1, 1, 25, building);
+        Mockito.when(mockAuditoriumDao.save(saved)).thenReturn(expected);
+        assertEquals(auditoriumService.add(saved), expected);
     }
 
     @Test
@@ -34,7 +36,7 @@ class AuditoriumServiceTest {
         Mockito.when(mockAuditoriumDao.findById(1)).thenReturn(Optional.of(expected));
         assertEquals(auditoriumService.findById(1), expected);
     }
-    
+
     @Test
     public void findByIdShouldRaiseExceptionIfIdMissed() {
         assertThrows(ResourceNotFoundException.class, () -> auditoriumService.findById(1));

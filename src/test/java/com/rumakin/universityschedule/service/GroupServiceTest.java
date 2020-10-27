@@ -25,9 +25,11 @@ class GroupServiceTest {
 
     @Test
     public void addShouldExecuteOnceWhenDbCallFine() {
-        Group expected = new Group(1, "AA-25", new Faculty(1, "First"));
-        Mockito.when(mockGroupDao.save(expected)).thenReturn(expected);
-        assertEquals(groupService.add(expected), expected);
+        Faculty faculty = new Faculty(1, "First");
+        Group saved = new Group(0, "AA-25", faculty);
+        Group expected = new Group(1, "AA-25", faculty);
+        Mockito.when(mockGroupDao.save(saved)).thenReturn(expected);
+        assertEquals(groupService.add(saved), expected);
     }
 
     @Test

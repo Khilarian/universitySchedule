@@ -18,6 +18,16 @@ public class Teacher extends Person {
 
     public Teacher() {
     }
+    
+    public Teacher(String firstName, String lastName, String email, String phone, Faculty faculty) {
+        super(firstName, lastName, email, phone);
+        this.faculty = faculty;
+    }
+    
+    public Teacher(int id, String firstName, String lastName, String email, String phone, Faculty faculty) {
+        super(id, firstName, lastName, email, phone);
+        this.faculty = faculty;
+    }
 
     public void setFaculty(Faculty faculty) {
         this.faculty = faculty;
@@ -37,16 +47,7 @@ public class Teacher extends Person {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (!super.equals(obj) || getClass() != obj.getClass()) return false;
-        Teacher other = (Teacher) obj;
-        if (faculty == null) {
-            if (other.faculty != null) return false;
-        } else if (!faculty.equals(other.faculty)) return false;
-        if (courses == null) {
-            if (other.courses != null) return false;
-        } else if (!courses.equals(other.courses)) return false;
-        return true;
+        return super.equals(obj);
     }
 
     @Override

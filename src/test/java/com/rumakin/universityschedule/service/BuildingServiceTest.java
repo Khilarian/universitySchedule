@@ -23,9 +23,10 @@ class BuildingServiceTest {
 
     @Test
     public void addShouldExecuteOnceWhenDbCallFine() {
+        Building saved = new Building(0, "First", "York");
         Building expected =  new Building(1, "First", "York");
-        Mockito.when(mockBuildingDao.save(expected)).thenReturn(expected);
-        assertEquals(buildingService.add(expected), expected);
+        Mockito.when(mockBuildingDao.save(saved)).thenReturn(expected);
+        assertEquals(buildingService.add(saved), expected);
     }
 
     @Test

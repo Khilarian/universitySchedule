@@ -60,8 +60,8 @@ public class CourseController {
     }
 
     @PostMapping("/edit")
-    public String edit(@Valid @ModelAttribute(value = "course") CourseDto courseDto, BindingResult bindingResult, Model model) {
-        System.err.println(courseDto);
+    public String edit(@Valid @ModelAttribute(value = "course") CourseDto courseDto, BindingResult bindingResult,
+            Model model) {
         if (bindingResult.hasErrors()) {
             model.addAttribute("faculties", courseService.getFaculties());
             return "courses/edit";
@@ -69,12 +69,15 @@ public class CourseController {
             Course course = convertToEntity(courseDto);
             if (course.getFaculty().getId() == 0) {
                 course.setFaculty(null);
+            }
+            if (courseDto.getId() == 0) {
                 courseService.add(course);
             } else {
                 courseService.update(course);
             }
             return REDIRECT_PAGE;
         }
+
     }
 
     @GetMapping("/delete")

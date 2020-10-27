@@ -86,6 +86,17 @@ class AuditoriumControllerTest {
                 .andExpect(MockMvcResultMatchers.model().attributeExists("auditorium"))
                 .andExpect(MockMvcResultMatchers.model().attribute("auditorium", auditoriumDto));
     }
+    
+    @Test
+    public void getEditShouldReturnFormForAddNewEntryIfItDoesNotExist() throws Exception {
+        Mockito.when(mockAuditoriumService.findById(Mockito.anyInt())).thenReturn(null);
+        String URI = "/auditoriums/edit";
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.get(URI);
+        ResultActions result = mockMvc.perform(request);
+        result.andExpect(MockMvcResultMatchers.view().name("auditoriums/edit"))
+                .andExpect(MockMvcResultMatchers.model().attributeExists("headerString"))
+                .andExpect(MockMvcResultMatchers.model().attribute("headerString", "Add auditorium"));
+    }
 
     @Test
     public void postEditShouldAddEntityIfItDoesNotExistsInDataBase() throws Exception {
@@ -103,6 +114,22 @@ class AuditoriumControllerTest {
         AuditoriumDto auditoriumDto = convertToDto(auditorium);
         auditoriumController.edit(auditoriumDto, bindingResult, model);
         Mockito.verify(mockAuditoriumService).update(auditorium);
+    }
+    
+    @Test
+    public void postEditShouldReturnEditPageIfAnyErrors() throws Exception {
+        Building building = new Building(10, "Main", "Khimki");
+        List<Building> buildings = Arrays.asList(building);
+        Auditorium auditorium = new Auditorium(1, 15, 35, building);
+        Mockito.when(bindingResult.hasErrors()).thenReturn(true);
+        Mockito.when(mockAuditoriumService.getBuildings()).thenReturn(buildings);
+        auditoriumController.edit(convertToDto(auditorium), bindingResult, model);
+        String URI = "/auditoriums/edit";
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.get(URI);
+        ResultActions result = mockMvc.perform(request);
+        result.andExpect(MockMvcResultMatchers.view().name("auditoriums/edit"))
+        .andExpect(MockMvcResultMatchers.model().attributeExists("buildings"))
+        .andExpect(MockMvcResultMatchers.model().attribute("buildings", buildings));
     }
 
     @Test

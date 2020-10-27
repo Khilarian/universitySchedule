@@ -14,19 +14,31 @@ public class LessonType implements ModelEntity {
 
     @Column(name = "lesson_type_name")
     private String name;
-    
+
+    public LessonType() {
+    }
+
+    public LessonType(String name) {
+        this.name = name;
+    }
+
+    public LessonType(int id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
     @Override
     public int getId() {
         return id;
     }
 
+    public String getName() {
+        return name;
+    }
+
     @Override
     public void setId(int id) {
         this.id = id;
-    }
-
-    public String getName() {
-        return name;
     }
 
     public void setName(String name) {

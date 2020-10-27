@@ -67,7 +67,6 @@ public class TeacherController {
     @PostMapping("/edit")
     public String edit(@Valid @ModelAttribute(value = "teacher") TeacherDto teacherDto, BindingResult bindingResult,
             Model model) {
-        System.err.println(teacherDto);
         if (bindingResult.hasErrors()) {
             List<Faculty> faculties = teacherService.getFaculties();
             List<Course> courses = teacherService.getCourses();
