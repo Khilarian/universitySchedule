@@ -99,7 +99,7 @@ class CourseRestControllerTest {
         Faculty faculty = new Faculty(1, "IT");
         Course course = new Course(1, "Java", faculty);
         mockMvc.perform(delete("/api/courses/1").contentType(APPLICATION_JSON)).andExpect(status().isOk());
-        Mockito.verify(mockCourseService, times(1)).delete(course.getId());
+        Mockito.verify(mockCourseService, times(1)).deleteById(course.getId());
     }
 
     private Course convertToEntity(CourseDto courseDto) {

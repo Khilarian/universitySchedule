@@ -74,7 +74,7 @@ public class TimeSlotController {
 
     @GetMapping(value = "/delete")
     public String delete(int id) {
-        timeSlotService.delete(id);
+        timeSlotService.deleteById(id);
         return REDIRECT_PAGE;
     }
 

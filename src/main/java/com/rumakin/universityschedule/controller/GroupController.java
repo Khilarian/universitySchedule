@@ -79,7 +79,7 @@ public class GroupController {
 
     @GetMapping("/delete")
     public String deleteUser(int id) {
-        groupService.delete(id);
+        groupService.deleteById(id);
         return REDIRECT_PAGE;
     }
 

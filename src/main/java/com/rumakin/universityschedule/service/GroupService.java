@@ -61,7 +61,7 @@ public class GroupService {
         return group;
     }
 
-    public void delete(int id) {
+    public void deleteById(int id) {
         logger.debug("delete() id {}.", id);
         groupDao.deleteById(id);
     }

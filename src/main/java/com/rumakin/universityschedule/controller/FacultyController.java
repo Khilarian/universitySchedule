@@ -73,7 +73,7 @@ public class FacultyController {
 
     @GetMapping(value = "/delete")
     public String delete(int id) {
-        facultyService.delete(id);
+        facultyService.deleteById(id);
         return REDIRECT_PAGE;
     }
 

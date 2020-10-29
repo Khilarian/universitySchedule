@@ -14,6 +14,7 @@ import static org.mockito.Mockito.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.*;
 import com.rumakin.universityschedule.dto.FacultyDto;
+import com.rumakin.universityschedule.exception.ResourceNotFoundException;
 import com.rumakin.universityschedule.model.*;
 import com.rumakin.universityschedule.service.FacultyService;
 
@@ -56,15 +57,16 @@ class FacultyRestControllerTest {
     public void addShouldAddEntityToDBAndReturnItWithIdWhenDBCallFine() throws Exception {
         FacultyDto dto = new FacultyDto();
         dto.setId(0);
-        dto.setName("Faculty");
+        dto.setName("TestName");
         Faculty faculty = convertToEntity(dto);
-        
         FacultyDto dtoDb = new FacultyDto();
+        
         dtoDb.setId(1);
-        dtoDb.setName("Faculty");
+        dtoDb.setName("TestName");
         Faculty facultyDb = convertToEntity(dtoDb);
         
         Mockito.when(mockFacultyService.add(faculty)).thenReturn(facultyDb);
+        Mockito.when(mockFacultyService.findByName(faculty.getName())).thenThrow(ResourceNotFoundException.class);
         mockMvc.perform(post("/api/faculties").content(convertToJson(dto)).contentType(APPLICATION_JSON)
                 .accept(APPLICATION_JSON)).andExpect(status().isCreated()).andExpect(result -> is(dtoDb));
     }
@@ -72,10 +74,11 @@ class FacultyRestControllerTest {
     @Test
     public void updateShouldUpdateEntryInDBAndReturnItWhenDBCallFine() throws Exception {
         FacultyDto dto = new FacultyDto();
-        dto.setId(0);
+        dto.setId(1);
         dto.setName("Faculty");
         Faculty faculty = convertToEntity(dto);
         Mockito.when(mockFacultyService.update(faculty)).thenReturn(faculty);
+        Mockito.when(mockFacultyService.findByName(faculty.getName())).thenReturn(faculty);
         mockMvc.perform(put("/api/faculties").content(convertToJson(dto)).contentType(APPLICATION_JSON)
                 .accept(APPLICATION_JSON)).andExpect(status().isOk()).andExpect(result -> is(dto));
     }
@@ -84,7 +87,7 @@ class FacultyRestControllerTest {
     public void deleteShouldRemoveEntryFromDBWhenDBCallFine() throws Exception {
         Faculty faculty = new Faculty(1, "IT");
         mockMvc.perform(delete("/api/faculties/1").contentType(APPLICATION_JSON)).andExpect(status().isOk());
-        Mockito.verify(mockFacultyService, times(1)).delete(faculty.getId());
+        Mockito.verify(mockFacultyService, times(1)).deleteById(faculty.getId());
     }
     
     private Faculty convertToEntity(FacultyDto facultyDto) {

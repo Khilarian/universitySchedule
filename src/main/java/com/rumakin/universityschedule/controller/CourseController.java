@@ -82,7 +82,7 @@ public class CourseController {
 
     @GetMapping("/delete")
     public String deleteUser(int id) {
-        courseService.delete(id);
+        courseService.deleteById(id);
         return REDIRECT_PAGE;
     }
 

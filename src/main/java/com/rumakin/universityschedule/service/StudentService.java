@@ -67,7 +67,7 @@ public class StudentService {
         return student;
     }
 
-    public void delete(int id) {
+    public void deleteById(int id) {
         logger.debug("delete() id {}.", id);
         studentDao.deleteById(id);
     }

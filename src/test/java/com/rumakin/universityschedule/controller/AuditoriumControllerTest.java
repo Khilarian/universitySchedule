@@ -137,7 +137,7 @@ class AuditoriumControllerTest {
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders.get("/auditoriums/delete/?id=1");
         ResultActions result = mockMvc.perform(request);
         result.andExpect(MockMvcResultMatchers.view().name("redirect:/auditoriums/getAll"));
-        Mockito.verify(mockAuditoriumService).delete(1);
+        Mockito.verify(mockAuditoriumService).deleteById(1);
     }
 
     @Test

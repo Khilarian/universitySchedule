@@ -93,7 +93,7 @@ class BuildingRestControllerTest {
     public void deleteShouldRemoveEntryFromDBWhenDBCallFine() throws Exception {
         Building building = new Building(1, "Main", "Khimki");
         mockMvc.perform(delete("/api/buildings/1").contentType(APPLICATION_JSON)).andExpect(status().isOk());
-        Mockito.verify(mockBuildingService, times(1)).delete(building.getId());
+        Mockito.verify(mockBuildingService, times(1)).deleteById(building.getId());
     }
 
     private Building convertToEntity(BuildingDto buildingDto) {

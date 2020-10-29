@@ -42,6 +42,18 @@ class FacultyServiceTest {
     }
 
     @Test
+    public void findByNameShouldExecuteOnceWhenDbCallFineAndReturnAuditorium() {
+        Faculty expected = new Faculty(1, "First");
+        Mockito.when(mockFacultyDao.findByName("First")).thenReturn(Optional.of(expected));
+        assertEquals(facultyService.findByName("First"), expected);
+    }
+
+    @Test
+    public void findByNameShouldRaiseExceptionIfIdMissed() {
+        assertThrows(ResourceNotFoundException.class, () -> facultyService.findByName("Any"));
+    }
+
+    @Test
     public void findAllShouldReturnListOfAuditoriumIfAtLeastOneExists() {
         Faculty faculty = new Faculty(1, "First");
         Faculty facultyTwo = new Faculty(2, "Second");
@@ -51,7 +63,7 @@ class FacultyServiceTest {
     }
 
     @Test
-    public void delteteShouldExecuteOnceWhenDbCallFine() {
+    public void deleteteShouldExecuteOnceWhenDbCallFine() {
         Faculty faculty = new Faculty(1, "First");
         Mockito.when(mockFacultyDao.findById(1)).thenReturn(Optional.of(faculty));
         Mockito.when(mockFacultyDao.existsById(faculty.getId())).thenReturn(false);

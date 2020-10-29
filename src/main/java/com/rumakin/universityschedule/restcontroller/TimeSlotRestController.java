@@ -66,7 +66,7 @@ public class TimeSlotRestController {
 
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<TimeSlotDto> delete(@PathVariable(value = "id") int id) {
-        timeSlotService.delete(id);
+        timeSlotService.deleteById(id);
         return new ResponseEntity<>(null, HttpStatus.OK);
     }
 

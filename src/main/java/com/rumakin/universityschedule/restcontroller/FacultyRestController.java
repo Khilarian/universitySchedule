@@ -66,7 +66,7 @@ public class FacultyRestController {
 
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<FacultyDto> delete(@PathVariable(value = "id") int id) {
-        facultyService.delete(id);
+        facultyService.deleteById(id);
         return new ResponseEntity<>(null, HttpStatus.OK);
     }
 

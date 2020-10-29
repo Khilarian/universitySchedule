@@ -65,7 +65,7 @@ public class BuildingService {
         return building;
     }
 
-    public void delete(int id) {
+    public void deleteById(int id) {
         logger.debug("delete() id {}.", id);
         buildingDao.deleteById(id);
     }

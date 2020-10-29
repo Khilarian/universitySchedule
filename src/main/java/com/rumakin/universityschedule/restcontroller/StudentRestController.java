@@ -66,7 +66,7 @@ public class StudentRestController {
 
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<StudentDto> delete(@PathVariable(value = "id") int id) {
-        studentService.delete(id);
+        studentService.deleteById(id);
         return new ResponseEntity<>(null, HttpStatus.OK);
     }
 

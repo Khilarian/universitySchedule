@@ -39,7 +39,8 @@ public class FacultyService {
 
     public Faculty findByName(String name) {
         logger.debug("findByName() {}.", name);
-        Faculty faculty = facultyDao.findByName(name);
+        Faculty faculty = facultyDao.findByName(name).orElseThrow(
+                () -> new ResourceNotFoundException(String.format("Faculty with name %s not found", name)));
         logger.trace("foundByName {}, {}.", name, faculty);
         return faculty;
     }
@@ -47,6 +48,7 @@ public class FacultyService {
     public Faculty add(Faculty faculty) {
         logger.debug("add() {}.", faculty);
         if (faculty.getId() != 0) {
+            logger.warn("add() fault: faculty {} was not updated, with incorrect id {}.", faculty, faculty.getId());
             throw new InvalidEntityException("Id must be 0 for create");
         }
         return facultyDao.save(faculty);
@@ -55,11 +57,15 @@ public class FacultyService {
     public Faculty update(Faculty faculty) {
         logger.debug("update() {}.", faculty);
         faculty = facultyDao.save(faculty);
+        if (faculty.getId() == 0) {
+            logger.warn("update() fault: faculty {} was not updated, with incorrect id {}.", faculty, faculty.getId());
+            throw new InvalidEntityException("Id must be greater than 0 to update");
+        }
         logger.trace("faculty {} was updated.", faculty);
         return faculty;
     }
 
-    public void delete(int id) {
+    public void deleteById(int id) {
         logger.debug("delete() id {}.", id);
         facultyDao.deleteById(id);
     }

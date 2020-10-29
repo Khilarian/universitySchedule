@@ -61,7 +61,7 @@ public class CourseService {
         return course;
     }
 
-    public void delete(int id) {
+    public void deleteById(int id) {
         logger.debug("delete() id {}.", id);
         courseDao.deleteById(id);
     }

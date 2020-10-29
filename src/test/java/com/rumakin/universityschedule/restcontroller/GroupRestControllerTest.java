@@ -98,7 +98,7 @@ class GroupRestControllerTest {
         Faculty faculty = new Faculty(1, "IT");
         Group group = new Group(1, "AA-01", faculty);
         mockMvc.perform(delete("/api/groups/1").contentType(APPLICATION_JSON)).andExpect(status().isOk());
-        Mockito.verify(mockGroupService, times(1)).delete(group.getId());
+        Mockito.verify(mockGroupService, times(1)).deleteById(group.getId());
     }
 
     private Group convertToEntity(GroupDto groupDto) {

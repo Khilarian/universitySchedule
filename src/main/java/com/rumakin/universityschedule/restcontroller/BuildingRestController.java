@@ -66,7 +66,7 @@ public class BuildingRestController {
 
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<BuildingDto> delete(@PathVariable(value = "id") int id) {
-        buildingService.delete(id);
+        buildingService.deleteById(id);
         return new ResponseEntity<>(null, HttpStatus.OK);
     }
 

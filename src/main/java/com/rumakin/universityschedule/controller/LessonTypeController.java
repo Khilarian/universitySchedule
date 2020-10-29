@@ -74,7 +74,7 @@ public class LessonTypeController {
 
     @GetMapping(value = "/delete")
     public String delete(int id) {
-        lessonTypeService.delete(id);
+        lessonTypeService.deleteById(id);
         return REDIRECT_PAGE;
     }
 

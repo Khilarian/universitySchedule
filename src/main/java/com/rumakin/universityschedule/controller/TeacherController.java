@@ -85,7 +85,7 @@ public class TeacherController {
 
     @GetMapping(value = "/delete")
     public String delete(int id) {
-        teacherService.delete(id);
+        teacherService.deleteById(id);
         return REDIRECT_PAGE;
     }
 

@@ -78,7 +78,7 @@ public class AuditoriumController {
 
     @GetMapping(value = "/delete")
     public String delete(int id) {
-        auditoriumService.delete(id);
+        auditoriumService.deleteById(id);
         return REDIRECT_PAGE;
     }
 

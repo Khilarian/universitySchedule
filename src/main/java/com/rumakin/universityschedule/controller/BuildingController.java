@@ -74,7 +74,7 @@ public class BuildingController {
 
     @GetMapping(value = "/delete")
     public String delete(int id) {
-        buildingService.delete(id);
+        buildingService.deleteById(id);
         return REDIRECT_PAGE;
     }
 

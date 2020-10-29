@@ -5,6 +5,7 @@ import javax.validation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.rumakin.universityschedule.dto.FacultyDto;
+import com.rumakin.universityschedule.exception.ResourceNotFoundException;
 import com.rumakin.universityschedule.model.Faculty;
 import com.rumakin.universityschedule.service.FacultyService;
 
@@ -17,15 +18,20 @@ public class UniqueFacultyNameConstraintValidator implements ConstraintValidator
 
     @Override
     public boolean isValid(FacultyDto facultyDto, ConstraintValidatorContext context) {
-        Faculty faculty = facultyService.findByName(facultyDto.getName());
-        if (faculty != null && faculty.getName().equals(facultyDto.getName())
-                && faculty.getId() != facultyDto.getId()) {
+        Faculty faculty = new Faculty();
+        try {
+            faculty = facultyService.findByName(facultyDto.getName());
+        } catch (ResourceNotFoundException e) {
+            return true;
+        }
+        if (faculty.getId() == facultyDto.getId()) {
+            return true;
+        } else {
             context.disableDefaultConstraintViolation();
             context.buildConstraintViolationWithTemplate(
                     "{com.rumakin.universityschedule.validation.unique.facultyname}").addPropertyNode("name")
                     .addConstraintViolation();
             return false;
         }
-        return true;
     }
 }

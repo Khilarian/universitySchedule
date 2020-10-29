@@ -66,7 +66,7 @@ public class LessonTypeRestController {
 
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<LessonTypeDto> delete(@PathVariable(value = "id") int id) {
-        lessonTypeService.delete(id);
+        lessonTypeService.deleteById(id);
         return new ResponseEntity<>(null, HttpStatus.OK);
     }
 

@@ -66,7 +66,7 @@ public class AuditoriumRestController {
 
     @DeleteMapping(value = "/{id}")
     public HttpStatus delete(@PathVariable(value = "id") int id) {
-        auditoriumService.delete(id);
+        auditoriumService.deleteById(id);
         return HttpStatus.OK;
     }
 

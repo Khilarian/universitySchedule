@@ -92,7 +92,7 @@ class AuditoriumRestControllerTest {
         Building building = new Building(1, "Main", "Khimki");
         Auditorium auditorium = new Auditorium(1, 15, 35, building);
         mockMvc.perform(delete("/api/auditoriums/1").contentType(APPLICATION_JSON)).andExpect(status().isOk());
-        Mockito.verify(mockAuditoriumService, times(1)).delete(auditorium.getId());
+        Mockito.verify(mockAuditoriumService, times(1)).deleteById(auditorium.getId());
     }
 
     private AuditoriumDto convertToDto(Auditorium auditorium) {
