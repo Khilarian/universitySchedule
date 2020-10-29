@@ -25,37 +25,42 @@ public class GroupService {
     }
 
     public List<Group> findAll() {
-        logger.debug("findAll() starts");
+        logger.debug("findAll() starts.");
         List<Group> groups = (List<Group>) groupDao.findAll();
-        logger.trace("found {} groups.", groups.size());
+        logger.trace("findAll() result: {} groups.", groups.size());
         return groups;
     }
 
     public Group findById(int id) {
-        logger.debug("find() id {}.", id);
+        logger.debug("findById() id {}.", id);
         Group group = groupDao.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException(String.format("Group with id %d not found", id)));
-        logger.trace("foundById {}, {}.", id, group);
+                .orElseThrow(() -> new ResourceNotFoundException(String.format("Group with id %d not found.", id)));
+        logger.trace("findById() {} result: {}.", id, group);
         return group;
     }
 
     public Group findByName(String name) {
         logger.debug("findByName() {}.", name);
-        Group group = groupDao.findByName(name);
-        logger.trace("foundByName {}, {}.", name, group);
+        Group group = groupDao.findByName(name)
+                .orElseThrow(() -> new ResourceNotFoundException(String.format("Group with name %s not found.", name)));
+        logger.trace("findByName() {} result: {}.", name, group);
         return group;
     }
 
     public Group add(Group group) {
         logger.debug("add() {}.", group);
         if (group.getId() != 0) {
-            throw new InvalidEntityException("Id must be 0 for create");
+            throw new InvalidEntityException("Id must be 0 for create.");
         }
         return groupDao.save(group);
     }
 
     public Group update(Group group) {
         logger.debug("update() {}.", group);
+        if (group.getId() == 0) {
+            logger.warn("update() fault: group {} was not updated, with incorrect id {}.", group, group.getId());
+            throw new InvalidEntityException("Id must be greater than 0 to update.");
+        }
         group = groupDao.save(group);
         logger.trace("group {} was updated.", group);
         return group;

@@ -26,42 +26,48 @@ public class StudentService {
     public List<Student> findAll() {
         logger.debug("findAll() students.");
         List<Student> students = (List<Student>) studentDao.findAll();
-        logger.trace("found {} students.", students.size());
+        logger.trace("findAll() result: {} students.", students.size());
         return students;
     }
 
     public Student findById(int id) {
-        logger.debug("find() id {}.", id);
+        logger.debug("findById() id {}.", id);
         Student student = studentDao.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException(String.format("Student with id %d not found", id)));
-        logger.trace("found {}.", student);
+                .orElseThrow(() -> new ResourceNotFoundException(String.format("Student with id %d not found.", id)));
+        logger.trace("findById() {} result: {}.", id, student);
         return student;
     }
 
     public Student findByEmail(String email) {
         logger.debug("findByEmail() {}.", email);
-        Student student = studentDao.findByEmail(email);
-        logger.trace("foundByName {}, {}.", email, student);
+        Student student = studentDao.findByEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException(String.format("Student with email %s not found.", email)));
+        logger.trace("findByName() {} result: {}.", email, student);
         return student;
     }
 
     public Student findByPhone(String phone) {
         logger.debug("findByPhone() {}.", phone);
-        Student student = studentDao.findByPhone(phone);
-        logger.trace("foundByAddress {}, {}.", phone, student);
+        Student student = studentDao.findByPhone(phone)
+                .orElseThrow(() -> new ResourceNotFoundException(String.format("Student with phone %s not found.", phone)));
+        logger.trace("findByAddress() {} result: {}.", phone, student);
         return student;
     }
 
     public Student add(Student student) {
         logger.debug("add() {}.", student);
-        if (student.getId()!= 0) {
-            throw new InvalidEntityException("Id must be 0 for create");
+        if (student.getId() != 0) {
+            throw new InvalidEntityException("Id must be 0 for create.");
         }
         return studentDao.save(student);
     }
 
     public Student update(Student student) {
         logger.debug("update() {}.", student);
+        if (student.getId() == 0) {
+            logger.warn("update() fault: student {} was not updated, with incorrect id {}.", student, student.getId());
+            throw new InvalidEntityException("Id must be greater than 0 to update.");
+        }
         student = studentDao.save(student);
         logger.trace("student {} was updated.", student);
         return student;
@@ -71,8 +77,8 @@ public class StudentService {
         logger.debug("delete() id {}.", id);
         studentDao.deleteById(id);
     }
-    
-    public List<Group> getGroups(){
+
+    public List<Group> getGroups() {
         return groupService.findAll();
     }
 }

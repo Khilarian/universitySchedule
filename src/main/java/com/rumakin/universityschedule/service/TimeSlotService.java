@@ -24,22 +24,23 @@ public class TimeSlotService {
     public List<TimeSlot> findAll() {
         logger.debug("findAll() timeSlots.");
         List<TimeSlot> timeSlots = (List<TimeSlot>) timeSlotDao.findAll();
-        logger.trace("found {} timeSlots.", timeSlots.size());
+        logger.trace("findAll() result: {} timeSlots.", timeSlots.size());
         return timeSlots;
     }
 
     public TimeSlot findById(int id) {
         logger.debug("find() id {}.", id);
         TimeSlot timeSlot = timeSlotDao.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException(String.format("TimeSlot with id %d not found", id)));
-        logger.trace("found {}.", timeSlot);
+                .orElseThrow(() -> new ResourceNotFoundException(String.format("TimeSlot with id %d not found.", id)));
+        logger.trace("findById() {} result: {}.", id, timeSlot);
         return timeSlot;
     }
-    
+
     public TimeSlot findByNumber(int number) {
         logger.debug("findByNumber() number {}.", number);
-        TimeSlot timeSlot = timeSlotDao.findByNumber(number);
-        logger.trace("found {}.", timeSlot);
+        TimeSlot timeSlot = timeSlotDao.findByNumber(number).orElseThrow(
+                () -> new ResourceNotFoundException(String.format("TimeSlot with number %d not found.", number)));
+        logger.trace("findByNumber() {} result {}.", number, timeSlot);
         return timeSlot;
     }
 
@@ -53,6 +54,10 @@ public class TimeSlotService {
 
     public TimeSlot update(TimeSlot timeSlot) {
         logger.debug("update() {}.", timeSlot);
+        if (timeSlot.getId() == 0) {
+            logger.warn("update() fault: timeSlot {} was not updated, with incorrect id {}.", timeSlot, timeSlot.getId());
+            throw new InvalidEntityException("Id must be greater than 0 to update.");
+        }
         timeSlot = timeSlotDao.save(timeSlot);
         logger.trace("timeSlot {} was updated.", timeSlot);
         return timeSlot;

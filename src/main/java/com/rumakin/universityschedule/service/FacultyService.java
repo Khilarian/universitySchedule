@@ -23,25 +23,25 @@ public class FacultyService {
     }
 
     public List<Faculty> findAll() {
-        logger.debug("findAll() facultys.");
+        logger.debug("findAll() faculties.");
         List<Faculty> facultys = (List<Faculty>) facultyDao.findAll();
-        logger.trace("found {} faculties.", facultys.size());
+        logger.trace("findAll() result: {} faculties.", facultys.size());
         return facultys;
     }
 
     public Faculty findById(int id) {
-        logger.debug("find() id {}.", id);
+        logger.debug("findById() id {}.", id);
         Faculty faculty = facultyDao.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException(String.format("Faculty with id %d not found", id)));
-        logger.trace("found {}.", faculty);
+                .orElseThrow(() -> new ResourceNotFoundException(String.format("Faculty with id %d not found.", id)));
+        logger.trace("findById() {} result: {}.", id, faculty);
         return faculty;
     }
 
     public Faculty findByName(String name) {
         logger.debug("findByName() {}.", name);
         Faculty faculty = facultyDao.findByName(name).orElseThrow(
-                () -> new ResourceNotFoundException(String.format("Faculty with name %s not found", name)));
-        logger.trace("foundByName {}, {}.", name, faculty);
+                () -> new ResourceNotFoundException(String.format("Faculty with name %s not found.", name)));
+        logger.trace("findByName() {} result: {}.", name, faculty);
         return faculty;
     }
 
@@ -49,18 +49,18 @@ public class FacultyService {
         logger.debug("add() {}.", faculty);
         if (faculty.getId() != 0) {
             logger.warn("add() fault: faculty {} was not updated, with incorrect id {}.", faculty, faculty.getId());
-            throw new InvalidEntityException("Id must be 0 for create");
+            throw new InvalidEntityException("Id must be 0 for create.");
         }
         return facultyDao.save(faculty);
     }
 
     public Faculty update(Faculty faculty) {
         logger.debug("update() {}.", faculty);
-        faculty = facultyDao.save(faculty);
         if (faculty.getId() == 0) {
             logger.warn("update() fault: faculty {} was not updated, with incorrect id {}.", faculty, faculty.getId());
-            throw new InvalidEntityException("Id must be greater than 0 to update");
+            throw new InvalidEntityException("Id must be greater than 0 to update.");
         }
+        faculty = facultyDao.save(faculty);
         logger.trace("faculty {} was updated.", faculty);
         return faculty;
     }

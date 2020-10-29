@@ -28,29 +28,31 @@ public class TeacherService {
     public List<Teacher> findAll() {
         logger.debug("findAll() teachers.");
         List<Teacher> teachers = (List<Teacher>) teacherDao.findAll();
-        logger.trace("found {} teachers.", teachers.size());
+        logger.trace("findAll() result: {} teachers.", teachers.size());
         return teachers;
     }
 
     public Teacher findById(int id) {
-        logger.debug("find() id {}.", id);
+        logger.debug("findById() id {}.", id);
         Teacher teacher = teacherDao.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException(String.format("Teacher with id %d not found", id)));
-        logger.trace("found {}.", teacher);
+                .orElseThrow(() -> new ResourceNotFoundException(String.format("Teacher with id %d not found.", id)));
+        logger.trace("findById() result: {}.", teacher);
         return teacher;
     }
 
     public Teacher findByEmail(String email) {
         logger.debug("findByEmail() {}.", email);
-        Teacher teacher = teacherDao.findByEmail(email);
-        logger.trace("foundByName {}, {}.", email, teacher);
+        Teacher teacher = teacherDao.findByEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException(String.format("Teacher with email %s not found.", email)));
+        logger.trace("findByName() {} result: {}.", email, teacher);
         return teacher;
     }
 
     public Teacher findByPhone(String phone) {
         logger.debug("findByPhone() {}.", phone);
-        Teacher teacher = teacherDao.findByPhone(phone);
-        logger.trace("foundByAddress {}, {}.", phone, teacher);
+        Teacher teacher = teacherDao.findByPhone(phone)
+                .orElseThrow(() -> new ResourceNotFoundException(String.format("Teacher with phone %s not found.", phone)));
+        logger.trace("findByAddress() {} result: {}.", phone, teacher);
         return teacher;
     }
 
@@ -64,6 +66,10 @@ public class TeacherService {
 
     public Teacher update(Teacher teacher) {
         logger.debug("update() {}.", teacher);
+        if (teacher.getId() == 0) {
+            logger.warn("update() fault: teacher {} was not updated, with incorrect id {}.", teacher, teacher.getId());
+            throw new InvalidEntityException("Id must be greater than 0 to update.");
+        }
         teacher = teacherDao.save(teacher);
         logger.trace("teacher {} was updated.", teacher);
         return teacher;

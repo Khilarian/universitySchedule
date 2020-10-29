@@ -25,37 +25,44 @@ public class AuditoriumService {
     }
 
     public List<Auditorium> findAll() {
-        logger.debug("findAll() auditoriums");
+        logger.debug("findAll() auditoriums.");
         List<Auditorium> auditoriums = (List<Auditorium>) auditoriumDao.findAll();
-        logger.trace("found {} auditoriums", auditoriums.size());
+        logger.trace("findAll() result: {} auditoriums.", auditoriums.size());
         return auditoriums;
     }
 
     public Auditorium findById(int id) {
-        logger.debug("find() id {}", id);
+        logger.debug("findById() id {}", id);
         Auditorium auditorium = auditoriumDao.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException(String.format("Auditorium with id %d not found", id)));
-        logger.trace("found {}", auditorium);
+                .orElseThrow(() -> new ResourceNotFoundException(String.format("Auditorium with id %d not found.", id)));
+        logger.trace("findById() {} result: {}", id, auditorium);
         return auditorium;
     }
 
     public Auditorium findByNumberAndBuildingId(int number, int buildingId) {
         logger.debug("findByNumberAndBuildingId() {},{}.", number, buildingId);
-        Auditorium auditorium = auditoriumDao.findByNumberAndBuildingId(number, buildingId);
-        logger.trace("foundByNumberAndBuildingId {},{} result {}.", number, buildingId, auditorium);
+        Auditorium auditorium = auditoriumDao.findByNumberAndBuildingId(number, buildingId)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        String.format("Auditorium with number %d in building %d not found.", number, buildingId)));
+        logger.trace("findByNumberAndBuildingId() {}, {} result: {}.", number, buildingId, auditorium);
         return auditorium;
     }
 
     public Auditorium add(Auditorium auditorium) {
         logger.debug("add() {}", auditorium);
-        if (auditorium.getId()!=0) {
-            throw new InvalidEntityException("Id must be 0 for create");
+        if (auditorium.getId() != 0) {
+            throw new InvalidEntityException("Id must be 0 for create.");
         }
         return auditoriumDao.save(auditorium);
     }
 
     public Auditorium update(Auditorium auditorium) {
         logger.debug("update() {}.", auditorium);
+        if (auditorium.getId() == 0) {
+            logger.warn("update() fault: auditorium {} was not updated, with incorrect id {}.", auditorium,
+                    auditorium.getId());
+            throw new InvalidEntityException("Id must be greater than 0 to update.");
+        }
         auditorium = auditoriumDao.save(auditorium);
         logger.trace("auditorium {} was updated.", auditorium);
         return auditorium;

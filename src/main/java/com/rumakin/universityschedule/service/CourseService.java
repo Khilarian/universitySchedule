@@ -25,37 +25,42 @@ public class CourseService {
     }
 
     public List<Course> findAll() {
-        logger.debug("findAll() starts");
+        logger.debug("findAll() starts.");
         List<Course> courses = (List<Course>) courseDao.findAll();
-        logger.trace("found {} courses.", courses.size());
+        logger.trace("findAll() result: {} courses.", courses.size());
         return courses;
     }
 
     public Course findById(int id) {
-        logger.debug("find() id {}.", id);
+        logger.debug("findById() id {}.", id);
         Course course = courseDao.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException(String.format("Course with id %d not found", id)));
-        logger.trace("foundById {}, {}.", id, course);
+                .orElseThrow(() -> new ResourceNotFoundException(String.format("Course with id %d not found.", id)));
+        logger.trace("findById() {} result: {}.", id, course);
         return course;
     }
 
     public Course findByName(String name) {
         logger.debug("findByName() {}.", name);
-        Course course = courseDao.findByName(name);
-        logger.trace("foundByName {}, {}.", name, course);
+        Course course = courseDao.findByName(name)
+                .orElseThrow(() -> new ResourceNotFoundException(String.format("Course with name %s not found.", name)));
+        logger.trace("findByName() {} result: {}.", name, course);
         return course;
     }
 
     public Course add(Course course) {
         logger.debug("add() {}.", course);
         if (course.getId() != 0) {
-            throw new InvalidEntityException("Id must be 0 for create");
+            throw new InvalidEntityException("Id must be 0 for create.");
         }
         return courseDao.save(course);
     }
 
     public Course update(Course course) {
         logger.debug("update() {}.", course);
+        if (course.getId() == 0) {
+            logger.warn("update() fault: course {} was not updated, with incorrect id {}.", course, course.getId());
+            throw new InvalidEntityException("Id must be greater than 0 to update.");
+        }
         course = courseDao.save(course);
         logger.trace("course {} was updated.", course);
         return course;

@@ -24,35 +24,40 @@ public class LessonTypeService {
     public List<LessonType> findAll() {
         logger.debug("findAll() lessonTypes.");
         List<LessonType> lessonTypes = (List<LessonType>) lessonTypeDao.findAll();
-        logger.trace("found {} lessonTypes.", lessonTypes.size());
+        logger.trace("findAll() result: {} lessonTypes.", lessonTypes.size());
         return lessonTypes;
     }
 
     public LessonType findById(int id) {
         logger.debug("findById() id {}.", id);
         LessonType lessonType = lessonTypeDao.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException(String.format("LessonType with id %d not found", id)));
-        logger.trace("found {}.", lessonType);
+                .orElseThrow(() -> new ResourceNotFoundException(String.format("LessonType with id %d not found.", id)));
+        logger.trace("findById() {} result: {}.", id, lessonType);
         return lessonType;
     }
 
     public LessonType findByName(String name) {
         logger.debug("findByName() name {}.", name);
-        LessonType lessonType = lessonTypeDao.findByName(name);
-        logger.trace("found {}.", lessonType);
+        LessonType lessonType = lessonTypeDao.findByName(name).orElseThrow(
+                () -> new ResourceNotFoundException(String.format("LessonType with name %s not found.", name)));
+        logger.trace("findByName() {} result: {}.", name, lessonType);
         return lessonType;
     }
 
     public LessonType add(LessonType lessonType) {
         logger.debug("add() {}.", lessonType);
         if (lessonType.getId() != 0) {
-            throw new InvalidEntityException("Id must be 0 for create");
+            throw new InvalidEntityException("Id must be 0 for create.");
         }
         return lessonTypeDao.save(lessonType);
     }
 
     public LessonType update(LessonType lessonType) {
         logger.debug("update() {}.", lessonType);
+        if (lessonType.getId() == 0) {
+            logger.warn("update() fault: lessonType {} was not updated, with incorrect id {}.", lessonType, lessonType.getId());
+            throw new InvalidEntityException("Id must be greater than 0 to update.");
+        }
         lessonType = lessonTypeDao.save(lessonType);
         logger.trace("lessonType {} was updated.", lessonType);
         return lessonType;
