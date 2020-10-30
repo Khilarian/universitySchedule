@@ -14,6 +14,7 @@ import static org.mockito.Mockito.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.*;
 import com.rumakin.universityschedule.dto.GroupDto;
+import com.rumakin.universityschedule.exception.ResourceNotFoundException;
 import com.rumakin.universityschedule.model.*;
 import com.rumakin.universityschedule.service.GroupService;
 
@@ -71,7 +72,7 @@ class GroupRestControllerTest {
         dtoDb.setFacultyId(1);
         dtoDb.setFacultyName("Faculty");
         Group groupDb = convertToEntity(dtoDb);
-        Mockito.when(mockGroupService.findByName(dto.getName())).thenReturn(null);
+        Mockito.when(mockGroupService.findByName(dto.getName())).thenThrow(ResourceNotFoundException.class);
         Mockito.when(mockGroupService.add(group)).thenReturn(groupDb);
         mockMvc.perform(
                 post("/api/groups").content(convertToJson(dto)).contentType(APPLICATION_JSON).accept(APPLICATION_JSON))
@@ -86,7 +87,7 @@ class GroupRestControllerTest {
         dto.setFacultyId(1);
         dto.setFacultyName("Faculty");
         Group group = convertToEntity(dto);
-        Mockito.when(mockGroupService.findByName(dto.getName())).thenReturn(null);
+        Mockito.when(mockGroupService.findByName(dto.getName())).thenThrow(ResourceNotFoundException.class);
         Mockito.when(mockGroupService.update(group)).thenReturn(group);
         mockMvc.perform(
                 put("/api/groups").content(convertToJson(dto)).contentType(APPLICATION_JSON).accept(APPLICATION_JSON))

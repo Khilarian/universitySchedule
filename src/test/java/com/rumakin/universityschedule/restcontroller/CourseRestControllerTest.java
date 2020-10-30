@@ -14,6 +14,7 @@ import static org.mockito.Mockito.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.*;
 import com.rumakin.universityschedule.dto.CourseDto;
+import com.rumakin.universityschedule.exception.ResourceNotFoundException;
 import com.rumakin.universityschedule.model.*;
 import com.rumakin.universityschedule.service.CourseService;
 
@@ -72,7 +73,7 @@ class CourseRestControllerTest {
         dtoFromDb.setFacultyName("Faculty");
         Course courseFromDb = convertToEntity(dtoFromDb);
 
-        Mockito.when(mockCourseService.findByName(dto.getName())).thenReturn(null);
+        Mockito.when(mockCourseService.findByName(dto.getName())).thenThrow(ResourceNotFoundException.class);
         Mockito.when(mockCourseService.add(course)).thenReturn(courseFromDb);
         mockMvc.perform(
                 post("/api/courses").content(convertToJson(dto)).contentType(APPLICATION_JSON).accept(APPLICATION_JSON))
@@ -87,7 +88,7 @@ class CourseRestControllerTest {
         dto.setFacultyId(1);
         dto.setFacultyName("Faculty");
         Course course = convertToEntity(dto);
-        Mockito.when(mockCourseService.findByName(dto.getName())).thenReturn(null);
+        Mockito.when(mockCourseService.findByName(dto.getName())).thenThrow(ResourceNotFoundException.class);
         Mockito.when(mockCourseService.update(course)).thenReturn(course);
         mockMvc.perform(
                 put("/api/courses").content(convertToJson(dto)).contentType(APPLICATION_JSON).accept(APPLICATION_JSON))
