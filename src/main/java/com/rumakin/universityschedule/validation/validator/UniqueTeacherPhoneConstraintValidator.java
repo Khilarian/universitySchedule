@@ -5,6 +5,7 @@ import javax.validation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.rumakin.universityschedule.dto.TeacherDto;
+import com.rumakin.universityschedule.exception.ResourceNotFoundException;
 import com.rumakin.universityschedule.model.*;
 import com.rumakin.universityschedule.service.*;
 import com.rumakin.universityschedule.validation.annotation.UniqueTeacherPhone;
@@ -18,9 +19,17 @@ public class UniqueTeacherPhoneConstraintValidator implements ConstraintValidato
 
     @Override
     public boolean isValid(TeacherDto teacherDto, ConstraintValidatorContext context) {
-        Teacher teacher = teacherService.findByPhone(teacherDto.getPhone());
-        Student student = studentService.findByPhone(teacherDto.getPhone());
-        if (teacher != null && teacher.getId() != teacherDto.getId() || student != null) {
+        Teacher teacher = new Teacher();
+        try {
+            studentService.findByPhone(teacherDto.getPhone());
+        } catch (ResourceNotFoundException e) {
+            try {
+                teacher = teacherService.findByPhone(teacherDto.getPhone());
+            } catch (ResourceNotFoundException ex) {
+                return true;
+            }
+        }
+        if (teacher.getId() != teacherDto.getId()) {
             context.disableDefaultConstraintViolation();
             context.buildConstraintViolationWithTemplate("{com.rumakin.universityschedule.validation.unique.phone}")
                     .addPropertyNode("phone").addConstraintViolation();
