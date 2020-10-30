@@ -25,9 +25,7 @@ public class UniqueAuditoriumConstraintValidator implements ConstraintValidator<
         } catch (ResourceNotFoundException e) {
             return true;
         }
-        if (auditorium.getNumber() == auditoriumDto.getNumber()
-                && auditorium.getBuilding().getId() == auditoriumDto.getBuildingId()
-                && auditorium.getId() != auditoriumDto.getId()) {
+        if (auditorium.getId() != auditoriumDto.getId()) {
             context.disableDefaultConstraintViolation();
             context.buildConstraintViolationWithTemplate(
                     "{com.rumakin.universityschedule.validation.unique.auditorium}").addPropertyNode("number")

@@ -5,6 +5,7 @@ import javax.validation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.rumakin.universityschedule.dto.BuildingDto;
+import com.rumakin.universityschedule.exception.ResourceNotFoundException;
 import com.rumakin.universityschedule.model.Building;
 import com.rumakin.universityschedule.service.BuildingService;
 
@@ -17,9 +18,13 @@ public class UniqueBuildingNameConstraintValidator implements ConstraintValidato
 
     @Override
     public boolean isValid(BuildingDto buildingDto, ConstraintValidatorContext context) {
-        Building building = buildingService.findByName(buildingDto.getName());
-        if (building != null && building.getName().equals(buildingDto.getName())
-                && building.getId() != buildingDto.getId()) {
+        Building building = new Building();
+        try {
+            building = buildingService.findByName(buildingDto.getName());
+        } catch (ResourceNotFoundException e) {
+            return true;
+        }
+        if (building.getId() != buildingDto.getId()) {
             context.disableDefaultConstraintViolation();
             context.buildConstraintViolationWithTemplate(
                     "{com.rumakin.universityschedule.validation.unique.buildingname}").addPropertyNode("name")
