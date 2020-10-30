@@ -5,6 +5,7 @@ import javax.validation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.rumakin.universityschedule.dto.AuditoriumDto;
+import com.rumakin.universityschedule.exception.ResourceNotFoundException;
 import com.rumakin.universityschedule.model.Auditorium;
 import com.rumakin.universityschedule.service.AuditoriumService;
 
@@ -17,14 +18,20 @@ public class UniqueAuditoriumConstraintValidator implements ConstraintValidator<
 
     @Override
     public boolean isValid(AuditoriumDto auditoriumDto, ConstraintValidatorContext context) {
-        Auditorium auditorium = auditoriumService.findByNumberAndBuildingId(auditoriumDto.getNumber(),
-                auditoriumDto.getBuildingId());
-        if (auditorium != null && auditorium.getNumber() == auditoriumDto.getNumber()
+        Auditorium auditorium = new Auditorium();
+        try {
+            auditorium = auditoriumService.findByNumberAndBuildingId(auditoriumDto.getNumber(),
+                    auditoriumDto.getBuildingId());
+        } catch (ResourceNotFoundException e) {
+            return true;
+        }
+        if (auditorium.getNumber() == auditoriumDto.getNumber()
                 && auditorium.getBuilding().getId() == auditoriumDto.getBuildingId()
                 && auditorium.getId() != auditoriumDto.getId()) {
             context.disableDefaultConstraintViolation();
-            context.buildConstraintViolationWithTemplate("{com.rumakin.universityschedule.validation.unique.auditorium}")
-                    .addPropertyNode("number").addConstraintViolation();
+            context.buildConstraintViolationWithTemplate(
+                    "{com.rumakin.universityschedule.validation.unique.auditorium}").addPropertyNode("number")
+                    .addConstraintViolation();
             return false;
         }
         return true;

@@ -33,7 +33,7 @@ public class LessonTypeConstraintValidator implements ConstraintValidator<Verifi
         } catch (ResourceNotFoundException e) {
             return true;
         }
-        if (lessonType.getId() == lessonType.getId()) {
+        if (lessonType.getId() == lessonTypeDto.getId()) {
             return true;
         } else {
             context.buildConstraintViolationWithTemplate(

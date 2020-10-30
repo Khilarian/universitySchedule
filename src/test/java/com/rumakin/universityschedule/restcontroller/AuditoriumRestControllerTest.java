@@ -15,6 +15,7 @@ import static org.mockito.Mockito.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.*;
 import com.rumakin.universityschedule.dto.AuditoriumDto;
+import com.rumakin.universityschedule.exception.ResourceNotFoundException;
 import com.rumakin.universityschedule.model.*;
 import com.rumakin.universityschedule.service.AuditoriumService;
 
@@ -70,7 +71,7 @@ class AuditoriumRestControllerTest {
         Auditorium auditoriumFromDb = new Auditorium(11, 7, 8, building);
         AuditoriumDto auditoriumDtoFromDb = convertToDto(auditoriumFromDb);
         Mockito.when(mockAuditoriumService.findByNumberAndBuildingId(Mockito.anyInt(), Mockito.anyInt()))
-                .thenReturn(null);
+                .thenThrow(ResourceNotFoundException.class);
         Mockito.when(mockAuditoriumService.add(auditorium)).thenReturn(auditoriumFromDb);
         mockMvc.perform(post("/api/auditoriums").content(convertToJson(auditoriumDto)).contentType(APPLICATION_JSON)
                 .accept(APPLICATION_JSON)).andExpect(status().isCreated()).andExpect(result -> is(auditoriumDtoFromDb));
@@ -82,7 +83,8 @@ class AuditoriumRestControllerTest {
         Auditorium auditorium = new Auditorium(12, 8, 9, building);
         AuditoriumDto auditoriumDto = convertToDto(auditorium);
         Mockito.when(mockAuditoriumService.update(auditorium)).thenReturn(auditorium);
-        Mockito.when(mockAuditoriumService.findByNumberAndBuildingId(anyInt(), anyInt())).thenReturn(null);
+        Mockito.when(mockAuditoriumService.findByNumberAndBuildingId(anyInt(), anyInt()))
+                .thenThrow(ResourceNotFoundException.class);
         mockMvc.perform(put("/api/auditoriums").content(convertToJson(auditoriumDto)).contentType(APPLICATION_JSON)
                 .accept(APPLICATION_JSON)).andExpect(status().isOk()).andExpect(result -> is(auditoriumDto));
     }
