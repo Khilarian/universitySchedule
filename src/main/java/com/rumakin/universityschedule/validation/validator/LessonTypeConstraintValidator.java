@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.google.common.base.Enums;
 import com.rumakin.universityschedule.dto.*;
+import com.rumakin.universityschedule.exception.ResourceNotFoundException;
 import com.rumakin.universityschedule.model.*;
 import com.rumakin.universityschedule.model.enums.LessonTypeEnum;
 import com.rumakin.universityschedule.service.LessonTypeService;
@@ -26,13 +27,19 @@ public class LessonTypeConstraintValidator implements ConstraintValidator<Verifi
             return false;
         }
 
-        LessonType lessonType = lessonTypeService.findByName(lessonTypeDto.getName());
-        if (lessonType != null && lessonType.getId() != lessonTypeDto.getId()) {
+        LessonType lessonType = new LessonType();
+        try {
+            lessonType = lessonTypeService.findByName(lessonTypeDto.getName());
+        } catch (ResourceNotFoundException e) {
+            return true;
+        }
+        if (lessonType.getId() == lessonType.getId()) {
+            return true;
+        } else {
             context.buildConstraintViolationWithTemplate(
                     "{com.rumakin.universityschedule.validation.unique.lessonType}").addPropertyNode("name")
                     .addConstraintViolation();
             return false;
         }
-        return true;
     }
 }

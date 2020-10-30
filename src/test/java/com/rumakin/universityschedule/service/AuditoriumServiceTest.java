@@ -64,7 +64,7 @@ class AuditoriumServiceTest {
     @Test
     public void updateShouldExecuteOnceWhenDbCallFineAndUodateEntityField() {
         Building building = new Building(10, "First", "Building");
-        Auditorium auditorium = new Auditorium(15, 35, building);
+        Auditorium auditorium = new Auditorium(1, 15, 35, building);
         Mockito.when(mockAuditoriumDao.findById(1)).thenReturn(Optional.of(auditorium));
         auditorium.setCapacity(20);
         Mockito.when(mockAuditoriumDao.save(auditorium)).thenReturn(auditorium);
