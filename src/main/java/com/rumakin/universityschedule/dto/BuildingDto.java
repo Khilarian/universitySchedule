@@ -12,6 +12,7 @@ import io.swagger.annotations.ApiModel;
 public class BuildingDto {
 
     private int id;
+    
     @NotBlank(message = "{com.rumakin.universityschedule.validation.mandatory.name}")
     @Size(min = 2, max = 50, message = "{com.rumakin.universityschedule.validation.length.name}")
     @Pattern(regexp = "[A-Z][a-z]+(\\s[A-Z]*[a-z]+)*", message = "{com.rumakin.universityschedule.validation.illegal.buildingname}")

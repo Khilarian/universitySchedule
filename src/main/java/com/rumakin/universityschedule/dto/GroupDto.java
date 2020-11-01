@@ -11,10 +11,13 @@ import io.swagger.annotations.ApiModel;
 public class GroupDto {
 
     private int id;
+    
     @NotBlank(message = "{com.rumakin.universityschedule.validation.mandatory.name}")
     @Pattern(regexp = "[A-Z]{2}-[0-9]{3}", message = "{com.rumakin.universityschedule.validation.illegal.groupname}")
     private String name;
+    
     private int facultyId;
+    
     private String facultyName;
 
     public GroupDto() {

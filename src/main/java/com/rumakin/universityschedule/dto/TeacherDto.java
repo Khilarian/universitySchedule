@@ -18,7 +18,7 @@ public class TeacherDto {
     @NotBlank
     @Pattern(regexp = "[A-Z][a-z]*", message = "{com.rumakin.universityschedule.validation.illegal.personfirstname}")
     private String firstName;
-    
+
     @NotBlank
     @Pattern(regexp = "[A-Z][a-z]*(\\s{1}[A-Z][a-z]*)*", message = "{com.rumakin.universityschedule.validation.illegal.personlastname}")
     private String lastName;
@@ -52,32 +52,32 @@ public class TeacherDto {
         return lastName;
     }
 
-    public void setId(int personId) {
-        this.personId = personId;
-    }
-
-    public int getFacultyId() {
-        return facultyId;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getFacultyName() {
-        return facultyName;
+    public String getEmail() {
+        return email;
     }
 
     public String getPhone() {
         return phone;
     }
 
-    public String getEmail() {
-        return email;
+    public int getFacultyId() {
+        return facultyId;
+    }
+
+    public String getFacultyName() {
+        return facultyName;
     }
 
     public List<CourseDto> getCourses() {
         return courses;
+    }
+
+    public void setId(int personId) {
+        this.personId = personId;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
     public void setLastName(String lastName) {
@@ -92,12 +92,12 @@ public class TeacherDto {
         this.facultyName = facultyName;
     }
 
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
     public void setCourses(List<CourseDto> courses) {

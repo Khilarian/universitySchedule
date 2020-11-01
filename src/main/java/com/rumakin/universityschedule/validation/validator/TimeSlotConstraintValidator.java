@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.google.common.base.Enums;
 import com.rumakin.universityschedule.dto.*;
+import com.rumakin.universityschedule.exception.ResourceNotFoundException;
 import com.rumakin.universityschedule.model.TimeSlot;
 import com.rumakin.universityschedule.model.enums.TimeSlotEnum;
 import com.rumakin.universityschedule.service.TimeSlotService;
@@ -24,39 +25,21 @@ public class TimeSlotConstraintValidator implements ConstraintValidator<Verified
                     .addPropertyNode("name").addConstraintViolation();
             return false;
         }
-        
-        if (Enums.getIfPresent(TimeSlotEnum.class, timeSlotDto.getName()).get().getNumber() != timeSlotDto.getNumber()) {
-            context.disableDefaultConstraintViolation();
-            context.buildConstraintViolationWithTemplate("{com.rumakin.universityschedule.validation.illegal.timeslot.number}")
-                    .addPropertyNode("number").addConstraintViolation();
-            return false;
-        }
 
-        TimeSlot timeSlot = timeSlotService.findByNumber(timeSlotDto.getNumber());
-        if (timeSlot != null && timeSlot.getName().equals(timeSlotDto.getName())
-                && timeSlot.getId() != timeSlotDto.getId()) {
-            context.buildConstraintViolationWithTemplate("{com.rumakin.universityschedule.validation.unique.timeslot}")
-                    .addPropertyNode("name").addConstraintViolation();
-            return false;
-        }
-        if (timeSlotDto.getEndTime().compareTo(timeSlotDto.getStartTime()) < 1) {
+        if (Enums.getIfPresent(TimeSlotEnum.class, timeSlotDto.getName()).get().getNumber() != timeSlotDto
+                .getNumber()) {
+            context.disableDefaultConstraintViolation();
             context.buildConstraintViolationWithTemplate(
-                    "{com.rumakin.universityschedule.validation.illegal.timeslot.timegap}").addPropertyNode("endTime")
+                    "{com.rumakin.universityschedule.validation.illegal.timeslot.number}").addPropertyNode("number")
                     .addConstraintViolation();
             return false;
         }
 
-        TimeSlot nextTimeSlot = timeSlotService.findByNumber(timeSlotDto.getNumber() + 1);
-        if (nextTimeSlot != null && nextTimeSlot.getStartTime().compareTo(timeSlotDto.getEndTime()) != 1) {
-            context.buildConstraintViolationWithTemplate(
-                    "{com.rumakin.universityschedule.validation.illegal.timeslot.timegap.next}")
-                    .addPropertyNode("endTime").addConstraintViolation();
-            return false;
-        }
-        
         if (timeSlotDto.getNumber() > 1) {
-            TimeSlot previousTimeSlot = timeSlotService.findByNumber(timeSlotDto.getNumber() - 1);
-            if (previousTimeSlot == null) {
+            TimeSlot previousTimeSlot = new TimeSlot();
+            try {
+                previousTimeSlot = timeSlotService.findByNumber(timeSlotDto.getNumber() - 1);
+            } catch (ResourceNotFoundException exc) {
                 context.buildConstraintViolationWithTemplate(
                         "{com.rumakin.universityschedule.validation.illegal.timeslot.order}").addPropertyNode("number")
                         .addConstraintViolation();
@@ -68,6 +51,37 @@ public class TimeSlotConstraintValidator implements ConstraintValidator<Verified
                         .addPropertyNode("startTime").addConstraintViolation();
                 return false;
             }
+        }
+        if (timeSlotDto.getEndTime().compareTo(timeSlotDto.getStartTime()) < 1) {
+            context.buildConstraintViolationWithTemplate(
+                    "{com.rumakin.universityschedule.validation.illegal.timeslot.timegap}").addPropertyNode("endTime")
+                    .addConstraintViolation();
+            return false;
+        }
+
+        TimeSlot timeSlot = new TimeSlot();
+        try {
+            timeSlot = timeSlotService.findByNumber(timeSlotDto.getNumber());
+        } catch (ResourceNotFoundException e) {
+            return true;
+        }
+        if (timeSlot.getId() != timeSlotDto.getId()) {
+            context.buildConstraintViolationWithTemplate("{com.rumakin.universityschedule.validation.unique.timeslot}")
+                    .addPropertyNode("name").addConstraintViolation();
+            return false;
+        }
+
+        TimeSlot nextTimeSlot = new TimeSlot();
+        try {
+            nextTimeSlot = timeSlotService.findByNumber(timeSlotDto.getNumber() + 1);
+        } catch (ResourceNotFoundException ex) {
+            return true;
+        }
+        if (nextTimeSlot.getStartTime().compareTo(timeSlotDto.getEndTime()) < 1) {
+            context.buildConstraintViolationWithTemplate(
+                    "{com.rumakin.universityschedule.validation.illegal.timeslot.timegap.next}")
+                    .addPropertyNode("endTime").addConstraintViolation();
+            return false;
         }
         return true;
     }

@@ -30,30 +30,6 @@ public class TimeSlotDto {
     public TimeSlotDto() {
     }
 
-    public String getStartTime() {
-        return startTime;
-    }
-
-    public void setStartTime(String startTime) {
-        this.startTime = startTime;
-    }
-
-    public String getEndTime() {
-        return endTime;
-    }
-
-    public void setEndTime(String endTime) {
-        this.endTime = endTime;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public void setNumber(Integer number) {
-        this.number = number;
-    }
-
     public Integer getId() {
         return id;
     }
@@ -66,8 +42,20 @@ public class TimeSlotDto {
         return name;
     }
 
-    public void setId(int id) {
+    public String getStartTime() {
+        return startTime;
+    }
+
+    public String getEndTime() {
+        return endTime;
+    }
+
+    public void setId(Integer id) {
         this.id = id;
+    }
+
+    public void setNumber(Integer number) {
+        this.number = number;
     }
 
     public void setName(String name) {
@@ -76,6 +64,14 @@ public class TimeSlotDto {
 
     public void setNumber(int number) {
         this.number = number;
+    }
+
+    public void setStartTime(String startTime) {
+        this.startTime = startTime;
+    }
+
+    public void setEndTime(String endTime) {
+        this.endTime = endTime;
     }
 
     @Override

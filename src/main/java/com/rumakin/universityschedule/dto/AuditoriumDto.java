@@ -14,16 +14,21 @@ import java.util.Optional;
 public class AuditoriumDto implements Dto{
 
     private int id;
+    
     @Min(1)
     @Max(999)
     @Digits(integer = 3, fraction = 0, message = "{com.rumakin.universityschedule.validation.illegal.auditoriumnumber}")
     private Integer number;
+    
     @Min(1)
     @Max(100)
     @Digits(integer = 3, fraction = 0, message = "{com.rumakin.universityschedule.validation.illegal.auditoriumcapacity}")
     private Integer capacity;
+    
     private int buildingId;
+    
     private String buildingName;
+    
     private String buildingAddress;
 
     public AuditoriumDto() {

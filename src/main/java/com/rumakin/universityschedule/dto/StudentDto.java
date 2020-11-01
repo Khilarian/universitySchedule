@@ -13,6 +13,7 @@ import io.swagger.annotations.ApiModel;
 public class StudentDto {
 
     private int personId;
+
     @NotBlank
     @Pattern(regexp = "[A-Z][a-z]*", message = "{com.rumakin.universityschedule.validation.illegal.personfirstname}")
     private String firstName;
@@ -39,56 +40,56 @@ public class StudentDto {
         return personId;
     }
 
-    public void setId(int personId) {
-        this.personId = personId;
-    }
-
     public String getFirstName() {
         return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
     }
 
     public String getLastName() {
         return lastName;
     }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public int getGroupId() {
-        return groupId;
-    }
-
-    public void setGroupId(int groupId) {
-        this.groupId = groupId;
-    }
-
-    public String getGroupName() {
-        return groupName;
-    }
-
-    public void setGroupName(String groupName) {
-        this.groupName = groupName;
-    }
-
     public String getEmail() {
         return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
     }
 
     public String getPhone() {
         return phone;
     }
 
+    public int getGroupId() {
+        return groupId;
+    }
+
+    public String getGroupName() {
+        return groupName;
+    }
+
+    public void setId(int personId) {
+        this.personId = personId;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public void setGroupId(int groupId) {
+        this.groupId = groupId;
+    }
+
+    public void setGroupName(String groupName) {
+        this.groupName = groupName;
     }
 
     @Override
