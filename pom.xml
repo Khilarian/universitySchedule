@@ -72,28 +72,14 @@
                         <configuration>
                             <dataFile>target/jacoco.exec</dataFile>
                             <outputDirectory>target/my-reports</outputDirectory>
+                            <excludes>
+                                <exclude>**/*com/rumakin/universityschedule/config/*</exclude>
+                                <exclude>**/*com/rumakin/universityschedule/dto/*</exclude>
+                                <exclude>**/*com/rumakin/universityschedule/model/*</exclude>
+                                <exclude>**/*com/rumakin/universityschedule/model/enums/*</exclude>
+                            </excludes>
                         </configuration>
                     </execution>
-                    <!-- execution>
-                        <id>check</id>
-                        <goals>
-                            <goal>check</goal>
-                        </goals>
-                        <configuration>
-                            <rules>
-                                <rule>
-                                    <element>BUNDLE</element>
-                                    <limits>
-                                        <limit>
-                                            <counter>COMPLEXITY</counter>
-                                            <value>COVEREDRATIO</value>
-                                            <minimum>0.60</minimum>
-                                        </limit>
-                                    </limits>
-                                </rule>
-                            </rules>
-                        </configuration>
-                    </execution-->
                 </executions>
             </plugin>
         </plugins>
