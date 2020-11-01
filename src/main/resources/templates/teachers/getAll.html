@@ -52,7 +52,7 @@
                 <td th:text="${teacher.facultyName}">Faculty name</td>
                 <td>
                     <ul>
-                        <li th:each="course : ${teacher.courses}"><span th:text="${course.name}" /></li>
+                        <li th:each="course : ${teacher.courses}"><span th:text="${course.name}" /></span></li>
                     </ul>
                 </td>
                 <td><a th:href="@{/teachers/edit/(id=${teacher.id})}" class="btn btn-warning">Edit</a></td>

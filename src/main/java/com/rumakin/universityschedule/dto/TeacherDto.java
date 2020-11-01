@@ -14,27 +14,27 @@ import io.swagger.annotations.ApiModel;
 public class TeacherDto {
 
     private int personId;
-    
+
     @NotBlank
-    @Pattern(regexp = "[A-Z]?[a-z]+(\\s?[A-Z]?[a-z]+)+", message = "{com.rumakin.universityschedule.validation.illegal.personname}")
+    @Pattern(regexp = "[A-Z][a-z]*", message = "{com.rumakin.universityschedule.validation.illegal.personfirstname}")
     private String firstName;
     
     @NotBlank
-    @Pattern(regexp = "[A-Z]?[a-z]+(\\s?[A-Z]?[a-z]+)+", message = "{com.rumakin.universityschedule.validation.illegal.personname}")
+    @Pattern(regexp = "[A-Z][a-z]*(\\s{1}[A-Z][a-z]*)*", message = "{com.rumakin.universityschedule.validation.illegal.personlastname}")
     private String lastName;
-   
+
     @Pattern(regexp = "^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$", message = "{com.rumakin.universityschedule.validation.illegal.email}")
     private String email;
-    
+
     @NotBlank
     @Pattern(regexp = "^(\\+7)\\(\\d{3}\\)\\d{7,10}$$", message = "{com.rumakin.universityschedule.validation.illegal.phone}")
     private String phone;
-    
+
     @NotNull
     private int facultyId;
-    
+
     private String facultyName;
-    
+
     private List<CourseDto> courses = new ArrayList<>();
 
     public TeacherDto() {

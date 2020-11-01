@@ -52,12 +52,12 @@
                 <td th:text="${lesson.auditoriumName}"></td>
                 <td>
                     <ul>
-                        <li th:each="teacher : ${lesson.teachers}"><span th:text="|${teacher.firstName} ${teacher.lastName}|" /></li>
+                        <li th:each="teacher : ${lesson.teachers}"><span th:text="|${teacher.firstName} ${teacher.lastName}|" /></span></li>
                     </ul>
                 </td>
                 <td>
                     <ul>
-                        <li th:each="group : ${lesson.groups}"><span th:text="${group.name}" /></li>
+                        <li th:each="group : ${lesson.groups}"><span th:text="${group.name}" /></span></li>
                     </ul>
                 </td>
                 <td><a th:href="@{/groups/edit/(id=${group.id})}" class="btn btn-warning">Edit</a></td>
