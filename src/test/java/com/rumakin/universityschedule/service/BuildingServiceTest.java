@@ -1,6 +1,8 @@
 package com.rumakin.universityschedule.service;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.times;
+
 import java.util.*;
 import org.junit.jupiter.api.*;
 import org.mockito.*;
@@ -9,6 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
 import com.rumakin.universityschedule.dao.BuildingDao;
+import com.rumakin.universityschedule.exception.InvalidEntityException;
 import com.rumakin.universityschedule.exception.ResourceNotFoundException;
 import com.rumakin.universityschedule.model.*;
 
@@ -23,22 +26,59 @@ class BuildingServiceTest {
 
     @Test
     public void addShouldExecuteOnceWhenDbCallFine() {
-        Building saved = new Building(0, "First", "York");
-        Building expected =  new Building(1, "First", "York");
-        Mockito.when(mockBuildingDao.save(saved)).thenReturn(expected);
-        assertEquals(buildingService.add(saved), expected);
+        Building savedBuilding = new Building(0, "First", "York");
+        Building expectedBuilding =  new Building(1, "First", "York");
+        Mockito.when(mockBuildingDao.save(savedBuilding)).thenReturn(expectedBuilding);
+        assertEquals(buildingService.add(savedBuilding), expectedBuilding);
+        Mockito.verify(mockBuildingDao, times(1)).save(savedBuilding);
+    }
+    
+    @Test
+    public void addShouldRaiseExceptionIfIdNotEqualZero() {
+        Building savedBuilding = new Building(1, "Building", "Address");
+        assertThrows(InvalidEntityException.class, () -> buildingService.add(savedBuilding));
     }
 
     @Test
-    public void findByIdShouldExecuteOnceWhenDbCallFineAndReturnAuditorium() {
+    public void findByIdShouldExecuteOnceWhenDbCallFineAndReturnBuilding() {
         Building expected =  new Building(1, "First", "York");
         Mockito.when(mockBuildingDao.findById(1)).thenReturn(Optional.of(expected));
         assertEquals(buildingService.findById(1), expected);
+        Mockito.verify(mockBuildingDao, times(1)).findById(1);
     }
     
     @Test
     public void findByIdShouldRaiseExceptionIfIdMissed() {
         assertThrows(ResourceNotFoundException.class, () -> buildingService.findById(1));
+        Mockito.verify(mockBuildingDao, times(1)).findById(1);
+    }
+    
+    @Test
+    public void findByNameShouldExecuteOnceWhenDbCallFineAndReturnAuditorium() {
+        Building expected =  new Building(1, "First", "York");
+        Mockito.when(mockBuildingDao.findByName("bb")).thenReturn(Optional.of(expected));
+        assertEquals(buildingService.findByName("bb"), expected);
+        Mockito.verify(mockBuildingDao, times(1)).findByName("bb");
+    }
+    
+    @Test
+    public void findByNameShouldRaiseExceptionIfNameMissed() {
+        assertThrows(ResourceNotFoundException.class, () -> buildingService.findByName("bb"));
+        Mockito.verify(mockBuildingDao, times(1)).findByName("bb");
+    }
+    
+    @Test
+    public void findByAddreddShouldExecuteOnceWhenDbCallFineAndReturnBuilding() {
+        Building expected =  new Building(1, "First", "York");
+        Mockito.when(mockBuildingDao.findByAddress("bb")).thenReturn(Optional.of(expected));
+        assertEquals(buildingService.findByAddress("bb"), expected);
+        Mockito.verify(mockBuildingDao, times(1)).findByAddress("bb");
+    }
+    
+    @Test
+    public void findByAddressShouldRaiseExceptionIfAddressMissed() {
+        assertThrows(ResourceNotFoundException.class, () -> buildingService.findByAddress("bb"));
+        Mockito.verify(mockBuildingDao, times(1)).findByAddress("bb");
     }
 
     @Test
@@ -48,24 +88,30 @@ class BuildingServiceTest {
         List<Building> buildings = Arrays.asList(building, buildingTwo);
         Mockito.when(mockBuildingDao.findAll()).thenReturn(buildings);
         assertEquals(buildingService.findAll(), buildings);
+        Mockito.verify(mockBuildingDao, times(1)).findAll();
     }
 
     @Test
-    public void delteteShouldExecuteOnceWhenDbCallFine() {
+    public void deleteShouldExecuteOnceWhenDbCallFine() {
         Building building = new Building(10, "First", "Building");
-        Mockito.when(mockBuildingDao.findById(1)).thenReturn(Optional.of(building));
-        Mockito.when(mockBuildingDao.existsById(building.getId())).thenReturn(false);
-        assertFalse(mockBuildingDao.existsById(building.getId()));
+        buildingService.deleteById(building.getId());
+        Mockito.verify(mockBuildingDao, times(1)).deleteById(10);
     }
 
     @Test
-    public void updateShouldExecuteOnceWhenDbCallFineAndUodateEntityField() {
+    public void updateShouldExecuteOnceWhenDbCallFineAndUpdateEntityField() {
         Building building = new Building(10, "First", "Building");
         Mockito.when(mockBuildingDao.findById(1)).thenReturn(Optional.of(building));
         building.setAddress("new");
         Mockito.when(mockBuildingDao.save(building)).thenReturn(building);
         assertEquals(buildingService.update(building), building);
-
+        Mockito.verify(mockBuildingDao, times(1)).save(building);
+    }
+    
+    @Test
+    public void updateShouldRaiseExceptionIfIdEqualZero() {
+        Building updatedBuilding = new Building(0, "Bldng", "Address");
+        assertThrows(InvalidEntityException.class, () -> buildingService.update(updatedBuilding));
     }
 
 }
