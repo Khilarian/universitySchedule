@@ -85,8 +85,8 @@ class BuildingRestControllerTest {
         dto.setName("Main");
         dto.setAddress("Khimki");
         
-        Mockito.when(mockBuildingService.findByName(dto.getName())).thenThrow(ResourceNotFoundException.class);
-        Mockito.when(mockBuildingService.findByAddress(dto.getAddress())).thenThrow(ResourceNotFoundException.class);
+        Mockito.when(mockBuildingService.findByName(dto.getName())).thenReturn(building);
+        Mockito.when(mockBuildingService.findByAddress(dto.getAddress())).thenReturn(building);
         Mockito.when(mockBuildingService.update(building)).thenReturn(building);
         mockMvc.perform(put("/api/buildings").content(convertToJson(dto)).contentType(APPLICATION_JSON)
                 .accept(APPLICATION_JSON)).andExpect(status().isOk()).andExpect(result -> is(dto));
