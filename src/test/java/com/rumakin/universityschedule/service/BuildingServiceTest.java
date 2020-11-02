@@ -11,8 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
 import com.rumakin.universityschedule.dao.BuildingDao;
-import com.rumakin.universityschedule.exception.InvalidEntityException;
-import com.rumakin.universityschedule.exception.ResourceNotFoundException;
+import com.rumakin.universityschedule.exception.*;
 import com.rumakin.universityschedule.model.*;
 
 @SpringBootTest

@@ -10,8 +10,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import static org.mockito.Mockito.*;
 
 import com.rumakin.universityschedule.dao.AuditoriumDao;
-import com.rumakin.universityschedule.exception.InvalidEntityException;
-import com.rumakin.universityschedule.exception.ResourceNotFoundException;
+import com.rumakin.universityschedule.exception.*;
 import com.rumakin.universityschedule.model.*;
 
 @SpringBootTest
