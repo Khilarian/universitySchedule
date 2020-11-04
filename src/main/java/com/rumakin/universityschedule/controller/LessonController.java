@@ -39,12 +39,12 @@ public class LessonController {
         List<LessonDto> lessons = lessonService.findAll().stream().map(l -> convertToDto(l)).collect(Collectors.toList());
         logger.trace("findAll() result: {} lessons.", lessons.size());
         model.addAttribute("lessons", lessons);
-        model.addAttribute("teachers", lessonService.getTeachers());
-        model.addAttribute("groups", lessonService.getGroups());
-        model.addAttribute("courses", lessonService.getCourses());
-        model.addAttribute("auditoriums", lessonService.getAuditoriums());
-        model.addAttribute("lessonTypes", lessonService.getLessonTypes());
-        model.addAttribute("timeSlots", lessonService.getTimeSlots());
+        model.addAttribute("allTeachers", lessonService.getTeachers());
+        model.addAttribute("allGroups", lessonService.getGroups());
+        model.addAttribute("allCourses", lessonService.getCourses());
+        model.addAttribute("allAuditoriums", lessonService.getAuditoriums());
+        model.addAttribute("allLessonTypes", lessonService.getLessonTypes());
+        model.addAttribute("allTimeSlots", lessonService.getTimeSlots());
         return "lessons/getAll";
     }
 
@@ -57,12 +57,12 @@ public class LessonController {
         } else {
             model.addAttribute("headerString", "Add lesson");
         }
-        model.addAttribute("teachers", lessonService.getTeachers());
-        model.addAttribute("groups", lessonService.getGroups());
-        model.addAttribute("courses", lessonService.getCourses());
-        model.addAttribute("auditoriums", lessonService.getAuditoriums());
-        model.addAttribute("lessonTypes", lessonService.getLessonTypes());
-        model.addAttribute("timeSlots", lessonService.getTimeSlots());
+        model.addAttribute("allTeachers", lessonService.getTeachers());
+        model.addAttribute("allGroups", lessonService.getGroups());
+        model.addAttribute("allCourses", lessonService.getCourses());
+        model.addAttribute("allAuditoriums", lessonService.getAuditoriums());
+        model.addAttribute("allLessonTypes", lessonService.getLessonTypes());
+        model.addAttribute("allTimeSlots", lessonService.getTimeSlots());
         model.addAttribute("lesson", lessonDto);
         return "lessons/edit";
     }
@@ -70,12 +70,12 @@ public class LessonController {
     @PostMapping("/edit")
     public String edit(@Valid @ModelAttribute(value = "lesson") LessonDto lessonDto, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
-            model.addAttribute("teachers", lessonService.getTeachers());
-            model.addAttribute("groups", lessonService.getGroups());
-            model.addAttribute("courses", lessonService.getCourses());
-            model.addAttribute("auditoriums", lessonService.getAuditoriums());
-            model.addAttribute("lessonTypes", lessonService.getLessonTypes());
-            model.addAttribute("timeSlots", lessonService.getTimeSlots());;
+            model.addAttribute("allTeachers", lessonService.getTeachers());
+            model.addAttribute("allGroups", lessonService.getGroups());
+            model.addAttribute("allCourses", lessonService.getCourses());
+            model.addAttribute("allAuditoriums", lessonService.getAuditoriums());
+            model.addAttribute("allLessonTypes", lessonService.getLessonTypes());
+            model.addAttribute("allTimeSlots", lessonService.getTimeSlots());
             return "lessons/edit";
         } else {
             Lesson lesson = convertToEntity(lessonDto);

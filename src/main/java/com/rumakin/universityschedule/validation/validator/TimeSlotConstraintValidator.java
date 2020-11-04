@@ -19,6 +19,7 @@ public class TimeSlotConstraintValidator implements ConstraintValidator<Verified
 
     @Override
     public boolean isValid(TimeSlotDto timeSlotDto, ConstraintValidatorContext context) {
+
         if (!Enums.getIfPresent(TimeSlotEnum.class, timeSlotDto.getName()).isPresent()) {
             context.disableDefaultConstraintViolation();
             context.buildConstraintViolationWithTemplate("{com.rumakin.universityschedule.validation.illegal.timeslot}")
@@ -35,6 +36,22 @@ public class TimeSlotConstraintValidator implements ConstraintValidator<Verified
             return false;
         }
 
+        if (timeSlotDto.getStartTime() == null) {
+            context.disableDefaultConstraintViolation();
+            context.buildConstraintViolationWithTemplate(
+                    "{com.rumakin.universityschedule.validation.illegal.timeslot.emptytime}")
+                    .addPropertyNode("startTime").addConstraintViolation();
+            return false;
+        }
+
+        if (timeSlotDto.getEndTime() == null) {
+            context.disableDefaultConstraintViolation();
+            context.buildConstraintViolationWithTemplate(
+                    "{com.rumakin.universityschedule.validation.illegal.timeslot.emptytime}").addPropertyNode("endTime")
+                    .addConstraintViolation();
+            return false;
+        }
+
         if (timeSlotDto.getNumber() > 1) {
             TimeSlot previousTimeSlot = new TimeSlot();
             try {
@@ -45,14 +62,14 @@ public class TimeSlotConstraintValidator implements ConstraintValidator<Verified
                         .addConstraintViolation();
                 return false;
             }
-            if (timeSlotDto.getStartTime().compareTo(previousTimeSlot.getEndTime()) < 1) {
+            if (timeSlotDto.getStartTime().isBefore(previousTimeSlot.getEndTime())) {
                 context.buildConstraintViolationWithTemplate(
                         "{com.rumakin.universityschedule.validation.illegal.timeslot.timegap.previous}")
                         .addPropertyNode("startTime").addConstraintViolation();
                 return false;
             }
         }
-        if (timeSlotDto.getEndTime().compareTo(timeSlotDto.getStartTime()) < 1) {
+        if (timeSlotDto.getEndTime().isBefore(timeSlotDto.getStartTime())) {
             context.buildConstraintViolationWithTemplate(
                     "{com.rumakin.universityschedule.validation.illegal.timeslot.timegap}").addPropertyNode("endTime")
                     .addConstraintViolation();
@@ -77,7 +94,7 @@ public class TimeSlotConstraintValidator implements ConstraintValidator<Verified
         } catch (ResourceNotFoundException ex) {
             return true;
         }
-        if (nextTimeSlot.getStartTime().compareTo(timeSlotDto.getEndTime()) < 1) {
+        if (nextTimeSlot.getStartTime().isBefore(timeSlotDto.getEndTime())) {
             context.buildConstraintViolationWithTemplate(
                     "{com.rumakin.universityschedule.validation.illegal.timeslot.timegap.next}")
                     .addPropertyNode("endTime").addConstraintViolation();

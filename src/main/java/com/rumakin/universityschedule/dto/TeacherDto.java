@@ -40,7 +40,7 @@ public class TeacherDto {
     public TeacherDto() {
     }
 
-    public int getId() {
+    public Integer getId() {
         return personId;
     }
 

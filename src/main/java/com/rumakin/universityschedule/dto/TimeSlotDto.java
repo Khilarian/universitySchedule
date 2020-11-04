@@ -24,11 +24,9 @@ public class TimeSlotDto {
     @Min(1)
     private Integer number;
 
-    @NotBlank
     @DateTimeFormat(pattern = "HH:mm")
     private LocalTime startTime;
 
-    @NotBlank
     @DateTimeFormat(pattern = "HH:mm")
     private LocalTime endTime;
 

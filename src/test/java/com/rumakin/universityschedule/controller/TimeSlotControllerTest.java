@@ -1,5 +1,6 @@
 package com.rumakin.universityschedule.controller;
 
+import java.time.LocalTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -51,8 +52,8 @@ class TimeSlotControllerTest {
 
     @Test
     public void findAllShouldReturnListOfTimeSlotsIfAtLeastOneExist() throws Exception {
-        TimeSlot timeSlot = new TimeSlot(1, 1, "FIRST", "01:00", "02:00");
-        TimeSlot timeSlotTwo = new TimeSlot(2, 2, "SECOND", "03:00", "04:00");
+        TimeSlot timeSlot = new TimeSlot(1, 1, "FIRST", LocalTime.of(1, 0), LocalTime.of(2, 0));
+        TimeSlot timeSlotTwo = new TimeSlot(2, 2, "SECOND", LocalTime.of(3, 0), LocalTime.of(4, 0));
         List<TimeSlot> timeSlots = Arrays.asList(timeSlot, timeSlotTwo);
         List<TimeSlotDto> timeSlotsDto = timeSlots.stream().map(b -> convertToDto(b)).collect(Collectors.toList());
         Mockito.when(mockTimeSlotService.findAll()).thenReturn(timeSlots);
@@ -66,7 +67,7 @@ class TimeSlotControllerTest {
 
     @Test
     public void getEditShouldGetEntityFromDataBaseIfItExists() throws Exception {
-        TimeSlot timeSlot = new TimeSlot(1, 1, "FIRST", "01:00", "02:00");
+        TimeSlot timeSlot = new TimeSlot(1, 1, "FIRST", LocalTime.of(1, 0), LocalTime.of(2, 0));
         TimeSlotDto timeSlotDto = convertToDto(timeSlot);
         Mockito.when(mockTimeSlotService.findById(Mockito.anyInt())).thenReturn(timeSlot);
         String URI = "/timeSlots/edit/?id=1";
@@ -90,14 +91,14 @@ class TimeSlotControllerTest {
 
     @Test
     public void postEditShouldAddEntityIfItDoesNotExistsInDataBase() throws Exception {
-        TimeSlot timeSlot = new TimeSlot(1, "FIRST", "01:00", "02:00");
+        TimeSlot timeSlot = new TimeSlot(1, "FIRST", LocalTime.of(1, 0), LocalTime.of(2, 0));
         timeSlotController.edit(convertToDto(timeSlot), bindingResult);
         Mockito.verify(mockTimeSlotService).add(timeSlot);
     }
 
     @Test
     public void postEditShouldUpdateEntityIfItExistsInDataBase() throws Exception {
-        TimeSlot timeSlot = new TimeSlot(1, 1, "FIRST", "01:00", "02:00");
+        TimeSlot timeSlot = new TimeSlot(1, 1, "FIRST", LocalTime.of(1, 0), LocalTime.of(2, 0));
         timeSlotController.edit(convertToDto(timeSlot), bindingResult);
         Mockito.verify(mockTimeSlotService).update(timeSlot);
     }
@@ -111,7 +112,7 @@ class TimeSlotControllerTest {
 
     @Test
     public void postEditShouldReturnEditPageIfAnyErrors() throws Exception {
-        TimeSlot timeSlot = new TimeSlot(1, 1, "FIRST", "01:00", "02:00");
+        TimeSlot timeSlot = new TimeSlot(1, 1, "FIRST", LocalTime.of(1, 0), LocalTime.of(2, 0));
         Mockito.when(bindingResult.hasErrors()).thenReturn(true);
         timeSlotController.edit(convertToDto(timeSlot), bindingResult);
         String URI = "/timeSlots/edit";

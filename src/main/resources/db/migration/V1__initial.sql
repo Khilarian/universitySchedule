@@ -6,8 +6,8 @@ CREATE TABLE time_slot(
 time_slot_id SERIAL PRIMARY KEY,
 time_slot_number INTEGER NOT NULL UNIQUE,
 time_slot_name VARCHAR(20) NOT NULL UNIQUE,
-time_slot_start CHAR(5) NOT NULL,
-time_slot_end CHAR(5) NOT NULL
+time_slot_start TIME NOT NULL,
+time_slot_end TIME NOT NULL
 );
 CREATE TABLE building( 
 building_id SERIAL PRIMARY KEY,
