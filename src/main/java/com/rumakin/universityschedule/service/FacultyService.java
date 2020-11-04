@@ -48,10 +48,12 @@ public class FacultyService {
     public Faculty add(Faculty faculty) {
         logger.debug("add() {}.", faculty);
         if (faculty.getId() != 0) {
-            logger.warn("add() fault: faculty {} was not updated, with incorrect id {}.", faculty, faculty.getId());
+            logger.warn("add() fault: faculty {} was not added, with incorrect id {}.", faculty, faculty.getId());
             throw new InvalidEntityException("Id must be 0 for create.");
         }
-        return facultyDao.save(faculty);
+        faculty = facultyDao.save(faculty);
+        logger.trace("faculty {} was added.", faculty);
+        return faculty;
     }
 
     public Faculty update(Faculty faculty) {

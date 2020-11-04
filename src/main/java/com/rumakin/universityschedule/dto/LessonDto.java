@@ -9,9 +9,6 @@ import com.rumakin.universityschedule.validation.annotation.*;
 
 import io.swagger.annotations.ApiModel;
 
-@FreeAuditoriumAtDateAndTimeSlot
-@FreeGroupAtDateAndTimeSlot
-@FreeTeacherAtDateAndTimeSlot
 @LegalDate
 @ApiModel
 public class LessonDto {
@@ -39,7 +36,7 @@ public class LessonDto {
     @NotNull
     private int auditoriumId;
     
-    private String auditoriumName;
+    private int auditoriumNumber;
     
     private Set<TeacherDto> teachers = new HashSet<>();
     
@@ -84,8 +81,8 @@ public class LessonDto {
         return auditoriumId;
     }
 
-    public String getAuditoriumName() {
-        return auditoriumName;
+    public int getAuditoriumNumber() {
+        return auditoriumNumber;
     }
 
     public Set<TeacherDto> getTeachers() {
@@ -132,8 +129,8 @@ public class LessonDto {
         this.auditoriumId = auditoriumId;
     }
 
-    public void setAuditoriumName(String auditoriumName) {
-        this.auditoriumName = auditoriumName;
+    public void setAuditoriumNumber(int auditoriumNumber) {
+        this.auditoriumNumber = auditoriumNumber;
     }
 
     public void setTeachers(Set<TeacherDto> teachers) {
@@ -148,8 +145,8 @@ public class LessonDto {
     public String toString() {
         return "LessonDto [id=" + id + ", courseId=" + courseId + ", courseName=" + courseName + ", lessonTypeId="
                 + lessonTypeId + ", lessonTypeName=" + lessonTypeName + ", date=" + date + ", timeSlotId=" + timeSlotId
-                + ", timeSlotName=" + timeSlotName + ", auditoriumId=" + auditoriumId + ", auditoriumName="
-                + auditoriumName + ", teachers=" + teachers + ", groups=" + groups + "]";
+                + ", timeSlotName=" + timeSlotName + ", auditoriumId=" + auditoriumId + ", auditoriumNumber="
+                + auditoriumNumber + ", teachers=" + teachers + ", groups=" + groups + "]";
     }
 
     @Override
@@ -166,8 +163,7 @@ public class LessonDto {
         if (obj == null) return false;
         if (getClass() != obj.getClass()) return false;
         LessonDto other = (LessonDto) obj;
-        if (id != other.id) return false;
-        return true;
+        return id == other.id;
     }
 
 }

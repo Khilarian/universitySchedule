@@ -33,8 +33,8 @@ public class AuditoriumService {
 
     public Auditorium findById(int id) {
         logger.debug("findById() id {}", id);
-        Auditorium auditorium = auditoriumDao.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException(String.format("Auditorium with id %d not found.", id)));
+        Auditorium auditorium = auditoriumDao.findById(id).orElseThrow(
+                () -> new ResourceNotFoundException(String.format("Auditorium with id %d not found.", id)));
         logger.trace("findById() {} result: {}", id, auditorium);
         return auditorium;
     }
@@ -51,9 +51,13 @@ public class AuditoriumService {
     public Auditorium add(Auditorium auditorium) {
         logger.debug("add() {}", auditorium);
         if (auditorium.getId() != 0) {
+            logger.warn("add() fault: auditorium {} was not added, with incorrect id {}.", auditorium,
+                    auditorium.getId());
             throw new InvalidEntityException("Id must be 0 for create.");
         }
-        return auditoriumDao.save(auditorium);
+        auditorium = auditoriumDao.save(auditorium);
+        logger.trace("auditorium {} was added.", auditorium);
+        return auditorium;
     }
 
     public Auditorium update(Auditorium auditorium) {

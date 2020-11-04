@@ -41,12 +41,12 @@
         </div>
 
         <div class="form-group row">
-            <label class="col-form-label">Enter start time:</label> <input type="text" class="form-control"
+            <label class="col-form-label">Enter start time:</label> <input type="time" class="form-control"
                 th:field="*{startTime}" th:value=${startTime} /> <span class="font-italic text-danger"
                 th:if="${#fields.hasErrors('startTime')}" th:errors="*{startTime}"></span>
         </div>
         <div class="form-group row">
-            <label class="col-form-label">Enter end time:</label> <input type="text" class="form-control"
+            <label class="col-form-label">Enter end time:</label> <input type="time" class="form-control"
                 th:field="*{endTime}" th:value=${endTime} /> <span class="font-italic text-danger"
                 th:if="${#fields.hasErrors('endTime')}" th:errors="*{endTime}"></span>
         </div>

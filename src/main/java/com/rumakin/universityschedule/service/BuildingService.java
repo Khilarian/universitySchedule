@@ -55,9 +55,13 @@ public class BuildingService {
     public Building add(Building building) {
         logger.debug("add() {}.", building);
         if (building.getId() != 0) {
+            logger.warn("add() fault: building {} was not added, with incorrect id {}.", building,
+                    building.getId());
             throw new InvalidEntityException("Id must be 0 for create.");
         }
-        return buildingDao.save(building);
+        building = buildingDao.save(building);
+        logger.trace("building {} was added.", building);
+        return building;
     }
 
     public Building update(Building building) {

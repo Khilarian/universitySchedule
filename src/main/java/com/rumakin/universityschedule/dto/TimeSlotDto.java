@@ -1,7 +1,12 @@
 package com.rumakin.universityschedule.dto;
 
+import java.time.LocalTime;
+
 import javax.validation.constraints.*;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.rumakin.universityschedule.validation.annotation.*;
 
 import io.swagger.annotations.ApiModel;
@@ -20,12 +25,12 @@ public class TimeSlotDto {
     private Integer number;
 
     @NotBlank
-    @Pattern(regexp = "(([0-1][0-9])|([2][0-3]))\\:[0-5][0-9]", message = "{com.rumakin.universityschedule.validation.illegal.timeformat}")
-    private String startTime;
+    @DateTimeFormat(pattern = "HH:mm")
+    private LocalTime startTime;
 
     @NotBlank
-    @Pattern(regexp = "(([0-1][0-9])|([2][0-3]))\\:[0-5][0-9]", message = "{com.rumakin.universityschedule.validation.illegal.timeformat}")
-    private String endTime;
+    @DateTimeFormat(pattern = "HH:mm")
+    private LocalTime endTime;
 
     public TimeSlotDto() {
     }
@@ -42,11 +47,13 @@ public class TimeSlotDto {
         return name;
     }
 
-    public String getStartTime() {
+    @JsonFormat(pattern = "HH:mm")
+    public LocalTime getStartTime() {
         return startTime;
     }
 
-    public String getEndTime() {
+    @JsonFormat(pattern = "HH:mm")
+    public LocalTime getEndTime() {
         return endTime;
     }
 
@@ -66,11 +73,11 @@ public class TimeSlotDto {
         this.number = number;
     }
 
-    public void setStartTime(String startTime) {
+    public void setStartTime(LocalTime startTime) {
         this.startTime = startTime;
     }
 
-    public void setEndTime(String endTime) {
+    public void setEndTime(LocalTime endTime) {
         this.endTime = endTime;
     }
 

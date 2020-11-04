@@ -50,9 +50,12 @@ public class CourseService {
     public Course add(Course course) {
         logger.debug("add() {}.", course);
         if (course.getId() != 0) {
+            logger.warn("add() fault: course {} was not added, with incorrect id {}.", course, course.getId());
             throw new InvalidEntityException("Id must be 0 for create.");
         }
-        return courseDao.save(course);
+        course = courseDao.save(course);
+        logger.trace("course {} was added.", course);
+        return course;
     }
 
     public Course update(Course course) {

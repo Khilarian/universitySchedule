@@ -1,6 +1,5 @@
 package com.rumakin.universityschedule.service;
 
-import java.time.LocalDate;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -16,12 +15,26 @@ import com.rumakin.universityschedule.model.*;
 public class LessonService {
 
     private LessonDao lessonDao;
+    private CourseService courseService;
+    private LessonTypeService lessonTypeService;
+    private TimeSlotService timeSlotService;
+    private AuditoriumService auditoriumService;
+    private TeacherService teacherService;
+    private GroupService groupService;
+
     private Logger logger = LoggerFactory.getLogger(LessonService.class);
 
     @Autowired
-    public LessonService(LessonDao lessonDao) {
-        logger.info("Construct with {}", lessonDao);
+    public LessonService(LessonDao lessonDao, CourseService courseService, LessonTypeService lessonTypeService,
+            TimeSlotService timeSlotService, AuditoriumService auditoriumService, TeacherService teacherService, GroupService groupService) {
+        logger.info("Construct with {}", lessonDao, courseService, lessonTypeService, timeSlotService, auditoriumService,teacherService, groupService);
         this.lessonDao = lessonDao;
+        this.courseService = courseService;
+        this.lessonTypeService = lessonTypeService;
+        this.timeSlotService = timeSlotService;
+        this.auditoriumService = auditoriumService;
+        this.teacherService = teacherService;
+        this.groupService = groupService;
     }
 
     public List<Lesson> findAll() {
@@ -39,37 +52,23 @@ public class LessonService {
         return lesson;
     }
 
-//    public Lesson findByAuditoriumIdAndDateAndTimeSlot(int auditoriumId, LocalDate date, int timeSlotId) {
-//        logger.debug("findByAuditoriumAndDateAndTimeSlot() {}, {}, {}.", date, timeSlotId);
-//        Lesson lesson = lessonDao.findByAuditoriumIdAndDateAndTimeSlotId(auditoriumId, date, timeSlotId);
-//        logger.trace("foundByDateAndTimeSlot {}, {}, {}.", auditoriumId, date, timeSlotId);
-//        return lesson;
-//    }
-//
-//    public Lesson findByGroupIdAndDateAndTimeSlot(int groupId, LocalDate date, int timeSlotId) {
-//        logger.debug("findByGroupIdAndDateAndTimeSlot() {}, {}, {}.", groupId, date, timeSlotId);
-//        Lesson lesson = lessonDao.findByGroupIdAndDateAndTimeSlotId(groupId, date, timeSlotId);
-//        logger.trace("foundGroupIdAndDateAndTimeSlot {}, {}, {}.", groupId, date, timeSlotId);
-//        return lesson;
-//    }
-//
-//    public Lesson findByTeacherIdAndDateAndTimeSlot(int teacherId, LocalDate date, int timeSlotId) {
-//        logger.debug("findByTeacherIdAndDateAndTimeSlot() {}, {}, {}.", teacherId, date, timeSlotId);
-//        Lesson lesson = lessonDao.findByGroupIdAndDateAndTimeSlotId(teacherId, date, timeSlotId);
-//        logger.trace("foundByTeacherIdAndDateAndTimeSlot {}, {}, {}.", teacherId, date, timeSlotId);
-//        return lesson;
-//    }
-
     public Lesson add(Lesson lesson) {
         logger.debug("add() {}.", lesson);
         if (lesson.getId() != 0) {
-            throw new InvalidEntityException("Id must be 0 for create");
+            logger.warn("add() fault: lesson {} was not added, with incorrect id {}.", lesson, lesson.getId());
+            throw new InvalidEntityException("Id must be 0 for create.");
         }
-        return lessonDao.save(lesson);
+        lesson = lessonDao.save(lesson);
+        logger.trace("lesson {} was added.", lesson);
+        return lesson;
     }
 
     public Lesson update(Lesson lesson) {
         logger.debug("update() {}.", lesson);
+        if (lesson.getId() == 0) {
+            logger.warn("update() fault: lesson {} was not updated, with incorrect id {}.", lesson, lesson.getId());
+            throw new InvalidEntityException("Id must be greater than 0 to update.");
+        }
         lesson = lessonDao.save(lesson);
         logger.trace("lesson {} was updated.", lesson);
         return lesson;
@@ -78,6 +77,30 @@ public class LessonService {
     public void deleteById(int id) {
         logger.debug("delete() id {}.", id);
         lessonDao.deleteById(id);
+    }
+    
+    public List<Course> getCourses() {
+        return courseService.findAll();
+    }
+    
+    public List<LessonType> getLessonTypes() {
+        return lessonTypeService.findAll();
+    }
+    
+    public List<TimeSlot> getTimeSlots() {
+        return timeSlotService.findAll();
+    }
+    
+    public List<Auditorium> getAuditoriums() {
+        return auditoriumService.findAll();
+    }
+
+    public List<Teacher> getTeachers() {
+        return teacherService.findAll();
+    }
+    
+    public List<Group> getGroups() {
+        return groupService.findAll();
     }
 
 }

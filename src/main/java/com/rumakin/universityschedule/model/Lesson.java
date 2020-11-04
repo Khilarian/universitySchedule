@@ -12,8 +12,7 @@ public class Lesson implements ModelEntity {
 
     @Id
     @Column(name = "lesson_id")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "lesson_seq")
-    @SequenceGenerator(name = "lesson_seq", sequenceName = "lesson_lesson_id_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -125,8 +124,7 @@ public class Lesson implements ModelEntity {
         if (obj == null) return false;
         if (getClass() != obj.getClass()) return false;
         Lesson other = (Lesson) obj;
-        if (id != other.id) return false;
-        return true;
+        return id == other.id;
     }
 
     @Override

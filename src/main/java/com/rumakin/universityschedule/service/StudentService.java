@@ -57,9 +57,12 @@ public class StudentService {
     public Student add(Student student) {
         logger.debug("add() {}.", student);
         if (student.getId() != 0) {
+            logger.warn("add() fault: student {} was not added, with incorrect id {}.", student, student.getId());
             throw new InvalidEntityException("Id must be 0 for create.");
         }
-        return studentDao.save(student);
+        student = studentDao.save(student);
+        logger.trace("student {} was added.", student);
+        return student;
     }
 
     public Student update(Student student) {

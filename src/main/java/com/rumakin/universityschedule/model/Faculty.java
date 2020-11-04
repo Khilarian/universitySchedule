@@ -8,8 +8,7 @@ public class Faculty implements ModelEntity {
 
     @Id
     @Column(name = "faculty_id")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "faculty_seq")
-    @SequenceGenerator(name = "faculty_seq", sequenceName = "faculty_faculty_id_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     @Column(name = "faculty_name")

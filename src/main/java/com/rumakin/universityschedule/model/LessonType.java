@@ -8,8 +8,7 @@ public class LessonType implements ModelEntity {
 
     @Id
     @Column(name = "lesson_type_id")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "lesson_type_seq")
-    @SequenceGenerator(name = "lesson_type_seq", sequenceName = "lesson_type_id_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     @Column(name = "lesson_type_name")

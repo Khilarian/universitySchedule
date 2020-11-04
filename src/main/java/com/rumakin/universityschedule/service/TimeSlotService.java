@@ -47,9 +47,12 @@ public class TimeSlotService {
     public TimeSlot add(TimeSlot timeSlot) {
         logger.debug("add() {}.", timeSlot);
         if (timeSlot.getId() != 0) {
-            throw new InvalidEntityException("Id must be 0 for create");
+            logger.warn("add() fault: timeSlot {} was not added, with incorrect id {}.", timeSlot, timeSlot.getId());
+            throw new InvalidEntityException("Id must be 0 for create.");
         }
-        return timeSlotDao.save(timeSlot);
+        timeSlot = timeSlotDao.save(timeSlot);
+        logger.trace("timeSlot {} was added.", timeSlot);
+        return timeSlot;
     }
 
     public TimeSlot update(TimeSlot timeSlot) {

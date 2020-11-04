@@ -1,6 +1,13 @@
 package com.rumakin.universityschedule.model;
 
-import javax.persistence.*;
+import java.time.LocalTime;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
 @Table
@@ -8,8 +15,7 @@ public class TimeSlot implements ModelEntity {
 
     @Id
     @Column(name = "time_slot_id")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "time_slot_seq")
-    @SequenceGenerator(name = "time_slot_seq", sequenceName = "time_slot_time_slot_id_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     @Column(name = "time_slot_number")
@@ -19,22 +25,22 @@ public class TimeSlot implements ModelEntity {
     private String name;
 
     @Column(name = "time_slot_start")
-    private String startTime;
+    private LocalTime startTime;
 
     @Column(name = "time_slot_end")
-    private String endTime;
+    private LocalTime endTime;
 
     public TimeSlot() {
     }
 
-    public TimeSlot(Integer number, String name, String startTime, String endTime) {
+    public TimeSlot(Integer number, String name, LocalTime startTime, LocalTime endTime) {
         this.number = number;
         this.name = name;
         this.startTime = startTime;
         this.endTime = endTime;
     }
 
-    public TimeSlot(int id, Integer number, String name, String startTime, String endTime) {
+    public TimeSlot(int id, Integer number, String name, LocalTime startTime, LocalTime endTime) {
         this.id = id;
         this.number = number;
         this.name = name;
@@ -50,11 +56,11 @@ public class TimeSlot implements ModelEntity {
         return name;
     }
 
-    public String getStartTime() {
+    public LocalTime getStartTime() {
         return startTime;
     }
 
-    public String getEndTime() {
+    public LocalTime getEndTime() {
         return endTime;
     }
 
@@ -66,11 +72,11 @@ public class TimeSlot implements ModelEntity {
         this.name = name;
     }
 
-    public void setStartTime(String startTime) {
+    public void setStartTime(LocalTime startTime) {
         this.startTime = startTime;
     }
 
-    public void setEndTime(String endTime) {
+    public void setEndTime(LocalTime endTime) {
         this.endTime = endTime;
     }
 

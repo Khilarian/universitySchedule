@@ -8,8 +8,7 @@ public class Auditorium implements ModelEntity {
 
     @Id
     @Column(name = "auditorium_id")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "auditorium_seq")
-    @SequenceGenerator(name = "auditorium_seq", sequenceName = "auditorium_auditorium_id_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     @Column(name = "auditorium_number")

@@ -59,9 +59,12 @@ public class TeacherService {
     public Teacher add(Teacher teacher) {
         logger.debug("add() {}.", teacher);
         if (teacher.getId() != 0) {
+            logger.warn("add() fault: teacher {} was not added, with incorrect id {}.", teacher, teacher.getId());
             throw new InvalidEntityException("Id must be 0 for create");
         }
-        return teacherDao.save(teacher);
+        teacher = teacherDao.save(teacher);
+        logger.trace("teacher {} was added.", teacher);
+        return teacher;
     }
 
     public Teacher update(Teacher teacher) {

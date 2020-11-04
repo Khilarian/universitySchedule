@@ -47,9 +47,12 @@ public class LessonTypeService {
     public LessonType add(LessonType lessonType) {
         logger.debug("add() {}.", lessonType);
         if (lessonType.getId() != 0) {
+            logger.warn("add() fault: lessonType {} was not added, with incorrect id {}.", lessonType, lessonType.getId());
             throw new InvalidEntityException("Id must be 0 for create.");
         }
-        return lessonTypeDao.save(lessonType);
+        lessonType = lessonTypeDao.save(lessonType);
+        logger.trace("lessonType {} was added.", lessonType);
+        return lessonType;
     }
 
     public LessonType update(LessonType lessonType) {

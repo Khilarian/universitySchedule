@@ -50,9 +50,12 @@ public class GroupService {
     public Group add(Group group) {
         logger.debug("add() {}.", group);
         if (group.getId() != 0) {
+            logger.warn("add() fault: group {} was not added, with incorrect id {}.", group, group.getId());
             throw new InvalidEntityException("Id must be 0 for create.");
         }
-        return groupDao.save(group);
+        group = groupDao.save(group);
+        logger.trace("group {} was added.", group);
+        return group;
     }
 
     public Group update(Group group) {
