@@ -60,8 +60,8 @@ public class StudentController {
     }
 
     @PostMapping("/edit")
-    public String edit(@Valid @ModelAttribute(value = "student") StudentDto studentDto,
-            BindingResult bindingResult, Model model) {
+    public String edit(@Valid @ModelAttribute(value = "student") StudentDto studentDto, BindingResult bindingResult,
+            Model model) {
         if (bindingResult.hasErrors()) {
             List<Group> groups = studentService.getGroups();
             model.addAttribute("groups", groups);

@@ -33,6 +33,7 @@
         <table class="table table-bordered">
             <thead class="bg-primary text-white">
                 <tr>
+                <td><strong>Id</strong></td>
                     <td><strong>Course name</strong></td>
                     <td><strong>Lesson Type</strong></td>
                     <td><strong>Date</strong></td>
@@ -45,11 +46,12 @@
                 </tr>
             </thead>
             <tr th:each="lesson:${lessons}" class="table-success">
+            <td th:text="${lesson.id}"></td>
                 <td th:text="${lesson.courseName}"></td>
                 <td th:text="${lesson.lessonTypeName}"></td>
                 <td th:text="${lesson.date}"></td>
                 <td th:text="${lesson.timeSlotName}"></td>
-                <td th:text="${lesson.auditoriumName}"></td>
+                <td th:text="${lesson.auditoriumNumber}"></td>
                 <td>
                     <ul>
                         <li th:each="teacher : ${lesson.teachers}"><span th:text="|${teacher.firstName} ${teacher.lastName}|" /></span></li>
@@ -60,8 +62,8 @@
                         <li th:each="group : ${lesson.groups}"><span th:text="${group.name}" /></span></li>
                     </ul>
                 </td>
-                <td><a th:href="@{/groups/edit/(id=${group.id})}" class="btn btn-warning">Edit</a></td>
-                <td><a th:href="@{/groups/delete/(id=${group.id})}" class="btn btn-danger">Delete</a></td>
+                <td><a th:href="@{/lessons/edit/(id=${lesson.id})}" class="btn btn-warning">Edit</a></td>
+                <td><a th:href="@{/lessons/delete/(id=${lesson.id})}" class="btn btn-danger">Delete</a></td>
             </tr>
         </table>
     </div>

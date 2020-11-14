@@ -69,6 +69,7 @@ public class LessonController {
 
     @PostMapping("/edit")
     public String edit(@Valid @ModelAttribute(value = "lesson") LessonDto lessonDto, BindingResult bindingResult, Model model) {
+        System.err.println(lessonDto);
         if (bindingResult.hasErrors()) {
             model.addAttribute("allTeachers", lessonService.getTeachers());
             model.addAttribute("allGroups", lessonService.getGroups());

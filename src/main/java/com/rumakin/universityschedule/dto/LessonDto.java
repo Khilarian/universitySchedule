@@ -5,11 +5,12 @@ import java.util.*;
 
 import javax.validation.constraints.*;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import com.rumakin.universityschedule.validation.annotation.*;
 
 import io.swagger.annotations.ApiModel;
 
-@LegalDate
 @ApiModel
 public class LessonDto {
 
@@ -25,7 +26,8 @@ public class LessonDto {
     
     private String lessonTypeName;
     
-    @NotBlank
+    @NotNull
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private LocalDate date;
     
     @NotNull
