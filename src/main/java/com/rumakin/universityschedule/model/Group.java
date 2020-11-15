@@ -1,5 +1,7 @@
 package com.rumakin.universityschedule.model;
 
+import java.util.*;
+
 import javax.persistence.*;
 
 @Entity
@@ -17,6 +19,9 @@ public class Group implements ModelEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "faculty_id")
     private Faculty faculty;
+    
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "group")
+    private List<Student> students;
 
     public Group() {
     }
@@ -44,6 +49,10 @@ public class Group implements ModelEntity {
     public void setFaculty(Faculty faculty) {
         this.faculty = faculty;
     }
+    
+    public void setStudents(List<Student> students) {
+        this.students = students;
+    }
 
     @Override
     public int getId() {
@@ -56,6 +65,10 @@ public class Group implements ModelEntity {
 
     public Faculty getFaculty() {
         return faculty;
+    }
+    
+    public List<Student> getStudents(){
+        return students;
     }
 
     @Override
@@ -86,7 +99,7 @@ public class Group implements ModelEntity {
 
     @Override
     public String toString() {
-        return "Group [id=" + id + ", name=" + name + ", faculty=" + faculty + "]";
+        return "Group [id=" + id + ", name=" + name + ", faculty=" + faculty + ", students=" + students + "]";
     }
 
 }

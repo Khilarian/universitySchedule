@@ -11,6 +11,10 @@ import com.rumakin.universityschedule.validation.annotation.*;
 
 import io.swagger.annotations.ApiModel;
 
+@MaxAuditoriumCapacity
+//@FreeAuditorium
+//@FreeTeacher
+//@FreeGroup
 @ApiModel
 public class LessonDto {
 

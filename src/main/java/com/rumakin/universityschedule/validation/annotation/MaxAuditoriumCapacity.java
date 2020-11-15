@@ -7,12 +7,12 @@ import javax.validation.*;
 import com.rumakin.universityschedule.validation.validator.*;
 
 @Documented
-@Constraint(validatedBy = LegalDateValidator.class)
+@Constraint(validatedBy = MaxAuditoriumCapacityConstraintValidator.class)
 @Target({ ElementType.TYPE })
 @Retention(RetentionPolicy.RUNTIME)
-public @interface LegalDate {
+public @interface MaxAuditoriumCapacity {
 
-    String message() default "com.rumakin.universityschedule.validation.illegal.date.format";
+    String message() default "com.rumakin.universityschedule.validation.auditorium.capacity";
 
     Class<?>[] groups() default {};
 
