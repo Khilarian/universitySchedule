@@ -125,8 +125,7 @@ public class TeacherDto {
         if (obj == null) return false;
         if (getClass() != obj.getClass()) return false;
         TeacherDto other = (TeacherDto) obj;
-        if (personId != other.personId) return false;
-        return true;
+        return personId == other.personId;
     }
 
 }

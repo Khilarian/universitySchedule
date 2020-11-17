@@ -20,7 +20,7 @@ class AuditoriumDaoTest {
 
     @Test
     public void addShouldExecuteOnceWhenDbCallFine() {
-        Building building = new Building(10, "First", "Building");
+        Building building = new Building("First", "Building");
         Auditorium savedInDb = new Auditorium(15, 35, building);
         Auditorium getFromDb = entityManager.persist(savedInDb);
         assertEquals(savedInDb, getFromDb);
@@ -28,11 +28,12 @@ class AuditoriumDaoTest {
 
     @Test
     public void findByIdhouldExecuteOnceWhenDbCallFineAndRweturnAuditorium() {
-        Building building = new Building(10, "First", "Building");
+        Building building = new Building("First", "Building");
         Auditorium auditorium = new Auditorium(15, 35, building);
         Auditorium savedInDb = entityManager.persist(auditorium);
         Auditorium getFromDb = auditoriumDao.findById(savedInDb.getId()).get();
         assertEquals(savedInDb, getFromDb);
+        
     }
 
     @Test
@@ -64,7 +65,7 @@ class AuditoriumDaoTest {
 
     @Test
     public void updateShouldExecuteOnceWhenDbCallFineAndUodateEntityField() {
-        Building building = new Building(10, "First", "Building");
+        Building building = new Building("First", "Building");
         Auditorium auditorium = new Auditorium(15, 35, building);
         entityManager.persist(auditorium);
         Auditorium getFromDb = auditoriumDao.findById(auditorium.getId()).get();
