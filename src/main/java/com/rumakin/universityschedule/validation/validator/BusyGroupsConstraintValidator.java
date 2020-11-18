@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.rumakin.universityschedule.dto.GroupDto;
 import com.rumakin.universityschedule.dto.LessonDto;
-import com.rumakin.universityschedule.model.Group;
 import com.rumakin.universityschedule.service.*;
 import com.rumakin.universityschedule.validation.annotation.*;
 
@@ -27,8 +26,14 @@ public class BusyGroupsConstraintValidator implements ConstraintValidator<BusyGr
         String usedGroupsNames = getBusyGroupsName(lessonDto);
        boolean result = Objects.equals(usedGroupsNames, "");
         if (!result) {
+            String message;
             context.disableDefaultConstraintViolation();
-            context.buildConstraintViolationWithTemplate(String.format("{com.rumakin.universityschedule.validation.groups.busy}",usedGroupsNames))
+            if (usedGroupsNames.contains(" ")) {
+                message = "Groups '%s' are busy at this time";
+            } else {
+                message = "Group '%s' is busy at this time";
+            }
+            context.buildConstraintViolationWithTemplate(String.format(message, usedGroupsNames))
                     .addPropertyNode("auditoriumId").addConstraintViolation();
         }
         return result;
@@ -43,7 +48,7 @@ public class BusyGroupsConstraintValidator implements ConstraintValidator<BusyGr
 
     private Set<Integer> getBusyGroupsId(LessonDto lessonDto) {
         int lessonId = lessonDto.getId();
-        int auditoriumId = lessonDto.getAuditoriumId();
+        //int auditoriumId = lessonDto.getAuditoriumId();
         LocalDate date = lessonDto.getDate();
         int timeSlotId = lessonDto.getTimeSlotId();
         return lessonService.getBusyGroupsId(lessonId, date, timeSlotId);

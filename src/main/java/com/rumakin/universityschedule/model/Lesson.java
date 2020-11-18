@@ -35,11 +35,11 @@ public class Lesson implements ModelEntity {
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "lesson_teacher", joinColumns = @JoinColumn(name = "lesson_id"), inverseJoinColumns = @JoinColumn(name = "person_id"))
-    private List<Teacher> teachers;
+    private Set<Teacher> teachers = new HashSet<>();;
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "lesson_group", joinColumns = @JoinColumn(name = "lesson_id"), inverseJoinColumns = @JoinColumn(name = "group_id"))
-    private List<Group> groups;
+    private Set<Group> groups = new HashSet<>();
 
     public Lesson() {
     }
@@ -69,11 +69,11 @@ public class Lesson implements ModelEntity {
         return auditorium;
     }
 
-    public List<Teacher> getTeachers() {
+    public Set<Teacher> getTeachers() {
         return teachers;
     }
 
-    public List<Group> getGroups() {
+    public Set<Group> getGroups() {
         return groups;
     }
 
@@ -102,11 +102,11 @@ public class Lesson implements ModelEntity {
         this.auditorium = auditorium;
     }
 
-    public void setTeachers(List<Teacher> teachers) {
+    public void setTeachers(Set<Teacher> teachers) {
         this.teachers = teachers;
     }
 
-    public void setGroups(List<Group> groups) {
+    public void setGroups(Set<Group> groups) {
         this.groups = groups;
     }
 
