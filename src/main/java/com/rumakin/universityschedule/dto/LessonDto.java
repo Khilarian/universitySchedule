@@ -21,39 +21,39 @@ import io.swagger.annotations.ApiModel;
 public class LessonDto {
 
     private int id;
-    
-    @NotNull
+
+    @Min(1)
     private int courseId;
-    
+
     private String courseName;
-    
-    @NotNull
+
+    @Min(1)
     private int lessonTypeId;
-    
+
     private String lessonTypeName;
-    
+
     @NotNull
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private LocalDate date;
-    
-    @NotNull
+
+    @Min(1)
     private int timeSlotId;
-    
+
     private String timeSlotName;
-    
+
     private LocalTime timeSlotStartTime;
-    
+
     private LocalTime timeSlotEndTime;
-    
-    @NotNull
+
+    @Min(1)
     private int auditoriumId;
-    
+
     private int auditoriumNumber;
-    
+
     private String buildingName;
-    
+
     private Set<TeacherDto> teachers = new HashSet<>();
-    
+
     private Set<GroupDto> groups = new HashSet<>();
 
     public LessonDto() {
@@ -90,11 +90,11 @@ public class LessonDto {
     public String getTimeSlotName() {
         return timeSlotName;
     }
-    
+
     public LocalTime getTimeSlotStartTime() {
         return timeSlotStartTime;
     }
-    
+
     public LocalTime getTimeSlotEndTime() {
         return timeSlotEndTime;
     }
@@ -106,7 +106,7 @@ public class LessonDto {
     public int getAuditoriumNumber() {
         return auditoriumNumber;
     }
-    
+
     public String getBuildingName() {
         return buildingName;
     }
@@ -150,11 +150,11 @@ public class LessonDto {
     public void setTimeSlotName(String timeSlotName) {
         this.timeSlotName = timeSlotName;
     }
-    
+
     public void setTimeSlotStartTime(LocalTime timeSlotStartTime) {
         this.timeSlotStartTime = timeSlotStartTime;
     }
-    
+
     public void setTimeSlotEndTime(LocalTime timeSlotEndTime) {
         this.timeSlotEndTime = timeSlotEndTime;
     }
@@ -166,7 +166,7 @@ public class LessonDto {
     public void setAuditoriumNumber(int auditoriumNumber) {
         this.auditoriumNumber = auditoriumNumber;
     }
-    
+
     public void setBuildingName(String buildingName) {
         this.buildingName = buildingName;
     }

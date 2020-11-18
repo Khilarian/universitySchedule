@@ -20,7 +20,7 @@ public class TeacherDto {
     private String firstName;
 
     @NotBlank
-    @Pattern(regexp = "[A-Z][a-z]*(\\s{1}[A-Z][a-z]*)*", message = "{com.rumakin.universityschedule.validation.illegal.personlastname}")
+    @Pattern(regexp = "[A-Z][a-z]*(\\s{1}[a-zA-Z]*)*", message = "{com.rumakin.universityschedule.validation.illegal.personlastname}")
     private String lastName;
 
     @Pattern(regexp = "^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$", message = "{com.rumakin.universityschedule.validation.illegal.email}")
@@ -30,7 +30,7 @@ public class TeacherDto {
     @Pattern(regexp = "^(\\+7)\\(\\d{3}\\)\\d{7,10}$$", message = "{com.rumakin.universityschedule.validation.illegal.phone}")
     private String phone;
 
-    @NotNull
+    @Min(1)
     private int facultyId;
 
     private String facultyName;
