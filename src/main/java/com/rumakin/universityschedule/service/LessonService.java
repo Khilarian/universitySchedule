@@ -121,4 +121,11 @@ public class LessonService {
         return result;
     }
 
+    public Set<Integer> getBusyTeachersId(int lessonId, LocalDate date, int timeSlotId) {
+        logger.debug("getBusyTeachersId() with {}, {}, {}.",  lessonId, date, timeSlotId);
+        Set<Integer> result = lessonDao.getBusyTeachersId(lessonId, date, timeSlotId);
+        logger.trace("getBusyTeachersId() result: {} .", result);
+        return result;
+    }
+
 }

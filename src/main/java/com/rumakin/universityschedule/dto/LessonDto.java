@@ -13,7 +13,7 @@ import io.swagger.annotations.ApiModel;
 
 @MaxAuditoriumCapacity
 @FreeAuditorium
-//\\@FreeTeacher
+@BusyTeachers
 @BusyGroups
 @ApiModel
 public class LessonDto {

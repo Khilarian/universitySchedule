@@ -28,13 +28,13 @@ public class BusyGroupsConstraintValidator implements ConstraintValidator<BusyGr
         if (!result) {
             String message;
             context.disableDefaultConstraintViolation();
-            if (usedGroupsNames.contains(" ")) {
+            if (usedGroupsNames.contains(", ")) {
                 message = "Groups '%s' are busy at this time";
             } else {
                 message = "Group '%s' is busy at this time";
             }
             context.buildConstraintViolationWithTemplate(String.format(message, usedGroupsNames))
-                    .addPropertyNode("auditoriumId").addConstraintViolation();
+                    .addPropertyNode("groups").addConstraintViolation();
         }
         return result;
     }
@@ -48,7 +48,6 @@ public class BusyGroupsConstraintValidator implements ConstraintValidator<BusyGr
 
     private Set<Integer> getBusyGroupsId(LessonDto lessonDto) {
         int lessonId = lessonDto.getId();
-        //int auditoriumId = lessonDto.getAuditoriumId();
         LocalDate date = lessonDto.getDate();
         int timeSlotId = lessonDto.getTimeSlotId();
         return lessonService.getBusyGroupsId(lessonId, date, timeSlotId);
@@ -59,6 +58,6 @@ public class BusyGroupsConstraintValidator implements ConstraintValidator<BusyGr
     }
 
     private String getGroupsNames(Set<Integer> groupsId) {
-        return groupsId.stream().map(g -> groupService.findById(g).getName()).collect(Collectors.joining(" "));
+        return groupsId.stream().map(g -> groupService.findById(g).getName()).collect(Collectors.joining(", "));
     }
 }

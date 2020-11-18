@@ -6,5 +6,8 @@ import java.util.*;
 public interface CustomizedLessonDao {
 
     boolean isAuditoriumFree(int auditoriumId, int lessonId, LocalDate date, int timeSlotId);
+
     Set<Integer> getBusyGroupsId(int lessonId, LocalDate date, int timeSlotId);
+
+    Set<Integer> getBusyTeachersId(int lessonId, LocalDate date, int timeSlotId);
 }

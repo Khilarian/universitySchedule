@@ -55,9 +55,28 @@ public class CustomizedLessonDaoImpl implements CustomizedLessonDao {
             predicates.add(criteriaBuilder.notEqual(root.get("id"), lessonId));
         }
         query.where(predicates.toArray(new Predicate[] {}));
-        
         SetJoin<Lesson, Group> joinGroup = root.joinSet("groups");
         query.multiselect(joinGroup.get("id"));
+        TypedQuery<Integer> result = entityManager.createQuery(query);
+        return result.getResultStream().collect(Collectors.toSet());
+    }
+
+    @Override
+    public Set<Integer> getBusyTeachersId(int lessonId, LocalDate date, int timeSlotId) {
+        logger.debug(" getBusyTeachersId() with agruments {}, {}, {}.", lessonId, date, timeSlotId);
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Integer> query = criteriaBuilder.createQuery(Integer.class);
+        Root<Lesson> root = query.from(Lesson.class);
+        List<Predicate> predicates = new ArrayList<>();
+        Join<Lesson, TimeSlot> timeSlotJoin = root.join("timeSlot", JoinType.LEFT);
+        predicates.add(criteriaBuilder.equal(timeSlotJoin.get("id"), timeSlotId));
+        predicates.add(criteriaBuilder.equal(root.get("date"), date));
+        if (nonNull(lessonId)) {
+            predicates.add(criteriaBuilder.notEqual(root.get("id"), lessonId));
+        }
+        query.where(predicates.toArray(new Predicate[] {}));
+        SetJoin<Lesson, Teacher> joinTeacher = root.joinSet("teachers");
+        query.multiselect(joinTeacher.get("id"));
         TypedQuery<Integer> result = entityManager.createQuery(query);
         return result.getResultStream().collect(Collectors.toSet());
     }
