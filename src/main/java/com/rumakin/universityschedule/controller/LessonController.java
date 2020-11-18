@@ -91,7 +91,9 @@ public class LessonController {
     }
 
     private LessonDto convertToDto(Lesson lesson) {
-        return modelMapper.map(lesson, LessonDto.class);
+        LessonDto lessonDto = modelMapper.map(lesson, LessonDto.class);
+        lessonDto.setBuildingName(lessonService.getBuildingName(lessonDto.getAuditoriumId()));
+        return lessonDto;
     }
 
     private Lesson convertToEntity(LessonDto lessonDto) {

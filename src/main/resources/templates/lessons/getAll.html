@@ -50,8 +50,8 @@
                 <td th:text="${lesson.courseName}"></td>
                 <td th:text="${lesson.lessonTypeName}"></td>
                 <td th:text="${lesson.date}"></td>
-                <td th:text="${lesson.timeSlotName}"></td>
-                <td th:text="${lesson.auditoriumNumber}"></td>
+                <td th:text="|${lesson.timeSlotStartTime} - ${lesson.timeSlotEndTime}"></td>
+                <td th:text="|${lesson.auditoriumNumber} in ${lesson.buildingName}"></td>
                 <td>
                     <ul>
                         <li th:each="teacher : ${lesson.teachers}"><span th:text="|${teacher.firstName} ${teacher.lastName}|" /></span></li>

@@ -106,6 +106,10 @@ public class LessonService {
     public List<Group> getGroups() {
         return groupService.findAll();
     }
+    
+    public String getBuildingName(int auditoriumId) {
+        return auditoriumService.findById(auditoriumId).getBuilding().getName();
+    }
 
     public boolean isAuditoriumFree(int auditoriumId, int lessonId, LocalDate date, int timeSlotId) {
         logger.debug("isAuditoriumFree() with {}, {}, {}, {}.", auditoriumId, lessonId, date, timeSlotId);

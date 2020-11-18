@@ -32,7 +32,7 @@
         <div class="form-group row">
             <label class="col-form-label">Select Time Slot</label> <select class="form-control" th:field="*{timeSlotId}">
                 <option th:value=0>Time Slot not assign</option>
-                <option th:each="timeSlot : ${allTimeSlots}" th:value="${timeSlot.id}" th:utext="${timeSlot.name}"
+                <option th:each="timeSlot : ${allTimeSlots}" th:value="${timeSlot.id}" th:utext="|${timeSlot.startTime} - ${timeSlot.endTime}|"
                     id="addTimeSlotId" placeholder="TimeSlot" th:required="required">Time Slot</option>
             </select> <span class="font-italic text-danger" th:if="${#fields.hasErrors('timeSlotId')}" th:errors="*{timeSlotId}"></span>
         </div>

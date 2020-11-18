@@ -1,6 +1,7 @@
 package com.rumakin.universityschedule.dto;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.*;
 
 import javax.validation.constraints.*;
@@ -39,10 +40,16 @@ public class LessonDto {
     
     private String timeSlotName;
     
+    private LocalTime timeSlotStartTime;
+    
+    private LocalTime timeSlotEndTime;
+    
     @NotNull
     private int auditoriumId;
     
     private int auditoriumNumber;
+    
+    private String buildingName;
     
     private Set<TeacherDto> teachers = new HashSet<>();
     
@@ -82,6 +89,14 @@ public class LessonDto {
     public String getTimeSlotName() {
         return timeSlotName;
     }
+    
+    public LocalTime getTimeSlotStartTime() {
+        return timeSlotStartTime;
+    }
+    
+    public LocalTime getTimeSlotEndTime() {
+        return timeSlotEndTime;
+    }
 
     public int getAuditoriumId() {
         return auditoriumId;
@@ -89,6 +104,10 @@ public class LessonDto {
 
     public int getAuditoriumNumber() {
         return auditoriumNumber;
+    }
+    
+    public String getBuildingName() {
+        return buildingName;
     }
 
     public Set<TeacherDto> getTeachers() {
@@ -130,6 +149,14 @@ public class LessonDto {
     public void setTimeSlotName(String timeSlotName) {
         this.timeSlotName = timeSlotName;
     }
+    
+    public void setTimeSlotStartTime(LocalTime timeSlotStartTime) {
+        this.timeSlotStartTime = timeSlotStartTime;
+    }
+    
+    public void setTimeSlotEndTime(LocalTime timeSlotEndTime) {
+        this.timeSlotEndTime = timeSlotEndTime;
+    }
 
     public void setAuditoriumId(int auditoriumId) {
         this.auditoriumId = auditoriumId;
@@ -137,6 +164,10 @@ public class LessonDto {
 
     public void setAuditoriumNumber(int auditoriumNumber) {
         this.auditoriumNumber = auditoriumNumber;
+    }
+    
+    public void setBuildingName(String buildingName) {
+        this.buildingName = buildingName;
     }
 
     public void setTeachers(Set<TeacherDto> teachers) {
@@ -151,8 +182,9 @@ public class LessonDto {
     public String toString() {
         return "LessonDto [id=" + id + ", courseId=" + courseId + ", courseName=" + courseName + ", lessonTypeId="
                 + lessonTypeId + ", lessonTypeName=" + lessonTypeName + ", date=" + date + ", timeSlotId=" + timeSlotId
-                + ", timeSlotName=" + timeSlotName + ", auditoriumId=" + auditoriumId + ", auditoriumNumber="
-                + auditoriumNumber + ", teachers=" + teachers + ", groups=" + groups + "]";
+                + ", timeSlotName=" + timeSlotName + ", timeSlotStartTime=" + timeSlotStartTime + ", timeSlotEndTime="
+                + timeSlotEndTime + ", auditoriumId=" + auditoriumId + ", auditoriumNumber=" + auditoriumNumber
+                + ", buildingName=" + buildingName + ", teachers=" + teachers + ", groups=" + groups + "]";
     }
 
     @Override
