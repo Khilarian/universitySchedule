@@ -14,6 +14,7 @@ import io.swagger.annotations.ApiModel;
 
 @MaxAuditoriumCapacity
 @FreeAuditorium
+@TeachersLimits
 @BusyTeachers
 @BusyGroups
 @ApiModel
