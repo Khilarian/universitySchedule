@@ -14,10 +14,10 @@ Students or teachers can get their timetable for a day or for a month.
 2. Import cloned project to Eclipse (Import/General/Projects from Folder or Archive)<br>
 3. Run Sql-scripts from src/main/resources/db/sql in the next order:<br>
 3-1. Create working database: <br>
-For Unix-like: $ sudo -u postgres psql -f db_creation.sql<br>
+For Unix-like: $ sudo -u postgres psql -d university -f db_creation.sql<br>
 For Windows psql -u postgres -f db_creation.sql<br>
 3-2. Create database user: <br>
-For Unix-like: $ sudo -u postgres psql -f user_creation.sql<br>
+For Unix-like: $ sudo -u postgres psql -d university -f user_creation.sql<br>
 For Windows psql -u postgres -f user_creation.sql<br>
 3-3. mvn flyway:migrate -Dflyway.url=jdbc:postgresql://localhost:5432/university -Dflyway.user=tester -Dflyway.password=test<br>
 3-4. For insert example database entries:<br>

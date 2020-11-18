@@ -18,7 +18,7 @@ CREATE TABLE auditorium(
 auditorium_id SERIAL PRIMARY KEY,
 auditorium_number INTEGER NOT NULL CHECK(auditorium_number>0 AND auditorium_number<1000),
 auditorium_capacity INTEGER NOT NULL CHECK(auditorium_number>0 AND auditorium_number<100),
-building_id INTEGER NOT NULL REFERENCES building(building_id) ON UPDATE CASCADE ON DELETE CASCADE,
+building_id INTEGER NOT NULL REFERENCES building(building_id) ON UPDATE CASCADE ON DELETE RESTRICT,
 UNIQUE (auditorium_number, building_id)
 );
 CREATE TABLE faculty(
@@ -33,7 +33,7 @@ faculty_id INTEGER REFERENCES faculty(faculty_id) ON UPDATE CASCADE ON DELETE SE
 CREATE TABLE course(
 course_id SERIAL PRIMARY KEY,
 course_name VARCHAR(30) NOT NULL UNIQUE,
-faculty_id INTEGER NOT NULL REFERENCES faculty(faculty_id) ON UPDATE CASCADE ON DELETE CASCADE
+faculty_id INTEGER NOT NULL REFERENCES faculty(faculty_id) ON UPDATE CASCADE ON DELETE SET NULL
 );
 CREATE TABLE teacher(
 person_id SERIAL PRIMARY KEY,
@@ -52,7 +52,7 @@ UNIQUE (person_id, group_id)
 CREATE TABLE lesson(
 lesson_id SERIAL PRIMARY KEY,
 course_id INTEGER REFERENCES course(course_id) ON UPDATE CASCADE ON DELETE SET NULL,
-lesson_type_id INTEGER NOT NULL REFERENCES lesson_type(lesson_type_id) ON UPDATE CASCADE ON DELETE CASCADE,
+lesson_type_id INTEGER NOT NULL REFERENCES lesson_type(lesson_type_id) ON UPDATE CASCADE ON DELETE SET NULL,
 auditorium_id INTEGER REFERENCES auditorium(auditorium_id) ON UPDATE CASCADE ON DELETE SET NULL,
 date DATE NOT NULL,
 time_slot_id INTEGER REFERENCES time_slot(time_slot_id) ON UPDATE CASCADE ON DELETE SET NULL
@@ -63,12 +63,12 @@ course_id INTEGER REFERENCES course(course_id) ON UPDATE CASCADE ON DELETE CASCA
 UNIQUE (person_id, course_id)
 );
 CREATE TABLE lesson_teacher(
-person_id INTEGER REFERENCES teacher(person_id) ON UPDATE CASCADE ON DELETE SET NULL,
+person_id INTEGER REFERENCES teacher(person_id) ON UPDATE CASCADE ON DELETE CASCADE,
 lesson_id INTEGER REFERENCES lesson(lesson_id) ON UPDATE CASCADE ON DELETE CASCADE,
 UNIQUE (person_id, lesson_id)
 );
 CREATE TABLE lesson_group(
 lesson_id INTEGER REFERENCES lesson(lesson_id) ON UPDATE CASCADE ON DELETE CASCADE,
-group_id INTEGER REFERENCES groups(group_id) ON UPDATE CASCADE ON DELETE SET NULL,
+group_id INTEGER REFERENCES groups(group_id) ON UPDATE CASCADE ON DELETE CASCADE,
 UNIQUE (group_id, lesson_id)
 );

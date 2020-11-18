@@ -6,5 +6,5 @@ INSERT INTO course (course_name, faculty_id) VALUES ('Computer science',1),('Min
 INSERT INTO student (person_first_name, person_last_name, group_id, person_email, person_phone) VALUES ('Kirill','Rumakin', 3, 'rumki@ya.ru', '+7(925)8641498'),('Katya','Jopushka', 1, 'jopka@jopka.com', '+7(925)1112233'),('Alexey', 'Nagosha', 2, 'naga@ya.ru', '+7(925)1234567');
 INSERT INTO teacher (person_first_name, person_last_name, faculty_id, person_email, person_phone) VALUES ('Hulk','Hogan', 3, 'hogan@gmail.com', '+7(897)0985665'),('Lex','Luger', 1, 'luger@gmail.com', '+7(567)5435454'),('Bill', 'Goldberg', 2, 'goldberg@gmail.com', '+7(999)1234567');
 INSERT INTO teacher_course (person_id, course_id) VALUES (1, 4), (2, 1), (3, 2), (3, 3);
-INSERT INTO lesson_type (lesson_type_name) VALUES ('Lecture'),('Seminar'), ('Laboratory'), ('Exam');
+INSERT INTO lesson_type (lesson_type_name) VALUES ('LECTURE'),('SEMINAR'), ('LABORATORY'), ('EXAM');
 INSERT INTO time_slot (time_slot_name, time_slot_number, time_slot_start, time_slot_end) VALUES ('FIRST',1,'08:30','09:50'),('SECOND',2,'10:00','11:20');
