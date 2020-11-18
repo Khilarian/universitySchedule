@@ -8,3 +8,10 @@ INSERT INTO teacher (person_first_name, person_last_name, faculty_id, person_ema
 INSERT INTO teacher_course (person_id, course_id) VALUES (1, 4), (2, 1), (3, 2), (3, 3);
 INSERT INTO lesson_type (lesson_type_name) VALUES ('LECTURE'),('SEMINAR'), ('LABORATORY'), ('EXAM');
 INSERT INTO time_slot (time_slot_name, time_slot_number, time_slot_start, time_slot_end) VALUES ('FIRST',1,'08:30','09:50'),('SECOND',2,'10:00','11:20');
+INSERT INTO lesson (course_id, lesson_type_id, auditorium_id, date, time_slot_id) VALUES (1,1,1,'16-11-2020',1);
+INSERT INTO lesson_teacher (lesson_id, person_id) VALUES (1,1);
+INSERT INTO lesson_group (lesson_id, group_id) VALUES (1,1);
+INSERT INTO lesson (course_id, lesson_type_id, auditorium_id, date, time_slot_id) VALUES (2,3,3,'17-11-2020',2);
+INSERT INTO lesson_teacher (lesson_id, person_id) VALUES (2,3);
+INSERT INTO lesson_teacher (lesson_id, person_id) VALUES (2,2);
+INSERT INTO lesson_group (lesson_id, group_id) VALUES (2,3);
