@@ -36,7 +36,7 @@
         </div>
         <div class="form-group row">
             <label class="col-form-label">Select group</label> <select class="form-control" th:field="*{groupId}">
-                <option th:value=0>Group not assign</option>
+                <option th:value="null">Group not assign</option>
                 <option th:each="group : ${groups}" th:value="${group.id}" th:utext="${group.name}"
                     id="addGroupId" placeholder="Group" th:required="required">Group</option></select> 
                     <span class="font-italic text-danger" th:if="${#fields.hasErrors('groupId')}" th:errors="*{groupId}"></span>

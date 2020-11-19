@@ -12,7 +12,7 @@ import io.swagger.annotations.ApiModel;
 @ApiModel
 public class StudentDto {
 
-    private int personId;
+    private Integer personId;
 
     @NotBlank
     @Pattern(regexp = "[A-Z][a-z]*", message = "{com.rumakin.universityschedule.validation.illegal.personfirstname}")
@@ -29,14 +29,14 @@ public class StudentDto {
     @Pattern(regexp = "^(\\+7)\\(\\d{3}\\)\\d{7,10}$", message = "{com.rumakin.universityschedule.validation.illegal.phone}")
     private String phone;
 
-    private int groupId;
+    private Integer groupId;
 
     private String groupName;
 
     public StudentDto() {
     }
 
-    public int getId() {
+    public Integer getId() {
         return personId;
     }
 
@@ -56,7 +56,7 @@ public class StudentDto {
         return phone;
     }
 
-    public int getGroupId() {
+    public Integer getGroupId() {
         return groupId;
     }
 
@@ -64,7 +64,7 @@ public class StudentDto {
         return groupName;
     }
 
-    public void setId(int personId) {
+    public void setId(Integer personId) {
         this.personId = personId;
     }
 
@@ -84,7 +84,7 @@ public class StudentDto {
         this.phone = phone;
     }
 
-    public void setGroupId(int groupId) {
+    public void setGroupId(Integer groupId) {
         this.groupId = groupId;
     }
 

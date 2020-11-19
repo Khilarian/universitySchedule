@@ -11,12 +11,15 @@ import com.rumakin.universityschedule.service.*;
 import com.rumakin.universityschedule.validation.annotation.*;
 
 public class FreeAuditoriumConstraintValidator implements ConstraintValidator<FreeAuditorium, LessonDto> {
-    
+
     @Autowired
     private LessonService lessonService;
 
     @Override
     public boolean isValid(LessonDto lessonDto, ConstraintValidatorContext context) {
+        if (lessonDto.getAuditoriumId() == null || lessonDto.getLessonTypeId() == null || lessonDto.getTimeSlotId() == null) {
+            return false;
+        }
         boolean result = checkIsAuditoriumFree(lessonDto);
         if (!result) {
             context.disableDefaultConstraintViolation();
@@ -25,7 +28,7 @@ public class FreeAuditoriumConstraintValidator implements ConstraintValidator<Fr
         }
         return result;
     }
-    
+
     private boolean checkIsAuditoriumFree(LessonDto lessonDto) {
         int lessonId = lessonDto.getId();
         int auditoriumId = lessonDto.getAuditoriumId();

@@ -10,7 +10,7 @@
     <form action="#" th:action="@{/lessons/edit}" th:object="${lesson}" method="post">
         <div class="form-group row">
             <label class="col-form-label">Select Course</label> <select class="form-control" th:field="*{courseId}">
-                <option th:value=0>Course not assign</option>
+                <option th:value="null">Course not assign</option>
                 <option th:each="course : ${allCourses}" th:value="${course.id}" th:utext="${course.name}"
                     id="addCourseId" placeholder="Course" th:required="required">Course</option>
             </select> <span class="font-italic text-danger" th:if="${#fields.hasErrors('courseId')}" th:errors="*{courseId}"></span>
@@ -18,7 +18,7 @@
         <div class="form-group row">
             <label class="col-form-label">Select Lesson Type</label> <select class="form-control"
                 th:field="*{lessonTypeId}">
-                <option th:value=0>Lesson Type not assign</option>
+                <option th:value="null">Lesson Type not assign</option>
                 <option th:each="lessonType : ${allLessonTypes}" th:value="${lessonType.id}"
                     th:utext="${lessonType.name}" id="addLessonTypeId" placeholder="LessonType" th:required="required">LessonType</option>
             </select> <span class="font-italic text-danger" th:if="${#fields.hasErrors('lessonTypeId')}"
@@ -31,7 +31,7 @@
         </div>
         <div class="form-group row">
             <label class="col-form-label">Select Time Slot</label> <select class="form-control" th:field="*{timeSlotId}">
-                <option th:value=0>Time Slot not assign</option>
+                <option th:value="null">Time Slot not assign</option>
                 <option th:each="timeSlot : ${allTimeSlots}" th:value="${timeSlot.id}" th:utext="|${timeSlot.startTime} - ${timeSlot.endTime}|"
                     id="addTimeSlotId" placeholder="TimeSlot" th:required="required">Time Slot</option>
             </select> <span class="font-italic text-danger" th:if="${#fields.hasErrors('timeSlotId')}" th:errors="*{timeSlotId}"></span>
@@ -39,7 +39,7 @@
         <div class="form-group row">
             <label class="col-form-label">Select Auditorium</label> <select class="form-control"
                 th:field="*{auditoriumId}">
-                <option th:value=0>Auditorium not assign</option>
+                <option th:value="null">Auditorium not assign</option>
                 <option th:each="auditorium : ${allAuditoriums}" th:value="${auditorium.id}"
                     th:utext="|${auditorium.number} in ${auditorium.building.name}|" id="AuditoriumId"
                     placeholder="Auditorium" th:required="required">Auditorium</option>

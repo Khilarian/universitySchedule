@@ -16,9 +16,11 @@ public class TeachersLimitConstraintValidator implements ConstraintValidator<Tea
 
     @Override
     public boolean isValid(LessonDto lessonDto, ConstraintValidatorContext context) {
+        if (lessonDto.getLessonTypeId() == null) {
+            return false;
+        }
         int teachersCount = lessonDto.getTeachers().size();
         String lessonType = lessontypeService.findById(lessonDto.getLessonTypeId()).getName();
-        System.err.println(lessonType);
         if ((lessonType.equals(LessonTypeEnum.LECTURE.name()) || lessonType.equals(LessonTypeEnum.SEMINAR.name()))
                 && teachersCount > 1) {
             context.disableDefaultConstraintViolation();

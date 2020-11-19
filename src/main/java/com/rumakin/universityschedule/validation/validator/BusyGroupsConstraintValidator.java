@@ -23,6 +23,9 @@ public class BusyGroupsConstraintValidator implements ConstraintValidator<BusyGr
 
     @Override
     public boolean isValid(LessonDto lessonDto, ConstraintValidatorContext context) {
+        if (lessonDto.getLessonTypeId() == null || lessonDto.getTimeSlotId() == null) {
+            return false;
+        }
         String usedGroupsNames = getBusyGroupsName(lessonDto);
        boolean result = Objects.equals(usedGroupsNames, "");
         if (!result) {

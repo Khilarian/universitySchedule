@@ -23,6 +23,9 @@ public class BusyTeachersConstraintValidator implements ConstraintValidator<Busy
 
     @Override
     public boolean isValid(LessonDto lessonDto, ConstraintValidatorContext context) {
+        if (lessonDto.getLessonTypeId() == null || lessonDto.getTimeSlotId() == null) {
+            return false;
+        }
         String usedTeachersNames = getBusyTeachersName(lessonDto);
        boolean result = Objects.equals(usedTeachersNames, "");
         if (!result) {

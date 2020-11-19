@@ -63,7 +63,7 @@ public class LessonTypeController {
         if (bindingResult.hasErrors()) {
             return "lessonTypes/edit";
         } else {
-            if (lessonTypeDto.getId() == 0) {
+            if (lessonTypeDto.getId() == null) {
                 lessonTypeService.add(convertToEntity(lessonTypeDto));
             } else {
                 lessonTypeService.update(convertToEntity(lessonTypeDto));

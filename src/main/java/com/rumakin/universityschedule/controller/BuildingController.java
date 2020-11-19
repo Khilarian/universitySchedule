@@ -63,7 +63,7 @@ public class BuildingController {
         if (bindingResult.hasErrors()) {
             return "buildings/edit";
         } else {
-            if (buildingDto.getId() == 0) {
+            if (buildingDto.getId() == null) {
                 buildingService.add(convertToEntity(buildingDto));
             } else {
                 buildingService.update(convertToEntity(buildingDto));

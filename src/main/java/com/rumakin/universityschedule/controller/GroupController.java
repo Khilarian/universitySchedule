@@ -65,10 +65,10 @@ public class GroupController {
             return "groups/edit";
         } else {
             Group group = convertToEntity(groupDto);
-            if (group.getFaculty().getId() == 0) {
+            if (groupDto.getFacultyId() == null) {
                 group.setFaculty(null);
             }
-            if (groupDto.getId() == 0) {
+            if (groupDto.getId() == null) {
                 groupService.add(group);
             } else {
                 groupService.update(group);

@@ -63,7 +63,7 @@ public class TimeSlotController {
         if (bindingResult.hasErrors()) {
             return "timeSlots/edit";
         } else {
-            if (timeSlotDto.getId() == 0) {
+            if (timeSlotDto.getId() == null) {
                 timeSlotService.add(convertToEntity(timeSlotDto));
             } else {
                 timeSlotService.update(convertToEntity(timeSlotDto));

@@ -67,7 +67,7 @@ public class StudentController {
             model.addAttribute("groups", groups);
             return "students/edit";
         } else {
-            if (studentDto.getId() == 0) {
+            if (studentDto.getId() == null) {
                 studentService.add(convertToEntity(studentDto));
             } else {
                 studentService.update(convertToEntity(studentDto));

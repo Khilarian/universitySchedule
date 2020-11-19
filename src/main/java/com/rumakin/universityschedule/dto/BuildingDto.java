@@ -11,8 +11,8 @@ import io.swagger.annotations.ApiModel;
 @ApiModel
 public class BuildingDto {
 
-    private int id;
-    
+    private Integer id;
+
     @NotBlank(message = "{com.rumakin.universityschedule.validation.mandatory.name}")
     @Size(min = 2, max = 50, message = "{com.rumakin.universityschedule.validation.length.name}")
     @Pattern(regexp = "[A-Z][a-z]+(\\s[A-Z]*[a-z]+)*", message = "{com.rumakin.universityschedule.validation.illegal.buildingname}")
@@ -26,18 +26,6 @@ public class BuildingDto {
     public BuildingDto() {
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
     public Integer getId() {
         return id;
     }
@@ -48,6 +36,18 @@ public class BuildingDto {
 
     public String getAddress() {
         return address;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     @Override

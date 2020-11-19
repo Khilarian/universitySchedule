@@ -61,13 +61,12 @@ public class LessonController {
     @PostMapping("/edit")
     public String edit(@Valid @ModelAttribute(value = "lesson") LessonDto lessonDto, BindingResult bindingResult,
             Model model) {
-        System.err.println(lessonDto);
         if (bindingResult.hasErrors()) {
             prepareModel(model);
             return "lessons/edit";
         } else {
             Lesson lesson = convertToEntity(lessonDto);
-            if (lessonDto.getId() == 0) {
+            if (lessonDto.getId() == null) {
                 lessonService.add(lesson);
             } else {
                 lessonService.update(lesson);

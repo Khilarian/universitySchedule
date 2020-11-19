@@ -15,7 +15,7 @@ import io.swagger.annotations.ApiModel;
 @ApiModel
 public class TimeSlotDto {
 
-    private int id;
+    private Integer id;
 
     @NotBlank
     private String name;

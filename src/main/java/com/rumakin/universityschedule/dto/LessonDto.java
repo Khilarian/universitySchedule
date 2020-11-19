@@ -20,15 +20,15 @@ import io.swagger.annotations.ApiModel;
 @ApiModel
 public class LessonDto {
 
-    private int id;
+    private Integer id;
 
-    @Min(1)
-    private int courseId;
+    @NotNull
+    private Integer courseId;
 
     private String courseName;
 
-    @Min(1)
-    private int lessonTypeId;
+    @NotNull
+    private Integer lessonTypeId;
 
     private String lessonTypeName;
 
@@ -36,8 +36,8 @@ public class LessonDto {
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private LocalDate date;
 
-    @Min(1)
-    private int timeSlotId;
+    @NotNull
+    private Integer timeSlotId;
 
     private String timeSlotName;
 
@@ -45,10 +45,10 @@ public class LessonDto {
 
     private LocalTime timeSlotEndTime;
 
-    @Min(1)
-    private int auditoriumId;
+    @NotNull
+    private Integer auditoriumId;
 
-    private int auditoriumNumber;
+    private Integer auditoriumNumber;
 
     private String buildingName;
 
@@ -59,11 +59,11 @@ public class LessonDto {
     public LessonDto() {
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public int getCourseId() {
+    public Integer getCourseId() {
         return courseId;
     }
 
@@ -71,7 +71,7 @@ public class LessonDto {
         return courseName;
     }
 
-    public int getLessonTypeId() {
+    public Integer getLessonTypeId() {
         return lessonTypeId;
     }
 
@@ -83,7 +83,7 @@ public class LessonDto {
         return date;
     }
 
-    public int getTimeSlotId() {
+    public Integer getTimeSlotId() {
         return timeSlotId;
     }
 
@@ -99,11 +99,11 @@ public class LessonDto {
         return timeSlotEndTime;
     }
 
-    public int getAuditoriumId() {
+    public Integer getAuditoriumId() {
         return auditoriumId;
     }
 
-    public int getAuditoriumNumber() {
+    public Integer getAuditoriumNumber() {
         return auditoriumNumber;
     }
 
@@ -119,11 +119,11 @@ public class LessonDto {
         return groups;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
-    public void setCourseId(int courseId) {
+    public void setCourseId(Integer courseId) {
         this.courseId = courseId;
     }
 
@@ -131,7 +131,7 @@ public class LessonDto {
         this.courseName = courseName;
     }
 
-    public void setLessonTypeId(int lessonTypeId) {
+    public void setLessonTypeId(Integer lessonTypeId) {
         this.lessonTypeId = lessonTypeId;
     }
 
@@ -143,7 +143,7 @@ public class LessonDto {
         this.date = date;
     }
 
-    public void setTimeSlotId(int timeSlotId) {
+    public void setTimeSlotId(Integer timeSlotId) {
         this.timeSlotId = timeSlotId;
     }
 
@@ -159,11 +159,11 @@ public class LessonDto {
         this.timeSlotEndTime = timeSlotEndTime;
     }
 
-    public void setAuditoriumId(int auditoriumId) {
+    public void setAuditoriumId(Integer auditoriumId) {
         this.auditoriumId = auditoriumId;
     }
 
-    public void setAuditoriumNumber(int auditoriumNumber) {
+    public void setAuditoriumNumber(Integer auditoriumNumber) {
         this.auditoriumNumber = auditoriumNumber;
     }
 

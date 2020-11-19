@@ -26,7 +26,7 @@ public class LessonTypeDto {
         return name;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

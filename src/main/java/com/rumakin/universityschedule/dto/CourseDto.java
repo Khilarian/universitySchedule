@@ -3,6 +3,7 @@ package com.rumakin.universityschedule.dto;
 import java.util.Objects;
 
 import javax.validation.constraints.*;
+
 import com.rumakin.universityschedule.validation.annotation.*;
 
 import io.swagger.annotations.ApiModel;
@@ -18,7 +19,8 @@ public class CourseDto {
     @Pattern(regexp = "[A-Z]+[a-z]*(\\s{1}[a-zA-Z]*)*", message = "{com.rumakin.universityschedule.validation.illegal.coursename}")
     private String name;
     
-    private int facultyId;
+    @NotNull
+    private Integer facultyId;
     
     private String facultyName;
 
@@ -33,7 +35,7 @@ public class CourseDto {
         return name;
     }
 
-    public int getFacultyId() {
+    public Integer getFacultyId() {
         return facultyId;
     }
 
@@ -53,7 +55,7 @@ public class CourseDto {
         this.name = name;
     }
 
-    public void setFacultyId(int facultyId) {
+    public void setFacultyId(Integer facultyId) {
         this.facultyId = facultyId;
     }
 

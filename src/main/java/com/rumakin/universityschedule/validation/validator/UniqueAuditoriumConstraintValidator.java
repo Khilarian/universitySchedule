@@ -18,6 +18,9 @@ public class UniqueAuditoriumConstraintValidator implements ConstraintValidator<
 
     @Override
     public boolean isValid(AuditoriumDto auditoriumDto, ConstraintValidatorContext context) {
+        if (auditoriumDto.getBuildingId() == null) {
+            return false;
+        }
         Auditorium auditorium = new Auditorium();
         try {
             auditorium = auditoriumService.findByNumberAndBuildingId(auditoriumDto.getNumber(),

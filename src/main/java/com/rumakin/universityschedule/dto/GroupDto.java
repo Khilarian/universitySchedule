@@ -10,13 +10,14 @@ import io.swagger.annotations.ApiModel;
 @ApiModel
 public class GroupDto {
 
-    private int id;
+    private Integer id;
     
     @NotBlank(message = "{com.rumakin.universityschedule.validation.mandatory.name}")
     @Pattern(regexp = "[A-Z]{2}-[0-9]{3}", message = "{com.rumakin.universityschedule.validation.illegal.groupname}")
     private String name;
     
-    private int facultyId;
+    @NotNull
+    private Integer facultyId;
     
     private String facultyName;
 
@@ -31,7 +32,7 @@ public class GroupDto {
         return name;
     }
 
-    public int getFacultyId() {
+    public Integer getFacultyId() {
         return facultyId;
     }
 
@@ -39,7 +40,7 @@ public class GroupDto {
         return facultyName;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -47,7 +48,7 @@ public class GroupDto {
         this.name = name;
     }
 
-    public void setFacultyId(int facultyId) {
+    public void setFacultyId(Integer facultyId) {
         this.facultyId = facultyId;
     }
 

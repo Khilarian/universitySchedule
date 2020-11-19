@@ -63,11 +63,10 @@ public class AuditoriumController {
     public String edit(@Valid @ModelAttribute(value = "auditorium") AuditoriumDto auditoriumDto,
             BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
-            List<Building> buildings = auditoriumService.getBuildings();
-            model.addAttribute("buildings", buildings);
+            model.addAttribute("buildings", auditoriumService.getBuildings());
             return "auditoriums/edit";
         } else {
-            if (auditoriumDto.getId() == 0) {
+            if (auditoriumDto.getId() == null) {
                 auditoriumService.add(convertToEntity(auditoriumDto));
             } else {
                 auditoriumService.update(convertToEntity(auditoriumDto));

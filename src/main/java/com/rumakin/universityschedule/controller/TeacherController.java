@@ -74,7 +74,7 @@ public class TeacherController {
             model.addAttribute("allCourses", courses);
             return "teachers/edit";
         } else {
-            if (teacherDto.getId() == 0) {
+            if (teacherDto.getId() == null) {
                 teacherService.add(convertToEntity(teacherDto));
             } else {
                 teacherService.update(convertToEntity(teacherDto));
