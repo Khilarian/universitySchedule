@@ -34,7 +34,7 @@ public class LessonController {
     }
 
     @GetMapping("/getAll")
-    public String findAllGroups(Model model) {
+    public String findAllLessons(Model model) {
         logger.debug("findAll() lessonDtos");
         List<LessonDto> lessons = lessonService.findAll().stream().map(l -> convertToDto(l))
                 .collect(Collectors.toList());

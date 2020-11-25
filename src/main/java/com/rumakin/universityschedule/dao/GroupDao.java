@@ -11,4 +11,5 @@ import com.rumakin.universityschedule.model.Group;
 public interface GroupDao extends CrudRepository<Group, Integer> {
 
     public Optional<Group> findByName(String name);
+
 }

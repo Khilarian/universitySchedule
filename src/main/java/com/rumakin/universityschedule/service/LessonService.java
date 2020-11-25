@@ -4,12 +4,16 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
 
+import javax.validation.Valid;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.rumakin.universityschedule.dao.LessonDao;
+import com.rumakin.universityschedule.dto.LessonDto;
+import com.rumakin.universityschedule.dto.LessonFilterDto;
 import com.rumakin.universityschedule.exception.*;
 import com.rumakin.universityschedule.model.*;
 
@@ -106,7 +110,7 @@ public class LessonService {
     public List<Group> getGroups() {
         return groupService.findAll();
     }
-    
+
     public String getBuildingName(int auditoriumId) {
         return auditoriumService.findById(auditoriumId).getBuilding().getName();
     }
@@ -119,16 +123,46 @@ public class LessonService {
     }
 
     public Set<Integer> getBusyGroupsId(int lessonId, LocalDate date, int timeSlotId) {
-        logger.debug("getBusyGroupsId() with {}, {}, {}.",  lessonId, date, timeSlotId);
+        logger.debug("getBusyGroupsId() with {}, {}, {}.", lessonId, date, timeSlotId);
         Set<Integer> result = lessonDao.getBusyGroupsId(lessonId, date, timeSlotId);
         logger.trace("getBusyGroupsId() result: {} .", result);
         return result;
     }
 
     public Set<Integer> getBusyTeachersId(int lessonId, LocalDate date, int timeSlotId) {
-        logger.debug("getBusyTeachersId() with {}, {}, {}.",  lessonId, date, timeSlotId);
-        Set<Integer> result = lessonDao.getBusyTeachersId(lessonId, date, timeSlotId);
+        logger.debug("getBusyTeachersId() with {}, {}, {}.", lessonId, date, timeSlotId);
+        // Set<Integer> result = lessonDao.getBusyTeachersId(lessonId, date,
+        // timeSlotId);
+        Set<Group> groups = lessonDao.findById(lessonId).get().getGroups();
+        Set<Integer> result = lessonDao.getAllByIdIsNotAndDateEqualsAndTimeSlot_IdEqualsAndGroupsIn(lessonId, date,
+                timeSlotId, groups);
+        System.err.println(result.toString());
         logger.trace("getBusyTeachersId() result: {} .", result);
+        return result;
+    }
+
+    public List<Lesson> getSchedule(LessonFilterDto lessonFilterDto) {
+        logger.debug("getSchedule() with {}.", lessonFilterDto);
+        List<Lesson> result;
+        Integer groupId = lessonFilterDto.getGroupId();
+        Integer teacherId = lessonFilterDto.getTeacherId();
+        LocalDate date = lessonFilterDto.getDate();
+        Integer monthScheduleCheck = lessonFilterDto.getMonthScheduleCheck();
+        if (monthScheduleCheck == 1) {
+            LocalDate startDate = date.withDayOfMonth(1);
+            LocalDate endDate = date.withDayOfMonth(date.lengthOfMonth());
+            if (groupId == null) {
+                result = lessonDao.findMonthScheduleForTeacher(teacherId, startDate, endDate);
+            } else {
+                result = lessonDao.findMonthScheduleForGroup(groupId, startDate, endDate);
+            }
+        } else {
+            if (groupId == null) {
+                result = lessonDao.findDayScheduleForTeacher(teacherId, date);
+            } else {
+                result = lessonDao.findDayScheduleForGroup(groupId, date);
+            }
+        }
         return result;
     }
 

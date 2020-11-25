@@ -73,11 +73,9 @@ public class GroupDto {
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
-        if (obj == null) return false;
-        if (getClass() != obj.getClass()) return false;
-        GroupDto other = (GroupDto) obj;
-        if (id != other.id) return false;
-        return true;
+        if (!(obj instanceof GroupDto)) return false;
+        GroupDto dto = (GroupDto) obj;
+        return getId().equals(dto.getId());
     }
 
 }

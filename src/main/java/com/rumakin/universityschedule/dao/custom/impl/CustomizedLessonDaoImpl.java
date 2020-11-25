@@ -43,7 +43,7 @@ public class CustomizedLessonDaoImpl implements CustomizedLessonDao {
 
     @Override
     public Set<Integer> getBusyGroupsId(int lessonId, LocalDate date, int timeSlotId) {
-        logger.debug(" getBusyGroupsId() with agruments {}, {}, {}.", lessonId, date, timeSlotId);
+        logger.debug("getBusyGroupsId() with agruments {}, {}, {}.", lessonId, date, timeSlotId);
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Integer> query = criteriaBuilder.createQuery(Integer.class);
         Root<Lesson> root = query.from(Lesson.class);
@@ -63,7 +63,7 @@ public class CustomizedLessonDaoImpl implements CustomizedLessonDao {
 
     @Override
     public Set<Integer> getBusyTeachersId(int lessonId, LocalDate date, int timeSlotId) {
-        logger.debug(" getBusyTeachersId() with agruments {}, {}, {}.", lessonId, date, timeSlotId);
+        logger.debug("getBusyTeachersId() with agruments {}, {}, {}.", lessonId, date, timeSlotId);
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Integer> query = criteriaBuilder.createQuery(Integer.class);
         Root<Lesson> root = query.from(Lesson.class);
@@ -79,6 +79,122 @@ public class CustomizedLessonDaoImpl implements CustomizedLessonDao {
         query.multiselect(joinTeacher.get("id"));
         TypedQuery<Integer> result = entityManager.createQuery(query);
         return result.getResultStream().collect(Collectors.toSet());
+    }
+
+    @Override
+    public List<Lesson> findMonthScheduleForTeacher(Integer teacherId, LocalDate startDate, LocalDate endDate) {
+        logger.debug("findMonthScheduleForTeacher() with agruments {}, {}, {}.", teacherId, startDate, endDate);
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Lesson> query = criteriaBuilder.createQuery(Lesson.class);
+        Root<Lesson> root = query.from(Lesson.class);
+        List<Predicate> predicates = new ArrayList<>();
+        Join<Lesson, Teacher> teacherJoin = root.join("teachers", JoinType.LEFT);
+        predicates.add(criteriaBuilder.equal(teacherJoin.get("id"), teacherId));
+        predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get("date"), startDate));
+        predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get("date"), endDate));
+        query.where(predicates.toArray(new Predicate[] {}));
+        query.multiselect(buildMultiSelectForLesson(root));
+        query.orderBy(getOrderList(criteriaBuilder, root));
+        TypedQuery<Lesson> result = entityManager.createQuery(query);
+        return result.getResultStream().collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Lesson> findMonthScheduleForGroup(Integer groupId, LocalDate startDate, LocalDate endDate) {
+        logger.debug("findMonthScheduleForGroup() with agruments {}, {}, {}.", groupId, startDate, endDate);
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Lesson> query = criteriaBuilder.createQuery(Lesson.class);
+        Root<Lesson> root = query.from(Lesson.class);
+        List<Predicate> predicates = new ArrayList<>();
+        Join<Lesson, Group> groupJoin = root.join("groups", JoinType.LEFT);
+        predicates.add(criteriaBuilder.equal(groupJoin.get("id"), groupId));
+        predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get("date"), startDate));
+        predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get("date"), endDate));
+        query.where(predicates.toArray(new Predicate[] {}));
+        query.multiselect(buildMultiSelectForGroup(root));
+        query.orderBy(getOrderList(criteriaBuilder, root));
+        TypedQuery<Lesson> result = entityManager.createQuery(query);
+        return result.getResultStream().collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Lesson> findDayScheduleForTeacher(Integer teacherId, LocalDate date) {
+        logger.debug("findDayScheduleForTeacher() with agruments {}, {}.", teacherId, date);
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Lesson> query = criteriaBuilder.createQuery(Lesson.class);
+        Root<Lesson> root = query.from(Lesson.class);
+        List<Predicate> predicates = new ArrayList<>();
+        Join<Lesson, Teacher> teacherJoin = root.join("teachers", JoinType.LEFT);
+        predicates.add(criteriaBuilder.equal(teacherJoin.get("id"), teacherId));
+        predicates.add(criteriaBuilder.equal(root.get("date"), date));
+        query.where(predicates.toArray(new Predicate[] {}));
+        query.multiselect(buildMultiSelectForLesson(root));
+        query.orderBy(getOrderList(criteriaBuilder, root));
+        TypedQuery<Lesson> result = entityManager.createQuery(query);
+        return result.getResultStream().collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Lesson> findDayScheduleForGroup(Integer groupId, LocalDate date) {
+        logger.debug("findDayScheduleForGroup() with agruments {}, {}.", groupId, date);
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Lesson> query = criteriaBuilder.createQuery(Lesson.class);
+        Root<Lesson> root = query.from(Lesson.class);
+        List<Predicate> predicates = new ArrayList<>();
+        Join<Lesson, Group> groupJoin = root.join("groups", JoinType.LEFT);
+        predicates.add(criteriaBuilder.equal(groupJoin.get("id"), groupId));
+        predicates.add(criteriaBuilder.equal(root.get("date"), date));
+        query.where(predicates.toArray(new Predicate[] {}));
+        query.multiselect(buildMultiSelectForGroup(root));
+        query.orderBy(getOrderList(criteriaBuilder, root));
+        TypedQuery<Lesson> result = entityManager.createQuery(query);
+        return result.getResultStream().collect(Collectors.toList());
+    }
+
+    private List<Selection<?>> buildMultiSelectForLesson(Root<Lesson> root) {
+        List<Selection<?>> selectList = buildMultiSelect(root);
+        Join<Lesson, Teacher> joinTeacher = root.join("teachers", JoinType.LEFT);
+        selectList.add(joinTeacher.get("id"));
+        selectList.add(joinTeacher.get("firstName"));
+        selectList.add(joinTeacher.get("lastName"));
+        return selectList;
+    }
+
+    private List<Selection<?>> buildMultiSelectForGroup(Root<Lesson> root) {
+        List<Selection<?>> selectList = buildMultiSelect(root);
+        Join<Lesson, Group> joinGroup = root.join("groups", JoinType.LEFT);
+        selectList.add(joinGroup.get("id"));
+        selectList.add(joinGroup.get("name"));
+        return selectList;
+    }
+
+    private List<Selection<?>> buildMultiSelect(Root<Lesson> root) {
+        Join<Lesson, Course> joinCourse = root.join("course", JoinType.LEFT);
+        Join<Lesson, Auditorium> joinAuditorium = root.join("auditorium", JoinType.LEFT);
+        Join<Lesson, TimeSlot> joinTimeSlot = root.join("timeSlot", JoinType.LEFT);
+        Path<Building> joinBuilding = root.join("auditorium").get("building");
+        List<Selection<?>> selectList = new ArrayList<>();
+        selectList.add(root.get("id"));
+        selectList.add(root.get("date"));
+        selectList.add(joinCourse.get("id"));
+        selectList.add(joinCourse.get("name"));
+        selectList.add(joinAuditorium.get("id"));
+        selectList.add(joinAuditorium.get("number"));
+        selectList.add(joinBuilding.get("id"));
+        selectList.add(joinBuilding.get("name"));
+        selectList.add(joinTimeSlot.get("id"));
+        selectList.add(joinTimeSlot.get("number"));
+        selectList.add(joinTimeSlot.get("name"));
+        selectList.add(joinTimeSlot.get("startTime"));
+        selectList.add(joinTimeSlot.get("endTime"));
+        return selectList;
+    }
+
+    private List<Order> getOrderList(CriteriaBuilder criteriaBuilder, Root<Lesson> root) {
+        List<Order> orderList = new ArrayList<>();
+        orderList.add(criteriaBuilder.asc(root.get("date")));
+        orderList.add(criteriaBuilder.asc(root.get("timeSlot")));
+        return orderList;
     }
 
 }
