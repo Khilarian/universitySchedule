@@ -39,6 +39,8 @@ public class LessonDto {
     @NotNull
     private Integer timeSlotId;
 
+    private Integer timeSlotNumber;
+
     private String timeSlotName;
 
     private LocalTime timeSlotStartTime;
@@ -50,6 +52,8 @@ public class LessonDto {
 
     private Integer auditoriumNumber;
 
+    private Integer buildingId;
+
     private String buildingName;
 
     private Set<TeacherDto> teachers = new HashSet<>();
@@ -57,6 +61,27 @@ public class LessonDto {
     private Set<GroupDto> groups = new HashSet<>();
 
     public LessonDto() {
+    }
+
+    public LessonDto(Integer id, @NotNull Integer courseId, String courseName, @NotNull Integer lessonTypeId,
+            String lessonTypeName, @NotNull LocalDate date, @NotNull Integer timeSlotId, Integer timeSlotNumber,
+            String timeSlotName, LocalTime timeSlotStartTime, LocalTime timeSlotEndTime, @NotNull Integer auditoriumId,
+            Integer auditoriumNumber, Integer buildingId, String buildingName) {
+        this.id = id;
+        this.courseId = courseId;
+        this.courseName = courseName;
+        this.lessonTypeId = lessonTypeId;
+        this.lessonTypeName = lessonTypeName;
+        this.date = date;
+        this.timeSlotId = timeSlotId;
+        this.timeSlotNumber = timeSlotNumber;
+        this.timeSlotName = timeSlotName;
+        this.timeSlotStartTime = timeSlotStartTime;
+        this.timeSlotEndTime = timeSlotEndTime;
+        this.auditoriumId = auditoriumId;
+        this.auditoriumNumber = auditoriumNumber;
+        this.buildingId = buildingId;
+        this.buildingName = buildingName;
     }
 
     public Integer getId() {
@@ -87,6 +112,10 @@ public class LessonDto {
         return timeSlotId;
     }
 
+    public Integer getTimeSlotNumber() {
+        return timeSlotNumber;
+    }
+
     public String getTimeSlotName() {
         return timeSlotName;
     }
@@ -105,6 +134,10 @@ public class LessonDto {
 
     public Integer getAuditoriumNumber() {
         return auditoriumNumber;
+    }
+
+    public Integer getBuildingId() {
+        return buildingId;
     }
 
     public String getBuildingName() {
@@ -147,6 +180,10 @@ public class LessonDto {
         this.timeSlotId = timeSlotId;
     }
 
+    public void setTimeSlotNumber(Integer timeSlotNumber) {
+        this.timeSlotNumber = timeSlotNumber;
+    }
+
     public void setTimeSlotName(String timeSlotName) {
         this.timeSlotName = timeSlotName;
     }
@@ -165,6 +202,10 @@ public class LessonDto {
 
     public void setAuditoriumNumber(Integer auditoriumNumber) {
         this.auditoriumNumber = auditoriumNumber;
+    }
+
+    public void setBuildingId(Integer buildingId) {
+        this.buildingId = buildingId;
     }
 
     public void setBuildingName(String buildingName) {

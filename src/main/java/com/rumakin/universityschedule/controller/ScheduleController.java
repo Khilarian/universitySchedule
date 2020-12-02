@@ -50,8 +50,7 @@ public class ScheduleController {
                 System.err.println(bindingResult.hasFieldErrors("monthSchesuleCheck"));
                 model.addAttribute("lessonFilterDto", lessonFilterDto);
             } else {
-                List<LessonDto> report = lessonService.getSchedule(lessonFilterDto).stream().map(l -> convertToDto(l))
-                        .collect(Collectors.toList());
+                List<LessonDto> report = lessonService.getSchedule(lessonFilterDto);
                 if (!report.isEmpty()) {
                     model.addAttribute("lessons", report);
                 }

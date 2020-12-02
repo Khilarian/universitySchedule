@@ -1,7 +1,6 @@
 package com.rumakin.universityschedule.dto;
 
 import java.time.LocalDate;
-import java.util.Optional;
 
 import javax.validation.constraints.NotNull;
 
@@ -56,7 +55,7 @@ public class LessonFilterDto {
     }
 
     public void setMonthScheduleCheck(Integer monthScheduleCheck) {
-        this.monthScheduleCheck = Optional.ofNullable(monthScheduleCheck).orElse(1);
+        this.monthScheduleCheck = monthScheduleCheck;
     }
 
     public void setDate(LocalDate date) {

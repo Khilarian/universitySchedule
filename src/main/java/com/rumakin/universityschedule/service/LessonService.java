@@ -1,13 +1,9 @@
 package com.rumakin.universityschedule.service;
 
 import java.time.LocalDate;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
-import javax.validation.Valid;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.slf4j.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -131,19 +127,14 @@ public class LessonService {
 
     public Set<Integer> getBusyTeachersId(int lessonId, LocalDate date, int timeSlotId) {
         logger.debug("getBusyTeachersId() with {}, {}, {}.", lessonId, date, timeSlotId);
-        // Set<Integer> result = lessonDao.getBusyTeachersId(lessonId, date,
-        // timeSlotId);
-        Set<Group> groups = lessonDao.findById(lessonId).get().getGroups();
-        Set<Integer> result = lessonDao.getAllByIdIsNotAndDateEqualsAndTimeSlot_IdEqualsAndGroupsIn(lessonId, date,
-                timeSlotId, groups);
-        System.err.println(result.toString());
+        Set<Integer> result = lessonDao.getBusyTeachersId(lessonId, date, timeSlotId);
         logger.trace("getBusyTeachersId() result: {} .", result);
         return result;
     }
 
-    public List<Lesson> getSchedule(LessonFilterDto lessonFilterDto) {
+    public List<LessonDto> getSchedule(LessonFilterDto lessonFilterDto) {
         logger.debug("getSchedule() with {}.", lessonFilterDto);
-        List<Lesson> result;
+        List<LessonDto> result;
         Integer groupId = lessonFilterDto.getGroupId();
         Integer teacherId = lessonFilterDto.getTeacherId();
         LocalDate date = lessonFilterDto.getDate();
