@@ -70,7 +70,7 @@ class GroupControllerTest {
     @Test
     public void getEditShouldGetEntityFromDataBaseIfItExists() throws Exception {
         Faculty faculty = new Faculty(1, "First");
-        Group group = new Group("AA_35", faculty);
+        Group group = new Group(1, "AA_35", faculty);
         GroupDto groupDto = convertToDto(group);
         Mockito.when(mockGroupService.findById(Mockito.anyInt())).thenReturn(group);
         String URI = "/groups/edit/?id=1";
@@ -97,18 +97,9 @@ class GroupControllerTest {
         Faculty faculty = new Faculty(1, "First");
         Group group = new Group("AA_35", faculty);
         GroupDto groupDto = convertToDto(group);
+        groupDto.setId(null);
         groupController.edit(groupDto, bindingResult, model);
         Mockito.verify(mockGroupService).add(group);
-    }
-    
-    @Test
-    public void postEditShouldAddEntityWithWithoutFacultyIfItDoesNotExistsInDataBase() throws Exception {
-        Faculty faculty = new Faculty(0, "First");
-        Group group = new Group("AA_35", faculty);
-        GroupDto groupDto = convertToDto(group);
-        Group newGroup = new Group("AA_35", null);
-        groupController.edit(groupDto, bindingResult, model);
-        Mockito.verify(mockGroupService).add(newGroup);
     }
 
     @Test

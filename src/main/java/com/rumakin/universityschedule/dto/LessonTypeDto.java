@@ -46,16 +46,9 @@ public class LessonTypeDto {
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
-        if (obj == null) return false;
-        if (getClass() != obj.getClass()) return false;
-        LessonTypeDto other = (LessonTypeDto) obj;
-        if (id == null) {
-            if (other.id != null) return false;
-        } else if (!id.equals(other.id)) return false;
-        if (name == null) {
-            if (other.name != null) return false;
-        } else if (!name.equals(other.name)) return false;
-        return true;
+        if (!(obj instanceof LessonTypeDto)) return false;
+        LessonTypeDto dto = (LessonTypeDto) obj;
+        return getId().equals(dto.getId());
     }
 
     @Override

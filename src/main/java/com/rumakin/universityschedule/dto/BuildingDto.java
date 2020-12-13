@@ -68,17 +68,9 @@ public class BuildingDto {
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
-        if (obj == null) return false;
-        if (getClass() != obj.getClass()) return false;
-        BuildingDto other = (BuildingDto) obj;
-        if (address == null) {
-            if (other.address != null) return false;
-        } else if (!address.equals(other.address)) return false;
-        if (id != other.id) return false;
-        if (name == null) {
-            if (other.name != null) return false;
-        } else if (!name.equals(other.name)) return false;
-        return true;
+        if (!(obj instanceof BuildingDto)) return false;
+        BuildingDto dto = (BuildingDto) obj;
+        return getId().equals(dto.getId());
     }
 
 }

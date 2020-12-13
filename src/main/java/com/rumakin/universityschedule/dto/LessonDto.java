@@ -240,10 +240,9 @@ public class LessonDto {
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
-        if (obj == null) return false;
-        if (getClass() != obj.getClass()) return false;
-        LessonDto other = (LessonDto) obj;
-        return id == other.id;
+        if (!(obj instanceof LessonDto)) return false;
+        LessonDto dto = (LessonDto) obj;
+        return getId().equals(dto.getId());
     }
 
 }

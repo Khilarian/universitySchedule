@@ -66,7 +66,10 @@ public class GroupDto {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + id;
+        result = prime * result + ((facultyId == null) ? 0 : facultyId.hashCode());
+        result = prime * result + ((facultyName == null) ? 0 : facultyName.hashCode());
+        result = prime * result + ((id == null) ? 0 : id.hashCode());
+        result = prime * result + ((name == null) ? 0 : name.hashCode());
         return result;
     }
 

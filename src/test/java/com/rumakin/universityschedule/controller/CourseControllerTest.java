@@ -97,18 +97,9 @@ class CourseControllerTest {
         Faculty faculty = new Faculty(1, "First");
         Course course = new Course("History", faculty);
         CourseDto courseDto = convertToDto(course);
+        courseDto.setId(null);
         courseController.edit(courseDto, bindingResult, model);
         Mockito.verify(mockCourseService).add(course);
-    }
-    
-    @Test
-    public void postEditShouldAddEntityWithWithoutFacultyIfItDoesNotExistsInDataBase() throws Exception {
-        Faculty faculty = new Faculty(0, "First");
-        Course course = new Course("Course", faculty);
-        CourseDto courseDto = convertToDto(course);
-        Course newCourse = new Course("Course", null);
-        courseController.edit(courseDto, bindingResult, model);
-        Mockito.verify(mockCourseService).add(newCourse);
     }
 
     @Test

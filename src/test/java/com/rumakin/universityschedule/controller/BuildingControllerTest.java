@@ -90,9 +90,12 @@ class BuildingControllerTest {
 
     @Test
     public void postEditShouldAddEntityIfItDoesNotExistsInDataBase() throws Exception {
-        Building newBuilding = new Building("Main", "Khimki");
-        buildingController.edit(convertToDto(newBuilding), bindingResult);
-        Mockito.verify(mockBuildingService).add(newBuilding);
+        Building building = new Building("Main", "Khimki");
+        BuildingDto buildingDto = new BuildingDto();
+        buildingDto.setAddress(building.getAddress());
+        buildingDto.setName(building.getName());
+        buildingController.edit(buildingDto, bindingResult);
+        Mockito.verify(mockBuildingService).add(building);
     }
 
     @Test

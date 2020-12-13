@@ -102,7 +102,12 @@ class AuditoriumControllerTest {
     public void postEditShouldAddEntityIfItDoesNotExistsInDataBase() throws Exception {
         Building building = new Building(1, "Main", "Khimki");
         Auditorium auditorium = new Auditorium(15, 35, building);
-        AuditoriumDto auditoriumDto = convertToDto(auditorium);
+        AuditoriumDto auditoriumDto = new AuditoriumDto();
+        auditoriumDto.setBuildingAddress(building.getAddress());
+        auditoriumDto.setBuildingId(building.getId());
+        auditoriumDto.setBuildingName(building.getName());
+        auditoriumDto.setCapacity(auditorium.getCapacity());
+        auditoriumDto.setNumber(auditorium.getNumber());
         auditoriumController.edit(auditoriumDto, bindingResult, model);
         Mockito.verify(mockAuditoriumService).add(auditorium);
     }

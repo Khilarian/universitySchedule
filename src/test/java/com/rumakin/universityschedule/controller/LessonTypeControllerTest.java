@@ -92,7 +92,9 @@ class LessonTypeControllerTest {
     @Test
     public void postEditShouldAddEntityIfItDoesNotExistsInDataBase() throws Exception {
         LessonType lessonType = new LessonType("Exam");
-        lessonTypeController.edit(convertToDto(lessonType), bindingResult);
+        LessonTypeDto lessonTypeDto = convertToDto(lessonType);
+        lessonTypeDto.setId(null);
+        lessonTypeController.edit(lessonTypeDto, bindingResult);
         Mockito.verify(mockLessonTypeService).add(lessonType);
     }
 

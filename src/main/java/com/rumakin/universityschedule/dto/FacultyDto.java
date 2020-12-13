@@ -53,13 +53,9 @@ public class FacultyDto {
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
-        if (obj == null || getClass() != obj.getClass()) return false;
-        FacultyDto other = (FacultyDto) obj;
-        if (id != other.id) return false;
-        if (name == null) {
-            if (other.name != null) return false;
-        } else if (!name.equals(other.name)) return false;
-        return true;
+        if (!(obj instanceof FacultyDto)) return false;
+        FacultyDto dto = (FacultyDto) obj;
+        return getId().equals(dto.getId());
     }
 
 }

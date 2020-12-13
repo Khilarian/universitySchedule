@@ -94,23 +94,9 @@ public class TimeSlotDto {
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
-        if (obj == null) return false;
-        if (getClass() != obj.getClass()) return false;
-        TimeSlotDto other = (TimeSlotDto) obj;
-        if (endTime == null) {
-            if (other.endTime != null) return false;
-        } else if (!endTime.equals(other.endTime)) return false;
-        if (id != other.id) return false;
-        if (name == null) {
-            if (other.name != null) return false;
-        } else if (!name.equals(other.name)) return false;
-        if (number == null) {
-            if (other.number != null) return false;
-        } else if (!number.equals(other.number)) return false;
-        if (startTime == null) {
-            if (other.startTime != null) return false;
-        } else if (!startTime.equals(other.startTime)) return false;
-        return true;
+        if (!(obj instanceof TimeSlotDto)) return false;
+        TimeSlotDto dto = (TimeSlotDto) obj;
+        return getId().equals(dto.getId());
     }
 
     @Override

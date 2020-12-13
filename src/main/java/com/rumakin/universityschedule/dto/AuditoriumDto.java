@@ -96,20 +96,21 @@ public class AuditoriumDto implements Dto {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
+        result = prime * result + ((buildingAddress == null) ? 0 : buildingAddress.hashCode());
+        result = prime * result + ((buildingId == null) ? 0 : buildingId.hashCode());
+        result = prime * result + ((buildingName == null) ? 0 : buildingName.hashCode());
+        result = prime * result + ((capacity == null) ? 0 : capacity.hashCode());
         result = prime * result + ((id == null) ? 0 : id.hashCode());
+        result = prime * result + ((number == null) ? 0 : number.hashCode());
         return result;
     }
 
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
-        if (obj == null) return false;
-        if (getClass() != obj.getClass()) return false;
-        AuditoriumDto other = (AuditoriumDto) obj;
-        if (id == null) {
-            if (other.id != null) return false;
-        } else if (!id.equals(other.id)) return false;
-        return true;
+        if (!(obj instanceof AuditoriumDto)) return false;
+        AuditoriumDto dto = (AuditoriumDto) obj;
+        return getId().equals(dto.getId());
     }
 
 }

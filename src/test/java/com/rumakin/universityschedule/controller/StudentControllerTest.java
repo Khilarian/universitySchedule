@@ -78,6 +78,7 @@ class StudentControllerTest {
         String URI = "/students/edit/?id=1";
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders.get(URI);
         ResultActions result = mockMvc.perform(request);
+        Mockito.verify(mockStudentService).findById(1);
         result.andExpect(MockMvcResultMatchers.view().name("students/edit"))
                 .andExpect(MockMvcResultMatchers.model().attributeExists("student"))
                 .andExpect(MockMvcResultMatchers.model().attribute("student", studentDto));
@@ -99,18 +100,9 @@ class StudentControllerTest {
         Group group = new Group(1, "TT-123", null);
         Student student = new Student(0, "Khil", "Main", "khil@dot.com", "+7(123)9876543", group);
         StudentDto studentDto = convertToDto(student);
+        studentDto.setId(null);
         studentController.edit(studentDto, bindingResult, model);
         Mockito.verify(mockStudentService).add(student);
-    }
-
-    @Test
-    public void postEditShouldAddEntityWithWithoutFacultyIfItDoesNotExistsInDataBase() throws Exception {
-        Group group = new Group(1, "TT-123", null);
-        Student student = new Student(0, "Khil", "Main", "khil@dot.com", "+7(123)9876543", group);
-        StudentDto studentDto = convertToDto(student);
-        Student newStudent = new Student(0, "Khil", "Main", "khil@dot.com", "+7(123)9876543", null);
-        studentController.edit(studentDto, bindingResult, model);
-        Mockito.verify(mockStudentService).add(newStudent);
     }
 
     @Test

@@ -91,7 +91,9 @@ class FacultyControllerTest {
     @Test
     public void postEditShouldAddEntityIfItDoesNotExistsInDataBase() throws Exception {
         Faculty newFaculty = new Faculty("First");
-        facultyController.edit(convertToDto(newFaculty), bindingResult);
+        FacultyDto facultyDto = convertToDto(newFaculty);
+        facultyDto.setId(null);
+        facultyController.edit(facultyDto, bindingResult);
         Mockito.verify(mockFacultyService).add(newFaculty);
     }
 

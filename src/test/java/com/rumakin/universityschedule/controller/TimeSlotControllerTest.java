@@ -92,7 +92,9 @@ class TimeSlotControllerTest {
     @Test
     public void postEditShouldAddEntityIfItDoesNotExistsInDataBase() throws Exception {
         TimeSlot timeSlot = new TimeSlot(1, "FIRST", LocalTime.of(1, 0), LocalTime.of(2, 0));
-        timeSlotController.edit(convertToDto(timeSlot), bindingResult);
+        TimeSlotDto timeSlotDto = convertToDto(timeSlot);
+        timeSlotDto.setId(null);
+        timeSlotController.edit(timeSlotDto, bindingResult);
         Mockito.verify(mockTimeSlotService).add(timeSlot);
     }
 

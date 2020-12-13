@@ -97,19 +97,11 @@ class TeacherControllerTest {
         Faculty faculty = new Faculty(1, "TT-123");
         Teacher teacher = new Teacher(0, "Khil", "Main", "khil@dot.com", "+7(123)9876543", faculty);
         TeacherDto teacherDto = convertToDto(teacher);
+        teacherDto.setId(null);
         teacherController.edit(teacherDto, bindingResult, model);
         Mockito.verify(mockTeacherService).add(teacher);
     }
 
-    @Test
-    public void postEditShouldAddEntityWithWithoutFacultyIfItDoesNotExistsInDataBase() throws Exception {
-        Faculty faculty = new Faculty(1, "TT-123");
-        Teacher teacher = new Teacher(0, "Khil", "Main", "khil@dot.com", "+7(123)9876543", faculty);
-        TeacherDto teacherDto = convertToDto(teacher);
-        Teacher newTeacher = new Teacher(0, "Khil", "Main", "khil@dot.com", "+7(123)9876543", null);
-        teacherController.edit(teacherDto, bindingResult, model);
-        Mockito.verify(mockTeacherService).add(newTeacher);
-    }
 
     @Test
     void postEditShouldUpdateEntityIfItExistsInDataBase() throws Exception {

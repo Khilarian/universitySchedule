@@ -109,11 +109,9 @@ public class StudentDto {
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
-        if (obj == null) return false;
-        if (getClass() != obj.getClass()) return false;
-        StudentDto other = (StudentDto) obj;
-        if (personId != other.personId) return false;
-        return true;
+        if (!(obj instanceof StudentDto)) return false;
+        StudentDto dto = (StudentDto) obj;
+        return getId().equals(dto.getId());
     }
 
 }
