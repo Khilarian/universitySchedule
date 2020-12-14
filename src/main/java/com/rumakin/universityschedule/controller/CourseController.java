@@ -67,9 +67,6 @@ public class CourseController {
             return "courses/edit";
         } else {
             Course course = convertToEntity(courseDto);
-            if (courseDto.getFacultyId() == null) {
-                course.setFaculty(null);
-            }
             if (courseDto.getId() == null) {
                 courseService.add(course);
             } else {
