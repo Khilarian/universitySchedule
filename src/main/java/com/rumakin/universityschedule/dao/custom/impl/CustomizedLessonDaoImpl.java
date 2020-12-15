@@ -94,7 +94,6 @@ public class CustomizedLessonDaoImpl implements CustomizedLessonDao {
         predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get("date"), startDate));
         predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get("date"), endDate));
         query.where(predicates.toArray(new Predicate[] {}));
-        //query.multiselect(buildMultiSelectForLesson(root));
         query.multiselect(buildMultiSelect(root));
         query.orderBy(getOrderList(criteriaBuilder, root));
         TypedQuery<LessonDto> result = entityManager.createQuery(query);
@@ -113,7 +112,6 @@ public class CustomizedLessonDaoImpl implements CustomizedLessonDao {
         predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get("date"), startDate));
         predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get("date"), endDate));
         query.where(predicates.toArray(new Predicate[] {}));
-        //query.multiselect(buildMultiSelectForGroup(root));
         query.multiselect(buildMultiSelect(root));
         query.orderBy(getOrderList(criteriaBuilder, root));
         TypedQuery<LessonDto> result = entityManager.createQuery(query);
@@ -131,7 +129,6 @@ public class CustomizedLessonDaoImpl implements CustomizedLessonDao {
         predicates.add(criteriaBuilder.equal(teacherJoin.get("id"), teacherId));
         predicates.add(criteriaBuilder.equal(root.get("date"), date));
         query.where(predicates.toArray(new Predicate[] {}));
-        //query.multiselect(buildMultiSelectForLesson(root));
         query.multiselect(buildMultiSelect(root));
         query.orderBy(getOrderList(criteriaBuilder, root));
         TypedQuery<LessonDto> result = entityManager.createQuery(query);
@@ -149,7 +146,6 @@ public class CustomizedLessonDaoImpl implements CustomizedLessonDao {
         predicates.add(criteriaBuilder.equal(groupJoin.get("id"), groupId));
         predicates.add(criteriaBuilder.equal(root.get("date"), date));
         query.where(predicates.toArray(new Predicate[] {}));
-        //query.multiselect(buildMultiSelectForGroup(root));
         query.multiselect(buildMultiSelect(root));
         query.orderBy(getOrderList(criteriaBuilder, root));
         TypedQuery<LessonDto> result = entityManager.createQuery(query);

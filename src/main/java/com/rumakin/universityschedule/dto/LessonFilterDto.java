@@ -8,6 +8,12 @@ import static java.util.Objects.isNull;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.rumakin.universityschedule.validation.annotation.CheckGroupAndTeacher;
+
+import io.swagger.annotations.ApiModel;
+
+@CheckGroupAndTeacher
+@ApiModel
 public class LessonFilterDto {
 
     private Integer groupId;
