@@ -44,9 +44,10 @@ public class ScheduleController {
             } else {
                 List<LessonDto> report = getLessons(lessonFilterDto);
                 String reportMessage = prepareReportMessage(lessonFilterDto, report);
+                List<ScheduleDayDto> schedule = prepareMonthSchedule(report);
                 model.addAttribute("reportMessage", reportMessage);
                 if (!report.isEmpty()) {
-                    model.addAttribute("lessons", report);
+                    model.addAttribute("schedule", schedule);
                 }
             }
         }
@@ -63,7 +64,7 @@ public class ScheduleController {
     }
 
     private List<LessonDto> getLessons(LessonFilterDto lessonFilterDto) {
-        List<LessonDto> report;
+        List<LessonDto> lessons;
         Integer groupId = lessonFilterDto.getGroupId();
         Integer teacherId = lessonFilterDto.getTeacherId();
         LocalDate date = lessonFilterDto.getDate();
@@ -72,18 +73,18 @@ public class ScheduleController {
             LocalDate startDate = date.withDayOfMonth(1);
             LocalDate endDate = date.withDayOfMonth(date.lengthOfMonth());
             if (groupId == null) {
-                report = lessonService.findMonthScheduleForTeacher(teacherId, startDate, endDate);
+                lessons = lessonService.findMonthScheduleForTeacher(teacherId, startDate, endDate);
             } else {
-                report = lessonService.findMonthScheduleForGroup(groupId, startDate, endDate);
+                lessons = lessonService.findMonthScheduleForGroup(groupId, startDate, endDate);
             }
         } else {
             if (groupId == null) {
-                report = lessonService.findDayScheduleForTeacher(teacherId, date);
+                lessons = lessonService.findDayScheduleForTeacher(teacherId, date);
             } else {
-                report = lessonService.findDayScheduleForGroup(groupId, date);
+                lessons = lessonService.findDayScheduleForGroup(groupId, date);
             }
         }
-        return report;
+        return lessons;
     }
 
     private String prepareReportMessage(LessonFilterDto lessonFilterDto, List<LessonDto> lessons) {
@@ -95,9 +96,6 @@ public class ScheduleController {
                     .filter(t -> t.getId() == lessonFilterDto.getTeacherId()).findFirst();
             reportFor = teacher.isPresent() ? teacher.get().getFirstName() + ' ' + teacher.get().getLastName()
                     : "Missed teacher";
-
-            // .map(teacher -> teacher.getFirstName() + ' ' +
-            // teacher.getLastName()).findFirst().get();
         } else {
             Optional<Group> group = lessonService.getGroups().stream()
                     .filter(g -> g.getId() == lessonFilterDto.getGroupId()).findFirst();
@@ -116,4 +114,23 @@ public class ScheduleController {
         return reportMessage;
     }
 
+    private List<ScheduleDayDto> prepareMonthSchedule(List<LessonDto> lessons) {
+        List<ScheduleDayDto> schedule = new ArrayList<>();
+        int mockDays = lessons.get(0).getDate().getDayOfWeek().getValue();
+        LocalDate firstDay = lessons.get(0).getDate().withDayOfMonth(1);
+        int monthLength = firstDay.lengthOfMonth();
+        for (int i = 1; i < mockDays; i++) {
+            schedule.add(new ScheduleDayDto());
+        }
+        for (int i = 1; i < monthLength; i++) {
+            LocalDate date = firstDay.withDayOfMonth(i);
+            schedule.add(prepareDaySchedule(lessons, date));
+        }
+        return schedule;
+    }
+
+    private ScheduleDayDto prepareDaySchedule(List<LessonDto> lessons, LocalDate date) {
+        List<LessonDto> dayLessons = lessons.stream().filter(l -> l.getDate().equals(date)).collect(Collectors.toList());
+        return new ScheduleDayDto(date, dayLessons);
+    }
 }

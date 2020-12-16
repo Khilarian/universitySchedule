@@ -47,8 +47,7 @@
                                                         <option th:value="null">All teachers</option>
                                                         <option th:each="teacher:${teachers}" th:value="${teacher.id}"
                                                             th:utext="${teacher.firstName+' '+teacher.lastName}"></option>
-                                                    </select>
-                                                    <span class="font-italic text-danger"
+                                                    </select> <span class="font-italic text-danger"
                                                         th:if="${#fields.hasErrors('teacherId')}"
                                                         th:errors="*{teacherId}"></span>
                                                 </div>
@@ -60,8 +59,7 @@
                                                         <option th:value="null">All groups</option>
                                                         <option th:each="group:${groups}" th:value="${group.id}"
                                                             th:utext="${group.name}"></option>
-                                                    </select>
-                                                    <span class="font-italic text-danger"
+                                                    </select> <span class="font-italic text-danger"
                                                         th:if="${#fields.hasErrors('groupId')}" th:errors="*{groupId}"></span>
                                                 </div>
                                             </div>
@@ -79,8 +77,8 @@
                                                 <div class="form-group row">
                                                     <label class="col-form-label">Enter date:</label>
                                                     <input type="date" class="form-control form-control-sm"
-                                                        th:field="*{date}" th:value=${date} />
-                                                    <span class="font-italic text-danger"
+                                                        th:field="*{date}" th:value=${date} /> <span
+                                                        class="font-italic text-danger"
                                                         th:if="${#fields.hasErrors('date')}" th:errors="*{date}"></span>
                                                 </div>
                                             </div>
@@ -106,18 +104,6 @@
                         <td><strong>Course</strong></td>
                     </tr>
                 </thead>
-                <th:block th:each="lesson:${lessons}">
-                    <tbody>
-                        <tr>
-                            <td th:text="${#temporals.format(lesson.date, 'dd.MM.yyyy')}"></td>
-                            <td th:text="${lesson.timeSlotNumber}"></td>
-                            <td th:text="${lesson.timeSlotStartTime+'-'+lesson.timeSlotEndTime}"></td>
-                            <td th:text="${lesson.lessonTypeName}"></td>
-                            <td th:text="${lesson.auditoriumNumber+', '+lesson.buildingName}"></td>
-                            <td th:text="${lesson.courseName}"></td>
-                        </tr>
-                    </tbody>
-                </th:block>
             </table>
             <div class="container-sm">
                 <div class="row">
@@ -129,14 +115,26 @@
                     <div class="col">Saturday</div>
                     <div class="col">Sunday</div>
                 </div>
-                <div class="row">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">Date(only day)</h5>
-                            <p class="card-text">"${lesson.timeSlotNumber}" "${lesson.courseName}"</p>
+                <th:block th:each="day:${schedule}">
+                    <div class="row">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title" th:text="${day.date}"></h5>
+                                <p class="card-text">
+                                    <th:block th:each="lesson:${day.lessons}">
+                                        <tbody>
+                                            <td th:text="${lesson.timeSlotNumber}"></td>
+                                            <td th:text="${lesson.timeSlotStartTime+'-'+lesson.timeSlotEndTime}"></td>
+                                            <td th:text="${lesson.lessonTypeName}"></td>
+                                            <td th:text="${lesson.auditoriumNumber+', '+lesson.buildingName}"></td>
+                                            <td th:text="${lesson.courseName}"></td>
+                                        </tbody>
+                                    </th:block>
+                                </p>
+                            </div>
                         </div>
                     </div>
-                </div>
+                </th:block>
                 <div class="row"></div>
                 <div class="row"></div>
                 <div class="row"></div>
