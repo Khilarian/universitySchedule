@@ -93,18 +93,6 @@
             </div>
             <p></p>
             <h1 th:text="${reportMessage}"></h1>
-            <table class="table table-stripped">
-                <thead>
-                    <tr>
-                        <td><strong>Date</strong></td>
-                        <td><strong>Time Slot</strong></td>
-                        <td><strong>Time</strong></td>
-                        <td><strong>LessonType</strong></td>
-                        <td><strong>Auditory</strong></td>
-                        <td><strong>Course</strong></td>
-                    </tr>
-                </thead>
-            </table>
             <div class="container-sm">
                 <div class="row">
                     <div class="col">Monday</div>
@@ -121,15 +109,28 @@
                             <div class="card-body">
                                 <h5 class="card-title" th:text="${day.date}"></h5>
                                 <p class="card-text">
+                                <table class="table table-stripped">
+                                    <thead>
+                                        <tr>
+                                            <td><strong>Time Slot</strong></td>
+                                            <td><strong>Time</strong></td>
+                                            <td><strong>LessonType</strong></td>
+                                            <td><strong>Auditory</strong></td>
+                                            <td><strong>Course</strong></td>
+                                        </tr>
+                                    </thead>
                                     <th:block th:each="lesson:${day.lessons}">
                                         <tbody>
-                                            <td th:text="${lesson.timeSlotNumber}"></td>
-                                            <td th:text="${lesson.timeSlotStartTime+'-'+lesson.timeSlotEndTime}"></td>
-                                            <td th:text="${lesson.lessonTypeName}"></td>
-                                            <td th:text="${lesson.auditoriumNumber+', '+lesson.buildingName}"></td>
-                                            <td th:text="${lesson.courseName}"></td>
+                                            <tr>
+                                                <td th:text="${lesson.timeSlotNumber}"></td>
+                                                <td th:text="${lesson.timeSlotStartTime+'-'+lesson.timeSlotEndTime}"></td>
+                                                <td th:text="${lesson.lessonTypeName}"></td>
+                                                <td th:text="${lesson.auditoriumNumber+', '+lesson.buildingName}"></td>
+                                                <td th:text="${lesson.courseName}"></td>
+                                            </tr>
                                         </tbody>
                                     </th:block>
+                                </table>
                                 </p>
                             </div>
                         </div>
