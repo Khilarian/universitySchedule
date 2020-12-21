@@ -22,6 +22,7 @@ import com.rumakin.universityschedule.service.*;
 @RequestMapping("/schedule")
 public class ScheduleController {
 
+    private final static int SUNDAY_INDEX = 7;
     private final LessonService lessonService;
     private final ModelMapper modelMapper;
     private final Logger logger = LoggerFactory.getLogger(ScheduleController.class);
@@ -44,10 +45,9 @@ public class ScheduleController {
             } else {
                 List<LessonDto> report = getLessons(lessonFilterDto);
                 String reportMessage = prepareReportMessage(lessonFilterDto, report);
-                List<ScheduleDayDto> schedule = prepareMonthSchedule(report);
                 model.addAttribute("reportMessage", reportMessage);
                 if (!report.isEmpty()) {
-                    model.addAttribute("schedule", schedule);
+                    model.addAttribute("schedule", prepareMonthSchedule(report));
                 }
             }
         }
@@ -116,21 +116,27 @@ public class ScheduleController {
 
     private List<ScheduleDayDto> prepareMonthSchedule(List<LessonDto> lessons) {
         List<ScheduleDayDto> schedule = new ArrayList<>();
-        int mockDays = lessons.get(0).getDate().getDayOfWeek().getValue();
         LocalDate firstDay = lessons.get(0).getDate().withDayOfMonth(1);
+        int mockFirstDays = firstDay.getDayOfWeek().getValue();
         int monthLength = firstDay.lengthOfMonth();
-        for (int i = 1; i < mockDays; i++) {
-            schedule.add(new ScheduleDayDto());
+        for (int i = 1; i < mockFirstDays; i++) {
+            schedule.add(new ScheduleDayDto(true));
         }
-        for (int i = 1; i < monthLength; i++) {
+        for (int i = 1; i <= monthLength; i++) {
             LocalDate date = firstDay.withDayOfMonth(i);
             schedule.add(prepareDaySchedule(lessons, date));
+        }
+        LocalDate lastDay = lessons.get(lessons.size()-1).getDate();
+        int mockLastDays = SUNDAY_INDEX - lastDay.getDayOfWeek().getValue();
+        for (int i = 1; i <= mockLastDays; i++) {
+            schedule.add(new ScheduleDayDto(true));
         }
         return schedule;
     }
 
     private ScheduleDayDto prepareDaySchedule(List<LessonDto> lessons, LocalDate date) {
-        List<LessonDto> dayLessons = lessons.stream().filter(l -> l.getDate().equals(date)).collect(Collectors.toList());
+        List<LessonDto> dayLessons = lessons.stream().filter(l -> l.getDate().equals(date))
+                .collect(Collectors.toList());
         return new ScheduleDayDto(date, dayLessons);
     }
 }

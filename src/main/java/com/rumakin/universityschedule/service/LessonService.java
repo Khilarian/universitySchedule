@@ -110,21 +110,21 @@ public class LessonService {
         return auditoriumService.findById(auditoriumId).getBuilding().getName();
     }
 
-    public boolean isAuditoriumFree(int auditoriumId, int lessonId, LocalDate date, int timeSlotId) {
+    public boolean isAuditoriumFree(int auditoriumId, Integer lessonId, LocalDate date, int timeSlotId) {
         logger.debug("isAuditoriumFree() with {}, {}, {}, {}.", auditoriumId, lessonId, date, timeSlotId);
         boolean result = lessonDao.isAuditoriumFree(auditoriumId, lessonId, date, timeSlotId);
         logger.trace("isAuditoriumFree() result: {} .", result);
         return result;
     }
 
-    public Set<Integer> getBusyGroupsId(int lessonId, LocalDate date, int timeSlotId) {
+    public Set<Integer> getBusyGroupsId(Integer lessonId, LocalDate date, int timeSlotId) {
         logger.debug("getBusyGroupsId() with {}, {}, {}.", lessonId, date, timeSlotId);
         Set<Integer> result = lessonDao.getBusyGroupsId(lessonId, date, timeSlotId);
         logger.trace("getBusyGroupsId() result: {} .", result);
         return result;
     }
 
-    public Set<Integer> getBusyTeachersId(int lessonId, LocalDate date, int timeSlotId) {
+    public Set<Integer> getBusyTeachersId(Integer lessonId, LocalDate date, int timeSlotId) {
         logger.debug("getBusyTeachersId() with {}, {}, {}.", lessonId, date, timeSlotId);
         Set<Integer> result = lessonDao.getBusyTeachersId(lessonId, date, timeSlotId);
         logger.trace("getBusyTeachersId() result: {} .", result);

@@ -30,7 +30,7 @@ public class FreeAuditoriumConstraintValidator implements ConstraintValidator<Fr
     }
 
     private boolean checkIsAuditoriumFree(LessonDto lessonDto) {
-        int lessonId = lessonDto.getId();
+        Integer lessonId = lessonDto.getId();
         int auditoriumId = lessonDto.getAuditoriumId();
         LocalDate date = lessonDto.getDate();
         int timeSlotId = lessonDto.getTimeSlotId();

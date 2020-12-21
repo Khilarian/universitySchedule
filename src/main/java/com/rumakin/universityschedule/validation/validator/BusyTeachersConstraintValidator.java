@@ -50,7 +50,7 @@ public class BusyTeachersConstraintValidator implements ConstraintValidator<Busy
     }
 
     private Set<Integer> getBusyTeachersId(LessonDto lessonDto) {
-        int lessonId = lessonDto.getId();
+        Integer lessonId = lessonDto.getId();
         LocalDate date = lessonDto.getDate();
         int timeSlotId = lessonDto.getTimeSlotId();
         return lessonService.getBusyTeachersId(lessonId, date, timeSlotId);

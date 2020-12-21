@@ -7,11 +7,11 @@ import com.rumakin.universityschedule.dto.LessonDto;
 
 public interface CustomizedLessonDao {
 
-    boolean isAuditoriumFree(int auditoriumId, int lessonId, LocalDate date, int timeSlotId);
+    boolean isAuditoriumFree(int auditoriumId, Integer lessonId, LocalDate date, int timeSlotId);
 
-    Set<Integer> getBusyGroupsId(int lessonId, LocalDate date, int timeSlotId);
+    Set<Integer> getBusyGroupsId(Integer lessonId, LocalDate date, int timeSlotId);
 
-    Set<Integer> getBusyTeachersId(int lessonId, LocalDate date, int timeSlotId);
+    Set<Integer> getBusyTeachersId(Integer lessonId, LocalDate date, int timeSlotId);
 
     List<LessonDto> findMonthScheduleForTeacher(Integer teacherId, LocalDate startDate, LocalDate endDate);
 

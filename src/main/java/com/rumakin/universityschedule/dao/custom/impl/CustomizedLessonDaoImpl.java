@@ -23,7 +23,7 @@ public class CustomizedLessonDaoImpl implements CustomizedLessonDao {
     private EntityManager entityManager;
 
     @Override
-    public boolean isAuditoriumFree(int auditoriumId, int lessonId, LocalDate date, int timeSlotId) {
+    public boolean isAuditoriumFree(int auditoriumId, Integer lessonId, LocalDate date, int timeSlotId) {
         logger.debug("isAuditoriumFree() with agruments {}, {}, {}, {}.", auditoriumId, lessonId, date, timeSlotId);
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Boolean> query = criteriaBuilder.createQuery(Boolean.class);
@@ -43,7 +43,7 @@ public class CustomizedLessonDaoImpl implements CustomizedLessonDao {
     }
 
     @Override
-    public Set<Integer> getBusyGroupsId(int lessonId, LocalDate date, int timeSlotId) {
+    public Set<Integer> getBusyGroupsId(Integer lessonId, LocalDate date, int timeSlotId) {
         logger.debug("getBusyGroupsId() with agruments {}, {}, {}.", lessonId, date, timeSlotId);
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Integer> query = criteriaBuilder.createQuery(Integer.class);
@@ -58,12 +58,12 @@ public class CustomizedLessonDaoImpl implements CustomizedLessonDao {
         query.where(predicates.toArray(new Predicate[] {}));
         SetJoin<Lesson, Group> joinGroup = root.joinSet("groups");
         query.multiselect(joinGroup.get("id"));
-        TypedQuery<Integer> result = entityManager.createQuery(query);
-        return result.getResultStream().collect(Collectors.toSet());
+        TypedQuery<Integer> typedQuery = entityManager.createQuery(query);
+        return typedQuery.getResultStream().collect(Collectors.toSet());
     }
 
     @Override
-    public Set<Integer> getBusyTeachersId(int lessonId, LocalDate date, int timeSlotId) {
+    public Set<Integer> getBusyTeachersId(Integer lessonId, LocalDate date, int timeSlotId) {
         logger.debug("getBusyTeachersId() with agruments {}, {}, {}.", lessonId, date, timeSlotId);
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Integer> query = criteriaBuilder.createQuery(Integer.class);
@@ -78,8 +78,8 @@ public class CustomizedLessonDaoImpl implements CustomizedLessonDao {
         query.where(predicates.toArray(new Predicate[] {}));
         SetJoin<Lesson, Teacher> joinTeacher = root.joinSet("teachers");
         query.multiselect(joinTeacher.get("id"));
-        TypedQuery<Integer> result = entityManager.createQuery(query);
-        return result.getResultStream().collect(Collectors.toSet());
+        TypedQuery<Integer> typedQuery = entityManager.createQuery(query);
+        return typedQuery.getResultStream().collect(Collectors.toSet());
     }
 
     @Override
@@ -96,8 +96,8 @@ public class CustomizedLessonDaoImpl implements CustomizedLessonDao {
         query.where(predicates.toArray(new Predicate[] {}));
         query.multiselect(buildMultiSelect(root));
         query.orderBy(getOrderList(criteriaBuilder, root));
-        TypedQuery<LessonDto> result = entityManager.createQuery(query);
-        return result.getResultStream().collect(Collectors.toList());
+        TypedQuery<LessonDto> typedQuery = entityManager.createQuery(query);
+        return typedQuery.getResultStream().collect(Collectors.toList());
     }
 
     @Override
@@ -114,8 +114,8 @@ public class CustomizedLessonDaoImpl implements CustomizedLessonDao {
         query.where(predicates.toArray(new Predicate[] {}));
         query.multiselect(buildMultiSelect(root));
         query.orderBy(getOrderList(criteriaBuilder, root));
-        TypedQuery<LessonDto> result = entityManager.createQuery(query);
-        return result.getResultStream().collect(Collectors.toList());
+        TypedQuery<LessonDto> typedQuery = entityManager.createQuery(query);
+        return typedQuery.getResultStream().collect(Collectors.toList());
     }
 
     @Override
@@ -131,8 +131,8 @@ public class CustomizedLessonDaoImpl implements CustomizedLessonDao {
         query.where(predicates.toArray(new Predicate[] {}));
         query.multiselect(buildMultiSelect(root));
         query.orderBy(getOrderList(criteriaBuilder, root));
-        TypedQuery<LessonDto> result = entityManager.createQuery(query);
-        return result.getResultStream().collect(Collectors.toList());
+        TypedQuery<LessonDto> typedQuery = entityManager.createQuery(query);
+        return typedQuery.getResultStream().collect(Collectors.toList());
     }
 
     @Override
@@ -148,8 +148,8 @@ public class CustomizedLessonDaoImpl implements CustomizedLessonDao {
         query.where(predicates.toArray(new Predicate[] {}));
         query.multiselect(buildMultiSelect(root));
         query.orderBy(getOrderList(criteriaBuilder, root));
-        TypedQuery<LessonDto> result = entityManager.createQuery(query);
-        return result.getResultStream().collect(Collectors.toList());
+        TypedQuery<LessonDto> typedQuery = entityManager.createQuery(query);
+        return typedQuery.getResultStream().collect(Collectors.toList());
     }
 
     private List<Selection<?>> buildMultiSelectForLesson(Root<Lesson> root) {

@@ -5,8 +5,8 @@
 <script type="text/javascript" src="../../resources/js/common.js" th:src="@{/resources/js/common.js}"></script>
 <title>Schedule</title>
 </head>
-<body class="container-sm">
-    <div>
+<body class="container-fluid">
+    <div class="container">
         <nav class="navbar navbar-expand-sm bg-success navbar-light">
             <ul class="navbar-nav  text-white">
                 <li class="nav-item"><a class="nav-link" th:href="@{/university}">Home</a></li>
@@ -25,7 +25,7 @@
         </nav>
     </div>
     <div>
-        <div class="container-sm">
+        <div class="container">
             <p></p>
             <div id="filter">
                 <div class="card">
@@ -92,55 +92,62 @@
                 </div>
             </div>
             <p></p>
-            <h1 th:text="${reportMessage}"></h1>
-            <div class="container-sm">
-                <div class="row">
-                    <div class="col">Monday</div>
-                    <div class="col">Tuesday</div>
-                    <div class="col">Wednesday</div>
-                    <div class="col">Thursday</div>
-                    <div class="col">Friday</div>
-                    <div class="col">Saturday</div>
-                    <div class="col">Sunday</div>
-                </div>
-                <th:block th:each="day:${schedule}">
-                    <div class="row">
+        </div>
+        <h1 th:text="${reportMessage}"></h1>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col">Monday</div>
+                <div class="col">Tuesday</div>
+                <div class="col">Wednesday</div>
+                <div class="col">Thursday</div>
+                <div class="col">Friday</div>
+                <div class="col">Saturday</div>
+                <div class="col">Sunday</div>
+                <div class="w-100"></div>
+                <th:block th:each="day, state:${schedule}">
+                    <div class="w-100" th:if="${state.index}==7"></div>
+                    <div class="w-100" th:if="${state.index}==14"></div>
+                    <div class="w-100" th:if="${state.index}==21"></div>
+                    <div class="w-100" th:if="${state.index}==28"></div>
+                    <div class="w-100" th:if="${state.index}==35"></div>
+                    <div class="col">
                         <div class="card">
-                            <div class="card-body">
+                            <div class="card-body" th:unless="${day.mockDay}">
                                 <h5 class="card-title" th:text="${day.date}"></h5>
                                 <p class="card-text">
-                                <table class="table table-stripped">
-                                    <thead>
-                                        <tr>
-                                            <td><strong>Time Slot</strong></td>
-                                            <td><strong>Time</strong></td>
-                                            <td><strong>LessonType</strong></td>
-                                            <td><strong>Auditory</strong></td>
-                                            <td><strong>Course</strong></td>
+                                <table class="table table-sm table-bordered">
+                                    <thead th:unless="${not #lists.isEmpty(day.lessons)}">
+                                        <th scope="col" style='font-size: 20px;'>No Lessons</th>
+                                    </thead>
+                                    <thead th:if="${not #lists.isEmpty(day.lessons)}">
+                                        <tr th:if="${state.index}==0">
+                                            <!-- td><strong style='font-size: 10px;'>Time Slot</strong></td-->
+                                            <th scope="col" style='font-size: 10px;'>Time</th>
+                                            <th scope="col" style='font-size: 10px;'>LessonType</th>
+                                            <th scope="col" style='font-size: 10px;'>Auditory</th>
+                                            <th scope="col" style='font-size: 10px;'>Course</th>
                                         </tr>
                                     </thead>
-                                    <th:block th:each="lesson:${day.lessons}">
-                                        <tbody>
+                                    <tbody>
+                                        <th:block th:each="lesson, state:${day.lessons}">
                                             <tr>
-                                                <td th:text="${lesson.timeSlotNumber}"></td>
-                                                <td th:text="${lesson.timeSlotStartTime+'-'+lesson.timeSlotEndTime}"></td>
-                                                <td th:text="${lesson.lessonTypeName}"></td>
-                                                <td th:text="${lesson.auditoriumNumber+', '+lesson.buildingName}"></td>
-                                                <td th:text="${lesson.courseName}"></td>
+                                                <!-- td style='font-size: 10px;' th:text="${lesson.timeSlotNumber}"></td-->
+                                                <td style='font-size: 10px;'
+                                                    th:text="${lesson.timeSlotStartTime+'- '+lesson.timeSlotEndTime}"></td>
+                                                <td style='font-size: 10px;' th:text="${lesson.lessonTypeName}"></td>
+                                                <td style='font-size: 10px;'
+                                                    th:text="${lesson.auditoriumNumber+', '+lesson.buildingName}"></td>
+                                                <td style='font-size: 10px;' th:text="${lesson.courseName}"></td>
                                             </tr>
-                                        </tbody>
-                                    </th:block>
+                                        </th:block>
+                                    </tbody>
                                 </table>
                                 </p>
                             </div>
+                            <div class="card-body" th:if="${day.mockDay}"></div>
                         </div>
                     </div>
                 </th:block>
-                <div class="row"></div>
-                <div class="row"></div>
-                <div class="row"></div>
-                <div class="row"></div>
-                <div class="row"></div>
             </div>
         </div>
     </div>
