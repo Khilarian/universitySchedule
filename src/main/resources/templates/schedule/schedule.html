@@ -3,11 +3,12 @@
 <head>
 <div th:insert="/fragments/common :: common_head"></div>
 <script type="text/javascript" src="../../resources/js/common.js" th:src="@{/resources/js/common.js}"></script>
+<link rel="stylesheet" type="text/css" href="../../resources/css/report.css" th:href="@{/resources/css/report.css}"/>
 <title>Schedule</title>
 </head>
 <body class="container-fluid">
     <div class="container">
-        <nav class="navbar navbar-expand-sm bg-success navbar-light">
+        <nav class="navbar navbar-expand-sm bg-success navbar-light menu">
             <ul class="navbar-nav  text-white">
                 <li class="nav-item"><a class="nav-link" th:href="@{/university}">Home</a></li>
                 <li class="nav-item"><a class="nav-link" th:href="@{/buildings/getAll}">Buildings</a></li>
@@ -25,7 +26,7 @@
         </nav>
     </div>
     <div>
-        <div class="container">
+        <div class="container-fluid filter-menu">
             <p></p>
             <div id="filter">
                 <div class="card">
@@ -93,16 +94,16 @@
             </div>
             <p></p>
         </div>
-        <h1 th:text="${reportMessage}"></h1>
-        <div class="container-fluid">
+        <h1 th:text="${reportMessage}" align="center"></h1>
+        <div class="container-fluid report">
             <div class="row">
-                <div class="col" align="center"><strong>Monday</strong></div>
-                <div class="col" align="center"><strong>Tuesday</strong></div>
-                <div class="col" align="center"><strong>Wednesday</strong></div>
-                <div class="col" align="center"><strong>Thursday</strong></div>
-                <div class="col" align="center"><strong>Friday</strong></div>
-                <div class="col" align="center"><strong>Saturday</strong></div>
-                <div class="col" align="center"><strong>Sunday</strong></div>
+                <div class="col col-no-gutters" align="center"><strong>Monday</strong></div>
+                <div class="col col-no-gutters" align="center"><strong>Tuesday</strong></div>
+                <div class="col col-no-gutters" align="center"><strong>Wednesday</strong></div>
+                <div class="col col-no-gutters" align="center"><strong>Thursday</strong></div>
+                <div class="col col-no-gutters" align="center"><strong>Friday</strong></div>
+                <div class="col col-no-gutters" align="center"><strong>Saturday</strong></div>
+                <div class="col col-no-gutters" align="center"><strong>Sunday</strong></div>
                 <div class="w-100"></div>
                 <th:block th:each="day, state:${schedule}">
                     <div class="w-100" th:if="${state.index}==7"></div>
@@ -110,14 +111,14 @@
                     <div class="w-100" th:if="${state.index}==21"></div>
                     <div class="w-100" th:if="${state.index}==28"></div>
                     <div class="w-100" th:if="${state.index}==35"></div>
-                    <div class="col">
+                    <div class="col col-no-gutters">
                         <div class="card">
                             <div class="card-body" th:unless="${day.mockDay}">
                                 <h7 class="card-title" th:text="${day.date}"></h7>
                                 <p class="card-text">
                                 <table class="table table-sm table-bordered">
                                     <thead th:unless="${not #lists.isEmpty(day.lessons)}">
-                                        <th scope="col" style='font-size: 20px;'>No Lessons</th>
+                                        <th scope="col" style='font-size: 15px;'>No Lessons</th>
                                     </thead>
                                     <thead th:if="${not #lists.isEmpty(day.lessons)}">
                                         <tr>

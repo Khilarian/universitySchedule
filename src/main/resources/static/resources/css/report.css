@@ -1,0 +1,19 @@
+@charset "UTF-8";
+
+.report {
+	min-width: 1900px;
+	margin-right: 0;
+	margin-left: 0;
+}
+
+.filter-menu {
+    min-width: 1000px;
+    margin-right: 0;
+    margin-left: 0;
+}
+
+.menu {
+    min-width: 800px;
+    margin-right: 0;
+    margin-left: 0;
+}
