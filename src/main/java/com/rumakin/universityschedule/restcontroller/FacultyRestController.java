@@ -35,7 +35,7 @@ public class FacultyRestController {
         this.modelMapper = modelMapper;
     }
 
-    @GetMapping("")
+    @GetMapping
     public List<FacultyDto> findAll() {
         logger.debug("findAll() faculties");
         List<FacultyDto> faculties = facultyService.findAll().stream().map(b -> convertToDto(b))
@@ -52,19 +52,19 @@ public class FacultyRestController {
         return new ResponseEntity<>(facultyDto, HttpStatus.OK);
     }
 
-    @PostMapping("")
+    @PostMapping
     public ResponseEntity<FacultyDto> add(@Valid @RequestBody FacultyDto facultyDto) {
         Faculty faculty = facultyService.add(convertToEntity(facultyDto));
         return new ResponseEntity<>(convertToDto(faculty), HttpStatus.CREATED);
     }
 
-    @PutMapping("")
+    @PutMapping
     public ResponseEntity<FacultyDto> update(@Valid @RequestBody FacultyDto facultyDto) {
         Faculty faculty = facultyService.update(convertToEntity(facultyDto));
         return new ResponseEntity<>(convertToDto(faculty), HttpStatus.OK);
     }
 
-    @DeleteMapping(value = "/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<FacultyDto> delete(@PathVariable(value = "id") int id) {
         facultyService.deleteById(id);
         return new ResponseEntity<>(null, HttpStatus.OK);

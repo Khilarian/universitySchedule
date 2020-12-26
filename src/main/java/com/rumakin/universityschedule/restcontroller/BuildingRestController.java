@@ -35,7 +35,7 @@ public class BuildingRestController {
         this.modelMapper = modelMapper;
     }
 
-    @GetMapping("")
+    @GetMapping
     public List<BuildingDto> findAll() {
         logger.debug("findAll() buildings");
         List<BuildingDto> buildings = buildingService.findAll().stream().map(b -> convertToDto(b))
@@ -52,19 +52,19 @@ public class BuildingRestController {
         return new ResponseEntity<>(buildingDto, HttpStatus.OK);
     }
 
-    @PostMapping("")
+    @PostMapping
     public ResponseEntity<BuildingDto> add(@Valid @RequestBody BuildingDto buildingDto) {
         Building building = buildingService.add(convertToEntity(buildingDto));
         return new ResponseEntity<>(convertToDto(building), HttpStatus.CREATED);
     }
 
-    @PutMapping("")
+    @PutMapping
     public ResponseEntity<BuildingDto> update(@Valid @RequestBody BuildingDto buildingDto) {
         Building building = buildingService.update(convertToEntity(buildingDto));
         return new ResponseEntity<>(convertToDto(building), HttpStatus.OK);
     }
 
-    @DeleteMapping(value = "/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<BuildingDto> delete(@PathVariable(value = "id") int id) {
         buildingService.deleteById(id);
         return new ResponseEntity<>(null, HttpStatus.OK);

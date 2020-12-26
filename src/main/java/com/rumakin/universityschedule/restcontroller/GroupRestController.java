@@ -35,7 +35,7 @@ public class GroupRestController {
         this.modelMapper = modelMapper;
     }
 
-    @GetMapping("")
+    @GetMapping
     public List<GroupDto> findAll() {
         logger.debug("findAll() groups");
         List<GroupDto> groups = groupService.findAll().stream().map(b -> convertToDto(b))
@@ -52,19 +52,19 @@ public class GroupRestController {
         return new ResponseEntity<>(groupDto, HttpStatus.OK);
     }
 
-    @PostMapping("")
+    @PostMapping
     public ResponseEntity<GroupDto> add(@Valid @RequestBody GroupDto groupDto) {
         Group group = groupService.add(convertToEntity(groupDto));
         return new ResponseEntity<>(convertToDto(group), HttpStatus.CREATED);
     }
 
-    @PutMapping("")
+    @PutMapping
     public ResponseEntity<GroupDto> update(@Valid @RequestBody GroupDto groupDto) {
         Group group = groupService.update(convertToEntity(groupDto));
         return new ResponseEntity<>(convertToDto(group), HttpStatus.OK);
     }
 
-    @DeleteMapping(value = "/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<GroupDto> delete(@PathVariable(value = "id") int id) {
         groupService.deleteById(id);
         return new ResponseEntity<>(null, HttpStatus.OK);

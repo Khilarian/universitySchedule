@@ -35,7 +35,7 @@ public class TimeSlotRestController {
         this.modelMapper = modelMapper;
     }
 
-    @GetMapping("")
+    @GetMapping
     public List<TimeSlotDto> findAll() {
         logger.debug("findAll() lesson types");
         List<TimeSlotDto> timeSlots = timeSlotService.findAll().stream().map(b -> convertToDto(b))
@@ -52,19 +52,19 @@ public class TimeSlotRestController {
         return new ResponseEntity<>(timeSlotDto, HttpStatus.OK);
     }
 
-    @PostMapping("")
+    @PostMapping
     public ResponseEntity<TimeSlotDto> add(@Valid @RequestBody TimeSlotDto timeSlotDto) {
         TimeSlot timeSlot = timeSlotService.add(convertToEntity(timeSlotDto));
         return new ResponseEntity<>(convertToDto(timeSlot), HttpStatus.CREATED);
     }
 
-    @PutMapping("")
+    @PutMapping
     public ResponseEntity<TimeSlotDto> update(@Valid @RequestBody TimeSlotDto timeSlotDto) {
         TimeSlot timeSlot = timeSlotService.update(convertToEntity(timeSlotDto));
         return new ResponseEntity<>(convertToDto(timeSlot), HttpStatus.OK);
     }
 
-    @DeleteMapping(value = "/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<TimeSlotDto> delete(@PathVariable(value = "id") int id) {
         timeSlotService.deleteById(id);
         return new ResponseEntity<>(null, HttpStatus.OK);

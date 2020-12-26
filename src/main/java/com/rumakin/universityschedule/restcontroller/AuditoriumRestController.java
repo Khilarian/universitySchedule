@@ -35,7 +35,7 @@ public class AuditoriumRestController {
         this.modelMapper = modelMapper;
     }
 
-    @GetMapping("")
+    @GetMapping
     public List<AuditoriumDto> getAll() {
         logger.debug("findAll() auditoriums");
         List<AuditoriumDto> auditoriums = auditoriumService.findAll().stream().map(b -> convertToDto(b))
@@ -52,19 +52,19 @@ public class AuditoriumRestController {
         return new ResponseEntity<>(auditoriumDto, HttpStatus.OK);
     }
 
-    @PostMapping("")
+    @PostMapping
     public ResponseEntity<AuditoriumDto> add(@Valid @RequestBody AuditoriumDto auditoriumDto) {
         Auditorium auditorium = auditoriumService.add(convertToEntity(auditoriumDto));
         return new ResponseEntity<>(convertToDto(auditorium), HttpStatus.CREATED);
     }
 
-    @PutMapping("")
+    @PutMapping
     public ResponseEntity<AuditoriumDto> update(@Valid @RequestBody AuditoriumDto auditoriumDto) {
         Auditorium auditorium = auditoriumService.update(convertToEntity(auditoriumDto));
         return new ResponseEntity<>(convertToDto(auditorium), HttpStatus.OK);
     }
 
-    @DeleteMapping(value = "/{id}")
+    @DeleteMapping("/{id}")
     public HttpStatus delete(@PathVariable(value = "id") int id) {
         auditoriumService.deleteById(id);
         return HttpStatus.OK;

@@ -35,7 +35,7 @@ public class LessonTypeRestController {
         this.modelMapper = modelMapper;
     }
 
-    @GetMapping("")
+    @GetMapping
     public List<LessonTypeDto> findAll() {
         logger.debug("findAll() lesson types");
         List<LessonTypeDto> lessonTypes = lessonTypeService.findAll().stream().map(b -> convertToDto(b))
@@ -52,19 +52,19 @@ public class LessonTypeRestController {
         return new ResponseEntity<>(lessonTypeDto, HttpStatus.OK);
     }
 
-    @PostMapping("")
+    @PostMapping
     public ResponseEntity<LessonTypeDto> add(@Valid @RequestBody LessonTypeDto lessonTypeDto) {
         LessonType lessonType = lessonTypeService.add(convertToEntity(lessonTypeDto));
         return new ResponseEntity<>(convertToDto(lessonType), HttpStatus.CREATED);
     }
 
-    @PutMapping("")
+    @PutMapping
     public ResponseEntity<LessonTypeDto> update(@Valid @RequestBody LessonTypeDto lessonTypeDto) {
         LessonType lessonType = lessonTypeService.update(convertToEntity(lessonTypeDto));
         return new ResponseEntity<>(convertToDto(lessonType), HttpStatus.OK);
     }
 
-    @DeleteMapping(value = "/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<LessonTypeDto> delete(@PathVariable(value = "id") int id) {
         lessonTypeService.deleteById(id);
         return new ResponseEntity<>(null, HttpStatus.OK);

@@ -35,7 +35,7 @@ public class TeacherRestController {
         this.modelMapper = modelMapper;
     }
 
-    @GetMapping("")
+    @GetMapping
     public List<TeacherDto> findAll() {
         logger.debug("findAll() teachers");
         List<TeacherDto> teachers = teacherService.findAll().stream().map(b -> convertToDto(b))
@@ -52,19 +52,19 @@ public class TeacherRestController {
         return new ResponseEntity<>(teacherDto, HttpStatus.OK);
     }
 
-    @PostMapping("")
+    @PostMapping
     public ResponseEntity<TeacherDto> add(@Valid @RequestBody TeacherDto teacherDto) {
         Teacher teacher = teacherService.add(convertToEntity(teacherDto));
         return new ResponseEntity<>(convertToDto(teacher), HttpStatus.CREATED);
     }
 
-    @PutMapping("")
+    @PutMapping
     public ResponseEntity<TeacherDto> update(@Valid @RequestBody TeacherDto teacherDto) {
         Teacher teacher = teacherService.update(convertToEntity(teacherDto));
         return new ResponseEntity<>(convertToDto(teacher), HttpStatus.OK);
     }
 
-    @DeleteMapping(value = "/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<TeacherDto> delete(@PathVariable(value = "id") int id) {
         teacherService.deleteById(id);
         return new ResponseEntity<>(null, HttpStatus.OK);
