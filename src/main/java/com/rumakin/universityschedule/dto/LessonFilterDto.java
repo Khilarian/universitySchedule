@@ -23,6 +23,7 @@ public class LessonFilterDto {
     @NotNull
     private Integer monthScheduleCheck;
 
+    @NotNull
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private LocalDate date;
 
