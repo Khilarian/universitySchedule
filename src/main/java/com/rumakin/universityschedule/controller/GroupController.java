@@ -8,6 +8,7 @@ import javax.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.slf4j.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -45,6 +46,7 @@ public class GroupController {
     }
 
     @GetMapping("/edit")
+    @PreAuthorize("hasAuthority('write')")
     public String edit(Integer id, Model model) {
         GroupDto group = new GroupDto();
         if (id != null) {
@@ -75,6 +77,7 @@ public class GroupController {
     }
 
     @GetMapping("/delete")
+    @PreAuthorize("hasAuthority('write')")
     public String deleteUser(int id) {
         groupService.deleteById(id);
         return REDIRECT_PAGE;
