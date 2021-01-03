@@ -109,7 +109,7 @@
                 <div class="col col-no-gutters">
                     <div class="card">
                         <div class="card-body" th:unless="${day.mockDay}">
-                            <h7 class="card-title" th:text="${day.date}"></h7>
+                            <h7 class="card-title" th:text="${#temporals.day(day.date)}"></h7>
                             <p class="card-text">
                             <table class="table table-sm table-bordered">
                                 <thead th:unless="${not #lists.isEmpty(day.lessons)}">
