@@ -9,6 +9,7 @@ import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -45,6 +46,7 @@ public class TimeSlotController {
     }
 
     @GetMapping("/edit")
+    @PreAuthorize("hasAuthority('write')")
     public String edit(Integer id, Model model) {
         TimeSlotDto timeSlot = new TimeSlotDto();
         if (id != null) {
@@ -58,6 +60,7 @@ public class TimeSlotController {
     }
 
     @PostMapping("/edit")
+    @PreAuthorize("hasAuthority('write')")
     public String edit(@Valid @ModelAttribute(value = "timeSlot") TimeSlotDto timeSlotDto,
             BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
@@ -73,6 +76,7 @@ public class TimeSlotController {
     }
 
     @GetMapping(value = "/delete")
+    @PreAuthorize("hasAuthority('write')")
     public String delete(int id) {
         timeSlotService.deleteById(id);
         return REDIRECT_PAGE;

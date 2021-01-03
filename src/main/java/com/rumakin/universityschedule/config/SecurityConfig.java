@@ -29,8 +29,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll()
                 .antMatchers(HttpMethod.GET, "/*").permitAll()
                 .antMatchers(HttpMethod.GET, "/*/getAll").permitAll()
-                .antMatchers(HttpMethod.GET, "/*/edit/").permitAll()/**.hasAuthority(Permission.WRITE.getPermission())**/
-                //.antMatchers(HttpMethod.GET, "/*/delete/").hasAuthority(Permission.WRITE.getPermission())
+                .antMatchers(HttpMethod.GET, "/*/edit/").hasAuthority(Permission.WRITE.getPermission())
                 .antMatchers(HttpMethod.POST, "/**").hasAuthority(Permission.WRITE.getPermission())
                 .antMatchers(HttpMethod.PUT, "/**").hasAuthority(Permission.WRITE.getPermission())
                 .antMatchers(HttpMethod.GET, "/api/**").hasAuthority(Permission.READ.getPermission())

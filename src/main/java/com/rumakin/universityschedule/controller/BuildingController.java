@@ -9,6 +9,7 @@ import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -45,6 +46,7 @@ public class BuildingController {
     }
 
     @GetMapping("/edit")
+    @PreAuthorize("hasAuthority('write')")
     public String edit(Integer id, Model model) {
         BuildingDto building = new BuildingDto();
         if (id != null) {
@@ -58,6 +60,7 @@ public class BuildingController {
     }
 
     @PostMapping("/edit")
+    @PreAuthorize("hasAuthority('write')")
     public String edit(@Valid @ModelAttribute(value = "building") BuildingDto buildingDto,
             BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
@@ -73,6 +76,7 @@ public class BuildingController {
     }
 
     @GetMapping(value = "/delete")
+    @PreAuthorize("hasAuthority('write')")
     public String delete(int id) {
         buildingService.deleteById(id);
         return REDIRECT_PAGE;

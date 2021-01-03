@@ -5,35 +5,15 @@
 <script type="text/javascript" src="../../resources/js/common.js" th:src="@{/resources/js/common.js}"></script>
 <title>Lessons</title>
 </head>
-
 <body class="container-sm">
-
-    <div>
-        <nav class="navbar navbar-expand-sm bg-success navbar-light">
-            <ul class="navbar-nav  text-white">
-                <li class="nav-item"><a class="nav-link" th:href="@{/university}">Home</a></li>
-                <li class="nav-item"><a class="nav-link" th:href="@{/buildings/getAll}">Buildings</a></li>
-                <li class="nav-item"><a class="nav-link" th:href="@{/auditoriums/getAll}">Auditoriums</a></li>
-                <li class="nav-item"><a class="nav-link" th:href="@{/groups/getAll}">Groups</a></li>
-                <li class="nav-item"><a class="nav-link" th:href="@{/faculties/getAll}">Faculties</a></li>
-                <li class="nav-item"><a class="nav-link" th:href="@{/courses/getAll}">Courses</a></li>
-                <li class="nav-item"><a class="nav-link" th:href="@{/students/getAll}">Students</a></li>
-                <li class="nav-item"><a class="nav-link" th:href="@{/teachers/getAll}">Teachers</a></li>
-                <li class="nav-item"><a class="nav-link active" href="#">Lessons</a></li>
-                <li class="nav-item"><a class="nav-link" th:href="@{/lessonTypes/getAll}">Lesson Types</a></li>
-                <li class="nav-item"><a class="nav-link" th:href="@{/timeSlots/getAll}">Time Slots</a></li>
-            </ul>
-        </nav>
-    </div>
-
+    <div th:insert="/fragments/common :: nav_menu"></div>
     <h3 align="center">List of lessons</h3>
     <a th:href="@{/lessons/edit}" class="btn btn-secondary">Add new lesson</a>
-
     <div>
         <table class="table table-bordered">
             <thead class="bg-primary text-white">
                 <tr>
-                <td><strong>Id</strong></td>
+                    <td><strong>Id</strong></td>
                     <td><strong>Course name</strong></td>
                     <td><strong>Lesson Type</strong></td>
                     <td><strong>Date</strong></td>
@@ -46,7 +26,7 @@
                 </tr>
             </thead>
             <tr th:each="lesson:${lessons}" class="table-success">
-            <td th:text="${lesson.id}"></td>
+                <td th:text="${lesson.id}"></td>
                 <td th:text="${lesson.courseName}"></td>
                 <td th:text="${lesson.lessonTypeName}"></td>
                 <td th:text="${lesson.date}"></td>
@@ -54,7 +34,8 @@
                 <td th:text="|${lesson.auditoriumNumber} in ${lesson.buildingName}"></td>
                 <td>
                     <ul>
-                        <li th:each="teacher : ${lesson.teachers}"><span th:text="|${teacher.firstName} ${teacher.lastName}|" /></span></li>
+                        <li th:each="teacher : ${lesson.teachers}"><span
+                            th:text="|${teacher.firstName} ${teacher.lastName}|" /></span></li>
                     </ul>
                 </td>
                 <td>
@@ -67,8 +48,6 @@
             </tr>
         </table>
     </div>
-
     <div th:insert="fragments/common :: deleteEntry"></div>
-
 </body>
 </html>

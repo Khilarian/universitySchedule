@@ -3,28 +3,11 @@
 <head>
 <div th:insert="/fragments/common :: common_head"></div>
 <script type="text/javascript" src="../../resources/js/common.js" th:src="@{/resources/js/common.js}"></script>
-<link rel="stylesheet" type="text/css" href="../../resources/css/report.css" th:href="@{/resources/css/report.css}"/>
+<link rel="stylesheet" type="text/css" href="../../resources/css/report.css" th:href="@{/resources/css/report.css}" />
 <title>Schedule</title>
 </head>
 <body class="container-fluid">
-    <div class="container">
-        <nav class="navbar navbar-expand-sm bg-success navbar-light menu">
-            <ul class="navbar-nav  text-white">
-                <li class="nav-item"><a class="nav-link" th:href="@{/university}">Home</a></li>
-                <li class="nav-item"><a class="nav-link" th:href="@{/buildings/getAll}">Buildings</a></li>
-                <li class="nav-item"><a class="nav-link" th:href="@{/auditoriums/getAll}">Auditoriums</a></li>
-                <li class="nav-item"><a class="nav-link" th:href="@{/groups/getAll}">Groups</a></li>
-                <li class="nav-item"><a class="nav-link" th:href="@{/faculties/getAll}">Faculties</a></li>
-                <li class="nav-item"><a class="nav-link" th:href="@{/courses/getAll}">Courses</a></li>
-                <li class="nav-item"><a class="nav-link" th:href="@{/students/getAll}">Students</a></li>
-                <li class="nav-item"><a class="nav-link" th:href="@{/teachers/getAll}">Teachers</a></li>
-                <li class="nav-item"><a class="nav-link" th:href="@{/teachers/getAll}">Lessons</a></li>
-                <li class="nav-item"><a class="nav-link" th:href="@{/lessonTypes/getAll}">Lesson Types</a></li>
-                <li class="nav-item"><a class="nav-link" th:href="@{/timeSlots/getAll}">Time Slots</a></li>
-                <li class="nav-item"><a class="nav-link" href=#>Schedule</a></li>
-            </ul>
-        </nav>
-    </div>
+    <div th:insert="/fragments/common :: nav_menu"></div>
     <div>
         <div class="container-fluid filter-menu">
             <p></p>
@@ -97,13 +80,27 @@
         <h1 th:text="${reportMessage}" align="center"></h1>
         <div th:if="${not #lists.isEmpty(schedule)}" class="container-fluid report">
             <div class="row">
-                <div class="col col-no-gutters" align="center"><strong>Monday</strong></div>
-                <div class="col col-no-gutters" align="center"><strong>Tuesday</strong></div>
-                <div class="col col-no-gutters" align="center"><strong>Wednesday</strong></div>
-                <div class="col col-no-gutters" align="center"><strong>Thursday</strong></div>
-                <div class="col col-no-gutters" align="center"><strong>Friday</strong></div>
-                <div class="col col-no-gutters" align="center"><strong>Saturday</strong></div>
-                <div class="col col-no-gutters" align="center"><strong>Sunday</strong></div>
+                <div class="col col-no-gutters" align="center">
+                    <strong>Monday</strong>
+                </div>
+                <div class="col col-no-gutters" align="center">
+                    <strong>Tuesday</strong>
+                </div>
+                <div class="col col-no-gutters" align="center">
+                    <strong>Wednesday</strong>
+                </div>
+                <div class="col col-no-gutters" align="center">
+                    <strong>Thursday</strong>
+                </div>
+                <div class="col col-no-gutters" align="center">
+                    <strong>Friday</strong>
+                </div>
+                <div class="col col-no-gutters" align="center">
+                    <strong>Saturday</strong>
+                </div>
+                <div class="col col-no-gutters" align="center">
+                    <strong>Sunday</strong>
+                </div>
                 <div class="w-100"></div>
                 <th:block th:each="day, state:${schedule}">
                     <div class="w-100" th:if="${state.index}==7"></div>

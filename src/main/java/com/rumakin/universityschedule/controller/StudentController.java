@@ -8,6 +8,7 @@ import javax.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.slf4j.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -46,6 +47,7 @@ public class StudentController {
     }
 
     @GetMapping("/edit")
+    @PreAuthorize("hasAuthority('write')")
     public String edit(Integer id, Model model) {
         StudentDto student = new StudentDto();
         if (id != null) {
@@ -60,6 +62,7 @@ public class StudentController {
     }
 
     @PostMapping("/edit")
+    @PreAuthorize("hasAuthority('write')")
     public String edit(@Valid @ModelAttribute(value = "student") StudentDto studentDto, BindingResult bindingResult,
             Model model) {
         if (bindingResult.hasErrors()) {
@@ -77,6 +80,7 @@ public class StudentController {
     }
 
     @GetMapping(value = "/delete")
+    @PreAuthorize("hasAuthority('write')")
     public String delete(int id) {
         studentService.deleteById(id);
         return REDIRECT_PAGE;

@@ -5,31 +5,10 @@
 <script type="text/javascript" src="../../resources/js/common.js" th:src="@{/resources/js/common.js}"></script>
 <title>Teachers</title>
 </head>
-
 <body class="container-sm">
-
-    <div>
-        <nav class="navbar navbar-expand-sm bg-success navbar-light">
-            <ul class="navbar-nav  text-white">
-                <li class="nav-item"><a class="nav-link" th:href="@{/university}">Home</a></li>
-                <li class="nav-item"><a class="nav-link" th:href="@{/buildings/getAll}">Buildings</a></li>
-                <li class="nav-item"><a class="nav-link" th:href="@{/auditoriums/getAll}">Auditoriums</a></li>
-                <li class="nav-item"><a class="nav-link" th:href="@{/groups/getAll}">Groups</a></li>
-                <li class="nav-item"><a class="nav-link" th:href="@{/faculties/getAll}">Faculties</a></li>
-                <li class="nav-item"><a class="nav-link" th:href="@{/courses/getAll}">Courses</a></li>
-                <li class="nav-item"><a class="nav-link" th:href="@{/students/getAll}">Students</a></li>
-                <li class="nav-item"><a class="nav-link active" href="#">Teachers</a></li>
-                <li class="nav-item"><a class="nav-link" th:href="@{/lessons/getAll}">Lessons</a></li>
-                <li class="nav-item"><a class="nav-link" th:href="@{/lessonTypes/getAll}">Lesson Types</a></li>
-                <li class="nav-item"><a class="nav-link" th:href="@{/timeSlots/getAll}">Time Slots</a></li>
-            </ul>
-        </nav>
-    </div>
-
+    <div th:insert="/fragments/common :: nav_menu"></div>
     <h3 align="center">List of teachers</h3>
-
     <a th:href="@{/teachers/edit}" class="btn btn-secondary">Add new teacher</a>
-
     <div>
         <table class="table table-bordered">
             <thead class="bg-primary text-white">
@@ -59,10 +38,7 @@
                 <td><a th:href="@{/teachers/delete/(id=${teacher.id})}" class="btn btn-danger">Delete</a></td>
             </tr>
         </table>
-
         <div th:insert="fragments/common :: deleteEntry"></div>
-
     </div>
-
 </body>
 </html>

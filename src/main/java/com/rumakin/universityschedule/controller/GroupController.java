@@ -61,6 +61,7 @@ public class GroupController {
     }
 
     @PostMapping("/edit")
+    @PreAuthorize("hasAuthority('write')")
     public String edit(@Valid @ModelAttribute(value = "group") GroupDto groupDto, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             model.addAttribute("faculties", groupService.getFaculties());

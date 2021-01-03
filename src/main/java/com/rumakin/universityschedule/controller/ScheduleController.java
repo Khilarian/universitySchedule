@@ -9,6 +9,7 @@ import javax.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.slf4j.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -34,6 +35,7 @@ public class ScheduleController {
     }
 
     @GetMapping("/schedule")
+    @PreAuthorize("hasAuthority('write')")
     public String getSchedule(@Valid @ModelAttribute(value = "lessonFilterDto") final LessonFilterDto lessonFilterDto,
             BindingResult bindingResult, Model model) {
         logger.debug("getSchedule()");
