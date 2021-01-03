@@ -7,146 +7,141 @@
 <title>Schedule</title>
 </head>
 <body class="container-fluid">
-    <div th:insert="/fragments/common :: nav_menu"></div>
-    <div>
-        <div class="container-fluid filter-menu">
-            <p></p>
-            <div id="filter">
-                <div class="card">
-                    <div class="card-header" id="headerOne">
-                        <button class="btn btn-secondary btn-sm" data-toggle="collapse" data-target="#collapseOne"
-                            aria-expanded="true" aria-controls="collapseOne">Filters</button>
-                    </div>
-                    <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#filter">
-                        <div class="card-body">
-                            <div class="container">
-                                <form action="#" th:action="@{/schedule/schedule}" method="get"
-                                    th:object="${lessonFilterDto}">
-                                    <div class="container">
-                                        <div class="row">
-                                            <div class="col">
-                                                <div class="form-group row">
-                                                    <label class="col-form-label">Select teacher:</label>
-                                                    <select class="form-control form-control-sm" th:field="*{teacherId}">
-                                                        <option th:value="null">All teachers</option>
-                                                        <option th:each="teacher:${teachers}" th:value="${teacher.id}"
-                                                            th:utext="${teacher.firstName+' '+teacher.lastName}"></option>
-                                                    </select> <span class="font-italic text-danger"
-                                                        th:if="${#fields.hasErrors('teacherId')}"
-                                                        th:errors="*{teacherId}"></span>
-                                                </div>
+    <div class="container sm" th:insert="/fragments/common :: nav_menu"></div>
+    <div class="row justify-content-center filter-menu">
+        <p></p>
+        <div id="filter">
+            <div class="card">
+                <div class="card-header" id="headerOne">
+                    <button class="btn btn-secondary btn-sm" data-toggle="collapse" data-target="#collapseOne"
+                        aria-expanded="true" aria-controls="collapseOne">Filters</button>
+                </div>
+                <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#filter">
+                    <div class="card-body">
+                        <div class="container-fluid">
+                            <form action="#" th:action="@{/schedule/schedule}" method="get"
+                                th:object="${lessonFilterDto}">
+                                <div class="container">
+                                    <div class="row">
+                                        <div class="col">
+                                            <div class="form-group row">
+                                                <label class="col-form-label">Select teacher:</label>
+                                                <select class="form-control form-control-sm" th:field="*{teacherId}">
+                                                    <option th:value="null">All teachers</option>
+                                                    <option th:each="teacher:${teachers}" th:value="${teacher.id}"
+                                                        th:utext="${teacher.firstName+' '+teacher.lastName}"></option>
+                                                </select> <span class="font-italic text-danger"
+                                                    th:if="${#fields.hasErrors('teacherId')}" th:errors="*{teacherId}"></span>
                                             </div>
-                                            <div class="col">
-                                                <div class="form-group row">
-                                                    <label class="col-form-label">Select group:</label>
-                                                    <select class="form-control form-control-sm" th:field="*{groupId}">
-                                                        <option th:value="null">All groups</option>
-                                                        <option th:each="group:${groups}" th:value="${group.id}"
-                                                            th:utext="${group.name}"></option>
-                                                    </select> <span class="font-italic text-danger"
-                                                        th:if="${#fields.hasErrors('groupId')}" th:errors="*{groupId}"></span>
-                                                </div>
+                                        </div>
+                                        <div class="col">
+                                            <div class="form-group row">
+                                                <label class="col-form-label">or Select group:</label>
+                                                <select class="form-control form-control-sm" th:field="*{groupId}">
+                                                    <option th:value="null">All groups</option>
+                                                    <option th:each="group:${groups}" th:value="${group.id}"
+                                                        th:utext="${group.name}"></option>
+                                                </select> <span class="font-italic text-danger"
+                                                    th:if="${#fields.hasErrors('groupId')}" th:errors="*{groupId}"></span>
                                             </div>
-                                            <div class="col">
-                                                <div class="form-group row">
-                                                    <label class="col-form-label">Select period:</label>
-                                                    <select class="form-control form-control-sm" id="monthScheduleCheck"
-                                                        name="monthScheduleCheck">
-                                                        <option value="1">For month</option>
-                                                        <option value="0">For day</option>
-                                                    </select>
-                                                </div>
+                                        </div>
+                                        <div class="col">
+                                            <div class="form-group row">
+                                                <label class="col-form-label">Select period:</label>
+                                                <select class="form-control form-control-sm" id="monthScheduleCheck"
+                                                    name="monthScheduleCheck">
+                                                    <option value="1">For month</option>
+                                                    <option value="0">For day</option>
+                                                </select>
                                             </div>
-                                            <div class="col">
-                                                <div class="form-group row">
-                                                    <label class="col-form-label">Enter date:</label>
-                                                    <input type="date" class="form-control form-control-sm"
-                                                        th:field="*{date}" th:value=${date} /> <span
-                                                        class="font-italic text-danger"
-                                                        th:if="${#fields.hasErrors('date')}" th:errors="*{date}"></span>
-                                                </div>
+                                        </div>
+                                        <div class="col">
+                                            <div class="form-group row">
+                                                <label class="col-form-label">Enter date:</label>
+                                                <input type="date" class="form-control form-control-sm"
+                                                    th:field="*{date}" th:value=${date} /> <span
+                                                    class="font-italic text-danger" th:if="${#fields.hasErrors('date')}"
+                                                    th:errors="*{date}"></span>
                                             </div>
                                         </div>
                                     </div>
-                                    <button class="btn btn-outline-info btn-sm" type="submit">Apply</button>
-                                </form>
-                            </div>
+                                </div>
+                                <button class="btn btn-outline-info btn-sm" type="submit">Apply</button>
+                            </form>
                         </div>
                     </div>
                 </div>
             </div>
-            <p></p>
         </div>
-        <h1 th:text="${reportMessage}" align="center"></h1>
-        <div th:if="${not #lists.isEmpty(schedule)}" class="container-fluid report">
-            <div class="row">
-                <div class="col col-no-gutters" align="center">
-                    <strong>Monday</strong>
-                </div>
-                <div class="col col-no-gutters" align="center">
-                    <strong>Tuesday</strong>
-                </div>
-                <div class="col col-no-gutters" align="center">
-                    <strong>Wednesday</strong>
-                </div>
-                <div class="col col-no-gutters" align="center">
-                    <strong>Thursday</strong>
-                </div>
-                <div class="col col-no-gutters" align="center">
-                    <strong>Friday</strong>
-                </div>
-                <div class="col col-no-gutters" align="center">
-                    <strong>Saturday</strong>
-                </div>
-                <div class="col col-no-gutters" align="center">
-                    <strong>Sunday</strong>
-                </div>
-                <div class="w-100"></div>
-                <th:block th:each="day, state:${schedule}">
-                    <div class="w-100" th:if="${state.index}==7"></div>
-                    <div class="w-100" th:if="${state.index}==14"></div>
-                    <div class="w-100" th:if="${state.index}==21"></div>
-                    <div class="w-100" th:if="${state.index}==28"></div>
-                    <div class="w-100" th:if="${state.index}==35"></div>
-                    <div class="col col-no-gutters">
-                        <div class="card">
-                            <div class="card-body" th:unless="${day.mockDay}">
-                                <h7 class="card-title" th:text="${day.date}"></h7>
-                                <p class="card-text">
-                                <table class="table table-sm table-bordered">
-                                    <thead th:unless="${not #lists.isEmpty(day.lessons)}">
-                                        <th scope="col" style='font-size: 15px;'>No Lessons</th>
-                                    </thead>
-                                    <thead th:if="${not #lists.isEmpty(day.lessons)}">
-                                        <tr>
-                                            <!-- td><strong style='font-size: 10px;'>Time Slot</strong></td-->
-                                            <th scope="col" style='font-size: 10px;'>Time</th>
-                                            <th scope="col" style='font-size: 10px;'>LessonType</th>
-                                            <th scope="col" style='font-size: 10px;'>Auditory</th>
-                                            <th scope="col" style='font-size: 10px;'>Course</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <th:block th:each="lesson, state:${day.lessons}">
-                                            <tr>
-                                                <!-- td style='font-size: 10px;' th:text="${lesson.timeSlotNumber}"></td-->
-                                                <td style='font-size: 10px;'
-                                                    th:text="${lesson.timeSlotStartTime+'- '+lesson.timeSlotEndTime}"></td>
-                                                <td style='font-size: 10px;' th:text="${lesson.lessonTypeName}"></td>
-                                                <td style='font-size: 10px;'
-                                                    th:text="${lesson.auditoriumNumber+', '+lesson.buildingName}"></td>
-                                                <td style='font-size: 10px;' th:text="${lesson.courseName}"></td>
-                                            </tr>
-                                        </th:block>
-                                    </tbody>
-                                </table>
-                                </p>
-                            </div>
-                            <div class="card-body" th:if="${day.mockDay}"></div>
-                        </div>
-                    </div>
-                </th:block>
+        <p></p>
+    </div>
+    <h1 th:text="${reportMessage}" align="center"></h1>
+    <div th:if="${not #lists.isEmpty(schedule)}" class="container-fluid report">
+        <div class="row">
+            <div class="col col-no-gutters" align="center">
+                <strong>Monday</strong>
             </div>
+            <div class="col col-no-gutters" align="center">
+                <strong>Tuesday</strong>
+            </div>
+            <div class="col col-no-gutters" align="center">
+                <strong>Wednesday</strong>
+            </div>
+            <div class="col col-no-gutters" align="center">
+                <strong>Thursday</strong>
+            </div>
+            <div class="col col-no-gutters" align="center">
+                <strong>Friday</strong>
+            </div>
+            <div class="col col-no-gutters" align="center">
+                <strong>Saturday</strong>
+            </div>
+            <div class="col col-no-gutters" align="center">
+                <strong>Sunday</strong>
+            </div>
+            <div class="w-100"></div>
+            <th:block th:each="day, state:${schedule}">
+                <div class="w-100" th:if="${state.index}==7"></div>
+                <div class="w-100" th:if="${state.index}==14"></div>
+                <div class="w-100" th:if="${state.index}==21"></div>
+                <div class="w-100" th:if="${state.index}==28"></div>
+                <div class="w-100" th:if="${state.index}==35"></div>
+                <div class="col col-no-gutters">
+                    <div class="card">
+                        <div class="card-body" th:unless="${day.mockDay}">
+                            <h7 class="card-title" th:text="${day.date}"></h7>
+                            <p class="card-text">
+                            <table class="table table-sm table-bordered">
+                                <thead th:unless="${not #lists.isEmpty(day.lessons)}">
+                                    <th scope="col" style='font-size: 15px;'>No Lessons</th>
+                                </thead>
+                                <thead th:if="${not #lists.isEmpty(day.lessons)}">
+                                    <tr>
+                                        <th scope="col" style='font-size: 10px;'>Time</th>
+                                        <th scope="col" style='font-size: 10px;'>LessonType</th>
+                                        <th scope="col" style='font-size: 10px;'>Auditory</th>
+                                        <th scope="col" style='font-size: 10px;'>Course</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <th:block th:each="lesson, state:${day.lessons}">
+                                        <tr>
+                                            <td style='font-size: 10px;'
+                                                th:text="${lesson.timeSlotStartTime+'- '+lesson.timeSlotEndTime}"></td>
+                                            <td style='font-size: 10px;' th:text="${lesson.lessonTypeName}"></td>
+                                            <td style='font-size: 10px;'
+                                                th:text="${lesson.auditoriumNumber+', '+lesson.buildingName}"></td>
+                                            <td style='font-size: 10px;' th:text="${lesson.courseName}"></td>
+                                        </tr>
+                                    </th:block>
+                                </tbody>
+                            </table>
+                            </p>
+                        </div>
+                        <div class="card-body" th:if="${day.mockDay}"></div>
+                    </div>
+                </div>
+            </th:block>
         </div>
     </div>
 </body>

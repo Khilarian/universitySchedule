@@ -40,17 +40,16 @@ public class ScheduleController {
             BindingResult bindingResult, Model model) {
         logger.debug("getSchedule()");
         prepareModel(model);
+        if (lessonFilterDto.isEmpty()) {
+            LessonFilterDto emptyLessonFilterDto = new LessonFilterDto(null, null, 1, LocalDate.now());
+            model.addAttribute("lessonFilterDto", emptyLessonFilterDto);
+        }
         if (!bindingResult.hasErrors()) {
-            if (lessonFilterDto.isEmpty()) {
-                LessonFilterDto emptyLessonFilterDto = new LessonFilterDto(null, null, 1, LocalDate.now());
-                model.addAttribute("lessonFilterDto", emptyLessonFilterDto);
-            } else {
-                List<LessonDto> report = getLessons(lessonFilterDto);
-                String reportMessage = prepareReportMessage(lessonFilterDto, report);
-                model.addAttribute("reportMessage", reportMessage);
-                if (!report.isEmpty()) {
-                    model.addAttribute("schedule", prepareMonthSchedule(report));
-                }
+            List<LessonDto> report = getLessons(lessonFilterDto);
+            String reportMessage = prepareReportMessage(lessonFilterDto, report);
+            model.addAttribute("reportMessage", reportMessage);
+            if (!report.isEmpty()) {
+                model.addAttribute("schedule", prepareMonthSchedule(report));
             }
         }
         return "schedule/schedule";
@@ -128,7 +127,7 @@ public class ScheduleController {
             LocalDate date = firstDay.withDayOfMonth(i);
             schedule.add(prepareDaySchedule(lessons, date));
         }
-        LocalDate lastDay = lessons.get(lessons.size()-1).getDate();
+        LocalDate lastDay = lessons.get(lessons.size() - 1).getDate();
         int mockLastDays = SUNDAY_INDEX - lastDay.getDayOfWeek().getValue();
         for (int i = 1; i <= mockLastDays; i++) {
             schedule.add(new ScheduleDayDto(true));
