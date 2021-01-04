@@ -77,7 +77,7 @@ public class BuildingService {
     }
 
     public void deleteById(int id) {
-        logger.debug("delete() id {}.", id);
+        logger.debug("deleteById() id {}.", id);
         buildingDao.deleteById(id);
     }
 }

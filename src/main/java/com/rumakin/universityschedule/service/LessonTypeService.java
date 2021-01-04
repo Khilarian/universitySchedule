@@ -67,7 +67,7 @@ public class LessonTypeService {
     }
 
     public void deleteById(int id) {
-        logger.debug("delete() id {}.", id);
+        logger.debug("deleteById() id {}.", id);
         lessonTypeDao.deleteById(id);
     }
 }

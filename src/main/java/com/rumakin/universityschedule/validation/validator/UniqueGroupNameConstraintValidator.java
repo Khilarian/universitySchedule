@@ -24,7 +24,7 @@ public class UniqueGroupNameConstraintValidator implements ConstraintValidator<U
         } catch (ResourceNotFoundException e) {
             return true;
         }
-        if (group.getId() != groupDto.getId()) {
+        if (groupDto.getId() == null || group.getId() != groupDto.getId()) {
             context.disableDefaultConstraintViolation();
             context.buildConstraintViolationWithTemplate("{com.rumakin.universityschedule.validation.unique.groupname}")
                     .addPropertyNode("name").addConstraintViolation();

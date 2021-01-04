@@ -68,7 +68,7 @@ public class FacultyService {
     }
 
     public void deleteById(int id) {
-        logger.debug("delete() id {}.", id);
+        logger.debug("deleteById() id {}.", id);
         facultyDao.deleteById(id);
     }
 }

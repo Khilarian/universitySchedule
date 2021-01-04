@@ -29,7 +29,7 @@ public class UniqueStudentPhoneConstraintValidator implements ConstraintValidato
                 return true;
             }
         }
-        if (student.getId() != studentDto.getId()) {
+        if (studentDto.getId() == null || student.getId() != studentDto.getId()) {
             context.disableDefaultConstraintViolation();
             context.buildConstraintViolationWithTemplate("{com.rumakin.universityschedule.validation.unique.phone}")
                     .addPropertyNode("phone").addConstraintViolation();

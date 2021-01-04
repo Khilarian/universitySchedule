@@ -82,7 +82,7 @@ public class TimeSlotConstraintValidator implements ConstraintValidator<Verified
         } catch (ResourceNotFoundException e) {
             return true;
         }
-        if (timeSlot.getId() != timeSlotDto.getId()) {
+        if (timeSlotDto.getId() == null || timeSlot.getId() != timeSlotDto.getId()) {
             context.buildConstraintViolationWithTemplate("{com.rumakin.universityschedule.validation.unique.timeslot}")
                     .addPropertyNode("name").addConstraintViolation();
             return false;

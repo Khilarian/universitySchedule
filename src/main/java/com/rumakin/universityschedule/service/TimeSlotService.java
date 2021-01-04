@@ -67,7 +67,7 @@ public class TimeSlotService {
     }
 
     public void deleteById(int id) {
-        logger.debug("delete() id {}.", id);
+        logger.debug("deleteById() id {}.", id);
         timeSlotDao.deleteById(id);
     }
 }

@@ -23,7 +23,7 @@ public class UniqueCourseNameConstraintValidator implements ConstraintValidator<
         } catch (ResourceNotFoundException e) {
             return true;
         }
-        if (course.getId() != courseDto.getId()) {
+        if (courseDto.getId() == null || course.getId() != courseDto.getId()) {
             context.disableDefaultConstraintViolation();
             context.buildConstraintViolationWithTemplate(
                     "{com.rumakin.universityschedule.validation.unique.coursename}").addPropertyNode("name")

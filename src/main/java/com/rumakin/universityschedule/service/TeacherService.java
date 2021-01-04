@@ -16,13 +16,15 @@ public class TeacherService {
     private TeacherDao teacherDao;
     private FacultyService facultyService;
     private CourseService courseService;
+    private UserService userService;
     private Logger logger = LoggerFactory.getLogger(TeacherService.class);
 
     @Autowired
-    public TeacherService(TeacherDao teacherDao, FacultyService facultyService, CourseService courseService) {
+    public TeacherService(TeacherDao teacherDao, FacultyService facultyService, CourseService courseService, UserService userService) {
         this.teacherDao = teacherDao;
         this.facultyService = facultyService;
         this.courseService = courseService;
+        this.userService = userService;
     }
 
     public List<Teacher> findAll() {
@@ -62,6 +64,7 @@ public class TeacherService {
             logger.warn("add() fault: teacher {} was not added, with incorrect id {}.", teacher, teacher.getId());
             throw new InvalidEntityException("Id must be 0 for create");
         }
+        userService.add(User.fromPerson(teacher));
         teacher = teacherDao.save(teacher);
         logger.trace("teacher {} was added.", teacher);
         return teacher;
@@ -73,13 +76,15 @@ public class TeacherService {
             logger.warn("update() fault: teacher {} was not updated, with incorrect id {}.", teacher, teacher.getId());
             throw new InvalidEntityException("Id must be greater than 0 to update.");
         }
+        userService.update(User.fromPerson(teacher));
         teacher = teacherDao.save(teacher);
         logger.trace("teacher {} was updated.", teacher);
         return teacher;
     }
 
     public void deleteById(int id) {
-        logger.debug("delete() id {}.", id);
+        logger.debug("deleteById() id {}.", id);
+        userService.deleteByEmail(findById(id).getEmail());
         teacherDao.deleteById(id);
     }
     

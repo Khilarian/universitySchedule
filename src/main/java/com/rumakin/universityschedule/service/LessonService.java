@@ -78,7 +78,7 @@ public class LessonService {
     }
 
     public void deleteById(int id) {
-        logger.debug("delete() id {}.", id);
+        logger.debug("deleteById() id {}.", id);
         lessonDao.deleteById(id);
     }
 

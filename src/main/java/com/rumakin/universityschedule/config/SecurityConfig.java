@@ -11,14 +11,11 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 
 import com.rumakin.universityschedule.model.enums.Permission;
-import com.rumakin.universityschedule.model.enums.Role;
 
 @Configuration
 @EnableWebSecurity
@@ -44,16 +41,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.DELETE, "/api/**").hasAuthority(Permission.WRITE.getPermission()).anyRequest()
                 .authenticated().and().formLogin();
     }
-
-//    @Bean
-//    @Override
-//    protected UserDetailsService userDetailsService() {
-//        return new InMemoryUserDetailsManager(
-//                User.builder().username("admin").password(passwordEncoder().encode("admin"))
-//                        .authorities(Role.ADMIN.getAuthorities()).build(),
-//                User.builder().username("user").password(passwordEncoder().encode("user"))
-//                        .authorities(Role.USER.getAuthorities()).build());
-//    }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {

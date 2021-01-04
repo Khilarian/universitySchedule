@@ -15,12 +15,14 @@ public class StudentService {
 
     private StudentDao studentDao;
     private GroupService groupService;
+    private UserService userService;
     private Logger logger = LoggerFactory.getLogger(StudentService.class);
 
     @Autowired
-    public StudentService(StudentDao studentDao, GroupService groupService) {
+    public StudentService(StudentDao studentDao, GroupService groupService, UserService userService) {
         this.studentDao = studentDao;
         this.groupService = groupService;
+        this.userService = userService;
     }
 
     public List<Student> findAll() {
@@ -60,6 +62,7 @@ public class StudentService {
             logger.warn("add() fault: student {} was not added, with incorrect id {}.", student, student.getId());
             throw new InvalidEntityException("Id must be 0 for create.");
         }
+        userService.add(User.fromPerson(student));
         student = studentDao.save(student);
         logger.trace("student {} was added.", student);
         return student;
@@ -71,13 +74,15 @@ public class StudentService {
             logger.warn("update() fault: student {} was not updated, with incorrect id {}.", student, student.getId());
             throw new InvalidEntityException("Id must be greater than 0 to update.");
         }
+        userService.update(User.fromPerson(student));
         student = studentDao.save(student);
         logger.trace("student {} was updated.", student);
         return student;
     }
 
     public void deleteById(int id) {
-        logger.debug("delete() id {}.", id);
+        logger.debug("deleteById() id {}.", id);
+        userService.deleteByEmail(findById(id).getEmail());
         studentDao.deleteById(id);
     }
 

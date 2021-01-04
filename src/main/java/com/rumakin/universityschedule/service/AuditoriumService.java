@@ -73,7 +73,7 @@ public class AuditoriumService {
     }
 
     public void deleteById(int id) {
-        logger.debug("delete() id {}.", id);
+        logger.debug("deleteById() id {}.", id);
         auditoriumDao.deleteById(id);
     }
 

@@ -29,7 +29,7 @@ public class UniqueTeacherEmailConstraintValidator implements ConstraintValidato
                 return true;
             }
         }
-        if (teacher.getId() != teacherDto.getId()) {
+        if (teacherDto.getId() == null || teacher.getId() != teacherDto.getId()) {
             context.disableDefaultConstraintViolation();
             context.buildConstraintViolationWithTemplate("{com.rumakin.universityschedule.validation.unique.email}")
                     .addPropertyNode("email").addConstraintViolation();

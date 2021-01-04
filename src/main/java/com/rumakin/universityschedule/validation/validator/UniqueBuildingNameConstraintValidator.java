@@ -24,7 +24,7 @@ public class UniqueBuildingNameConstraintValidator implements ConstraintValidato
         } catch (ResourceNotFoundException e) {
             return true;
         }
-        if (building.getId() != buildingDto.getId()) {
+        if (buildingDto.getId() == null || building.getId() != buildingDto.getId()) {
             context.disableDefaultConstraintViolation();
             context.buildConstraintViolationWithTemplate(
                     "{com.rumakin.universityschedule.validation.unique.buildingname}").addPropertyNode("name")

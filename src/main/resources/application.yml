@@ -16,3 +16,11 @@ spring:
         show-sql: true
     flyway:
         location: classpath:/db/migration
+    mail:
+        host: smtp.yandex.com
+        username: donnorvator@yandex.ru
+        password: uppvqfzuaubactov
+        port: 465
+        protocol: smtps                        
+mail:
+    debug: true

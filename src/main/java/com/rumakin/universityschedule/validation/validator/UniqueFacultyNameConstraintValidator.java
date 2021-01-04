@@ -24,7 +24,7 @@ public class UniqueFacultyNameConstraintValidator implements ConstraintValidator
         } catch (ResourceNotFoundException e) {
             return true;
         }
-        if (faculty.getId() == facultyDto.getId()) {
+        if (facultyDto.getId() != null && faculty.getId() == facultyDto.getId()) {
             return true;
         } else {
             context.disableDefaultConstraintViolation();

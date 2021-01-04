@@ -35,6 +35,33 @@ public class User implements ModelEntity {
     public User() {
     }
 
+    public User(String firstName, String lastName, String email) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+    }
+
+    public User(String firstName, String lastName, String email, String password) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.password = password;
+    }
+
+    public User(int id, String firstName, String lastName, String email, String password, Role role, Status status) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.password = password;
+        this.role = role;
+        this.status = status;
+    }
+
+    public static User fromPerson(Person person) {
+        return new User(person.getFirstName(), person.getLastName(), person.getEmail());
+    }
+
     public int getId() {
         return id;
     }
