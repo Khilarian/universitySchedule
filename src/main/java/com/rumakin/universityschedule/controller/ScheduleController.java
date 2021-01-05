@@ -49,7 +49,11 @@ public class ScheduleController {
             String reportMessage = prepareReportMessage(lessonFilterDto, report);
             model.addAttribute("reportMessage", reportMessage);
             if (!report.isEmpty()) {
-                model.addAttribute("schedule", prepareMonthSchedule(report));
+                if (lessonFilterDto.getMonthScheduleCheck() == 1) {
+                    model.addAttribute("schedule", prepareMonthSchedule(report));
+                } else {
+                    model.addAttribute("schedule", prepareDaySchedule(report));
+                }
             }
         }
         return "schedule/schedule";
@@ -125,7 +129,7 @@ public class ScheduleController {
         }
         for (int i = 1; i <= monthLength; i++) {
             LocalDate date = firstDay.withDayOfMonth(i);
-            schedule.add(prepareDaySchedule(lessons, date));
+            schedule.add(prepareOneDaySchedule(lessons, date));
         }
         LocalDate lastDay = lessons.get(lessons.size() - 1).getDate();
         int mockLastDays = SUNDAY_INDEX - lastDay.getDayOfWeek().getValue();
@@ -135,7 +139,13 @@ public class ScheduleController {
         return schedule;
     }
 
-    private ScheduleDayDto prepareDaySchedule(List<LessonDto> lessons, LocalDate date) {
+    private List<ScheduleDayDto> prepareDaySchedule(List<LessonDto> lessons) {
+        List<ScheduleDayDto> dayLessons = new ArrayList<>();
+        dayLessons.add(prepareOneDaySchedule(lessons, lessons.get(0).getDate()));
+        return dayLessons;
+    }
+
+    private ScheduleDayDto prepareOneDaySchedule(List<LessonDto> lessons, LocalDate date) {
         List<LessonDto> dayLessons = lessons.stream().filter(l -> l.getDate().equals(date))
                 .collect(Collectors.toList());
         return new ScheduleDayDto(date, dayLessons);
