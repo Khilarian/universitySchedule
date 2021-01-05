@@ -11,7 +11,6 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
         integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
 </th:block>
-
 <div th:fragment="nav_menu">
     <nav class="row justify-content-center navbar navbar-expand-sm bg-success navbar-light">
         <ul class="navbar-nav  text-white">
@@ -30,7 +29,6 @@
         </ul>
     </nav>
 </div>
-
 <div th:fragment="deleteEntry">
     <div class="modal" tabindex="-1" role="dialog" id="deleteModal">
         <div class="modal-dialog" role="document">
@@ -52,7 +50,42 @@
         </div>
     </div>
 </div>
-
+<div th:fragment="lessons">
+    <div class="card">
+        <div class="card-body" th:unless="${day.mockDay}">
+            <div class="card-body">
+                <h7 class="card-title" th:text="${#temporals.day(day.date)}"></h7>
+                <p class="card-text">
+                <table class="table table-sm table-bordered">
+                    <thead th:unless="${not #lists.isEmpty(day.lessons)}">
+                        <th scope="col" style='font-size: 15px;'>No Lessons</th>
+                    </thead>
+                    <thead th:if="${not #lists.isEmpty(day.lessons)}">
+                        <tr>
+                            <th scope="col" style='font-size: 10px;'>Time</th>
+                            <th scope="col" style='font-size: 10px;'>LessonType</th>
+                            <th scope="col" style='font-size: 10px;'>Auditory</th>
+                            <th scope="col" style='font-size: 10px;'>Course</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <th:block th:each="lesson, state:${day.lessons}">
+                            <tr>
+                                <td style='font-size: 10px;'
+                                    th:text="${lesson.timeSlotStartTime+'- '+lesson.timeSlotEndTime}"></td>
+                                <td style='font-size: 10px;' th:text="${lesson.lessonTypeName}"></td>
+                                <td style='font-size: 10px;'
+                                    th:text="${lesson.auditoriumNumber+', '+lesson.buildingName}"></td>
+                                <td style='font-size: 10px;' th:text="${lesson.courseName}"></td>
+                            </tr>
+                        </th:block>
+                    </tbody>
+                </table>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
 <div th:fragment="notification">
     <div th:unless="${errorMessage==null}">
         <div class="alert alert-danger alert-dismissible fade show" role="alert">

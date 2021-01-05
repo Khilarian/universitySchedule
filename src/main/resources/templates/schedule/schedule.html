@@ -77,7 +77,18 @@
     </div>
     <h1 th:text="${reportMessage}" align="center"></h1>
     <div th:if="${not #lists.isEmpty(schedule)}" class="container-fluid report">
-        <div class="row">
+        <div class="row justify-content-center" th:if="${#lists.size(schedule)} == 1">
+            <div class="col col-no-gutters" align="center">
+                <strong th:text="${dayName}"></strong>
+            </div>
+            <div class="w-100"></div>
+            <th:block th:each="day, state:${schedule}">
+                <div class="col-2 col-no-gutters">
+                    <div th:insert="/fragments/common :: lessons"></div>
+                </div>
+            </th:block>
+        </div>
+        <div class="row" th:unless="${#lists.size(schedule)} == 1">
             <div class="col col-no-gutters" align="center">
                 <strong>Monday</strong>
             </div>
@@ -107,39 +118,7 @@
                 <div class="w-100" th:if="${state.index}==28"></div>
                 <div class="w-100" th:if="${state.index}==35"></div>
                 <div class="col col-no-gutters">
-                    <div class="card">
-                        <div class="card-body" th:unless="${day.mockDay}">
-                            <h7 class="card-title" th:text="${#temporals.day(day.date)}"></h7>
-                            <p class="card-text">
-                            <table class="table table-sm table-bordered">
-                                <thead th:unless="${not #lists.isEmpty(day.lessons)}">
-                                    <th scope="col" style='font-size: 15px;'>No Lessons</th>
-                                </thead>
-                                <thead th:if="${not #lists.isEmpty(day.lessons)}">
-                                    <tr>
-                                        <th scope="col" style='font-size: 10px;'>Time</th>
-                                        <th scope="col" style='font-size: 10px;'>LessonType</th>
-                                        <th scope="col" style='font-size: 10px;'>Auditory</th>
-                                        <th scope="col" style='font-size: 10px;'>Course</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <th:block th:each="lesson, state:${day.lessons}">
-                                        <tr>
-                                            <td style='font-size: 10px;'
-                                                th:text="${lesson.timeSlotStartTime+'- '+lesson.timeSlotEndTime}"></td>
-                                            <td style='font-size: 10px;' th:text="${lesson.lessonTypeName}"></td>
-                                            <td style='font-size: 10px;'
-                                                th:text="${lesson.auditoriumNumber+', '+lesson.buildingName}"></td>
-                                            <td style='font-size: 10px;' th:text="${lesson.courseName}"></td>
-                                        </tr>
-                                    </th:block>
-                                </tbody>
-                            </table>
-                            </p>
-                        </div>
-                        <div class="card-body" th:if="${day.mockDay}"></div>
-                    </div>
+                     <div th:insert="/fragments/common :: lessons"></div>
                 </div>
             </th:block>
         </div>

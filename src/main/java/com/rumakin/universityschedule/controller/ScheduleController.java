@@ -9,6 +9,7 @@ import javax.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.slf4j.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.convert.threeten.Jsr310JpaConverters.LocalDateConverter;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,7 +24,7 @@ import com.rumakin.universityschedule.service.*;
 @RequestMapping("/schedule")
 public class ScheduleController {
 
-    private final static int SUNDAY_INDEX = 7;
+    private static final int SUNDAY_INDEX = 7;
     private final LessonService lessonService;
     private final ModelMapper modelMapper;
     private final Logger logger = LoggerFactory.getLogger(ScheduleController.class);
@@ -53,6 +54,7 @@ public class ScheduleController {
                     model.addAttribute("schedule", prepareMonthSchedule(report));
                 } else {
                     model.addAttribute("schedule", prepareDaySchedule(report));
+                    model.addAttribute("dayName", lessonFilterDto.getDate().getDayOfWeek());
                 }
             }
         }
