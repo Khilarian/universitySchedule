@@ -23,6 +23,9 @@ import com.rumakin.universityschedule.service.*;
 @RequestMapping("/lessonTypes")
 public class LessonTypeController {
 
+    private static final String ALL = "All lesson types";
+    private static final String EDIT = "Edit lesson type";
+    private static final String ADD = "Add lesson type";
     private static final String REDIRECT_PAGE = "redirect:/lessonTypes/getAll";
 
     private LessonTypeService lessonTypeService;
@@ -42,6 +45,7 @@ public class LessonTypeController {
                 .collect(Collectors.toList());
         logger.trace("found {} lessonTypes.", lessonTypes.size());
         model.addAttribute("lessonTypes", lessonTypes);
+        setAttributes(model, ALL);
         return "lessonTypes/getAll";
     }
 
@@ -51,19 +55,18 @@ public class LessonTypeController {
         LessonTypeDto lessonType = new LessonTypeDto();
         if (id != null) {
             lessonType = convertToDto(lessonTypeService.findById(id));
-            model.addAttribute("headerString", "Edit lessonType");
-        } else {
-            model.addAttribute("headerString", "Add lessonType");
         }
         model.addAttribute("lessonType", lessonType);
+        setEdit(id, model);
         return "lessonTypes/edit";
     }
 
     @PostMapping("/edit")
     @PreAuthorize("hasAuthority('write')")
     public String edit(@Valid @ModelAttribute(value = "lessonType") LessonTypeDto lessonTypeDto,
-            BindingResult bindingResult) {
+            BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
+            setEdit(lessonTypeDto.getId(), model);
             return "lessonTypes/edit";
         } else {
             if (lessonTypeDto.getId() == null) {
@@ -80,6 +83,18 @@ public class LessonTypeController {
     public String delete(int id) {
         lessonTypeService.deleteById(id);
         return REDIRECT_PAGE;
+    }
+
+    private void setEdit(Integer id, Model model) {
+        if (id != null) {
+            setAttributes(model, EDIT);
+        } else {
+            setAttributes(model, ADD);
+        }
+    }
+
+    private void setAttributes(Model model, String header) {
+        model.addAttribute("headerString", header);
     }
 
     private LessonTypeDto convertToDto(LessonType lessonType) {

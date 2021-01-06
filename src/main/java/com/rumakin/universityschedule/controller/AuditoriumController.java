@@ -22,6 +22,9 @@ import com.rumakin.universityschedule.service.AuditoriumService;
 @RequestMapping("/auditoriums")
 public class AuditoriumController {
 
+    private static final String ALL = "All auditoriums";
+    private static final String EDIT = "Edit auditorium";
+    private static final String ADD = "Add auditorium";
     private static final String REDIRECT_PAGE = "redirect:/auditoriums/getAll";
 
     private final AuditoriumService auditoriumService;
@@ -41,8 +44,7 @@ public class AuditoriumController {
                 .collect(Collectors.toList());
         logger.trace("found {} auditoriums.", auditoriums.size());
         model.addAttribute("auditoriums", auditoriums);
-        List<Building> buildings = auditoriumService.getBuildings();
-        model.addAttribute("buildings", buildings);
+        setAttributes(model, ALL);
         return "auditoriums/getAll";
     }
 
@@ -52,12 +54,9 @@ public class AuditoriumController {
         AuditoriumDto auditorium = new AuditoriumDto();
         if (id != null) {
             auditorium = convertToDto(auditoriumService.findById(id));
-            model.addAttribute("headerString", "Edit auditorium");
-        } else {
-            model.addAttribute("headerString", "Add auditorium");
         }
-        model.addAttribute("buildings", auditoriumService.getBuildings());
         model.addAttribute("auditorium", auditorium);
+        setEdit(id, model);
         return "auditoriums/edit";
     }
 
@@ -66,7 +65,7 @@ public class AuditoriumController {
     public String edit(@Valid @ModelAttribute(value = "auditorium") AuditoriumDto auditoriumDto,
             BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
-            model.addAttribute("buildings", auditoriumService.getBuildings());
+            setEdit(auditoriumDto.getId(), model);
             return "auditoriums/edit";
         } else {
             if (auditoriumDto.getId() == null) {
@@ -83,6 +82,19 @@ public class AuditoriumController {
     public String delete(int id) {
         auditoriumService.deleteById(id);
         return REDIRECT_PAGE;
+    }
+
+    private void setEdit(Integer id, Model model) {
+        if (id != null) {
+            setAttributes(model, EDIT);
+        } else {
+            setAttributes(model, ADD);
+        }
+    }
+
+    private void setAttributes(Model model, String header) {
+        model.addAttribute("headerString", header);
+        model.addAttribute("buildings", auditoriumService.getBuildings());
     }
 
     private AuditoriumDto convertToDto(Auditorium auditorium) {

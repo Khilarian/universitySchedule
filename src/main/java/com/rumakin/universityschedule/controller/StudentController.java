@@ -22,6 +22,9 @@ import com.rumakin.universityschedule.service.StudentService;
 @RequestMapping("/students")
 public class StudentController {
 
+    private static final String ALL = "All students";
+    private static final String EDIT = "Edit student";
+    private static final String ADD = "Add student";
     private static final String REDIRECT_PAGE = "redirect:/students/getAll";
 
     private final StudentService studentService;
@@ -41,8 +44,7 @@ public class StudentController {
                 .collect(Collectors.toList());
         logger.trace("found {} students.", students.size());
         model.addAttribute("students", students);
-        List<Group> groups = studentService.getGroups();
-        model.addAttribute("groups", groups);
+        setAttributes(model, ALL);
         return "students/getAll";
     }
 
@@ -52,12 +54,9 @@ public class StudentController {
         StudentDto student = new StudentDto();
         if (id != null) {
             student = convertToDto(studentService.findById(id));
-            model.addAttribute("headerString", "Edit student");
-        } else {
-            model.addAttribute("headerString", "Add student");
         }
-        model.addAttribute("groups", studentService.getGroups());
         model.addAttribute("student", student);
+        setEdit(id, model);
         return "students/edit";
     }
 
@@ -66,8 +65,7 @@ public class StudentController {
     public String edit(@Valid @ModelAttribute(value = "student") StudentDto studentDto, BindingResult bindingResult,
             Model model) {
         if (bindingResult.hasErrors()) {
-            List<Group> groups = studentService.getGroups();
-            model.addAttribute("groups", groups);
+            setEdit(studentDto.getId(), model);
             return "students/edit";
         } else {
             if (studentDto.getId() == null) {
@@ -84,6 +82,19 @@ public class StudentController {
     public String delete(int id) {
         studentService.deleteById(id);
         return REDIRECT_PAGE;
+    }
+
+    private void setEdit(Integer id, Model model) {
+        if (id != null) {
+            setAttributes(model, EDIT);
+        } else {
+            setAttributes(model, ADD);
+        }
+    }
+
+    private void setAttributes(Model model, String header) {
+        model.addAttribute("headerString", header);
+        model.addAttribute("groups", studentService.getGroups());
     }
 
     private StudentDto convertToDto(Student student) {

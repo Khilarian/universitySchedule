@@ -3,11 +3,11 @@
 <head>
 <div th:insert="/fragments/common :: common_head"></div>
 <script type="text/javascript" src="../../resources/js/common.js" th:src="@{/resources/js/common.js}"></script>
-<title>Buildings</title>
+<title th:text="${headerString}"></title>
 </head>
 <body class="container-sm">
     <div th:insert="/fragments/common :: nav_menu"></div>
-    <h3 align="center">List of buildings</h3>
+    <h3 align="center" th:text="${headerString}"></h3>
     <a th:href="@{/buildings/edit}" class="btn btn-secondary">Add new building</a>
     <table class="table table-bordered">
         <thead class="bg-primary text-white">

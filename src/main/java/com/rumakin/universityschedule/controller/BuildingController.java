@@ -23,6 +23,9 @@ import com.rumakin.universityschedule.service.BuildingService;
 @RequestMapping("/buildings")
 public class BuildingController {
 
+    private static final String ALL = "All buildings";
+    private static final String EDIT = "Edit building";
+    private static final String ADD = "Add building";
     private static final String REDIRECT_PAGE = "redirect:/buildings/getAll";
 
     private BuildingService buildingService;
@@ -42,6 +45,7 @@ public class BuildingController {
                 .collect(Collectors.toList());
         logger.trace("found {} buildings.", buildings.size());
         model.addAttribute("buildings", buildings);
+        setAttributes(model, ALL);
         return "buildings/getAll";
     }
 
@@ -51,19 +55,18 @@ public class BuildingController {
         BuildingDto building = new BuildingDto();
         if (id != null) {
             building = convertToDto(buildingService.findById(id));
-            model.addAttribute("headerString", "Edit building");
-        } else {
-            model.addAttribute("headerString", "Add building");
         }
         model.addAttribute("building", building);
+        setEdit(id, model);
         return "buildings/edit";
     }
 
     @PostMapping("/edit")
     @PreAuthorize("hasAuthority('write')")
-    public String edit(@Valid @ModelAttribute(value = "building") BuildingDto buildingDto,
-            BindingResult bindingResult) {
+    public String edit(@Valid @ModelAttribute(value = "building") BuildingDto buildingDto, BindingResult bindingResult,
+            Model model) {
         if (bindingResult.hasErrors()) {
+            setEdit(buildingDto.getId(), model);
             return "buildings/edit";
         } else {
             if (buildingDto.getId() == null) {
@@ -80,6 +83,18 @@ public class BuildingController {
     public String delete(int id) {
         buildingService.deleteById(id);
         return REDIRECT_PAGE;
+    }
+
+    private void setEdit(Integer id, Model model) {
+        if (id != null) {
+            setAttributes(model, EDIT);
+        } else {
+            setAttributes(model, ADD);
+        }
+    }
+
+    private void setAttributes(Model model, String header) {
+        model.addAttribute("headerString", header);
     }
 
     private BuildingDto convertToDto(Building building) {

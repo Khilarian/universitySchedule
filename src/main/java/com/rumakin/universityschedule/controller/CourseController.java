@@ -22,6 +22,9 @@ import com.rumakin.universityschedule.service.CourseService;
 @RequestMapping("/courses")
 public class CourseController {
 
+    private static final String ALL = "All courses";
+    private static final String EDIT = "Edit course";
+    private static final String ADD = "Add course";
     private static final String REDIRECT_PAGE = "redirect:/courses/getAll";
 
     private final CourseService courseService;
@@ -41,8 +44,7 @@ public class CourseController {
                 .collect(Collectors.toList());
         logger.trace("found {} courses.", courses.size());
         model.addAttribute("courses", courses);
-        List<Faculty> faculties = courseService.getFaculties();
-        model.addAttribute("faculties", faculties);
+        setAttributes(model, ALL);
         return "courses/getAll";
     }
 
@@ -52,12 +54,9 @@ public class CourseController {
         CourseDto course = new CourseDto();
         if (id != null) {
             course = convertToDto(courseService.findById(id));
-            model.addAttribute("headerString", "Edit course");
-        } else {
-            model.addAttribute("headerString", "Add course");
         }
-        model.addAttribute("faculties", courseService.getFaculties());
         model.addAttribute("course", course);
+        setEdit(id, model);
         return "courses/edit";
     }
 
@@ -66,7 +65,7 @@ public class CourseController {
     public String edit(@Valid @ModelAttribute(value = "course") CourseDto courseDto, BindingResult bindingResult,
             Model model) {
         if (bindingResult.hasErrors()) {
-            model.addAttribute("faculties", courseService.getFaculties());
+            setEdit(courseDto.getId(), model);
             return "courses/edit";
         } else {
             Course course = convertToEntity(courseDto);
@@ -85,6 +84,19 @@ public class CourseController {
     public String deleteUser(int id) {
         courseService.deleteById(id);
         return REDIRECT_PAGE;
+    }
+
+    private void setEdit(Integer id, Model model) {
+        if (id != null) {
+            setAttributes(model, EDIT);
+        } else {
+            setAttributes(model, ADD);
+        }
+    }
+
+    private void setAttributes(Model model, String header) {
+        model.addAttribute("headerString", header);
+        model.addAttribute("faculties", courseService.getFaculties());
     }
 
     private CourseDto convertToDto(Course course) {

@@ -23,6 +23,9 @@ import com.rumakin.universityschedule.service.*;
 @RequestMapping("/timeSlots")
 public class TimeSlotController {
 
+    private static final String ALL = "All time slots";
+    private static final String EDIT = "Edit time slot";
+    private static final String ADD = "Add time slot";
     private static final String REDIRECT_PAGE = "redirect:/timeSlots/getAll";
 
     private TimeSlotService timeSlotService;
@@ -42,6 +45,7 @@ public class TimeSlotController {
                 .collect(Collectors.toList());
         logger.trace("found {} timeSlots.", timeSlots.size());
         model.addAttribute("timeSlots", timeSlots);
+        setAttributes(model, ALL);
         return "timeSlots/getAll";
     }
 
@@ -51,19 +55,18 @@ public class TimeSlotController {
         TimeSlotDto timeSlot = new TimeSlotDto();
         if (id != null) {
             timeSlot = convertToDto(timeSlotService.findById(id));
-            model.addAttribute("headerString", "Edit timeSlot");
-        } else {
-            model.addAttribute("headerString", "Add timeSlot");
         }
         model.addAttribute("timeSlot", timeSlot);
+        setEdit(id, model);
         return "timeSlots/edit";
     }
 
     @PostMapping("/edit")
     @PreAuthorize("hasAuthority('write')")
-    public String edit(@Valid @ModelAttribute(value = "timeSlot") TimeSlotDto timeSlotDto,
-            BindingResult bindingResult) {
+    public String edit(@Valid @ModelAttribute(value = "timeSlot") TimeSlotDto timeSlotDto, BindingResult bindingResult,
+            Model model) {
         if (bindingResult.hasErrors()) {
+            setEdit(timeSlotDto.getId(), model);
             return "timeSlots/edit";
         } else {
             if (timeSlotDto.getId() == null) {
@@ -80,6 +83,18 @@ public class TimeSlotController {
     public String delete(int id) {
         timeSlotService.deleteById(id);
         return REDIRECT_PAGE;
+    }
+
+    private void setEdit(Integer id, Model model) {
+        if (id != null) {
+            setAttributes(model, EDIT);
+        } else {
+            setAttributes(model, ADD);
+        }
+    }
+
+    private void setAttributes(Model model, String header) {
+        model.addAttribute("headerString", header);
     }
 
     private TimeSlotDto convertToDto(TimeSlot timeSlot) {

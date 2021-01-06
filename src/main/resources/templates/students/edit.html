@@ -22,7 +22,8 @@
         <div class="form-group row">
             <label class="col-form-label">Enter student's email</label>
             <input type="text" th:if="*{email} == null" class="form-control" th:field="*{email}" th:value="${email}" />
-            <input type="text" th:unless="*{email} == null" class="form-control" th:field="*{email}" th:value="${email}" readonly="readonly" />
+            <input type="text" th:unless="*{email} == null" class="form-control" th:field="*{email}" th:value="${email}"
+                readonly="readonly" />
             <span class="font-italic text-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
         </div>
         <div class="form-group row">

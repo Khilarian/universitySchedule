@@ -22,6 +22,9 @@ import com.rumakin.universityschedule.service.GroupService;
 @RequestMapping("/groups")
 public class GroupController {
 
+    private static final String ALL = "All groups";
+    private static final String EDIT = "Edit groupum";
+    private static final String ADD = "Add groupum";
     private static final String REDIRECT_PAGE = "redirect:/groups/getAll";
 
     private final GroupService groupService;
@@ -40,8 +43,7 @@ public class GroupController {
         List<GroupDto> groups = groupService.findAll().stream().map(g -> convertToDto(g)).collect(Collectors.toList());
         logger.trace("found {} groups.", groups.size());
         model.addAttribute("groups", groups);
-        List<Faculty> faculties = groupService.getFaculties();
-        model.addAttribute("faculties", faculties);
+        setAttributes(model, ALL);
         return "groups/getAll";
     }
 
@@ -51,27 +53,24 @@ public class GroupController {
         GroupDto group = new GroupDto();
         if (id != null) {
             group = convertToDto(groupService.findById(id));
-            model.addAttribute("headerString", "Edit group");
-        } else {
-            model.addAttribute("headerString", "Add group");
         }
-        model.addAttribute("faculties", groupService.getFaculties());
         model.addAttribute("group", group);
+        setEdit(id, model);
         return "groups/edit";
     }
 
     @PostMapping("/edit")
     @PreAuthorize("hasAuthority('write')")
-    public String edit(@Valid @ModelAttribute(value = "group") GroupDto groupDto, BindingResult bindingResult, Model model) {
+    public String edit(@Valid @ModelAttribute(value = "group") GroupDto groupDto, BindingResult bindingResult,
+            Model model) {
         if (bindingResult.hasErrors()) {
-            model.addAttribute("faculties", groupService.getFaculties());
+            setEdit(groupDto.getId(), model);
             return "groups/edit";
         } else {
-            Group group = convertToEntity(groupDto);
             if (groupDto.getId() == null) {
-                groupService.add(group);
+                groupService.add(convertToEntity(groupDto));
             } else {
-                groupService.update(group);
+                groupService.update(convertToEntity(groupDto));
             }
             return REDIRECT_PAGE;
         }
@@ -82,6 +81,19 @@ public class GroupController {
     public String deleteUser(int id) {
         groupService.deleteById(id);
         return REDIRECT_PAGE;
+    }
+
+    private void setEdit(Integer id, Model model) {
+        if (id != null) {
+            setAttributes(model, EDIT);
+        } else {
+            setAttributes(model, ADD);
+        }
+    }
+
+    private void setAttributes(Model model, String header) {
+        model.addAttribute("headerString", header);
+        model.addAttribute("faculties", groupService.getFaculties());
     }
 
     private GroupDto convertToDto(Group group) {

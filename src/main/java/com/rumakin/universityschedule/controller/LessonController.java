@@ -22,6 +22,9 @@ import com.rumakin.universityschedule.service.*;
 @RequestMapping("/lessons")
 public class LessonController {
 
+    private static final String ALL = "All lessons";
+    private static final String EDIT = "Edit lesson";
+    private static final String ADD = "Add lesson";
     private static final String REDIRECT_PAGE = "redirect:/lessons/getAll";
 
     private final LessonService lessonService;
@@ -41,7 +44,7 @@ public class LessonController {
                 .collect(Collectors.toList());
         logger.trace("findAll() result: {} lessons.", lessons.size());
         model.addAttribute("lessons", lessons);
-        prepareModel(model);
+        setAttributes(model, ALL);
         return "lessons/getAll";
     }
 
@@ -51,12 +54,9 @@ public class LessonController {
         LessonDto lessonDto = new LessonDto();
         if (id != null) {
             lessonDto = convertToDto(lessonService.findById(id));
-            model.addAttribute("headerString", "Edit lesson");
-        } else {
-            model.addAttribute("headerString", "Add lesson");
         }
         model.addAttribute("lesson", lessonDto);
-        prepareModel(model);
+        setEdit(id, model);
         return "lessons/edit";
     }
 
@@ -65,7 +65,7 @@ public class LessonController {
     public String edit(@Valid @ModelAttribute(value = "lesson") LessonDto lessonDto, BindingResult bindingResult,
             Model model) {
         if (bindingResult.hasErrors()) {
-            prepareModel(model);
+            setEdit(lessonDto.getId(), model);
             return "lessons/edit";
         } else {
             Lesson lesson = convertToEntity(lessonDto);
@@ -85,7 +85,16 @@ public class LessonController {
         return REDIRECT_PAGE;
     }
 
-    private void prepareModel(Model model) {
+    private void setEdit(Integer id, Model model) {
+        if (id != null) {
+            setAttributes(model, EDIT);
+        } else {
+            setAttributes(model, ADD);
+        }
+    }
+
+    private void setAttributes(Model model, String header) {
+        model.addAttribute("headerString", header);
         model.addAttribute("allTeachers", lessonService.getTeachers());
         model.addAttribute("allGroups", lessonService.getGroups());
         model.addAttribute("allCourses", lessonService.getCourses());

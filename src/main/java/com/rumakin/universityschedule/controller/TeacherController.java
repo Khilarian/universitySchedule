@@ -22,6 +22,9 @@ import com.rumakin.universityschedule.service.TeacherService;
 @RequestMapping("/teachers")
 public class TeacherController {
 
+    private static final String ALL = "All teachers";
+    private static final String EDIT = "Edit teacher";
+    private static final String ADD = "Add teacher";
     private static final String REDIRECT_PAGE = "redirect:/teachers/getAll";
 
     private final TeacherService teacherService;
@@ -41,10 +44,7 @@ public class TeacherController {
                 .collect(Collectors.toList());
         logger.trace("found {} teachers.", teachers.size());
         model.addAttribute("teachers", teachers);
-        List<Faculty> faculties = teacherService.getFaculties();
-        List<Course> courses = teacherService.getCourses();
-        model.addAttribute("faculties", faculties);
-        model.addAttribute("allCourses", courses);
+        setAttributes(model, ALL);
         return "teachers/getAll";
     }
 
@@ -54,15 +54,9 @@ public class TeacherController {
         TeacherDto teacher = new TeacherDto();
         if (id != null) {
             teacher = convertToDto(teacherService.findById(id));
-            model.addAttribute("headerString", "Edit teacher");
-        } else {
-            model.addAttribute("headerString", "Add teacher");
         }
-        List<Faculty> faculties = teacherService.getFaculties();
-        List<Course> courses = teacherService.getCourses();
-        model.addAttribute("faculties", faculties);
-        model.addAttribute("allCourses", courses);
         model.addAttribute("teacher", teacher);
+        setEdit(id, model);
         return "teachers/edit";
     }
 
@@ -71,10 +65,7 @@ public class TeacherController {
     public String edit(@Valid @ModelAttribute(value = "teacher") TeacherDto teacherDto, BindingResult bindingResult,
             Model model) {
         if (bindingResult.hasErrors()) {
-            List<Faculty> faculties = teacherService.getFaculties();
-            List<Course> courses = teacherService.getCourses();
-            model.addAttribute("faculties", faculties);
-            model.addAttribute("allCourses", courses);
+            setEdit(teacherDto.getId(), model);
             return "teachers/edit";
         } else {
             if (teacherDto.getId() == null) {
@@ -91,6 +82,20 @@ public class TeacherController {
     public String delete(int id) {
         teacherService.deleteById(id);
         return REDIRECT_PAGE;
+    }
+
+    private void setEdit(Integer id, Model model) {
+        if (id != null) {
+            setAttributes(model, EDIT);
+        } else {
+            setAttributes(model, ADD);
+        }
+    }
+
+    private void setAttributes(Model model, String header) {
+        model.addAttribute("headerString", header);
+        model.addAttribute("faculties", teacherService.getFaculties());
+        model.addAttribute("allCourses", teacherService.getCourses());
     }
 
     private TeacherDto convertToDto(Teacher teacher) {

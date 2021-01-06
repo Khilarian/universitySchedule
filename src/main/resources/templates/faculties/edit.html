@@ -5,23 +5,19 @@
 <title class="text-body" th:text="${headerString}"></title>
 </head>
 <body class="container-sm">
-
     <div th:insert="/fragments/common :: nav_menu"></div>
-
     <h3 class="text-body" th:text="${headerString}"></h3>
-
     <form action="#" th:action="@{/faculties/edit}" th:object="${faculty}" method="post">
         <div class="form-group row">
-            <label class="col-form-label">Enter faculty name</label> <input type="hidden" class="form-control"
-                th:field="*{id}" th:value=${id} /> <input type="text" class="form-control" th:field="*{name}"
-                th:value=${name} /> <span class="font-italic text-danger" th:if="${#fields.hasErrors('name')}"
-                th:errors="*{name}"></span>
+            <label class="col-form-label">Enter faculty name</label>
+            <input type="hidden" class="form-control" th:field="*{id}" th:value=${id} /> <input type="text"
+                class="form-control" th:field="*{name}" th:value=${name} />
+            <span class="font-italic text-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
         </div>
         <div class="form-group row">
             <input type="submit" value="Save"> <input type="reset" class="btn btn-warning" value="Reset" /> <a
                 th:href="@{/faculties/getAll}" class="btn btn-danger">Cancel</a>
         </div>
     </form>
-
 </body>
 </html>

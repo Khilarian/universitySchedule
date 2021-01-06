@@ -4,7 +4,7 @@
 <div th:insert="/fragments/common :: common_head"></div>
 <script type="text/javascript" src="../../resources/js/common.js" th:src="@{/resources/js/common.js}"></script>
 <link rel="stylesheet" type="text/css" href="../../resources/css/report.css" th:href="@{/resources/css/report.css}" />
-<title>Schedule</title>
+<title th:text="${headerString}"></title>
 </head>
 <body class="container-fluid">
     <div class="container sm" th:insert="/fragments/common :: nav_menu"></div>
