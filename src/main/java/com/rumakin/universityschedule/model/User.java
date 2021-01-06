@@ -2,14 +2,18 @@ package com.rumakin.universityschedule.model;
 
 import javax.persistence.*;
 
+import org.hibernate.annotations.DynamicUpdate;
+
 import com.rumakin.universityschedule.model.enums.*;
 
 @Entity
+@DynamicUpdate
 @Table(name = "security_users")
 public class User implements ModelEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", updatable = false)
     private int id;
 
     @Column(name = "first_name")
@@ -18,7 +22,7 @@ public class User implements ModelEntity {
     @Column(name = "last_name")
     private String lastName;
 
-    @Column(name = "email")
+    @Column(name = "email", updatable = false)
     private String email;
 
     @Column(name = "password")

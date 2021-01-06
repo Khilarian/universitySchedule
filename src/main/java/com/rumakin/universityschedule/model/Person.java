@@ -16,7 +16,7 @@ public class Person implements ModelEntity {
     @Column(name = "person_last_name")
     private String lastName;
 
-    @Column(name = "person_email")
+    @Column(name = "person_email", updatable = false)
     private String email;
 
     @Column(name = "person_phone")
