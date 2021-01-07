@@ -61,18 +61,11 @@ public class UserService {
             logger.warn("add() fault: user {} was not added, with incorrect id {}.", user, user.getId());
             throw new InvalidEntityException("Id must be 0 for create.");
         }
-        String password = user.getPassword();
-        if (password == null) {
-            password = PasswordGenerator.generatePassword();
-            String encodePassword = passwordEncoder.encode(password);
-            user.setPassword(encodePassword);
-        }
-        if (user.getRole() == null) {
-            user.setRole(Role.USER);
-        }
-        if (user.getStatus() == null) {
-            user.setStatus(Status.ACTIVE);
-        }
+        String password = PasswordGenerator.generatePassword();
+        String encodePassword = passwordEncoder.encode(password);
+        user.setPassword(encodePassword);
+        user.setRole(Role.USER);
+        user.setStatus(Status.ACTIVE);
         userDao.save(user);
 
         mailSender.sendRegistrationMail(new User(user.getFirstName(), user.getLastName(), user.getEmail(), password));
@@ -87,16 +80,20 @@ public class UserService {
             logger.warn("update() fault: user {} was not updated, with incorrect id {}.", user, user.getId());
             throw new InvalidEntityException("Id must be greater than 0 to update.");
         }
-        if (user.getPassword() == null) {
-            user.setPassword(findByEmail(user.getEmail()).getPassword());
+        User userDb = findByEmail(user.getEmail());
+        if (user.getFirstName() != null && !user.getFirstName().equals(userDb.getFirstName())) {
+            userDb.setFirstName(user.getFirstName());
         }
-        if (user.getRole() == null) {
-            user.setRole(findByEmail(user.getEmail()).getRole());
+        if (user.getLastName() != null && !user.getLastName().equals(userDb.getLastName())) {
+            userDb.setLastName(user.getLastName());
         }
-        if (user.getStatus() == null) {
-            user.setStatus(findByEmail(user.getEmail()).getStatus());
+        if (user.getRole() != null && !user.getRole().equals(userDb.getRole())) {
+            userDb.setRole(user.getRole());
         }
-        user = userDao.save(user);
+        if (user.getStatus() != null && !user.getStatus().equals(userDb.getStatus())) {
+            userDb.setStatus(user.getStatus());
+        }
+        userDao.save(userDb);
         logger.trace("user {} was updated.", user);
         return user;
     }
@@ -110,6 +107,21 @@ public class UserService {
     public void deleteByEmail(String email) {
         logger.debug("deleteByEmail() email {}.", email);
         userDao.deleteByEmail(email);
+    }
+
+    public void markAsDeleteById(Integer id) {
+        logger.debug("markAsDeleteById() id {}.", id);
+        User user = findById(id);
+        user.setStatus(Status.DELETED);
+        userDao.save(user);
+    }
+
+    public void updatePassword(User user, String newPassword) {
+        logger.debug("updatePassword() user {}, newPassword {}.", user, newPassword);
+        User userDb = findById(user.getId());
+        String encodePassword = passwordEncoder.encode(newPassword);
+        userDb.setPassword(encodePassword);
+        mailSender.sendUpdateMail(new User(user.getFirstName(), user.getLastName(), user.getEmail(), newPassword));
     }
 
 }

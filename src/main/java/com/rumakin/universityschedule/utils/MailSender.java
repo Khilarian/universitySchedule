@@ -11,7 +11,8 @@ import com.rumakin.universityschedule.model.User;
 @Service
 public class MailSender {
 
-    private static final String SUBJECT = "Registration on University Platfofm";
+    private static final String REGISTRATION = "Registration on University Platfofm";
+    private static final String PASSWORD_CHANGE = "Password change on University Platfofm";
 
     @Value("${spring.mail.username}")
     private String username;
@@ -27,14 +28,30 @@ public class MailSender {
         SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
         simpleMailMessage.setFrom(username);
         simpleMailMessage.setTo(user.getEmail());
-        simpleMailMessage.setSubject(SUBJECT);
-        simpleMailMessage.setText(prepareMessage(user));
+        simpleMailMessage.setSubject(REGISTRATION);
+        simpleMailMessage.setText(prepareRegistrationMessage(user));
+
+        javaMailSender.send(simpleMailMessage);
+    }
+    
+    public void sendUpdateMail(User user) {
+        SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
+        simpleMailMessage.setFrom(username);
+        simpleMailMessage.setTo(user.getEmail());
+        simpleMailMessage.setSubject(PASSWORD_CHANGE);
+        simpleMailMessage.setText(prepareUpdateMessage(user));
 
         javaMailSender.send(simpleMailMessage);
     }
 
-    private String prepareMessage(User user) {
+    private String prepareRegistrationMessage(User user) {
         String messageForm = "Hello, %s %s!\n You was registered on our university platform!\n "
+                + "Your login is: %s\n Your password is:%s\n Web site is: http://localhost:8080/university";
+        return String.format(messageForm, user.getFirstName(), user.getLastName(), user.getEmail(), user.getPassword());
+    }
+
+    private String prepareUpdateMessage(User user) {
+        String messageForm = "Hello, %s %s!\n Your password on our university platform was changed!\n "
                 + "Your login is: %s\n Your password is:%s\n Web site is: http://localhost:8080/university";
         return String.format(messageForm, user.getFirstName(), user.getLastName(), user.getEmail(), user.getPassword());
     }
