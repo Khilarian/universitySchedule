@@ -44,6 +44,7 @@ public class FacultyController {
         List<FacultyDto> faculties = facultyService.findAll().stream().map(f -> convertToDto(f))
                 .collect(Collectors.toList());
         logger.trace("found {} faculties.", faculties.size());
+        model.addAttribute("faculties",faculties);
         setAttributes(model, ALL);
         return "faculties/getAll";
     }

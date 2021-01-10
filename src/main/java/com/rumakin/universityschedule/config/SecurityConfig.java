@@ -14,6 +14,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import com.rumakin.universityschedule.model.enums.Permission;
 
@@ -31,7 +32,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable().authorizeRequests()
+        http
+            .csrf().disable()
+            .authorizeRequests()
                 .antMatchers("/v2/api-docs", "/swagger-resources/configuration/ui", "/swagger-resources",
                         "/swagger-resources/configuration/security", "/swagger-ui.html", "/webjars/**")
                 .permitAll().antMatchers(HttpMethod.GET, "/*").permitAll().antMatchers(HttpMethod.GET, "/*/getAll")
@@ -39,7 +42,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST, "/api/**").hasAuthority(Permission.WRITE.getPermission())
                 .antMatchers(HttpMethod.PUT, "/api/**").hasAuthority(Permission.WRITE.getPermission())
                 .antMatchers(HttpMethod.DELETE, "/api/**").hasAuthority(Permission.WRITE.getPermission()).anyRequest()
-                .authenticated().and().formLogin();
+                .authenticated()
+            .and()
+            .formLogin()
+                .loginPage("/auth/login")
+                .permitAll()
+                .and()
+                .logout()
+                .logoutRequestMatcher(new AntPathRequestMatcher("/auth/logout", "POST"))
+                .invalidateHttpSession(true)
+                .clearAuthentication(true)
+                .deleteCookies("JSESSIONID")
+                .logoutSuccessUrl("/university");
     }
 
     @Override
