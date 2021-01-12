@@ -4,13 +4,13 @@
 <div th:insert="/fragments/common :: common_head"></div>
 <title>Login</title>
 </head>
-<body class="container-sm">
+<body class="container">
     <div th:insert="/fragments/common :: nav_menu"></div>
+    <h2 class="form-signin-heading">Login</h2>
+    <p th:if="${loginError}" class="alert alert-danger">Wrong user or password</p>
     <form class="form-signin" method="post" action="/auth/login">
-        <h2 class="form-signin-heading">Login</h2>
-        <p>
-            <label for="username">Username</label>
-            <input type="text" id="username" name="username" class="form-control" placeholder="Username" required>
+        <label for="username">Username</label>
+        <input type="text" id="username" name="username" class="form-control" placeholder="Username" required>
         </p>
         <p>
             <label for="password">Password</label>

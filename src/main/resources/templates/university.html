@@ -6,7 +6,9 @@
 </head>
 <body class="container-sm">
     <div th:insert="/fragments/common :: nav_menu"></div>
-    <h3 align="center">University schedule application</h3>
-    <div th:insert="/fragments/common :: logout"></div>
+    <h3 sec:authorize="!isAuthenticated()" align="center">University schedule application</h3>
+    <h5 sec:authorize="!isAuthenticated()" align="center">
+        Welcome to university schedule web site.<br> Please, login to use it.
+    </h5>
 </body>
 </html>

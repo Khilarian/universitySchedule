@@ -41,6 +41,7 @@ public class UserController {
     }
 
     @GetMapping("/getAll")
+    @PreAuthorize("hasAuthority('write')")
     public String findAll(Model model) {
         logger.debug("findAll() users");
         List<UserDto> users = userService.findAll().stream().map(a -> convertToDto(a)).collect(Collectors.toList());
@@ -113,8 +114,8 @@ public class UserController {
         } else {
             setAttributes(model, ADD);
         }
-        model.addAttribute("role", Arrays.asList(Role.values()));
-        model.addAttribute("status", Arrays.asList(Status.values()));
+        model.addAttribute("roles", Arrays.asList(Role.values()));
+        model.addAttribute("statuses", Arrays.asList(Status.values()));
     }
 
     private void setAttributes(Model model, String header) {
@@ -122,11 +123,17 @@ public class UserController {
     }
 
     private UserDto convertToDto(User user) {
-        return modelMapper.map(user, UserDto.class);
+        UserDto userDto= modelMapper.map(user, UserDto.class);
+        userDto.setRole(user.getRole().name());
+        userDto.setStatus(user.getStatus().name());
+        return userDto;
     }
 
     private User convertToEntity(UserDto userDto) {
-        return modelMapper.map(userDto, User.class);
+        User user = modelMapper.map(userDto, User.class);
+        user.setRole(Role.valueOf(userDto.getRole()));
+        user.setStatus(Status.valueOf(userDto.getStatus()));
+        return user;
     }
 
 }

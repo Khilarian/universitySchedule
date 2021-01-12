@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<div th:insert="/fragments/common :: common_head"></div>
+<title class="text-body" th:text="${headerString}"></title>
+</head>
+<body class="container-sm">
+    <div th:insert="/fragments/common :: nav_menu"></div>
+    <h3 class="text-body" th:text="${headerString}"></h3>
+    <form action="#" th:action="@{/users/edit}" th:object="${user}" method="post">
+        <div class="form-group row">
+            <label class="col-form-label">User's first name</label>
+            <input type="hidden" class="form-control" th:field="*{id}" th:value=${id} readonly="readonly" /> 
+            <input type="text" class="form-control" th:field="*{firstName}" th:value=${firstName} readonly="readonly" />
+            <span class="font-italic text-danger" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"></span>
+        </div>
+        <div class="form-group row">
+            <label class="col-form-label">User's last name</label>
+            <input type="text" class="form-control" th:field="*{lastName}" th:value=${lastName} readonly="readonly" />
+            <span class="font-italic text-danger" th:if="${#fields.hasErrors('lastName')}" th:errors="*lastName}"></span>
+        </div>
+        <div class="form-group row">
+            <label class="col-form-label">User's email</label>
+            <input type="text" th:if="*{email} == null" class="form-control" th:field="*{email}" th:value="${email}"
+                readonly="readonly" /> <input type="text" th:unless="*{email} == null" class="form-control"
+                th:field="*{email}" th:value="${email}" readonly="readonly" />
+            <span class="font-italic text-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
+        </div>
+        <div class="form-group row">
+            <label class="col-form-label">Role</label>
+            <select class="form-control" th:field="*{role}">
+                <option th:value="null">Role not assign</option>
+                <option th:each="role : ${roles}" th:value="${role}" th:utext="${role}" id="addRole" placeholder="Role"
+                    th:required="required">Role</option>
+            </select>
+            <span class="font-italic text-danger" th:if="${#fields.hasErrors('role')}" th:errors="*{role}"></span>
+        </div>
+        <div class="form-group row">
+            <label class="col-form-label">Select status</label>
+            <select class="form-control" th:field="*{status}">
+                <option th:value="null">Status not assign</option>
+                <option th:each="status : ${statuses}" th:value="${status}" th:utext="${status}" id="addStatus"
+                    placeholder="Status" th:required="required">Status</option>
+            </select>
+            <span class="font-italic text-danger" th:if="${#fields.hasErrors('status')}" th:errors="*{status}"></span>
+        </div>
+        <div class="form-group row">
+            <input type="submit" value="Save"> <input type="reset" class="btn btn-warning" value="Reset" /> <a
+                th:href="@{/users/getAll}" class="btn btn-danger">Cancel</a>
+        </div>
+    </form>
+</body>
+</html>

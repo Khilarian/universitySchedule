@@ -12,16 +12,16 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>11</java.version>
-        <modelmapper.version>2.3.7</modelmapper.version>
+        <modelmapper.version>2.3.9</modelmapper.version>
         <swagger.version>2.9.2</swagger.version>
-        <swagger-annotation.version>1.6.1</swagger-annotation.version>
+        <swagger-annotation.version>1.6.2</swagger-annotation.version>
         <jacoco.version>0.8.6</jacoco.version>
     </properties>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.3.5.RELEASE</version>
+        <version>2.4.1</version>
     </parent>
 
     <build>
@@ -123,6 +123,11 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-thymeleaf</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.thymeleaf.extras</groupId>
+            <artifactId>thymeleaf-extras-springsecurity5</artifactId>
+        </dependency>
+
         <dependency>
             <groupId>org.modelmapper</groupId>
             <artifactId>modelmapper</artifactId>
