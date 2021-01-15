@@ -22,7 +22,7 @@ import io.swagger.annotations.Api;
 @RestController
 @Validated
 @RequestMapping("/api/groups")
-@Api(value = "Group Resourse REST Endpoint")
+@Api(value = "Groups Resourse REST Endpoint")
 public class GroupRestController {
 
     private GroupService groupService;

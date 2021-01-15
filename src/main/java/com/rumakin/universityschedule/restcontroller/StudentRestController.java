@@ -22,7 +22,7 @@ import io.swagger.annotations.Api;
 @RestController
 @Validated
 @RequestMapping("/api/students")
-@Api(value = "Student Resourse REST Endpoint")
+@Api(value = "Students Resourse REST Endpoint")
 public class StudentRestController {
 
     private StudentService studentService;

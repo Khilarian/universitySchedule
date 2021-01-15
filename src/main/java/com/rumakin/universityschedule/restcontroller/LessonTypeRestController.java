@@ -22,7 +22,7 @@ import io.swagger.annotations.Api;
 @RestController
 @Validated
 @RequestMapping("/api/lessonTypes")
-@Api(value = "Lesson Type Resourse REST Endpoint")
+@Api(value = "Lesson Types Resourse REST Endpoint")
 public class LessonTypeRestController {
 
     private LessonTypeService lessonTypeService;
