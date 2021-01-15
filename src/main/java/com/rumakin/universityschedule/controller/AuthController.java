@@ -10,17 +10,28 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/auth")
 public class AuthController {
 
+    private static final String LOGIN_PAGE = "login";
+
     private final Logger logger = LoggerFactory.getLogger(AuthController.class);
 
     @GetMapping("/login")
     public String getLoginPage() {
-        return "login";
+        logger.debug("getLogin()");
+        return LOGIN_PAGE;
     }
-    
+
     @PostMapping("/login-error")
     public String getLoginErrorPage(Model model) {
+        logger.debug("getLoginErrorPage()");
         model.addAttribute("loginError", true);
-        return "login";
+        return LOGIN_PAGE;
     }
-    
+
+    @PostMapping("/access-denied")
+    public String getAccessDeniedPage(Model model) {
+        logger.debug("getAccessDeniedPAge()");
+        model.addAttribute("accessDinied", true);
+        return LOGIN_PAGE;
+    }
+
 }
