@@ -38,6 +38,7 @@ public class GroupController {
     }
 
     @GetMapping("/getAll")
+    @PreAuthorize("hasAuthority('write')")
     public String findAllGroups(Model model) {
         logger.debug("findAll() groupDtos");
         List<GroupDto> groups = groupService.findAll().stream().map(g -> convertToDto(g)).collect(Collectors.toList());

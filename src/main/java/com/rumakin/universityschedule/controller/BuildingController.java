@@ -39,6 +39,7 @@ public class BuildingController {
     }
 
     @GetMapping("/getAll")
+    @PreAuthorize("hasAuthority('write')")
     public String findAll(Model model) {
         logger.debug("findAll() buildings");
         List<BuildingDto> buildings = buildingService.findAll().stream().map(b -> convertToDto(b))

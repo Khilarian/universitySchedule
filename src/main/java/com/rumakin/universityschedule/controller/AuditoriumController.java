@@ -38,6 +38,7 @@ public class AuditoriumController {
     }
 
     @GetMapping("/getAll")
+    @PreAuthorize("hasAuthority('write')")
     public String findAll(Model model) {
         logger.debug("findAll() auditoriums");
         List<AuditoriumDto> auditoriums = auditoriumService.findAll().stream().map(a -> convertToDto(a))

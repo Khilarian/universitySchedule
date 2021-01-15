@@ -39,6 +39,7 @@ public class TimeSlotController {
     }
 
     @GetMapping("/getAll")
+    @PreAuthorize("hasAuthority('write')")
     public String findAll(Model model) {
         logger.debug("findAll() timeSlots");
         List<TimeSlotDto> timeSlots = timeSlotService.findAll().stream().map(b -> convertToDto(b))

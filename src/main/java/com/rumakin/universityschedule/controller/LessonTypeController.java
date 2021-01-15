@@ -39,6 +39,7 @@ public class LessonTypeController {
     }
 
     @GetMapping("/getAll")
+    @PreAuthorize("hasAuthority('write')")
     public String findAll(Model model) {
         logger.debug("findAll() lessonTypes");
         List<LessonTypeDto> lessonTypes = lessonTypeService.findAll().stream().map(b -> convertToDto(b))

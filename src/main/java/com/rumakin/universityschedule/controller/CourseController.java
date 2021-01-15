@@ -38,6 +38,7 @@ public class CourseController {
     }
 
     @GetMapping("/getAll")
+    @PreAuthorize("hasAuthority('write')")
     public String findAllCourses(Model model) {
         logger.debug("findAll() courseDtos");
         List<CourseDto> courses = courseService.findAll().stream().map(g -> convertToDto(g))
