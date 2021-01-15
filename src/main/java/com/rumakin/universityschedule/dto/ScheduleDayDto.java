@@ -4,12 +4,14 @@ import java.time.LocalDate;
 import java.util.List;
 
 import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
-@ApiModel
+@ApiModel(description = "Model that represent day(date) with lessons by request")
 public class ScheduleDayDto implements Dto {
 
     private LocalDate date;
     private List<LessonDto> lessons;
+    @ApiModelProperty(notes = "true to fill calendar  UI with empty day")
     private boolean mockDay;
 
     public ScheduleDayDto() {

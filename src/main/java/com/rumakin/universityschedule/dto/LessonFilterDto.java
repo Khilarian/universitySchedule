@@ -11,15 +11,17 @@ import org.springframework.format.annotation.DateTimeFormat;
 import com.rumakin.universityschedule.validation.annotation.CheckGroupAndTeacher;
 
 import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 @CheckGroupAndTeacher
-@ApiModel
+@ApiModel(description = "Request to get schedule by filled parameters")
 public class LessonFilterDto {
 
     private Integer groupId;
 
     private Integer teacherId;
 
+    @ApiModelProperty(notes = "check-box for schedule period: 1- for month; 0- for day")
     @NotNull
     private Integer monthScheduleCheck;
 
