@@ -9,6 +9,7 @@ import org.modelmapper.ModelMapper;
 import org.slf4j.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -88,8 +89,8 @@ public class UserController {
 
     @GetMapping(value = "/profile")
     @PreAuthorize("hasAuthority('read')")
-    public String getProfile(int id, Model model) {
-        User user = userService.findById(id);
+    public String getProfile(Authentication authentication, Model model) {
+        User user = userService.findByEmail(authentication.getName());
         model.addAttribute("user", convertToDto(user));
         setAttributes(model, PROFILE);
         return "users/profile";
@@ -97,15 +98,17 @@ public class UserController {
 
     @PostMapping(value = "/changePassword")
     @PreAuthorize("hasAuthority('read')")
-    public String updatePassword(@Valid @ModelAttribute(value = "user") UserDto userDto, BindingResult bindingResult,
-            Model model) {
-        if (bindingResult.hasErrors()) {
+    public String updatePassword(@Valid @ModelAttribute(value = "user") UserDto userDto, Authentication authentication,
+            BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors() || userDto.getNewPassword().length() == 0) {
+            model.addAttribute("passwordError", true);
             setAttributes(model, PROFILE);
-            return "users/changePassword";
         } else {
+            model.addAttribute("passwordSuccess", true);
             userService.updatePassword(convertToEntity(userDto), userDto.getNewPassword());
-            return "users/profile";
+            model.addAttribute("user", convertToDto(userService.findByEmail(authentication.getName())));
         }
+        return "users/profile";
     }
 
     private void setEdit(Integer id, Model model) {
@@ -123,7 +126,7 @@ public class UserController {
     }
 
     private UserDto convertToDto(User user) {
-        UserDto userDto= modelMapper.map(user, UserDto.class);
+        UserDto userDto = modelMapper.map(user, UserDto.class);
         userDto.setRole(user.getRole().name());
         userDto.setStatus(user.getStatus().name());
         return userDto;

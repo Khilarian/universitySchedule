@@ -10,8 +10,8 @@
     <form action="#" th:action="@{/auditoriums/edit}" th:object="${auditorium}" method="post">
         <div class="form-group row">
             <label class="col-form-label">Enter auditorium number</label>
-            <input type="hidden" class="form-control" th:field="*{id}" th:value=${id} /> <input type="text"
-                class="form-control" th:field="*{number}" th:value=${number} />
+            <input type="hidden" class="form-control" th:field="*{id}" th:value=${id} />
+            <input type="text" class="form-control" th:field="*{number}" th:value=${number} />
             <span class="font-italic text-danger" th:if="${#fields.hasErrors('number')}" th:errors="*{number}"></span>
         </div>
         <div class="form-group row">
@@ -28,8 +28,9 @@
             </select>
             <span class="font-italic text-danger" th:if="${#fields.hasErrors('buildingId')}" th:errors="*{buildingId}"></span>
         </div>
-        <input type="submit" value="Save"> <input type="reset" class="btn btn-warning" value="Reset" /> <a
-            th:href="@{/auditoriums/getAll}" class="btn btn-danger">Cancel</a>
+        <input type="submit" value="Save">
+        <input type="reset" class="btn btn-warning" value="Reset" />
+        <a th:href="@{/auditoriums/getAll}" class="btn btn-danger">Cancel</a>
     </form>
 </body>
 </html>

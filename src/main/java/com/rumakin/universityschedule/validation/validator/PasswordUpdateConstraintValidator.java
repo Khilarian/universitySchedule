@@ -20,8 +20,10 @@ public class PasswordUpdateConstraintValidator implements ConstraintValidator<Pa
     @Override
     public boolean isValid(UserDto userDto, ConstraintValidatorContext context) {
         User user = userService.findById(userDto.getId());
-        if (userDto.getNewPassword() == null || (userDto.getNewPassword() != null
-                && passwordEncoder.matches(passwordEncoder.encode(userDto.getPassword()), user.getPassword()))) {
+        if ((userDto.getPassword().equals(user.getPassword())
+                && (userDto.getNewPassword() == null || userDto.getNewPassword().length() == 0))
+                || ((userDto.getNewPassword() != null || userDto.getNewPassword().length() == 0)
+                        && passwordEncoder.matches(userDto.getPassword(), user.getPassword()))) {
             return true;
         } else {
             context.disableDefaultConstraintViolation();

@@ -15,4 +15,4 @@ INSERT INTO lesson (course_id, lesson_type_id, auditorium_id, date, time_slot_id
 INSERT INTO lesson_teacher (lesson_id, person_id) VALUES (2,3);
 INSERT INTO lesson_teacher (lesson_id, person_id) VALUES (2,2);
 INSERT INTO lesson_group (lesson_id, group_id) VALUES (2,3);
-INSERT INTO security_users(first_name,last_name,email,password,role,status) VALUES ('Admin','Adminov','admin@admin.com','$2y$12$jnZkDglsTtJvzkyrH1MWDOQKykxeJtqfemOu1LOgzmQfulgmt6S5C','ADMIN','ACTIVE');
+INSERT INTO security_users(first_name,last_name,email,password,role,status) VALUES ('Admin','Adminov','admin@admin.com','$2a$12$VwkCtvpa1aHJ9pa3GJb4DermcAkgyPvouP9vXLW8rOZiKLJthPsAm','ADMIN','ACTIVE');

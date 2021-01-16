@@ -51,6 +51,7 @@ public class UserService {
         logger.debug("findByEmail() {}.", email);
         User user = userDao.findByEmail(email).orElseThrow(
                 () -> new ResourceNotFoundException(String.format("User with email %s not found.", email)));
+        user.setPassword("");
         logger.trace("findByName() {} result: {}.", email, user);
         return user;
     }
@@ -80,7 +81,7 @@ public class UserService {
             logger.warn("update() fault: user {} was not updated, with incorrect id {}.", user, user.getId());
             throw new InvalidEntityException("Id must be greater than 0 to update.");
         }
-        User userDb = findByEmail(user.getEmail());
+        User userDb = findById(user.getId());
         if (user.getFirstName() != null && !user.getFirstName().equals(userDb.getFirstName())) {
             userDb.setFirstName(user.getFirstName());
         }
@@ -109,6 +110,7 @@ public class UserService {
         userDao.deleteByEmail(email);
     }
 
+    @Transactional
     public void markAsDeleteById(Integer id) {
         logger.debug("markAsDeleteById() id {}.", id);
         User user = findById(id);
@@ -118,9 +120,10 @@ public class UserService {
 
     public void updatePassword(User user, String newPassword) {
         logger.debug("updatePassword() user {}, newPassword {}.", user, newPassword);
-        User userDb = findById(user.getId());
+        User userDb = findByEmail(user.getEmail());
         String encodePassword = passwordEncoder.encode(newPassword);
         userDb.setPassword(encodePassword);
+        userDao.save(userDb);
         mailSender.sendUpdateMail(new User(user.getFirstName(), user.getLastName(), user.getEmail(), newPassword));
     }
 
