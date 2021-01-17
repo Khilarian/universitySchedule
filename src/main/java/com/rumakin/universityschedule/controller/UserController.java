@@ -45,7 +45,7 @@ public class UserController {
     @PreAuthorize("hasAuthority('write')")
     public String findAll(Model model) {
         logger.debug("findAll() users");
-        List<UserDto> users = userService.findAll().stream().map(a -> convertToDto(a)).collect(Collectors.toList());
+        List<UserDto> users = userService.findAll().stream().map(this :: convertToDto).collect(Collectors.toList());
         logger.trace("found {} users.", users.size());
         model.addAttribute("users", users);
         setAttributes(model, ALL);

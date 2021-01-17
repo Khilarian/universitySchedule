@@ -17,6 +17,11 @@ import static java.util.Objects.nonNull;
 
 public class CustomizedLessonDaoImpl implements CustomizedLessonDao {
 
+    private static final String TIME_SLOT="timeSlot";
+    private static final String AUDITORIUM="auditorium";
+    private static final String GROUPS="groups";
+    private static final String TEACHERS="teachers";
+    
     private static final Logger logger = LoggerFactory.getLogger(CustomizedLessonDaoImpl.class);
 
     @PersistenceContext
@@ -29,9 +34,9 @@ public class CustomizedLessonDaoImpl implements CustomizedLessonDao {
         CriteriaQuery<Boolean> query = criteriaBuilder.createQuery(Boolean.class);
         Root<Lesson> root = query.from(Lesson.class);
         List<Predicate> predicates = new ArrayList<>();
-        Join<Lesson, Auditorium> auditoriumJoin = root.join("auditorium", JoinType.LEFT);
+        Join<Lesson, Auditorium> auditoriumJoin = root.join(AUDITORIUM, JoinType.LEFT);
         predicates.add(criteriaBuilder.equal(auditoriumJoin.get("id"), auditoriumId));
-        Join<Lesson, TimeSlot> timeSlotJoin = root.join("timeSlot", JoinType.LEFT);
+        Join<Lesson, TimeSlot> timeSlotJoin = root.join(TIME_SLOT, JoinType.LEFT);
         predicates.add(criteriaBuilder.equal(timeSlotJoin.get("id"), timeSlotId));
         predicates.add(criteriaBuilder.equal(root.get("date"), date));
         if (nonNull(lessonId)) {
@@ -49,14 +54,14 @@ public class CustomizedLessonDaoImpl implements CustomizedLessonDao {
         CriteriaQuery<Integer> query = criteriaBuilder.createQuery(Integer.class);
         Root<Lesson> root = query.from(Lesson.class);
         List<Predicate> predicates = new ArrayList<>();
-        Join<Lesson, TimeSlot> timeSlotJoin = root.join("timeSlot", JoinType.LEFT);
+        Join<Lesson, TimeSlot> timeSlotJoin = root.join(TIME_SLOT, JoinType.LEFT);
         predicates.add(criteriaBuilder.equal(timeSlotJoin.get("id"), timeSlotId));
         predicates.add(criteriaBuilder.equal(root.get("date"), date));
         if (nonNull(lessonId)) {
             predicates.add(criteriaBuilder.notEqual(root.get("id"), lessonId));
         }
         query.where(predicates.toArray(new Predicate[] {}));
-        SetJoin<Lesson, Group> joinGroup = root.joinSet("groups");
+        SetJoin<Lesson, Group> joinGroup = root.joinSet(GROUPS);
         query.multiselect(joinGroup.get("id"));
         TypedQuery<Integer> typedQuery = entityManager.createQuery(query);
         return typedQuery.getResultStream().collect(Collectors.toSet());
@@ -69,14 +74,14 @@ public class CustomizedLessonDaoImpl implements CustomizedLessonDao {
         CriteriaQuery<Integer> query = criteriaBuilder.createQuery(Integer.class);
         Root<Lesson> root = query.from(Lesson.class);
         List<Predicate> predicates = new ArrayList<>();
-        Join<Lesson, TimeSlot> timeSlotJoin = root.join("timeSlot", JoinType.LEFT);
+        Join<Lesson, TimeSlot> timeSlotJoin = root.join(TIME_SLOT, JoinType.LEFT);
         predicates.add(criteriaBuilder.equal(timeSlotJoin.get("id"), timeSlotId));
         predicates.add(criteriaBuilder.equal(root.get("date"), date));
         if (nonNull(lessonId)) {
             predicates.add(criteriaBuilder.notEqual(root.get("id"), lessonId));
         }
         query.where(predicates.toArray(new Predicate[] {}));
-        SetJoin<Lesson, Teacher> joinTeacher = root.joinSet("teachers");
+        SetJoin<Lesson, Teacher> joinTeacher = root.joinSet(TEACHERS);
         query.multiselect(joinTeacher.get("id"));
         TypedQuery<Integer> typedQuery = entityManager.createQuery(query);
         return typedQuery.getResultStream().collect(Collectors.toSet());
@@ -89,7 +94,7 @@ public class CustomizedLessonDaoImpl implements CustomizedLessonDao {
         CriteriaQuery<LessonDto> query = criteriaBuilder.createQuery(LessonDto.class);
         Root<Lesson> root = query.from(Lesson.class);
         List<Predicate> predicates = new ArrayList<>();
-        Join<Lesson, Teacher> teacherJoin = root.join("teachers", JoinType.LEFT);
+        Join<Lesson, Teacher> teacherJoin = root.join(TEACHERS, JoinType.LEFT);
         predicates.add(criteriaBuilder.equal(teacherJoin.get("id"), teacherId));
         predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get("date"), startDate));
         predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get("date"), endDate));
@@ -107,7 +112,7 @@ public class CustomizedLessonDaoImpl implements CustomizedLessonDao {
         CriteriaQuery<LessonDto> query = criteriaBuilder.createQuery(LessonDto.class);
         Root<Lesson> root = query.from(Lesson.class);
         List<Predicate> predicates = new ArrayList<>();
-        Join<Lesson, Group> groupJoin = root.join("groups", JoinType.LEFT);
+        Join<Lesson, Group> groupJoin = root.join(GROUPS, JoinType.LEFT);
         predicates.add(criteriaBuilder.equal(groupJoin.get("id"), groupId));
         predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get("date"), startDate));
         predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get("date"), endDate));
@@ -125,7 +130,7 @@ public class CustomizedLessonDaoImpl implements CustomizedLessonDao {
         CriteriaQuery<LessonDto> query = criteriaBuilder.createQuery(LessonDto.class);
         Root<Lesson> root = query.from(Lesson.class);
         List<Predicate> predicates = new ArrayList<>();
-        Join<Lesson, Teacher> teacherJoin = root.join("teachers", JoinType.LEFT);
+        Join<Lesson, Teacher> teacherJoin = root.join(TEACHERS, JoinType.LEFT);
         predicates.add(criteriaBuilder.equal(teacherJoin.get("id"), teacherId));
         predicates.add(criteriaBuilder.equal(root.get("date"), date));
         query.where(predicates.toArray(new Predicate[] {}));
@@ -142,7 +147,7 @@ public class CustomizedLessonDaoImpl implements CustomizedLessonDao {
         CriteriaQuery<LessonDto> query = criteriaBuilder.createQuery(LessonDto.class);
         Root<Lesson> root = query.from(Lesson.class);
         List<Predicate> predicates = new ArrayList<>();
-        Join<Lesson, Group> groupJoin = root.join("groups", JoinType.LEFT);
+        Join<Lesson, Group> groupJoin = root.join(GROUPS, JoinType.LEFT);
         predicates.add(criteriaBuilder.equal(groupJoin.get("id"), groupId));
         predicates.add(criteriaBuilder.equal(root.get("date"), date));
         query.where(predicates.toArray(new Predicate[] {}));
@@ -152,29 +157,12 @@ public class CustomizedLessonDaoImpl implements CustomizedLessonDao {
         return typedQuery.getResultStream().collect(Collectors.toList());
     }
 
-    private List<Selection<?>> buildMultiSelectForLesson(Root<Lesson> root) {
-        List<Selection<?>> selectList = buildMultiSelect(root);
-        Join<Lesson, Teacher> joinTeacher = root.join("teachers", JoinType.LEFT);
-        selectList.add(joinTeacher.get("id"));
-        selectList.add(joinTeacher.get("firstName"));
-        selectList.add(joinTeacher.get("lastName"));
-        return selectList;
-    }
-
-    private List<Selection<?>> buildMultiSelectForGroup(Root<Lesson> root) {
-        List<Selection<?>> selectList = buildMultiSelect(root);
-        Join<Lesson, Group> joinGroup = root.join("groups", JoinType.LEFT);
-        selectList.add(joinGroup.get("id"));
-        selectList.add(joinGroup.get("name"));
-        return selectList;
-    }
-
     private List<Selection<?>> buildMultiSelect(Root<Lesson> root) {
         Join<Lesson, Course> joinCourse = root.join("course", JoinType.LEFT);
-        Join<Lesson, Auditorium> joinAuditorium = root.join("auditorium", JoinType.LEFT);
-        Join<Lesson, TimeSlot> joinTimeSlot = root.join("timeSlot", JoinType.LEFT);
+        Join<Lesson, Auditorium> joinAuditorium = root.join(AUDITORIUM, JoinType.LEFT);
+        Join<Lesson, TimeSlot> joinTimeSlot = root.join(TIME_SLOT, JoinType.LEFT);
         Join<Lesson, LessonType> joinLessonType = root.join("lessonType", JoinType.LEFT);
-        Path<Building> joinBuilding = root.join("auditorium").get("building");
+        Path<Building> joinBuilding = root.join(AUDITORIUM).get("building");
         List<Selection<?>> selectList = new ArrayList<>();
         selectList.add(root.get("id"));
         selectList.add(joinCourse.get("id"));
@@ -197,7 +185,7 @@ public class CustomizedLessonDaoImpl implements CustomizedLessonDao {
     private List<Order> getOrderList(CriteriaBuilder criteriaBuilder, Root<Lesson> root) {
         List<Order> orderList = new ArrayList<>();
         orderList.add(criteriaBuilder.asc(root.get("date")));
-        orderList.add(criteriaBuilder.asc(root.get("timeSlot")));
+        orderList.add(criteriaBuilder.asc(root.get(TIME_SLOT)));
         return orderList;
     }
 

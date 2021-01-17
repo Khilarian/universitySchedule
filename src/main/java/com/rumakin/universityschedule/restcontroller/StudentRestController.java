@@ -38,7 +38,7 @@ public class StudentRestController {
     @GetMapping
     public List<StudentDto> findAll() {
         logger.debug("findAll() students");
-        List<StudentDto> students = studentService.findAll().stream().map(b -> convertToDto(b))
+        List<StudentDto> students = studentService.findAll().stream().map(this :: convertToDto)
                 .collect(Collectors.toList());
         logger.debug("found() {} students", students.size());
         return students;

@@ -142,22 +142,7 @@ public class User implements ModelEntity {
         if (obj == null) return false;
         if (getClass() != obj.getClass()) return false;
         User other = (User) obj;
-        if (email == null) {
-            if (other.email != null) return false;
-        } else if (!email.equals(other.email)) return false;
-        if (firstName == null) {
-            if (other.firstName != null) return false;
-        } else if (!firstName.equals(other.firstName)) return false;
-        if (id != other.id) return false;
-        if (lastName == null) {
-            if (other.lastName != null) return false;
-        } else if (!lastName.equals(other.lastName)) return false;
-        if (password == null) {
-            if (other.password != null) return false;
-        } else if (!password.equals(other.password)) return false;
-        if (role != other.role) return false;
-        if (status != other.status) return false;
-        return true;
+        return id == other.id;
     }
 
     @Override

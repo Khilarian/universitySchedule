@@ -76,6 +76,7 @@
                 <h7 class="card-title" th:text="${#temporals.day(day.date)}"></h7>
                 <p class="card-text">
                 <table class="table table-sm table-bordered">
+                <caption>Day lessons</caption>
                     <thead th:unless="${not #lists.isEmpty(day.lessons)}">
                         <th scope="col" style='font-size: 15px;'>No Lessons</th>
                     </thead>
@@ -108,7 +109,7 @@
 <div th:fragment="notification">
     <div th:unless="${errorMessage==null}">
         <div class="alert alert-danger alert-dismissible fade show" role="alert">
-            <span th:text="${errorMessage}" align=center></span>
+            <span th:text="${errorMessage}" align="center"></span>
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>

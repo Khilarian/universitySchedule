@@ -35,7 +35,7 @@ public class Lesson implements ModelEntity {
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "lesson_teacher", joinColumns = @JoinColumn(name = "lesson_id"), inverseJoinColumns = @JoinColumn(name = "person_id"))
-    private Set<Teacher> teachers = new HashSet<>();;
+    private Set<Teacher> teachers = new HashSet<>();
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "lesson_group", joinColumns = @JoinColumn(name = "lesson_id"), inverseJoinColumns = @JoinColumn(name = "group_id"))

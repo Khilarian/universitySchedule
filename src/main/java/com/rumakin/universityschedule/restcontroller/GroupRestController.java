@@ -38,7 +38,7 @@ public class GroupRestController {
     @GetMapping
     public List<GroupDto> findAll() {
         logger.debug("findAll() groups");
-        List<GroupDto> groups = groupService.findAll().stream().map(b -> convertToDto(b))
+        List<GroupDto> groups = groupService.findAll().stream().map(this :: convertToDto)
                 .collect(Collectors.toList());
         logger.debug("found() {} groups", groups.size());
         return groups;

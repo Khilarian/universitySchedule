@@ -44,7 +44,7 @@ public class UserRestController {
     @GetMapping
     public List<UserDto> findAll() {
         logger.debug("findAll() users");
-        List<UserDto> users = userService.findAll().stream().map(b -> convertToDto(b)).collect(Collectors.toList());
+        List<UserDto> users = userService.findAll().stream().map(this :: convertToDto).collect(Collectors.toList());
         logger.debug("found() {} users", users.size());
         return users;
     }

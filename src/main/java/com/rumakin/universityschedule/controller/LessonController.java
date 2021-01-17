@@ -41,7 +41,7 @@ public class LessonController {
     @PreAuthorize("hasAuthority('write')")
     public String findAllLessons(Model model) {
         logger.debug("findAll() lessonDtos");
-        List<LessonDto> lessons = lessonService.findAll().stream().map(l -> convertToDto(l))
+        List<LessonDto> lessons = lessonService.findAll().stream().map(this :: convertToDto)
                 .collect(Collectors.toList());
         logger.trace("findAll() result: {} lessons.", lessons.size());
         model.addAttribute("lessons", lessons);
