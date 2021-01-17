@@ -1,17 +1,25 @@
 package com.rumakin.universityschedule.controller;
 
 import java.time.LocalTime;
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
 import java.util.stream.Collectors;
 
-import org.junit.jupiter.api.*;
-import org.mockito.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.web.servlet.*;
-import org.springframework.test.web.servlet.request.*;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.ui.Model;
@@ -22,6 +30,7 @@ import com.rumakin.universityschedule.exception.ResourceNotFoundException;
 import com.rumakin.universityschedule.model.TimeSlot;
 import com.rumakin.universityschedule.service.TimeSlotService;
 
+@ExtendWith(MockitoExtension.class)
 @WebMvcTest(value = TimeSlotController.class)
 class TimeSlotControllerTest {
 
@@ -44,14 +53,13 @@ class TimeSlotControllerTest {
 
     @BeforeEach
     public void setUpBeforeClass() throws Exception {
-        MockitoAnnotations.initMocks(this);
         mockMvc = MockMvcBuilders.standaloneSetup(timeSlotController).setControllerAdvice(new GlobalExceptionHandler())
                 .build();
         this.modelMapper = new ModelMapper();
     }
 
     @Test
-    public void findAllShouldReturnListOfTimeSlotsIfAtLeastOneExist() throws Exception {
+    void findAllShouldReturnListOfTimeSlotsIfAtLeastOneExist() throws Exception {
         TimeSlot timeSlot = new TimeSlot(1, 1, "FIRST", LocalTime.of(1, 0), LocalTime.of(2, 0));
         TimeSlot timeSlotTwo = new TimeSlot(2, 2, "SECOND", LocalTime.of(3, 0), LocalTime.of(4, 0));
         List<TimeSlot> timeSlots = Arrays.asList(timeSlot, timeSlotTwo);
@@ -66,7 +74,7 @@ class TimeSlotControllerTest {
     }
 
     @Test
-    public void getEditShouldGetEntityFromDataBaseIfItExists() throws Exception {
+    void getEditShouldGetEntityFromDataBaseIfItExists() throws Exception {
         TimeSlot timeSlot = new TimeSlot(1, 1, "FIRST", LocalTime.of(1, 0), LocalTime.of(2, 0));
         TimeSlotDto timeSlotDto = convertToDto(timeSlot);
         Mockito.when(mockTimeSlotService.findById(Mockito.anyInt())).thenReturn(timeSlot);
@@ -79,7 +87,7 @@ class TimeSlotControllerTest {
     }
 
     @Test
-    public void getEditShouldReturnFormForAddNewEntryIfItDoesNotExist() throws Exception {
+    void getEditShouldReturnFormForAddNewEntryIfItDoesNotExist() throws Exception {
         Mockito.when(mockTimeSlotService.findById(Mockito.anyInt())).thenReturn(null);
         String URI = "/timeSlots/edit";
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders.get(URI);
@@ -90,33 +98,33 @@ class TimeSlotControllerTest {
     }
 
     @Test
-    public void postEditShouldAddEntityIfItDoesNotExistsInDataBase() throws Exception {
+    void postEditShouldAddEntityIfItDoesNotExistsInDataBase() throws Exception {
         TimeSlot timeSlot = new TimeSlot(1, "FIRST", LocalTime.of(1, 0), LocalTime.of(2, 0));
         TimeSlotDto timeSlotDto = convertToDto(timeSlot);
         timeSlotDto.setId(null);
-        timeSlotController.edit(timeSlotDto, bindingResult);
+        timeSlotController.edit(timeSlotDto, bindingResult, model);
         Mockito.verify(mockTimeSlotService).add(timeSlot);
     }
 
     @Test
-    public void postEditShouldUpdateEntityIfItExistsInDataBase() throws Exception {
+    void postEditShouldUpdateEntityIfItExistsInDataBase() throws Exception {
         TimeSlot timeSlot = new TimeSlot(1, 1, "FIRST", LocalTime.of(1, 0), LocalTime.of(2, 0));
-        timeSlotController.edit(convertToDto(timeSlot), bindingResult);
+        timeSlotController.edit(convertToDto(timeSlot), bindingResult, model);
         Mockito.verify(mockTimeSlotService).update(timeSlot);
     }
 
     @Test
-    public void deleteShouldExecuteOnceWhenDbCallFine() throws Exception {
+    void deleteShouldExecuteOnceWhenDbCallFine() throws Exception {
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders.get("/timeSlots/delete/?id=1");
         ResultActions result = mockMvc.perform(request);
         result.andExpect(MockMvcResultMatchers.view().name("redirect:/timeSlots/getAll"));
     }
 
     @Test
-    public void postEditShouldReturnEditPageIfAnyErrors() throws Exception {
+    void postEditShouldReturnEditPageIfAnyErrors() throws Exception {
         TimeSlot timeSlot = new TimeSlot(1, 1, "FIRST", LocalTime.of(1, 0), LocalTime.of(2, 0));
         Mockito.when(bindingResult.hasErrors()).thenReturn(true);
-        timeSlotController.edit(convertToDto(timeSlot), bindingResult);
+        timeSlotController.edit(convertToDto(timeSlot), bindingResult, model);
         String URI = "/timeSlots/edit";
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders.get(URI);
         ResultActions result = mockMvc.perform(request);
@@ -124,7 +132,7 @@ class TimeSlotControllerTest {
     }
 
     @Test
-    public void testHandleEntityNotFoundException() throws Exception {
+    void testHandleEntityNotFoundException() throws Exception {
         Mockito.when(mockTimeSlotService.findById(2)).thenThrow(ResourceNotFoundException.class);
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders.get("/timeSlots/edit/?id=2");
         ResultActions result = mockMvc.perform(request);

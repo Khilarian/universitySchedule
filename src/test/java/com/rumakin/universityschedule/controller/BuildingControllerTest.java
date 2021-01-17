@@ -4,7 +4,9 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -21,6 +23,7 @@ import com.rumakin.universityschedule.exception.ResourceNotFoundException;
 import com.rumakin.universityschedule.model.Building;
 import com.rumakin.universityschedule.service.BuildingService;
 
+@ExtendWith(MockitoExtension.class)
 @WebMvcTest(value = BuildingController.class)
 class BuildingControllerTest {
 
@@ -43,14 +46,13 @@ class BuildingControllerTest {
 
     @BeforeEach
     public void setUpBeforeClass() throws Exception {
-        MockitoAnnotations.initMocks(this);
         mockMvc = MockMvcBuilders.standaloneSetup(buildingController).setControllerAdvice(new GlobalExceptionHandler())
                 .build();
         this.modelMapper = new ModelMapper();
     }
 
     @Test
-    public void findAllShouldReturnListOfBuildingsIfAtLeastOneExist() throws Exception {
+    void findAllShouldReturnListOfBuildingsIfAtLeastOneExist() throws Exception {
         Building building = new Building(1, "Main", "Khimki");
         Building buildingTwo = new Building(2, "Second", "Moscow");
         List<Building> buildings = Arrays.asList(building, buildingTwo);
@@ -65,7 +67,7 @@ class BuildingControllerTest {
     }
 
     @Test
-    public void getEditShouldGetEntityFromDataBaseIfItExists() throws Exception {
+    void getEditShouldGetEntityFromDataBaseIfItExists() throws Exception {
         Building building = new Building(1, "Main", "Khimki");
         BuildingDto buildingDto = convertToDto(building);
         Mockito.when(mockBuildingService.findById(Mockito.anyInt())).thenReturn(building);
@@ -76,9 +78,9 @@ class BuildingControllerTest {
                 .andExpect(MockMvcResultMatchers.model().attributeExists("building"))
                 .andExpect(MockMvcResultMatchers.model().attribute("building", buildingDto));
     }
-    
+
     @Test
-    public void getEditShouldReturnFormForAddNewEntryIfItDoesNotExist() throws Exception {
+    void getEditShouldReturnFormForAddNewEntryIfItDoesNotExist() throws Exception {
         Mockito.when(mockBuildingService.findById(Mockito.anyInt())).thenReturn(null);
         String URI = "/buildings/edit";
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders.get(URI);
@@ -89,34 +91,34 @@ class BuildingControllerTest {
     }
 
     @Test
-    public void postEditShouldAddEntityIfItDoesNotExistsInDataBase() throws Exception {
+    void postEditShouldAddEntityIfItDoesNotExistsInDataBase() throws Exception {
         Building building = new Building("Main", "Khimki");
         BuildingDto buildingDto = new BuildingDto();
         buildingDto.setAddress(building.getAddress());
         buildingDto.setName(building.getName());
-        buildingController.edit(buildingDto, bindingResult);
+        buildingController.edit(buildingDto, bindingResult, model);
         Mockito.verify(mockBuildingService).add(building);
     }
 
     @Test
-    public void postEditShouldUpdateEntityIfItExistsInDataBase() throws Exception {
+    void postEditShouldUpdateEntityIfItExistsInDataBase() throws Exception {
         Building newBuilding = new Building(1, "Main", "Khimki");
-        buildingController.edit(convertToDto(newBuilding), bindingResult);
+        buildingController.edit(convertToDto(newBuilding), bindingResult, model);
         Mockito.verify(mockBuildingService).update(newBuilding);
     }
 
     @Test
-    public void deleteShouldExecuteOnceWhenDbCallFine() throws Exception {
+    void deleteShouldExecuteOnceWhenDbCallFine() throws Exception {
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders.get("/buildings/delete/?id=1");
         ResultActions result = mockMvc.perform(request);
         result.andExpect(MockMvcResultMatchers.view().name("redirect:/buildings/getAll"));
     }
-    
+
     @Test
-    public void postEditShouldReturnEditPageIfAnyErrors() throws Exception {
+    void postEditShouldReturnEditPageIfAnyErrors() throws Exception {
         Building building = new Building(1, "First", "MAin");
         Mockito.when(bindingResult.hasErrors()).thenReturn(true);
-        buildingController.edit(convertToDto(building), bindingResult);
+        buildingController.edit(convertToDto(building), bindingResult, model);
         String URI = "/buildings/edit";
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders.get(URI);
         ResultActions result = mockMvc.perform(request);
@@ -124,7 +126,7 @@ class BuildingControllerTest {
     }
 
     @Test
-    public void testHandleEntityNotFoundException() throws Exception {
+    void testHandleEntityNotFoundException() throws Exception {
         Mockito.when(mockBuildingService.findById(2)).thenThrow(ResourceNotFoundException.class);
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders.get("/buildings/edit/?id=2");
         ResultActions result = mockMvc.perform(request);

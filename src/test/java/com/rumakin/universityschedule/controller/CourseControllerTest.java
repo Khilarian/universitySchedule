@@ -3,7 +3,9 @@ package com.rumakin.universityschedule.controller;
 import java.util.*;
 
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -20,6 +22,7 @@ import com.rumakin.universityschedule.exception.ResourceNotFoundException;
 import com.rumakin.universityschedule.model.*;
 import com.rumakin.universityschedule.service.*;
 
+@ExtendWith(MockitoExtension.class)
 @WebMvcTest(value = CourseController.class)
 class CourseControllerTest {
 
@@ -42,14 +45,13 @@ class CourseControllerTest {
 
     @BeforeEach
     public void setUpBeforeClass() throws Exception {
-        MockitoAnnotations.initMocks(this);
         mockMvc = MockMvcBuilders.standaloneSetup(courseController).setControllerAdvice(new GlobalExceptionHandler())
                 .build();
         modelMapper = new ModelMapper();
     }
 
     @Test
-    public void findAllShouldReturnListOfFacultysIfAtLeastOneExist() throws Exception {
+    void findAllShouldReturnListOfFacultysIfAtLeastOneExist() throws Exception {
         Faculty faculty = new Faculty(1, "First");
         List<Faculty> faculties = Arrays.asList(faculty);
         Course course = new Course("History", faculty);
@@ -68,7 +70,7 @@ class CourseControllerTest {
     }
 
     @Test
-    public void getEditShouldGetEntityFromDataBaseIfItExists() throws Exception {
+    void getEditShouldGetEntityFromDataBaseIfItExists() throws Exception {
         Faculty faculty = new Faculty(1, "First");
         Course course = new Course("History", faculty);
         CourseDto courseDto = convertToDto(course);
@@ -80,9 +82,9 @@ class CourseControllerTest {
                 .andExpect(MockMvcResultMatchers.model().attributeExists("course"))
                 .andExpect(MockMvcResultMatchers.model().attribute("course", courseDto));
     }
-    
+
     @Test
-    public void getEditShouldReturnFormForAddNewEntryIfItDoesNotExist() throws Exception {
+    void getEditShouldReturnFormForAddNewEntryIfItDoesNotExist() throws Exception {
         Mockito.when(mockCourseService.findById(Mockito.anyInt())).thenReturn(null);
         String URI = "/courses/edit";
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders.get(URI);
@@ -93,7 +95,7 @@ class CourseControllerTest {
     }
 
     @Test
-    public void postEditShouldAddEntityIfItDoesNotExistsInDataBase() throws Exception {
+    void postEditShouldAddEntityIfItDoesNotExistsInDataBase() throws Exception {
         Faculty faculty = new Faculty(1, "First");
         Course course = new Course("History", faculty);
         CourseDto courseDto = convertToDto(course);
@@ -109,9 +111,9 @@ class CourseControllerTest {
         courseController.edit(convertToDto(course), bindingResult, model);
         Mockito.verify(mockCourseService).update(course);
     }
-    
+
     @Test
-    public void postEditShouldReturnEditPageIfAnyErrors() throws Exception {
+    void postEditShouldReturnEditPageIfAnyErrors() throws Exception {
         Faculty faculty = new Faculty(10, "First");
         List<Faculty> faculties = Arrays.asList(faculty);
         Course course = new Course(1, "Course", faculty);
@@ -122,8 +124,8 @@ class CourseControllerTest {
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders.get(URI);
         ResultActions result = mockMvc.perform(request);
         result.andExpect(MockMvcResultMatchers.view().name("courses/edit"))
-        .andExpect(MockMvcResultMatchers.model().attributeExists("faculties"))
-        .andExpect(MockMvcResultMatchers.model().attribute("faculties", faculties));
+                .andExpect(MockMvcResultMatchers.model().attributeExists("faculties"))
+                .andExpect(MockMvcResultMatchers.model().attribute("faculties", faculties));
     }
 
     @Test

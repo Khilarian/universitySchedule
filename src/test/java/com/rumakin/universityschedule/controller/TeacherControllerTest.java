@@ -3,7 +3,9 @@ package com.rumakin.universityschedule.controller;
 import java.util.*;
 
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -20,6 +22,7 @@ import com.rumakin.universityschedule.exception.ResourceNotFoundException;
 import com.rumakin.universityschedule.model.*;
 import com.rumakin.universityschedule.service.TeacherService;
 
+@ExtendWith(MockitoExtension.class)
 @WebMvcTest(value = TeacherController.class)
 class TeacherControllerTest {
 
@@ -42,14 +45,13 @@ class TeacherControllerTest {
 
     @BeforeEach
     public void setUpBeforeClass() throws Exception {
-        MockitoAnnotations.initMocks(this);
         mockMvc = MockMvcBuilders.standaloneSetup(teacherController).setControllerAdvice(new GlobalExceptionHandler())
                 .build();
         modelMapper = new ModelMapper();
     }
 
     @Test
-    public void findAllShouldReturnListOfTeachersIfAtLeastOneExist() throws Exception {
+    void findAllShouldReturnListOfTeachersIfAtLeastOneExist() throws Exception {
         Faculty faculty = new Faculty(1, "TT-123");
         List<Faculty> faculties = Arrays.asList(faculty);
         Teacher teacher = new Teacher(1, "Khil", "Main", "khil@dot.com", "+7(123)9876543", faculty);
@@ -68,7 +70,7 @@ class TeacherControllerTest {
     }
 
     @Test
-    public void getEditShouldGetEntityFromDataBaseIfItExists() throws Exception {
+    void getEditShouldGetEntityFromDataBaseIfItExists() throws Exception {
         Faculty faculty = new Faculty(1, "TT-123");
         Teacher teacher = new Teacher(1, "Khil", "Main", "khil@dot.com", "+7(123)9876543", faculty);
         TeacherDto teacherDto = convertToDto(teacher);
@@ -82,7 +84,7 @@ class TeacherControllerTest {
     }
 
     @Test
-    public void getEditShouldReturnFormForAddNewEntryIfItDoesNotExist() throws Exception {
+    void getEditShouldReturnFormForAddNewEntryIfItDoesNotExist() throws Exception {
         Mockito.when(mockTeacherService.findById(Mockito.anyInt())).thenReturn(null);
         String URI = "/teachers/edit";
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders.get(URI);
@@ -93,7 +95,7 @@ class TeacherControllerTest {
     }
 
     @Test
-    public void postEditShouldAddEntityIfItDoesNotExistsInDataBase() throws Exception {
+    void postEditShouldAddEntityIfItDoesNotExistsInDataBase() throws Exception {
         Faculty faculty = new Faculty(1, "TT-123");
         Teacher teacher = new Teacher(0, "Khil", "Main", "khil@dot.com", "+7(123)9876543", faculty);
         TeacherDto teacherDto = convertToDto(teacher);
@@ -101,7 +103,6 @@ class TeacherControllerTest {
         teacherController.edit(teacherDto, bindingResult, model);
         Mockito.verify(mockTeacherService).add(teacher);
     }
-
 
     @Test
     void postEditShouldUpdateEntityIfItExistsInDataBase() throws Exception {
@@ -112,7 +113,7 @@ class TeacherControllerTest {
     }
 
     @Test
-    public void postEditShouldReturnEditPageIfAnyErrors() throws Exception {
+    void postEditShouldReturnEditPageIfAnyErrors() throws Exception {
         Faculty faculty = new Faculty(1, "TT-123");
         List<Faculty> faculties = Arrays.asList(faculty);
         Teacher teacher = new Teacher(1, "Khil", "Main", "khil@dot.com", "+7(123)9876543", faculty);

@@ -4,7 +4,9 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -22,6 +24,7 @@ import com.rumakin.universityschedule.exception.ResourceNotFoundException;
 import com.rumakin.universityschedule.model.*;
 import com.rumakin.universityschedule.service.StudentService;
 
+@ExtendWith(MockitoExtension.class)
 @WebMvcTest(value = StudentController.class)
 class StudentControllerTest {
 
@@ -44,14 +47,13 @@ class StudentControllerTest {
 
     @BeforeEach
     public void setUpBeforeClass() throws Exception {
-        MockitoAnnotations.initMocks(this);
         mockMvc = MockMvcBuilders.standaloneSetup(studentController).setControllerAdvice(new GlobalExceptionHandler())
                 .build();
         modelMapper = new ModelMapper();
     }
 
     @Test
-    public void findAllShouldReturnListOfStudentsIfAtLeastOneExist() throws Exception {
+    void findAllShouldReturnListOfStudentsIfAtLeastOneExist() throws Exception {
         Group group = new Group(1, "TT-123", null);
         List<Group> groups = Arrays.asList(group);
         Student student = new Student(1, "Khil", "Main", "khil@dot.com", "+7(123)9876543", group);
@@ -70,7 +72,7 @@ class StudentControllerTest {
     }
 
     @Test
-    public void getEditShouldGetEntityFromDataBaseIfItExists() throws Exception {
+    void getEditShouldGetEntityFromDataBaseIfItExists() throws Exception {
         Group group = new Group(1, "TT-123", null);
         Student student = new Student(1, "Khil", "Main", "khil@dot.com", "+7(123)9876543", group);
         StudentDto studentDto = convertToDto(student);
@@ -85,7 +87,7 @@ class StudentControllerTest {
     }
 
     @Test
-    public void getEditShouldReturnFormForAddNewEntryIfItDoesNotExist() throws Exception {
+    void getEditShouldReturnFormForAddNewEntryIfItDoesNotExist() throws Exception {
         Mockito.when(mockStudentService.findById(Mockito.anyInt())).thenReturn(null);
         String URI = "/students/edit";
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders.get(URI);
@@ -96,7 +98,7 @@ class StudentControllerTest {
     }
 
     @Test
-    public void postEditShouldAddEntityIfItDoesNotExistsInDataBase() throws Exception {
+    void postEditShouldAddEntityIfItDoesNotExistsInDataBase() throws Exception {
         Group group = new Group(1, "TT-123", null);
         Student student = new Student(0, "Khil", "Main", "khil@dot.com", "+7(123)9876543", group);
         StudentDto studentDto = convertToDto(student);
@@ -114,7 +116,7 @@ class StudentControllerTest {
     }
 
     @Test
-    public void postEditShouldReturnEditPageIfAnyErrors() throws Exception {
+    void postEditShouldReturnEditPageIfAnyErrors() throws Exception {
         Group group = new Group(1, "TT-123", null);
         List<Group> groups = Arrays.asList(group);
         Student student = new Student(1, "Khil", "Main", "khil@dot.com", "+7(123)9876543", group);

@@ -19,7 +19,7 @@ class AuditoriumDaoTest {
     private AuditoriumDao auditoriumDao;
 
     @Test
-    public void addShouldExecuteOnceWhenDbCallFine() {
+    void addShouldExecuteOnceWhenDbCallFine() {
         Building building = new Building("First", "Building");
         Auditorium savedInDb = new Auditorium(15, 35, building);
         Auditorium getFromDb = entityManager.persist(savedInDb);
@@ -27,7 +27,7 @@ class AuditoriumDaoTest {
     }
 
     @Test
-    public void findByIdhouldExecuteOnceWhenDbCallFineAndRweturnAuditorium() {
+    void findByIdhouldExecuteOnceWhenDbCallFineAndRweturnAuditorium() {
         Building building = new Building("First", "Building");
         Auditorium auditorium = new Auditorium(15, 35, building);
         Auditorium savedInDb = entityManager.persist(auditorium);
@@ -37,7 +37,7 @@ class AuditoriumDaoTest {
     }
 
     @Test
-    public void findAllShouldReturnListOfAuditoriumIfAtLeastOneExists() {
+    void findAllShouldReturnListOfAuditoriumIfAtLeastOneExists() {
         Building building = new Building("First", "Building");
         building = entityManager.persist(building);
         Auditorium auditorium = new Auditorium(15, 35, building);
@@ -50,7 +50,7 @@ class AuditoriumDaoTest {
     }
 
     @Test
-    public void delteteShouldExecuteOnceWhenDbCallFine() {
+    void delteteShouldExecuteOnceWhenDbCallFine() {
         Building building = new Building("First", "Building");
         building = entityManager.persist(building);
         Auditorium auditorium = new Auditorium(15, 35, building);
@@ -64,7 +64,7 @@ class AuditoriumDaoTest {
     }
 
     @Test
-    public void updateShouldExecuteOnceWhenDbCallFineAndUodateEntityField() {
+    void updateShouldExecuteOnceWhenDbCallFineAndUodateEntityField() {
         Building building = new Building("First", "Building");
         Auditorium auditorium = new Auditorium(15, 35, building);
         entityManager.persist(auditorium);

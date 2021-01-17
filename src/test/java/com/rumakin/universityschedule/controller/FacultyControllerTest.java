@@ -4,7 +4,9 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -21,6 +23,7 @@ import com.rumakin.universityschedule.exception.ResourceNotFoundException;
 import com.rumakin.universityschedule.model.Faculty;
 import com.rumakin.universityschedule.service.FacultyService;
 
+@ExtendWith(MockitoExtension.class)
 @WebMvcTest(value = FacultyController.class)
 class FacultyControllerTest {
 
@@ -43,14 +46,13 @@ class FacultyControllerTest {
 
     @BeforeEach
     public void setUpBeforeClass() throws Exception {
-        MockitoAnnotations.initMocks(this);
         mockMvc = MockMvcBuilders.standaloneSetup(facultyController).setControllerAdvice(new GlobalExceptionHandler())
                 .build();
         modelMapper = new ModelMapper();
     }
 
     @Test
-    public void findAllShouldReturnListOfFacultysIfAtLeastOneExist() throws Exception {
+    void findAllShouldReturnListOfFacultysIfAtLeastOneExist() throws Exception {
         Faculty faculty = new Faculty(1, "First");
         Faculty facultyTwo = new Faculty(2, "Second");
         List<Faculty> faculties = Arrays.asList(faculty, facultyTwo);
@@ -65,7 +67,7 @@ class FacultyControllerTest {
     }
 
     @Test
-    public void getEditShouldGetEntityFromDataBaseIfItExists() throws Exception {
+    void getEditShouldGetEntityFromDataBaseIfItExists() throws Exception {
         Faculty faculty = new Faculty(1, "First");
         FacultyDto facultyDto = convertToDto(faculty);
         Mockito.when(mockFacultyService.findById(Mockito.anyInt())).thenReturn(faculty);
@@ -76,9 +78,9 @@ class FacultyControllerTest {
                 .andExpect(MockMvcResultMatchers.model().attributeExists("faculty"))
                 .andExpect(MockMvcResultMatchers.model().attribute("faculty", facultyDto));
     }
-    
+
     @Test
-    public void getEditShouldReturnFormForAddNewEntryIfItDoesNotExist() throws Exception {
+    void getEditShouldReturnFormForAddNewEntryIfItDoesNotExist() throws Exception {
         Mockito.when(mockFacultyService.findById(Mockito.anyInt())).thenReturn(null);
         String URI = "/faculties/edit";
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders.get(URI);
@@ -89,26 +91,26 @@ class FacultyControllerTest {
     }
 
     @Test
-    public void postEditShouldAddEntityIfItDoesNotExistsInDataBase() throws Exception {
+    void postEditShouldAddEntityIfItDoesNotExistsInDataBase() throws Exception {
         Faculty newFaculty = new Faculty("First");
         FacultyDto facultyDto = convertToDto(newFaculty);
         facultyDto.setId(null);
-        facultyController.edit(facultyDto, bindingResult);
+        facultyController.edit(facultyDto, bindingResult, model);
         Mockito.verify(mockFacultyService).add(newFaculty);
     }
 
     @Test
-    public void postEditShouldUpdateEntityIfItExistsInDataBase() throws Exception {
+    void postEditShouldUpdateEntityIfItExistsInDataBase() throws Exception {
         Faculty newFaculty = new Faculty(1, "First");
-        facultyController.edit(convertToDto(newFaculty), bindingResult);
+        facultyController.edit(convertToDto(newFaculty), bindingResult, model);
         Mockito.verify(mockFacultyService).update(newFaculty);
     }
-    
+
     @Test
-    public void postEditShouldReturnEditPageIfAnyErrors() throws Exception {
+    void postEditShouldReturnEditPageIfAnyErrors() throws Exception {
         Faculty newFaculty = new Faculty(1, "First");
         Mockito.when(bindingResult.hasErrors()).thenReturn(true);
-        facultyController.edit(convertToDto(newFaculty), bindingResult);
+        facultyController.edit(convertToDto(newFaculty), bindingResult, model);
         String URI = "/faculties/edit";
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders.get(URI);
         ResultActions result = mockMvc.perform(request);
@@ -116,14 +118,14 @@ class FacultyControllerTest {
     }
 
     @Test
-    public void deleteShouldExecuteOnceWhenDbCallFine() throws Exception {
+    void deleteShouldExecuteOnceWhenDbCallFine() throws Exception {
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders.get("/faculties/delete/?id=1");
         ResultActions result = mockMvc.perform(request);
         result.andExpect(MockMvcResultMatchers.view().name("redirect:/faculties/getAll"));
     }
 
     @Test
-    public void testhandleEntityNotFoundException() throws Exception {
+    void testhandleEntityNotFoundException() throws Exception {
         Mockito.when(mockFacultyService.findById(2)).thenThrow(ResourceNotFoundException.class);
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders.get("/faculties/edit/?id=2");
         ResultActions result = mockMvc.perform(request);

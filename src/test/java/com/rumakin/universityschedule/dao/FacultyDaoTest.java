@@ -19,14 +19,14 @@ class FacultyDaoTest {
     private FacultyDao facultyDao;
 
     @Test
-    public void addShouldExecuteOnceWhenDbCallFine() {
+    void addShouldExecuteOnceWhenDbCallFine() {
         Faculty savedInDb = new Faculty("Faculty");
         Faculty getFromDb = entityManager.persist(savedInDb);
         assertEquals(savedInDb, getFromDb);
     }
 
     @Test
-    public void findByIdhouldExecuteOnceWhenDbCallFineAndRweturnAuditorium() {
+    void findByIdhouldExecuteOnceWhenDbCallFineAndRweturnAuditorium() {
         Faculty faculty = new Faculty("Faculty");
         Faculty savedInDb = entityManager.persist(faculty);
         Faculty getFromDb = facultyDao.findById(savedInDb.getId()).get();
@@ -34,7 +34,7 @@ class FacultyDaoTest {
     }
 
     @Test
-    public void findAllShouldReturnListOfAuditoriumIfAtLeastOneExists() {
+    void findAllShouldReturnListOfAuditoriumIfAtLeastOneExists() {
         Faculty faculty = new Faculty("Faculty");
         Faculty facultyTwo = new Faculty("OtherFaculty");
         Faculty savedInDb = entityManager.persist(faculty);
@@ -45,7 +45,7 @@ class FacultyDaoTest {
     }
 
     @Test
-    public void delteteShouldExecuteOnceWhenDbCallFine() {
+    void delteteShouldExecuteOnceWhenDbCallFine() {
         Faculty faculty = new Faculty("Faculty");
         Faculty facultyTwo = new Faculty("OtherFaculty");
         Faculty savedInDb = entityManager.persist(faculty);
@@ -57,7 +57,7 @@ class FacultyDaoTest {
     }
 
     @Test
-    public void updateShouldExecuteOnceWhenDbCallFineAndUodateEntityField() {
+    void updateShouldExecuteOnceWhenDbCallFineAndUodateEntityField() {
         Faculty faculty = new Faculty("Faculty");
         entityManager.persist(faculty);
         Faculty getFromDb = facultyDao.findById(faculty.getId()).get();

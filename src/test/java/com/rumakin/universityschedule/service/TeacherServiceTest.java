@@ -20,18 +20,18 @@ class TeacherServiceTest {
 
     @Autowired
     private TeacherService teacherService;
-    
+
     @MockBean
     private TeacherDao mockTeacherDao;
-    
+
     @MockBean
     private FacultyService mockFacultyService;
-    
+
     @MockBean
     private CourseService mockCourseService;
-    
+
     @Test
-    public void addShouldExecuteOnceWhenDbCallFine() {
+    void addShouldExecuteOnceWhenDbCallFine() {
         Faculty faculty = new Faculty(1, "First");
         Teacher savedTeacher = new Teacher(0, "Mick", "Jagger", "mj@rs.com", "+7(123)4567890", faculty);
         Teacher expectedTeacher = new Teacher(1, "Mick", "Jagger", "mj@rs.com", "+7(123)4567890", faculty);
@@ -39,16 +39,16 @@ class TeacherServiceTest {
         assertEquals(teacherService.add(savedTeacher), expectedTeacher);
         Mockito.verify(mockTeacherDao, times(1)).save(savedTeacher);
     }
-    
+
     @Test
-    public void addShouldRaiseExceptionIfIdNotEqualZero() {
+    void addShouldRaiseExceptionIfIdNotEqualZero() {
         Faculty faculty = new Faculty(1, "First");
         Teacher savedTeacher = new Teacher(1, "Mick", "Jagger", "mj@rs.com", "+7(123)4567890", faculty);
         assertThrows(InvalidEntityException.class, () -> teacherService.add(savedTeacher));
     }
 
     @Test
-    public void findByIdShouldExecuteOnceWhenDbCallFineAndReturnTeacher() {
+    void findByIdShouldExecuteOnceWhenDbCallFineAndReturnTeacher() {
         Faculty faculty = new Faculty(1, "First");
         Teacher expectedTeacher = new Teacher(1, "Mick", "Jagger", "mj@rs.com", "+7(123)4567890", faculty);
         Mockito.when(mockTeacherDao.findById(1)).thenReturn(Optional.of(expectedTeacher));
@@ -57,13 +57,13 @@ class TeacherServiceTest {
     }
 
     @Test
-    public void findByIdShouldRaiseExceptionIfIdMissed() {
+    void findByIdShouldRaiseExceptionIfIdMissed() {
         assertThrows(ResourceNotFoundException.class, () -> teacherService.findById(1));
         Mockito.verify(mockTeacherDao, times(1)).findById(1);
     }
-    
+
     @Test
-    public void findByEmailShouldExecuteOnceWhenDbCallFineAndReturnTeacher() {
+    void findByEmailShouldExecuteOnceWhenDbCallFineAndReturnTeacher() {
         Faculty faculty = new Faculty(1, "First");
         Teacher expected = new Teacher(1, "Mick", "Jagger", "mj@rs.com", "+7(123)4567890", faculty);
         Mockito.when(mockTeacherDao.findByPhone(Mockito.anyString())).thenReturn(Optional.of(expected));
@@ -72,13 +72,13 @@ class TeacherServiceTest {
     }
 
     @Test
-    public void findByPhoneShouldRaiseExceptionIfIdMissed() {
+    void findByPhoneShouldRaiseExceptionIfIdMissed() {
         assertThrows(ResourceNotFoundException.class, () -> teacherService.findByPhone("+7(123)4567890"));
         Mockito.verify(mockTeacherDao, times(1)).findByPhone("+7(123)4567890");
     }
-    
+
     @Test
-    public void findByPhoneShouldExecuteOnceWhenDbCallFineAndReturnTeacher() {
+    void findByPhoneShouldExecuteOnceWhenDbCallFineAndReturnTeacher() {
         Faculty faculty = new Faculty(1, "First");
         Teacher expected = new Teacher(1, "Mick", "Jagger", "mj@rs.com", "+7(123)4567890", faculty);
         Mockito.when(mockTeacherDao.findByEmail(Mockito.anyString())).thenReturn(Optional.of(expected));
@@ -87,13 +87,13 @@ class TeacherServiceTest {
     }
 
     @Test
-    public void findByEmailShouldRaiseExceptionIfIdMissed() {
+    void findByEmailShouldRaiseExceptionIfIdMissed() {
         assertThrows(ResourceNotFoundException.class, () -> teacherService.findByEmail("aaa"));
         Mockito.verify(mockTeacherDao, times(1)).findByEmail("aaa");
     }
 
     @Test
-    public void findAllShouldReturnListOfAuditoriumIfAtLeastOneExists() {
+    void findAllShouldReturnListOfAuditoriumIfAtLeastOneExists() {
         Faculty faculty = new Faculty(1, "First");
         Teacher teacher = new Teacher(1, "Mick", "Jagger", "mj@rs.com", "+7(123)4567890", faculty);
         Teacher teacherTwo = new Teacher(2, "Bill", "Goldberg", "bg@wwe.com", "+7(123)4567891", faculty);
@@ -104,7 +104,7 @@ class TeacherServiceTest {
     }
 
     @Test
-    public void deleteShouldExecuteOnceWhenDbCallFine() {
+    void deleteShouldExecuteOnceWhenDbCallFine() {
         Faculty faculty = new Faculty(1, "First");
         Teacher teacher = new Teacher(1, "Mick", "Jagger", "mj@rs.com", "+7(123)4567890", faculty);
         teacherService.deleteById(teacher.getId());
@@ -112,7 +112,7 @@ class TeacherServiceTest {
     }
 
     @Test
-    public void updateShouldExecuteOnceWhenDbCallFineAndUpdateEntityField() {
+    void updateShouldExecuteOnceWhenDbCallFineAndUpdateEntityField() {
         Faculty faculty = new Faculty(1, "First");
         Teacher updatedTeacher = new Teacher(1, "Mick", "Jagger", "mj@rs.com", "+7(123)4567890", faculty);
         Mockito.when(mockTeacherDao.findById(1)).thenReturn(Optional.of(updatedTeacher));
@@ -120,16 +120,16 @@ class TeacherServiceTest {
         assertEquals(teacherService.update(updatedTeacher), updatedTeacher);
         Mockito.verify(mockTeacherDao, times(1)).save(updatedTeacher);
     }
-    
+
     @Test
-    public void updateShouldRaiseExceptionIfIdEqualZero() {
+    void updateShouldRaiseExceptionIfIdEqualZero() {
         Faculty faculty = new Faculty(1, "First");
         Teacher updatedTeacher = new Teacher(0, "Mick", "Jagger", "mj@rs.com", "+7(123)4567890", faculty);
         assertThrows(InvalidEntityException.class, () -> teacherService.update(updatedTeacher));
     }
-    
+
     @Test
-    public void getFacultiesShouldReturnListOfFacultiesIfAatLeastOneExist() {
+    void getFacultiesShouldReturnListOfFacultiesIfAatLeastOneExist() {
         Faculty faculty = new Faculty(1, "First");
         Faculty facultyTwo = new Faculty(2, "Second");
         List<Faculty> faculties = Arrays.asList(faculty, facultyTwo);
@@ -137,9 +137,9 @@ class TeacherServiceTest {
         assertEquals(teacherService.getFaculties(), faculties);
         Mockito.verify(mockFacultyService, times(1)).findAll();
     }
-    
+
     @Test
-    public void getCoursesShouldReturnListOfCoursesIfAatLeastOneExist() {
+    void getCoursesShouldReturnListOfCoursesIfAatLeastOneExist() {
         Faculty faculty = new Faculty(1, "First");
         Course course = new Course(1, "Course", faculty);
         Course courseTwo = new Course(2, "CourseTwo", faculty);
@@ -148,5 +148,5 @@ class TeacherServiceTest {
         assertEquals(teacherService.getCourses(), courses);
         Mockito.verify(mockCourseService, times(1)).findAll();
     }
-    
+
 }

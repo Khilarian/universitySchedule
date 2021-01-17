@@ -23,12 +23,12 @@ class GroupServiceTest {
 
     @MockBean
     private GroupDao mockGroupDao;
-    
+
     @MockBean
     private FacultyService mockFacultyService;
 
     @Test
-    public void addShouldExecuteOnceWhenDbCallFine() {
+    void addShouldExecuteOnceWhenDbCallFine() {
         Faculty faculty = new Faculty(1, "First");
         Group savedGroup = new Group(0, "AA-25", faculty);
         Group expectedGroup = new Group(1, "AA-25", faculty);
@@ -36,16 +36,16 @@ class GroupServiceTest {
         assertEquals(groupService.add(savedGroup), expectedGroup);
         Mockito.verify(mockGroupDao, times(1)).save(savedGroup);
     }
-    
+
     @Test
-    public void addShouldRaiseExceptionIfIdNotEqualZero() {
+    void addShouldRaiseExceptionIfIdNotEqualZero() {
         Faculty faculty = new Faculty(1, "First");
         Group savedGroup = new Group(1, "AA-25", faculty);
         assertThrows(InvalidEntityException.class, () -> groupService.add(savedGroup));
     }
 
     @Test
-    public void findByIdShouldExecuteOnceWhenDbCallFineAndReturnGroup() {
+    void findByIdShouldExecuteOnceWhenDbCallFineAndReturnGroup() {
         Group expectedGroup = new Group(1, "AA-25", new Faculty(1, "First"));
         Mockito.when(mockGroupDao.findById(1)).thenReturn(Optional.of(expectedGroup));
         assertEquals(groupService.findById(1), expectedGroup);
@@ -53,13 +53,13 @@ class GroupServiceTest {
     }
 
     @Test
-    public void findByIdShouldRaiseExceptionIfIdMissed() {
+    void findByIdShouldRaiseExceptionIfIdMissed() {
         assertThrows(ResourceNotFoundException.class, () -> groupService.findById(1));
         Mockito.verify(mockGroupDao, times(1)).findById(1);
     }
-    
+
     @Test
-    public void findByNameShouldExecuteOnceWhenDbCallFineAndReturnGroup() {
+    void findByNameShouldExecuteOnceWhenDbCallFineAndReturnGroup() {
         Group expected = new Group(1, "AA-01", new Faculty(1, "First"));
         Mockito.when(mockGroupDao.findByName(Mockito.anyString())).thenReturn(Optional.of(expected));
         assertEquals(groupService.findByName("AA-01"), expected);
@@ -67,13 +67,13 @@ class GroupServiceTest {
     }
 
     @Test
-    public void findByNameShouldRaiseExceptionIfIdMissed() {
+    void findByNameShouldRaiseExceptionIfIdMissed() {
         assertThrows(ResourceNotFoundException.class, () -> groupService.findByName("aaa"));
         Mockito.verify(mockGroupDao, times(1)).findByName("aaa");
     }
 
     @Test
-    public void findAllShouldReturnListOfAuditoriumIfAtLeastOneExists() {
+    void findAllShouldReturnListOfAuditoriumIfAtLeastOneExists() {
         Faculty faculty = new Faculty(1, "First");
         Group group = new Group(1, "AA-25", faculty);
         Group groupTwo = new Group(2, "AA-26", faculty);
@@ -84,7 +84,7 @@ class GroupServiceTest {
     }
 
     @Test
-    public void deleteShouldExecuteOnceWhenDbCallFine() {
+    void deleteShouldExecuteOnceWhenDbCallFine() {
         Faculty faculty = new Faculty(1, "First");
         Group group = new Group(1, "AA-25", faculty);
         groupService.deleteById(group.getId());
@@ -92,7 +92,7 @@ class GroupServiceTest {
     }
 
     @Test
-    public void updateShouldExecuteOnceWhenDbCallFineAndUpdateEntityField() {
+    void updateShouldExecuteOnceWhenDbCallFineAndUpdateEntityField() {
         Faculty faculty = new Faculty(1, "First");
         Group updatedGroup = new Group(1, "AA-25", faculty);
         Mockito.when(mockGroupDao.findById(1)).thenReturn(Optional.of(updatedGroup));
@@ -101,19 +101,19 @@ class GroupServiceTest {
         assertEquals(groupService.update(updatedGroup), updatedGroup);
         Mockito.verify(mockGroupDao, times(1)).save(updatedGroup);
     }
-    
+
     @Test
-    public void updateShouldRaiseExceptionIfIdEqualZero() {
+    void updateShouldRaiseExceptionIfIdEqualZero() {
         Faculty faculty = new Faculty(1, "First");
         Group updatedGroup = new Group(0, "AA-25", faculty);
         assertThrows(InvalidEntityException.class, () -> groupService.update(updatedGroup));
     }
-    
+
     @Test
-    public void getFacultiesShouldReturnAllFacultiesFromDB() {
+    void getFacultiesShouldReturnAllFacultiesFromDB() {
         Faculty faculty = new Faculty(1, "First");
         Faculty facultyTwo = new Faculty(2, "Second");
-        List<Faculty> faculties = Arrays.asList(faculty,facultyTwo);
+        List<Faculty> faculties = Arrays.asList(faculty, facultyTwo);
         Mockito.when(mockFacultyService.findAll()).thenReturn(faculties);
         assertEquals(groupService.getFaculties(), faculties);
         Mockito.verify(mockFacultyService, times(1)).findAll();

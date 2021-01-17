@@ -24,24 +24,24 @@ class LessonTypeServiceTest {
 
     @MockBean
     private LessonTypeDao mockLessonTypeDao;
-    
+
     @Test
-    public void addShouldExecuteOnceWhenDbCallFine() {
+    void addShouldExecuteOnceWhenDbCallFine() {
         LessonType savedLessonType = new LessonType(0, "EXAM");
         LessonType expectedLessonType = new LessonType(1, "EXAM");
         Mockito.when(mockLessonTypeDao.save(savedLessonType)).thenReturn(expectedLessonType);
         assertEquals(lessonTypeService.add(savedLessonType), expectedLessonType);
         Mockito.verify(mockLessonTypeDao, times(1)).save(savedLessonType);
     }
-    
+
     @Test
-    public void addShouldRaiseExceptionIfIdNotEqualZero() {
+    void addShouldRaiseExceptionIfIdNotEqualZero() {
         LessonType savedLessonType = new LessonType(1, "EXAM");
         assertThrows(InvalidEntityException.class, () -> lessonTypeService.add(savedLessonType));
     }
 
     @Test
-    public void findByIdShouldExecuteOnceWhenDbCallFineAndReturnLessonType() {
+    void findByIdShouldExecuteOnceWhenDbCallFineAndReturnLessonType() {
         LessonType expectedLessonType = new LessonType(1, "EXAM");
         Mockito.when(mockLessonTypeDao.findById(1)).thenReturn(Optional.of(expectedLessonType));
         assertEquals(lessonTypeService.findById(1), expectedLessonType);
@@ -49,13 +49,13 @@ class LessonTypeServiceTest {
     }
 
     @Test
-    public void findByIdShouldRaiseExceptionIfIdMissed() {
+    void findByIdShouldRaiseExceptionIfIdMissed() {
         assertThrows(ResourceNotFoundException.class, () -> lessonTypeService.findById(1));
         Mockito.verify(mockLessonTypeDao, times(1)).findById(1);
     }
-    
+
     @Test
-    public void findByNameShouldExecuteOnceWhenDbCallFineAndReturnLessonType() {
+    void findByNameShouldExecuteOnceWhenDbCallFineAndReturnLessonType() {
         LessonType expected = new LessonType(1, "AA-01");
         Mockito.when(mockLessonTypeDao.findByName(Mockito.anyString())).thenReturn(Optional.of(expected));
         assertEquals(lessonTypeService.findByName("AA-01"), expected);
@@ -63,13 +63,13 @@ class LessonTypeServiceTest {
     }
 
     @Test
-    public void findByNameShouldRaiseExceptionIfIdMissed() {
+    void findByNameShouldRaiseExceptionIfIdMissed() {
         assertThrows(ResourceNotFoundException.class, () -> lessonTypeService.findByName("aaa"));
         Mockito.verify(mockLessonTypeDao, times(1)).findByName("aaa");
     }
 
     @Test
-    public void findAllShouldReturnListOfAuditoriumIfAtLeastOneExists() {
+    void findAllShouldReturnListOfAuditoriumIfAtLeastOneExists() {
         LessonType lessonType = new LessonType(1, "EXAM");
         LessonType lessonTypeTwo = new LessonType(2, "LECTURE");
         List<LessonType> lessonTypes = Arrays.asList(lessonType, lessonTypeTwo);
@@ -79,23 +79,23 @@ class LessonTypeServiceTest {
     }
 
     @Test
-    public void deleteShouldExecuteOnceWhenDbCallFine() {
+    void deleteShouldExecuteOnceWhenDbCallFine() {
         LessonType lessonType = new LessonType(1, "EXAM");
         lessonTypeService.deleteById(lessonType.getId());
         Mockito.verify(mockLessonTypeDao, times(1)).deleteById(1);
     }
 
     @Test
-    public void updateShouldExecuteOnceWhenDbCallFineAndUpdateEntityField() {
+    void updateShouldExecuteOnceWhenDbCallFineAndUpdateEntityField() {
         LessonType updatedLessonType = new LessonType(1, "EXAM");
         Mockito.when(mockLessonTypeDao.findById(1)).thenReturn(Optional.of(updatedLessonType));
         Mockito.when(mockLessonTypeDao.save(updatedLessonType)).thenReturn(updatedLessonType);
         assertEquals(lessonTypeService.update(updatedLessonType), updatedLessonType);
         Mockito.verify(mockLessonTypeDao, times(1)).save(updatedLessonType);
     }
-    
+
     @Test
-    public void updateShouldRaiseExceptionIfIdEqualZero() {
+    void updateShouldRaiseExceptionIfIdEqualZero() {
         LessonType updatedLessonType = new LessonType(0, "EXAM");
         assertThrows(InvalidEntityException.class, () -> lessonTypeService.update(updatedLessonType));
     }

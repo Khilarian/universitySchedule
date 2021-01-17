@@ -23,12 +23,12 @@ class CourseServiceTest {
 
     @MockBean
     private CourseDao mockCourseDao;
-    
+
     @MockBean
     private FacultyService mockFacultyService;
 
     @Test
-    public void addShouldExecuteOnceWhenDbCallFine() {
+    void addShouldExecuteOnceWhenDbCallFine() {
         Faculty faculty = new Faculty(1, "First");
         Course savedCourse = new Course(0, "Math", faculty);
         Course expectedCourse = new Course(1, "Math", faculty);
@@ -36,16 +36,16 @@ class CourseServiceTest {
         assertEquals(courseService.add(savedCourse), expectedCourse);
         Mockito.verify(mockCourseDao, times(1)).save(savedCourse);
     }
-    
+
     @Test
-    public void addShouldRaiseExceptionIfIdNotEqualZero() {
+    void addShouldRaiseExceptionIfIdNotEqualZero() {
         Faculty faculty = new Faculty(1, "First");
         Course savedCourse = new Course(1, "IT", faculty);
         assertThrows(InvalidEntityException.class, () -> courseService.add(savedCourse));
     }
 
     @Test
-    public void findByIdShouldExecuteOnceWhenDbCallFineAndReturnCourse() {
+    void findByIdShouldExecuteOnceWhenDbCallFineAndReturnCourse() {
         Course expected = new Course(1, "Math", new Faculty(1, "First"));
         Mockito.when(mockCourseDao.findById(1)).thenReturn(Optional.of(expected));
         assertEquals(courseService.findById(1), expected);
@@ -53,13 +53,13 @@ class CourseServiceTest {
     }
 
     @Test
-    public void findByIdShouldRaiseExceptionIfIdMissed() {
+    void findByIdShouldRaiseExceptionIfIdMissed() {
         assertThrows(ResourceNotFoundException.class, () -> courseService.findById(1));
         Mockito.verify(mockCourseDao, times(1)).findById(1);
     }
-    
+
     @Test
-    public void findByNameShouldExecuteOnceWhenDbCallFineAndReturnCourse() {
+    void findByNameShouldExecuteOnceWhenDbCallFineAndReturnCourse() {
         Course expected = new Course(1, "Math", new Faculty(1, "First"));
         Mockito.when(mockCourseDao.findByName(Mockito.anyString())).thenReturn(Optional.of(expected));
         assertEquals(courseService.findByName("Math"), expected);
@@ -67,13 +67,13 @@ class CourseServiceTest {
     }
 
     @Test
-    public void findByNameShouldRaiseExceptionIfIdMissed() {
+    void findByNameShouldRaiseExceptionIfIdMissed() {
         assertThrows(ResourceNotFoundException.class, () -> courseService.findByName("aaa"));
         Mockito.verify(mockCourseDao, times(1)).findByName("aaa");
     }
 
     @Test
-    public void findAllShouldReturnListOfAuditoriumIfAtLeastOneExists() {
+    void findAllShouldReturnListOfAuditoriumIfAtLeastOneExists() {
         Faculty faculty = new Faculty(1, "First");
         Course course = new Course(1, "Math", faculty);
         Course courseTwo = new Course(2, "Computer Science", faculty);
@@ -84,7 +84,7 @@ class CourseServiceTest {
     }
 
     @Test
-    public void deleteShouldExecuteOnceWhenDbCallFine() {
+    void deleteShouldExecuteOnceWhenDbCallFine() {
         Faculty faculty = new Faculty(1, "First");
         Course course = new Course(1, "Math", faculty);
         courseService.deleteById(course.getId());
@@ -92,7 +92,7 @@ class CourseServiceTest {
     }
 
     @Test
-    public void updateShouldExecuteOnceWhenDbCallFineAndUpdateEntityField() {
+    void updateShouldExecuteOnceWhenDbCallFineAndUpdateEntityField() {
         Faculty faculty = new Faculty(1, "First");
         Course updatedCourse = new Course(1, "Math", faculty);
         Mockito.when(mockCourseDao.findById(1)).thenReturn(Optional.of(updatedCourse));
@@ -101,19 +101,19 @@ class CourseServiceTest {
         assertEquals(courseService.update(updatedCourse), updatedCourse);
         Mockito.verify(mockCourseDao, times(1)).save(updatedCourse);
     }
-    
+
     @Test
-    public void updateShouldRaiseExceptionIfIdEqualZero() {
+    void updateShouldRaiseExceptionIfIdEqualZero() {
         Faculty faculty = new Faculty(1, "First");
         Course updatedCourse = new Course(0, "IT", faculty);
         assertThrows(InvalidEntityException.class, () -> courseService.update(updatedCourse));
     }
-    
+
     @Test
-    public void getFacultiesShouldReturnAllFacultieFromDB() {
+    void getFacultiesShouldReturnAllFacultieFromDB() {
         Faculty faculty = new Faculty(1, "First");
         Faculty facultyTwo = new Faculty(2, "Second");
-        List<Faculty> faculties = Arrays.asList(faculty,facultyTwo);
+        List<Faculty> faculties = Arrays.asList(faculty, facultyTwo);
         Mockito.when(mockFacultyService.findAll()).thenReturn(faculties);
         assertEquals(courseService.getFaculties(), faculties);
         Mockito.verify(mockFacultyService, times(1)).findAll();

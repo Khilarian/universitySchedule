@@ -19,7 +19,7 @@ class GroupDaoTest {
     private GroupDao groupDao;
 
     @Test
-    public void addShouldExecuteOnceWhenDbCallFine() {
+    void addShouldExecuteOnceWhenDbCallFine() {
         Faculty faculty = new Faculty("Faculty");
         Group savedInDb = new Group("AA_35", faculty);
         Group getFromDb = entityManager.persist(savedInDb);
@@ -27,7 +27,7 @@ class GroupDaoTest {
     }
 
     @Test
-    public void findByIdhouldExecuteOnceWhenDbCallFineAndRweturnGroup() {
+    void findByIdhouldExecuteOnceWhenDbCallFineAndRweturnGroup() {
         Faculty faculty = new Faculty("Faculty");
         Group group = new Group("AA_35", faculty);
         Group savedInDb = entityManager.persist(group);
@@ -36,7 +36,7 @@ class GroupDaoTest {
     }
 
     @Test
-    public void findAllShouldReturnListOfGroupIfAtLeastOneExists() {
+    void findAllShouldReturnListOfGroupIfAtLeastOneExists() {
         Faculty faculty = new Faculty("Faculty");
         faculty = entityManager.persist(faculty);
         Group group = new Group("AA_35", faculty);
@@ -49,7 +49,7 @@ class GroupDaoTest {
     }
 
     @Test
-    public void delteteShouldExecuteOnceWhenDbCallFine() {
+    void delteteShouldExecuteOnceWhenDbCallFine() {
         Faculty faculty = new Faculty("Faculty");
         faculty = entityManager.persist(faculty);
         Group group = new Group("AA_35", faculty);
@@ -63,7 +63,7 @@ class GroupDaoTest {
     }
 
     @Test
-    public void updateShouldExecuteOnceWhenDbCallFineAndUodateEntityField() {
+    void updateShouldExecuteOnceWhenDbCallFineAndUodateEntityField() {
         Faculty faculty = new Faculty("Faculty");
         Group group = new Group("AA_35", faculty);
         entityManager.persist(group);

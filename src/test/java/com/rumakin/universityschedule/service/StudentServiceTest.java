@@ -23,12 +23,12 @@ class StudentServiceTest {
 
     @MockBean
     private StudentDao mockStudentDao;
-    
+
     @MockBean
     private GroupService mockGroupService;
-    
+
     @Test
-    public void addShouldExecuteOnceWhenDbCallFine() {
+    void addShouldExecuteOnceWhenDbCallFine() {
         Faculty faculty = new Faculty(1, "First");
         Group group = new Group(1, "AA-01", faculty);
         Student savedStudent = new Student(0, "Mick", "Jagger", "mj@rs.com", "+7(123)4567890", group);
@@ -37,9 +37,9 @@ class StudentServiceTest {
         assertEquals(studentService.add(savedStudent), expectedStudent);
         Mockito.verify(mockStudentDao, times(1)).save(savedStudent);
     }
-    
+
     @Test
-    public void addShouldRaiseExceptionIfIdNotEqualZero() {
+    void addShouldRaiseExceptionIfIdNotEqualZero() {
         Faculty faculty = new Faculty(1, "First");
         Group group = new Group(1, "AA-01", faculty);
         Student savedStudent = new Student(1, "Mick", "Jagger", "mj@rs.com", "+7(123)4567890", group);
@@ -47,7 +47,7 @@ class StudentServiceTest {
     }
 
     @Test
-    public void findByIdShouldExecuteOnceWhenDbCallFineAndReturnStudent() {
+    void findByIdShouldExecuteOnceWhenDbCallFineAndReturnStudent() {
         Faculty faculty = new Faculty(1, "First");
         Group group = new Group(1, "AA-01", faculty);
         Student expectedStudent = new Student(1, "Mick", "Jagger", "mj@rs.com", "+7(123)4567890", group);
@@ -57,13 +57,13 @@ class StudentServiceTest {
     }
 
     @Test
-    public void findByIdShouldRaiseExceptionIfIdMissed() {
+    void findByIdShouldRaiseExceptionIfIdMissed() {
         assertThrows(ResourceNotFoundException.class, () -> studentService.findById(1));
         Mockito.verify(mockStudentDao, times(1)).findById(1);
     }
-    
+
     @Test
-    public void findByEmailShouldExecuteOnceWhenDbCallFineAndReturnStudent() {
+    void findByEmailShouldExecuteOnceWhenDbCallFineAndReturnStudent() {
         Faculty faculty = new Faculty(1, "First");
         Group group = new Group(1, "AA-01", faculty);
         Student expected = new Student(1, "Mick", "Jagger", "mj@rs.com", "+7(123)4567890", group);
@@ -73,13 +73,13 @@ class StudentServiceTest {
     }
 
     @Test
-    public void findByPhoneShouldRaiseExceptionIfIdMissed() {
+    void findByPhoneShouldRaiseExceptionIfIdMissed() {
         assertThrows(ResourceNotFoundException.class, () -> studentService.findByPhone("+7(123)4567890"));
         Mockito.verify(mockStudentDao, times(1)).findByPhone("+7(123)4567890");
     }
-    
+
     @Test
-    public void findByPhoneShouldExecuteOnceWhenDbCallFineAndReturnStudent() {
+    void findByPhoneShouldExecuteOnceWhenDbCallFineAndReturnStudent() {
         Faculty faculty = new Faculty(1, "First");
         Group group = new Group(1, "AA-01", faculty);
         Student expected = new Student(1, "Mick", "Jagger", "mj@rs.com", "+7(123)4567890", group);
@@ -89,13 +89,13 @@ class StudentServiceTest {
     }
 
     @Test
-    public void findByEmailShouldRaiseExceptionIfIdMissed() {
+    void findByEmailShouldRaiseExceptionIfIdMissed() {
         assertThrows(ResourceNotFoundException.class, () -> studentService.findByEmail("aaa"));
         Mockito.verify(mockStudentDao, times(1)).findByEmail("aaa");
     }
 
     @Test
-    public void findAllShouldReturnListOfAuditoriumIfAtLeastOneExists() {
+    void findAllShouldReturnListOfAuditoriumIfAtLeastOneExists() {
         Faculty faculty = new Faculty(1, "First");
         Group group = new Group(1, "AA-01", faculty);
         Student student = new Student(1, "Mick", "Jagger", "mj@rs.com", "+7(123)4567890", group);
@@ -107,7 +107,7 @@ class StudentServiceTest {
     }
 
     @Test
-    public void deleteShouldExecuteOnceWhenDbCallFine() {
+    void deleteShouldExecuteOnceWhenDbCallFine() {
         Faculty faculty = new Faculty(1, "First");
         Group group = new Group(1, "AA-01", faculty);
         Student student = new Student(1, "Mick", "Jagger", "mj@rs.com", "+7(123)4567890", group);
@@ -116,7 +116,7 @@ class StudentServiceTest {
     }
 
     @Test
-    public void updateShouldExecuteOnceWhenDbCallFineAndUpdateEntityField() {
+    void updateShouldExecuteOnceWhenDbCallFineAndUpdateEntityField() {
         Faculty faculty = new Faculty(1, "First");
         Group group = new Group(1, "AA-01", faculty);
         Student updatedStudent = new Student(1, "Mick", "Jagger", "mj@rs.com", "+7(123)4567890", group);
@@ -125,17 +125,17 @@ class StudentServiceTest {
         assertEquals(studentService.update(updatedStudent), updatedStudent);
         Mockito.verify(mockStudentDao, times(1)).save(updatedStudent);
     }
-    
+
     @Test
-    public void updateShouldRaiseExceptionIfIdEqualZero() {
+    void updateShouldRaiseExceptionIfIdEqualZero() {
         Faculty faculty = new Faculty(1, "First");
         Group group = new Group(1, "AA-01", faculty);
         Student updatedStudent = new Student(0, "Mick", "Jagger", "mj@rs.com", "+7(123)4567890", group);
         assertThrows(InvalidEntityException.class, () -> studentService.update(updatedStudent));
     }
-    
+
     @Test
-    public void getGroupsShouldReturnListOfGroupsIfAatLeastOneExist() {
+    void getGroupsShouldReturnListOfGroupsIfAatLeastOneExist() {
         Faculty faculty = new Faculty(1, "First");
         Group group = new Group(1, "AA-01", faculty);
         Group groupTwo = new Group(2, "AA-02", faculty);

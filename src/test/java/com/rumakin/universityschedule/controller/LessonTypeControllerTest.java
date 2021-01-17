@@ -4,7 +4,9 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -21,6 +23,7 @@ import com.rumakin.universityschedule.exception.ResourceNotFoundException;
 import com.rumakin.universityschedule.model.LessonType;
 import com.rumakin.universityschedule.service.LessonTypeService;
 
+@ExtendWith(MockitoExtension.class)
 @WebMvcTest(value = LessonTypeController.class)
 class LessonTypeControllerTest {
 
@@ -43,14 +46,13 @@ class LessonTypeControllerTest {
 
     @BeforeEach
     public void setUpBeforeClass() throws Exception {
-        MockitoAnnotations.initMocks(this);
         mockMvc = MockMvcBuilders.standaloneSetup(lessonTypeController)
                 .setControllerAdvice(new GlobalExceptionHandler()).build();
         this.modelMapper = new ModelMapper();
     }
 
     @Test
-    public void findAllShouldReturnListOfLessonTypesIfAtLeastOneExist() throws Exception {
+    void findAllShouldReturnListOfLessonTypesIfAtLeastOneExist() throws Exception {
         LessonType lessonType = new LessonType(1, "Exam");
         LessonType lessonTypeTwo = new LessonType(2, "Lecture");
         List<LessonType> lessonTypes = Arrays.asList(lessonType, lessonTypeTwo);
@@ -66,7 +68,7 @@ class LessonTypeControllerTest {
     }
 
     @Test
-    public void getEditShouldGetEntityFromDataBaseIfItExists() throws Exception {
+    void getEditShouldGetEntityFromDataBaseIfItExists() throws Exception {
         LessonType lessonType = new LessonType(1, "Exam");
         LessonTypeDto lessonTypeDto = convertToDto(lessonType);
         Mockito.when(mockLessonTypeService.findById(Mockito.anyInt())).thenReturn(lessonType);
@@ -79,7 +81,7 @@ class LessonTypeControllerTest {
     }
 
     @Test
-    public void getEditShouldReturnFormForAddNewEntryIfItDoesNotExist() throws Exception {
+    void getEditShouldReturnFormForAddNewEntryIfItDoesNotExist() throws Exception {
         Mockito.when(mockLessonTypeService.findById(Mockito.anyInt())).thenReturn(null);
         String URI = "/lessonTypes/edit";
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders.get(URI);
@@ -90,33 +92,33 @@ class LessonTypeControllerTest {
     }
 
     @Test
-    public void postEditShouldAddEntityIfItDoesNotExistsInDataBase() throws Exception {
+    void postEditShouldAddEntityIfItDoesNotExistsInDataBase() throws Exception {
         LessonType lessonType = new LessonType("Exam");
         LessonTypeDto lessonTypeDto = convertToDto(lessonType);
         lessonTypeDto.setId(null);
-        lessonTypeController.edit(lessonTypeDto, bindingResult);
+        lessonTypeController.edit(lessonTypeDto, bindingResult, model);
         Mockito.verify(mockLessonTypeService).add(lessonType);
     }
 
     @Test
-    public void postEditShouldUpdateEntityIfItExistsInDataBase() throws Exception {
+    void postEditShouldUpdateEntityIfItExistsInDataBase() throws Exception {
         LessonType lessonType = new LessonType(1, "Exam");
-        lessonTypeController.edit(convertToDto(lessonType), bindingResult);
+        lessonTypeController.edit(convertToDto(lessonType), bindingResult, model);
         Mockito.verify(mockLessonTypeService).update(lessonType);
     }
 
     @Test
-    public void deleteShouldExecuteOnceWhenDbCallFine() throws Exception {
+    void deleteShouldExecuteOnceWhenDbCallFine() throws Exception {
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders.get("/lessonTypes/delete/?id=1");
         ResultActions result = mockMvc.perform(request);
         result.andExpect(MockMvcResultMatchers.view().name("redirect:/lessonTypes/getAll"));
     }
 
     @Test
-    public void postEditShouldReturnEditPageIfAnyErrors() throws Exception {
+    void postEditShouldReturnEditPageIfAnyErrors() throws Exception {
         LessonType lessonType = new LessonType(1, "Exam");
         Mockito.when(bindingResult.hasErrors()).thenReturn(true);
-        lessonTypeController.edit(convertToDto(lessonType), bindingResult);
+        lessonTypeController.edit(convertToDto(lessonType), bindingResult, model);
         String URI = "/lessonTypes/edit";
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders.get(URI);
         ResultActions result = mockMvc.perform(request);
@@ -124,7 +126,7 @@ class LessonTypeControllerTest {
     }
 
     @Test
-    public void testHandleEntityNotFoundException() throws Exception {
+    void testHandleEntityNotFoundException() throws Exception {
         Mockito.when(mockLessonTypeService.findById(2)).thenThrow(ResourceNotFoundException.class);
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders.get("/lessonTypes/edit/?id=2");
         ResultActions result = mockMvc.perform(request);

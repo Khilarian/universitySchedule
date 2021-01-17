@@ -21,12 +21,12 @@ class AuditoriumServiceTest {
 
     @MockBean
     private AuditoriumDao mockAuditoriumDao;
-    
+
     @MockBean
     private BuildingService mockBuildingService;
 
     @Test
-    public void addShouldExecuteOnceWhenDbCallFine() {
+    void addShouldExecuteOnceWhenDbCallFine() {
         Building building = new Building(1, "First", "York");
         Auditorium savedAuditorium = new Auditorium(0, 1, 25, building);
         Auditorium expectedAuditorium = new Auditorium(1, 1, 25, building);
@@ -36,14 +36,14 @@ class AuditoriumServiceTest {
     }
 
     @Test
-    public void addShouldRaiseExceptionIfIdNotEqualZero() {
+    void addShouldRaiseExceptionIfIdNotEqualZero() {
         Building building = new Building(1, "First", "York");
         Auditorium savedAuditorium = new Auditorium(1, 1, 25, building);
         assertThrows(InvalidEntityException.class, () -> auditoriumService.add(savedAuditorium));
     }
 
     @Test
-    public void findByIdShouldExecuteOnceWhenDbCallFineAndReturnAuditorium() {
+    void findByIdShouldExecuteOnceWhenDbCallFineAndReturnAuditorium() {
         Auditorium expectedAuditorium = new Auditorium(1, 1, 25, new Building(1, "First", "York"));
         Mockito.when(mockAuditoriumDao.findById(1)).thenReturn(Optional.of(expectedAuditorium));
         assertEquals(auditoriumService.findById(1), expectedAuditorium);
@@ -51,27 +51,28 @@ class AuditoriumServiceTest {
     }
 
     @Test
-    public void findByIdShouldRaiseExceptionIfIdMissed() {
+    void findByIdShouldRaiseExceptionIfIdMissed() {
         assertThrows(ResourceNotFoundException.class, () -> auditoriumService.findById(1));
         Mockito.verify(mockAuditoriumDao, times(1)).findById(1);
     }
-    
+
     @Test
-    public void findByNumberAndBuildingIdShouldExecuteOnceWhenDbCallFineAndReturnAuditorium() {
+    void findByNumberAndBuildingIdShouldExecuteOnceWhenDbCallFineAndReturnAuditorium() {
         Auditorium expectedAuditorium = new Auditorium(1, 1, 25, new Building(1, "First", "York"));
-        Mockito.when(mockAuditoriumDao.findByNumberAndBuildingId(Mockito.anyInt(), Mockito.anyInt())).thenReturn(Optional.of(expectedAuditorium));
-        assertEquals(auditoriumService.findByNumberAndBuildingId(1,1), expectedAuditorium);
+        Mockito.when(mockAuditoriumDao.findByNumberAndBuildingId(Mockito.anyInt(), Mockito.anyInt()))
+                .thenReturn(Optional.of(expectedAuditorium));
+        assertEquals(auditoriumService.findByNumberAndBuildingId(1, 1), expectedAuditorium);
         Mockito.verify(mockAuditoriumDao, times(1)).findByNumberAndBuildingId(1, 1);
     }
 
     @Test
-    public void findByNumberAndBuildingIdShouldRaiseExceptionIfIdMissed() {
+    void findByNumberAndBuildingIdShouldRaiseExceptionIfIdMissed() {
         assertThrows(ResourceNotFoundException.class, () -> auditoriumService.findByNumberAndBuildingId(1, 1));
         Mockito.verify(mockAuditoriumDao, times(1)).findByNumberAndBuildingId(1, 1);
     }
 
     @Test
-    public void findAllShouldReturnListOfAuditoriumIfAtLeastOneExists() {
+    void findAllShouldReturnListOfAuditoriumIfAtLeastOneExists() {
         Building building = new Building(10, "First", "Building");
         Auditorium auditorium = new Auditorium(15, 35, building);
         Auditorium auditoriumTwo = new Auditorium(16, 30, building);
@@ -82,7 +83,7 @@ class AuditoriumServiceTest {
     }
 
     @Test
-    public void deleteShouldExecuteOnceWhenDbCallFine() {
+    void deleteShouldExecuteOnceWhenDbCallFine() {
         Building building = new Building(10, "First", "Building");
         Auditorium auditorium = new Auditorium(15, 15, 35, building);
         auditoriumService.deleteById(auditorium.getId());
@@ -90,7 +91,7 @@ class AuditoriumServiceTest {
     }
 
     @Test
-    public void updateShouldExecuteOnceWhenDbCallFineAndUpdateEntityField() {
+    void updateShouldExecuteOnceWhenDbCallFineAndUpdateEntityField() {
         Building building = new Building(10, "First", "Building");
         Auditorium updatedAuditorium = new Auditorium(1, 15, 35, building);
         Mockito.when(mockAuditoriumDao.findById(1)).thenReturn(Optional.of(updatedAuditorium));
@@ -99,19 +100,19 @@ class AuditoriumServiceTest {
         assertEquals(auditoriumService.update(updatedAuditorium), updatedAuditorium);
         Mockito.verify(mockAuditoriumDao, times(1)).save(updatedAuditorium);
     }
-    
+
     @Test
-    public void updateShouldRaiseExceptionIfIdEqualZero() {
+    void updateShouldRaiseExceptionIfIdEqualZero() {
         Building building = new Building(1, "First", "York");
         Auditorium updatedAuditorium = new Auditorium(0, 1, 25, building);
         assertThrows(InvalidEntityException.class, () -> auditoriumService.update(updatedAuditorium));
     }
-    
+
     @Test
-    public void getBuildingsShouldReturnAllBuildingsFromDB() {
+    void getBuildingsShouldReturnAllBuildingsFromDB() {
         Building building = new Building(1, "First", "York");
         Building buildingTwo = new Building(2, "Second", "New");
-        List<Building> buildings = Arrays.asList(building,buildingTwo);
+        List<Building> buildings = Arrays.asList(building, buildingTwo);
         Mockito.when(mockBuildingService.findAll()).thenReturn(buildings);
         assertEquals(auditoriumService.getBuildings(), buildings);
         Mockito.verify(mockBuildingService, times(1)).findAll();
