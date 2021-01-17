@@ -29,7 +29,7 @@ public class LessonService {
     public LessonService(LessonDao lessonDao, CourseService courseService, LessonTypeService lessonTypeService,
             TimeSlotService timeSlotService, AuditoriumService auditoriumService, TeacherService teacherService,
             GroupService groupService) {
-        logger.info("Construct with {}", lessonDao, courseService, lessonTypeService, timeSlotService,
+        logger.info("Construct with {},{},{},{},{},{},{}", lessonDao, courseService, lessonTypeService, timeSlotService,
                 auditoriumService, teacherService, groupService);
         this.lessonDao = lessonDao;
         this.courseService = courseService;

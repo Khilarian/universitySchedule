@@ -9,6 +9,8 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 import com.rumakin.universityschedule.dao.*;
@@ -29,15 +31,21 @@ class TeacherServiceTest {
 
     @MockBean
     private CourseService mockCourseService;
+    
+    @MockBean
+    private UserService mockUserService;
 
     @Test
     void addShouldExecuteOnceWhenDbCallFine() {
         Faculty faculty = new Faculty(1, "First");
         Teacher savedTeacher = new Teacher(0, "Mick", "Jagger", "mj@rs.com", "+7(123)4567890", faculty);
         Teacher expectedTeacher = new Teacher(1, "Mick", "Jagger", "mj@rs.com", "+7(123)4567890", faculty);
+        User user = User.fromPerson(savedTeacher);
         Mockito.when(mockTeacherDao.save(savedTeacher)).thenReturn(expectedTeacher);
+        Mockito.when(mockUserService.add(any())).thenReturn(user);
         assertEquals(teacherService.add(savedTeacher), expectedTeacher);
         Mockito.verify(mockTeacherDao, times(1)).save(savedTeacher);
+        Mockito.verify(mockUserService, times(1)).add(user);
     }
 
     @Test
@@ -107,18 +115,23 @@ class TeacherServiceTest {
     void deleteShouldExecuteOnceWhenDbCallFine() {
         Faculty faculty = new Faculty(1, "First");
         Teacher teacher = new Teacher(1, "Mick", "Jagger", "mj@rs.com", "+7(123)4567890", faculty);
+        Mockito.when(mockTeacherDao.findById(any())).thenReturn(Optional.of(teacher));
         teacherService.deleteById(teacher.getId());
         Mockito.verify(mockTeacherDao, times(1)).deleteById(1);
+        Mockito.verify(mockUserService, times(1)).deleteByEmail(teacher.getEmail());
     }
 
     @Test
     void updateShouldExecuteOnceWhenDbCallFineAndUpdateEntityField() {
         Faculty faculty = new Faculty(1, "First");
         Teacher updatedTeacher = new Teacher(1, "Mick", "Jagger", "mj@rs.com", "+7(123)4567890", faculty);
+        User user = User.fromPerson(updatedTeacher);
         Mockito.when(mockTeacherDao.findById(1)).thenReturn(Optional.of(updatedTeacher));
         Mockito.when(mockTeacherDao.save(updatedTeacher)).thenReturn(updatedTeacher);
+        Mockito.when(mockUserService.update(any())).thenReturn(user);
         assertEquals(teacherService.update(updatedTeacher), updatedTeacher);
         Mockito.verify(mockTeacherDao, times(1)).save(updatedTeacher);
+        Mockito.verify(mockUserService, times(1)).update(user);
     }
 
     @Test

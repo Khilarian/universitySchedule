@@ -16,3 +16,11 @@ spring:
     flyway:
         enabled: false
         location: classpath:/db/migration
+    mail:
+        host: smtp.yandex.com
+        username: 
+        password: 
+        port: 465
+        protocol: smtps
+mail:
+    debug: false
