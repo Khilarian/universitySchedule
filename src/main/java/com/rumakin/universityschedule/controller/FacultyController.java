@@ -53,11 +53,13 @@ public class FacultyController {
     @GetMapping("/edit")
     @PreAuthorize("hasAuthority('write')")
     public String edit(Integer id, Model model) {
-        FacultyDto faculty = new FacultyDto();
+        logger.debug("GET edit() id {}", id);
+        FacultyDto facultyDto = new FacultyDto();
         if (id != null) {
-            faculty = convertToDto(facultyService.findById(id));
+            facultyDto = convertToDto(facultyService.findById(id));
+            logger.trace("GET edit() found: {}", facultyDto);
         }
-        model.addAttribute("faculty", faculty);
+        model.addAttribute("faculty", facultyDto);
         setEdit(id, model);
         return "faculties/edit";
     }
@@ -66,6 +68,7 @@ public class FacultyController {
     @PreAuthorize("hasAuthority('write')")
     public String edit(@Valid @ModelAttribute(value = "faculty") FacultyDto facultyDto, BindingResult bindingResult,
             Model model) {
+        logger.debug("POST edit() {},{}", facultyDto, bindingResult);
         if (bindingResult.hasErrors()) {
             setEdit(facultyDto.getId(), model);
             return "faculties/edit";
@@ -82,11 +85,13 @@ public class FacultyController {
     @GetMapping(value = "/delete")
     @PreAuthorize("hasAuthority('write')")
     public String delete(int id) {
+        logger.debug("GET delete() id {}", id);
         facultyService.deleteById(id);
         return REDIRECT_PAGE;
     }
 
     private void setEdit(Integer id, Model model) {
+        logger.debug("setEdit() id {}", id);
         if (id != null) {
             setAttributes(model, EDIT);
         } else {

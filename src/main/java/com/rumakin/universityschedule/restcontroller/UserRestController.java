@@ -54,30 +54,32 @@ public class UserRestController {
     @GetMapping("/{id}")
     @PreAuthorize("hasAuthority('write')")
     public ResponseEntity<UserDto> findById(@PathVariable(value = "id") int id) {
-        logger.debug("findById() user");
+        logger.debug("findById() user id {}", id);
         UserDto userDto = convertToDto(userService.findById(id));
-        logger.debug("found() {} user", userDto);
+        logger.debug("found() {}", userDto);
         return new ResponseEntity<>(userDto, HttpStatus.OK);
     }
 
     @GetMapping("/{email}")
     @PreAuthorize("hasAuthority('write')")
     public ResponseEntity<UserDto> findByEmail(@PathVariable(value = "email") String email) {
-        logger.debug("findByEmail() user");
+        logger.debug("findByEmail() user email {}", email);
         UserDto userDto = convertToDto(userService.findByEmail(email));
-        logger.debug("found() {} user", userDto);
+        logger.debug("found() {}", userDto);
         return new ResponseEntity<>(userDto, HttpStatus.OK);
     }
 
     @PostMapping
     @PreAuthorize("hasAuthority('write')")
     public ResponseEntity<UserDto> add(@Valid @RequestBody UserDto userDto) {
+        logger.debug("add() user email {}", userDto);
         User user = userService.add(convertToEntity(userDto));
         return new ResponseEntity<>(convertToDto(user), HttpStatus.CREATED);
     }
 
     @PutMapping("/updatePassword")
     public ResponseEntity<UserDto> update(@Valid @RequestBody UserDto userDto) {
+        logger.debug("update() user email {}", userDto);
         User user = userService.update(convertToEntity(userDto));
         return new ResponseEntity<>(convertToDto(user), HttpStatus.OK);
     }
@@ -85,6 +87,7 @@ public class UserRestController {
     @PutMapping
     @PreAuthorize("hasAuthority('write')")
     public ResponseEntity<UserDto> updatePassword(@Valid @RequestBody UserDto userDto, String newPassword) {
+        logger.debug("updatePassword() user {}, password {}", userDto, newPassword);
         userService.updatePassword(convertToEntity(userDto), newPassword);
         return new ResponseEntity<>(null, HttpStatus.OK);
     }
@@ -92,6 +95,7 @@ public class UserRestController {
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAuthority('write')")
     public ResponseEntity<UserDto> deleteById(@PathVariable(value = "id") int id) {
+        logger.debug("deleteById() user id {}", id);
         userService.deleteById(id);
         return new ResponseEntity<>(null, HttpStatus.OK);
     }
@@ -99,6 +103,7 @@ public class UserRestController {
     @DeleteMapping("/markAsDeleted/{id}")
     @PreAuthorize("hasAuthority('write')")
     public ResponseEntity<UserDto> markAsDeleteById(@PathVariable(value = "id") int id) {
+        logger.debug("markAsDeleteById() user id {}", id);
         userService.markAsDeleteById(id);
         return new ResponseEntity<>(null, HttpStatus.OK);
     }
@@ -106,6 +111,7 @@ public class UserRestController {
     @DeleteMapping("/{email}")
     @PreAuthorize("hasAuthority('write')")
     public ResponseEntity<UserDto> deleteByEmail(@PathVariable(value = "email") String email) {
+        logger.debug("deleteByEmail() user email {}", email);
         userService.deleteByEmail(email);
         return new ResponseEntity<>(null, HttpStatus.OK);
     }

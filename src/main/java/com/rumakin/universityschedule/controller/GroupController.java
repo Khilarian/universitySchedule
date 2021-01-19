@@ -51,11 +51,13 @@ public class GroupController {
     @GetMapping("/edit")
     @PreAuthorize("hasAuthority('write')")
     public String edit(Integer id, Model model) {
-        GroupDto group = new GroupDto();
+        logger.debug("GET edit() id {}", id);
+        GroupDto groupDto = new GroupDto();
         if (id != null) {
-            group = convertToDto(groupService.findById(id));
+            groupDto = convertToDto(groupService.findById(id));
+            logger.trace("GET edit() found: {}", groupDto);
         }
-        model.addAttribute("group", group);
+        model.addAttribute("group", groupDto);
         setEdit(id, model);
         return "groups/edit";
     }
@@ -64,6 +66,7 @@ public class GroupController {
     @PreAuthorize("hasAuthority('write')")
     public String edit(@Valid @ModelAttribute(value = "group") GroupDto groupDto, BindingResult bindingResult,
             Model model) {
+        logger.debug("POST edit() {},{}", groupDto, bindingResult);
         if (bindingResult.hasErrors()) {
             setEdit(groupDto.getId(), model);
             return "groups/edit";
@@ -80,11 +83,13 @@ public class GroupController {
     @GetMapping("/delete")
     @PreAuthorize("hasAuthority('write')")
     public String deleteUser(int id) {
+        logger.debug("GET delete() id {}", id);
         groupService.deleteById(id);
         return REDIRECT_PAGE;
     }
 
     private void setEdit(Integer id, Model model) {
+        logger.debug("setEdit() id {}", id);
         if (id != null) {
             setAttributes(model, EDIT);
         } else {

@@ -6,6 +6,9 @@ public final class PasswordGenerator {
 
     private static final String SIGNS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%&*()_+-=[]|,./?><";
     private static final int SIGN_COUNT = 10;
+    
+    private PasswordGenerator() {
+    }
 
     public static String generatePassword() {
         StringBuilder password = new StringBuilder();

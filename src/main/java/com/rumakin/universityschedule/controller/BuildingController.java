@@ -53,11 +53,13 @@ public class BuildingController {
     @GetMapping("/edit")
     @PreAuthorize("hasAuthority('write')")
     public String edit(Integer id, Model model) {
-        BuildingDto building = new BuildingDto();
+        logger.debug("GET edit() id {}", id);
+        BuildingDto buildingDto = new BuildingDto();
         if (id != null) {
-            building = convertToDto(buildingService.findById(id));
+            buildingDto = convertToDto(buildingService.findById(id));
+            logger.trace("GET edit() found: {}", buildingDto);
         }
-        model.addAttribute("building", building);
+        model.addAttribute("building", buildingDto);
         setEdit(id, model);
         return "buildings/edit";
     }
@@ -66,6 +68,7 @@ public class BuildingController {
     @PreAuthorize("hasAuthority('write')")
     public String edit(@Valid @ModelAttribute(value = "building") BuildingDto buildingDto, BindingResult bindingResult,
             Model model) {
+        logger.debug("POST edit() {},{}", buildingDto, bindingResult);
         if (bindingResult.hasErrors()) {
             setEdit(buildingDto.getId(), model);
             return "buildings/edit";
@@ -82,11 +85,13 @@ public class BuildingController {
     @GetMapping(value = "/delete")
     @PreAuthorize("hasAuthority('write')")
     public String delete(int id) {
+        logger.debug("GET delete() id {}", id);
         buildingService.deleteById(id);
         return REDIRECT_PAGE;
     }
 
     private void setEdit(Integer id, Model model) {
+        logger.debug("setEdit() id {}", id);
         if (id != null) {
             setAttributes(model, EDIT);
         } else {

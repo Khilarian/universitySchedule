@@ -49,7 +49,7 @@ public class AuditoriumRestController {
     @GetMapping("/{id}")
     @PreAuthorize("hasAuthority('write')")
     public ResponseEntity<AuditoriumDto> findById(@PathVariable(value = "id") int id) {
-        logger.debug("findById() auditorium");
+        logger.debug("findById() auditorium id {}", id);
         AuditoriumDto auditoriumDto = convertToDto(auditoriumService.findById(id));
         logger.debug("found() {} auditorium", auditoriumDto);
         return new ResponseEntity<>(auditoriumDto, HttpStatus.OK);
@@ -58,6 +58,7 @@ public class AuditoriumRestController {
     @PostMapping
     @PreAuthorize("hasAuthority('write')")
     public ResponseEntity<AuditoriumDto> add(@Valid @RequestBody AuditoriumDto auditoriumDto) {
+        logger.debug("add() auditorium {}", auditoriumDto);
         Auditorium auditorium = auditoriumService.add(convertToEntity(auditoriumDto));
         return new ResponseEntity<>(convertToDto(auditorium), HttpStatus.CREATED);
     }
@@ -65,6 +66,7 @@ public class AuditoriumRestController {
     @PutMapping
     @PreAuthorize("hasAuthority('write')")
     public ResponseEntity<AuditoriumDto> update(@Valid @RequestBody AuditoriumDto auditoriumDto) {
+        logger.debug("update() auditorium {}", auditoriumDto);
         Auditorium auditorium = auditoriumService.update(convertToEntity(auditoriumDto));
         return new ResponseEntity<>(convertToDto(auditorium), HttpStatus.OK);
     }
@@ -72,6 +74,7 @@ public class AuditoriumRestController {
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAuthority('write')")
     public HttpStatus delete(@PathVariable(value = "id") int id) {
+        logger.debug("delete() auditorium id {}", id);
         auditoriumService.deleteById(id);
         return HttpStatus.OK;
     }

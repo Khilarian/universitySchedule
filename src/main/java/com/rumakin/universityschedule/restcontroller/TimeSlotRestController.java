@@ -49,15 +49,16 @@ public class TimeSlotRestController {
     @GetMapping("/{id}")
     @PreAuthorize("hasAuthority('write')")
     public ResponseEntity<TimeSlotDto> findById(@PathVariable(value = "id") int id) {
-        logger.debug("findById() time slot");
+        logger.debug("findById() timeSlot id {}",  id);
         TimeSlotDto timeSlotDto = convertToDto(timeSlotService.findById(id));
-        logger.debug("found() {} time slot", timeSlotDto);
+        logger.debug("found() {} timeSlot", timeSlotDto);
         return new ResponseEntity<>(timeSlotDto, HttpStatus.OK);
     }
 
     @PostMapping
     @PreAuthorize("hasAuthority('write')")
     public ResponseEntity<TimeSlotDto> add(@Valid @RequestBody TimeSlotDto timeSlotDto) {
+        logger.debug("add() timeSlot id {}",  timeSlotDto);
         TimeSlot timeSlot = timeSlotService.add(convertToEntity(timeSlotDto));
         return new ResponseEntity<>(convertToDto(timeSlot), HttpStatus.CREATED);
     }
@@ -65,6 +66,7 @@ public class TimeSlotRestController {
     @PutMapping
     @PreAuthorize("hasAuthority('write')")
     public ResponseEntity<TimeSlotDto> update(@Valid @RequestBody TimeSlotDto timeSlotDto) {
+        logger.debug("update() timeSlot id {}",  timeSlotDto);
         TimeSlot timeSlot = timeSlotService.update(convertToEntity(timeSlotDto));
         return new ResponseEntity<>(convertToDto(timeSlot), HttpStatus.OK);
     }
@@ -72,6 +74,7 @@ public class TimeSlotRestController {
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAuthority('write')")
     public ResponseEntity<TimeSlotDto> delete(@PathVariable(value = "id") int id) {
+        logger.debug("delete() timeSlot id {}",  id);
         timeSlotService.deleteById(id);
         return new ResponseEntity<>(null, HttpStatus.OK);
     }

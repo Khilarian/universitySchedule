@@ -53,11 +53,13 @@ public class TimeSlotController {
     @GetMapping("/edit")
     @PreAuthorize("hasAuthority('write')")
     public String edit(Integer id, Model model) {
-        TimeSlotDto timeSlot = new TimeSlotDto();
+        logger.debug("GET edit() id {}", id);
+        TimeSlotDto timeSlotDto = new TimeSlotDto();
         if (id != null) {
-            timeSlot = convertToDto(timeSlotService.findById(id));
+            timeSlotDto = convertToDto(timeSlotService.findById(id));
+            logger.trace("GET edit() found: {}", timeSlotDto);
         }
-        model.addAttribute("timeSlot", timeSlot);
+        model.addAttribute("timeSlot", timeSlotDto);
         setEdit(id, model);
         return "timeSlots/edit";
     }
@@ -66,6 +68,7 @@ public class TimeSlotController {
     @PreAuthorize("hasAuthority('write')")
     public String edit(@Valid @ModelAttribute(value = "timeSlot") TimeSlotDto timeSlotDto, BindingResult bindingResult,
             Model model) {
+        logger.debug("POST edit() {},{}", timeSlotDto, bindingResult);
         if (bindingResult.hasErrors()) {
             setEdit(timeSlotDto.getId(), model);
             return "timeSlots/edit";
@@ -82,11 +85,13 @@ public class TimeSlotController {
     @GetMapping(value = "/delete")
     @PreAuthorize("hasAuthority('write')")
     public String delete(int id) {
+        logger.debug("GET delete() id {}", id);
         timeSlotService.deleteById(id);
         return REDIRECT_PAGE;
     }
 
     private void setEdit(Integer id, Model model) {
+        logger.debug("setEdit() id {}", id);
         if (id != null) {
             setAttributes(model, EDIT);
         } else {

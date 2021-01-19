@@ -49,7 +49,7 @@ public class LessonTypeRestController {
     @GetMapping("/{id}")
     @PreAuthorize("hasAuthority('write')")
     public ResponseEntity<LessonTypeDto> findById(@PathVariable(value = "id") int id) {
-        logger.debug("findById() lessonType");
+        logger.debug("findById() lessonType id {}", id);
         LessonTypeDto lessonTypeDto = convertToDto(lessonTypeService.findById(id));
         logger.debug("found() {} lessonType", lessonTypeDto);
         return new ResponseEntity<>(lessonTypeDto, HttpStatus.OK);
@@ -58,6 +58,7 @@ public class LessonTypeRestController {
     @PostMapping
     @PreAuthorize("hasAuthority('write')")
     public ResponseEntity<LessonTypeDto> add(@Valid @RequestBody LessonTypeDto lessonTypeDto) {
+        logger.debug("add() lessonType {}", lessonTypeDto);
         LessonType lessonType = lessonTypeService.add(convertToEntity(lessonTypeDto));
         return new ResponseEntity<>(convertToDto(lessonType), HttpStatus.CREATED);
     }
@@ -65,6 +66,7 @@ public class LessonTypeRestController {
     @PutMapping
     @PreAuthorize("hasAuthority('write')")
     public ResponseEntity<LessonTypeDto> update(@Valid @RequestBody LessonTypeDto lessonTypeDto) {
+        logger.debug("update() lessonType {}", lessonTypeDto);
         LessonType lessonType = lessonTypeService.update(convertToEntity(lessonTypeDto));
         return new ResponseEntity<>(convertToDto(lessonType), HttpStatus.OK);
     }
@@ -72,6 +74,7 @@ public class LessonTypeRestController {
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAuthority('write')")
     public ResponseEntity<LessonTypeDto> delete(@PathVariable(value = "id") int id) {
+        logger.debug("delete() lessonType id {}", id);
         lessonTypeService.deleteById(id);
         return new ResponseEntity<>(null, HttpStatus.OK);
     }

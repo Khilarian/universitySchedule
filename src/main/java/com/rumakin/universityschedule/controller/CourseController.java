@@ -52,11 +52,13 @@ public class CourseController {
     @GetMapping("/edit")
     @PreAuthorize("hasAuthority('write')")
     public String edit(Integer id, Model model) {
-        CourseDto course = new CourseDto();
+        logger.debug("GET edit() id {}", id);
+        CourseDto courseDto = new CourseDto();
         if (id != null) {
-            course = convertToDto(courseService.findById(id));
+            courseDto = convertToDto(courseService.findById(id));
+            logger.trace("GET edit() found: {}", courseDto);
         }
-        model.addAttribute("course", course);
+        model.addAttribute("course", courseDto);
         setEdit(id, model);
         return "courses/edit";
     }
@@ -65,6 +67,7 @@ public class CourseController {
     @PreAuthorize("hasAuthority('write')")
     public String edit(@Valid @ModelAttribute(value = "course") CourseDto courseDto, BindingResult bindingResult,
             Model model) {
+        logger.debug("POST edit() {},{}", courseDto, bindingResult);
         if (bindingResult.hasErrors()) {
             setEdit(courseDto.getId(), model);
             return "courses/edit";
@@ -83,11 +86,13 @@ public class CourseController {
     @GetMapping("/delete")
     @PreAuthorize("hasAuthority('write')")
     public String deleteUser(int id) {
+        logger.debug("GET delete() id {}", id);
         courseService.deleteById(id);
         return REDIRECT_PAGE;
     }
 
     private void setEdit(Integer id, Model model) {
+        logger.debug("setEdit() id {}", id);
         if (id != null) {
             setAttributes(model, EDIT);
         } else {

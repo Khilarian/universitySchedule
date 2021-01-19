@@ -53,11 +53,13 @@ public class LessonTypeController {
     @GetMapping("/edit")
     @PreAuthorize("hasAuthority('write')")
     public String edit(Integer id, Model model) {
-        LessonTypeDto lessonType = new LessonTypeDto();
+        logger.debug("GET edit() id {}", id);
+        LessonTypeDto lessonTypeDto = new LessonTypeDto();
         if (id != null) {
-            lessonType = convertToDto(lessonTypeService.findById(id));
+            lessonTypeDto = convertToDto(lessonTypeService.findById(id));
+            logger.trace("GET edit() found: {}", lessonTypeDto);
         }
-        model.addAttribute("lessonType", lessonType);
+        model.addAttribute("lessonType", lessonTypeDto);
         setEdit(id, model);
         return "lessonTypes/edit";
     }
@@ -66,6 +68,7 @@ public class LessonTypeController {
     @PreAuthorize("hasAuthority('write')")
     public String edit(@Valid @ModelAttribute(value = "lessonType") LessonTypeDto lessonTypeDto,
             BindingResult bindingResult, Model model) {
+        logger.debug("POST edit() {},{}", lessonTypeDto, bindingResult);
         if (bindingResult.hasErrors()) {
             setEdit(lessonTypeDto.getId(), model);
             return "lessonTypes/edit";
@@ -82,11 +85,13 @@ public class LessonTypeController {
     @GetMapping(value = "/delete")
     @PreAuthorize("hasAuthority('write')")
     public String delete(int id) {
+        logger.debug("GET delete() id {}", id);
         lessonTypeService.deleteById(id);
         return REDIRECT_PAGE;
     }
 
     private void setEdit(Integer id, Model model) {
+        logger.debug("setEdit() id {}", id);
         if (id != null) {
             setAttributes(model, EDIT);
         } else {

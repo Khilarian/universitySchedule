@@ -52,11 +52,13 @@ public class AuditoriumController {
     @GetMapping("/edit")
     @PreAuthorize("hasAuthority('write')")
     public String edit(Integer id, Model model) {
-        AuditoriumDto auditorium = new AuditoriumDto();
+        logger.debug("GET edit() id {}", id);
+        AuditoriumDto auditoriumDto = new AuditoriumDto();
         if (id != null) {
-            auditorium = convertToDto(auditoriumService.findById(id));
+            auditoriumDto = convertToDto(auditoriumService.findById(id));
+            logger.trace("GET edit() found: {}", auditoriumDto);
         }
-        model.addAttribute("auditorium", auditorium);
+        model.addAttribute("auditorium", auditoriumDto);
         setEdit(id, model);
         return "auditoriums/edit";
     }
@@ -65,6 +67,7 @@ public class AuditoriumController {
     @PreAuthorize("hasAuthority('write')")
     public String edit(@Valid @ModelAttribute(value = "auditorium") AuditoriumDto auditoriumDto,
             BindingResult bindingResult, Model model) {
+        logger.debug("POST edit() {},{}", auditoriumDto, bindingResult);
         if (bindingResult.hasErrors()) {
             setEdit(auditoriumDto.getId(), model);
             return "auditoriums/edit";
@@ -81,11 +84,13 @@ public class AuditoriumController {
     @GetMapping(value = "/delete")
     @PreAuthorize("hasAuthority('write')")
     public String delete(int id) {
+        logger.debug("GET delete() id {}", id);
         auditoriumService.deleteById(id);
         return REDIRECT_PAGE;
     }
 
     private void setEdit(Integer id, Model model) {
+        logger.debug("setEdit() id {}", id);
         if (id != null) {
             setAttributes(model, EDIT);
         } else {

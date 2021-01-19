@@ -49,7 +49,7 @@ public class BuildingRestController {
     @GetMapping("/{id}")
     @PreAuthorize("hasAuthority('write')")
     public ResponseEntity<BuildingDto> findById(@PathVariable(value = "id") int id) {
-        logger.debug("findById() building");
+        logger.debug("findById() building id {}", id);
         BuildingDto buildingDto = convertToDto(buildingService.findById(id));
         logger.debug("found() {} building", buildingDto);
         return new ResponseEntity<>(buildingDto, HttpStatus.OK);
@@ -58,6 +58,7 @@ public class BuildingRestController {
     @PostMapping
     @PreAuthorize("hasAuthority('write')")
     public ResponseEntity<BuildingDto> add(@Valid @RequestBody BuildingDto buildingDto) {
+        logger.debug("add() building {}", buildingDto);
         Building building = buildingService.add(convertToEntity(buildingDto));
         return new ResponseEntity<>(convertToDto(building), HttpStatus.CREATED);
     }
@@ -65,6 +66,7 @@ public class BuildingRestController {
     @PutMapping
     @PreAuthorize("hasAuthority('write')")
     public ResponseEntity<BuildingDto> update(@Valid @RequestBody BuildingDto buildingDto) {
+        logger.debug("update() building {}", buildingDto);
         Building building = buildingService.update(convertToEntity(buildingDto));
         return new ResponseEntity<>(convertToDto(building), HttpStatus.OK);
     }
@@ -72,6 +74,7 @@ public class BuildingRestController {
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAuthority('write')")
     public ResponseEntity<BuildingDto> delete(@PathVariable(value = "id") int id) {
+        logger.debug("delete() building id {}", id);
         buildingService.deleteById(id);
         return new ResponseEntity<>(null, HttpStatus.OK);
     }

@@ -38,7 +38,7 @@ public class ScheduleController {
     @PreAuthorize("hasAuthority('write')")
     public String getSchedule(@Valid @ModelAttribute(value = "lessonFilterDto") final LessonFilterDto lessonFilterDto,
             BindingResult bindingResult, Model model) {
-        logger.debug("getSchedule()");
+        logger.debug("getSchedule() {}", lessonFilterDto);
         prepareModel(model);
         if (lessonFilterDto.isEmpty()) {
             LessonFilterDto emptyLessonFilterDto = new LessonFilterDto(null, null, 1, LocalDate.now());
@@ -61,6 +61,7 @@ public class ScheduleController {
     }
 
     private void prepareModel(Model model) {
+        logger.debug("prepareModel()");
         List<TeacherDto> teachers = lessonService.getTeachers().stream().map(t -> modelMapper.map(t, TeacherDto.class))
                 .collect(Collectors.toList());
         List<GroupDto> groups = lessonService.getGroups().stream().map(g -> modelMapper.map(g, GroupDto.class))
@@ -70,6 +71,7 @@ public class ScheduleController {
     }
 
     private String prepareReportMessage(LessonFilterDto lessonFilterDto, List<LessonDto> lessons) {
+        logger.debug("prepareReportMessage() {}", lessonFilterDto);
         String reportFor;
         String reportPeriod;
         String reportMessage;
@@ -97,6 +99,7 @@ public class ScheduleController {
     }
 
     private List<ScheduleDayDto> prepareMonthSchedule(List<LessonDto> lessons) {
+        logger.debug("prepareMonthSchedule() {}", lessons);
         List<ScheduleDayDto> schedule = new ArrayList<>();
         LocalDate firstDay = lessons.get(0).getDate().withDayOfMonth(1);
         int mockFirstDays = firstDay.getDayOfWeek().getValue();
@@ -117,12 +120,14 @@ public class ScheduleController {
     }
 
     private List<ScheduleDayDto> prepareDaySchedule(List<LessonDto> lessons) {
+        logger.debug("prepareDaySchedule() {}", lessons);
         List<ScheduleDayDto> dayLessons = new ArrayList<>();
         dayLessons.add(prepareOneDaySchedule(lessons, lessons.get(0).getDate()));
         return dayLessons;
     }
 
     private ScheduleDayDto prepareOneDaySchedule(List<LessonDto> lessons, LocalDate date) {
+        logger.debug("prepareOneDaySchedule() {}, {}", lessons, date);
         List<LessonDto> dayLessons = lessons.stream().filter(l -> l.getDate().equals(date))
                 .collect(Collectors.toList());
         return new ScheduleDayDto(date, dayLessons);

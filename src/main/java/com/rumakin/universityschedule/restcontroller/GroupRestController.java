@@ -49,7 +49,7 @@ public class GroupRestController {
     @GetMapping("/{id}")
     @PreAuthorize("hasAuthority('write')")
     public ResponseEntity<GroupDto> findById(@PathVariable(value = "id") int id) {
-        logger.debug("findById() group");
+        logger.debug("findById() group id {}", id);
         GroupDto groupDto = convertToDto(groupService.findById(id));
         logger.debug("found() {} group", groupDto);
         return new ResponseEntity<>(groupDto, HttpStatus.OK);
@@ -58,6 +58,7 @@ public class GroupRestController {
     @PostMapping
     @PreAuthorize("hasAuthority('write')")
     public ResponseEntity<GroupDto> add(@Valid @RequestBody GroupDto groupDto) {
+        logger.debug("add() group {}", groupDto);
         Group group = groupService.add(convertToEntity(groupDto));
         return new ResponseEntity<>(convertToDto(group), HttpStatus.CREATED);
     }
@@ -65,6 +66,7 @@ public class GroupRestController {
     @PutMapping
     @PreAuthorize("hasAuthority('write')")
     public ResponseEntity<GroupDto> update(@Valid @RequestBody GroupDto groupDto) {
+        logger.debug("update() group {}", groupDto);
         Group group = groupService.update(convertToEntity(groupDto));
         return new ResponseEntity<>(convertToDto(group), HttpStatus.OK);
     }
@@ -72,6 +74,7 @@ public class GroupRestController {
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAuthority('write')")
     public ResponseEntity<GroupDto> delete(@PathVariable(value = "id") int id) {
+        logger.debug("delete() group id {}", id);
         groupService.deleteById(id);
         return new ResponseEntity<>(null, HttpStatus.OK);
     }

@@ -45,7 +45,7 @@ public class UserController {
     @PreAuthorize("hasAuthority('write')")
     public String findAll(Model model) {
         logger.debug("findAll() users");
-        List<UserDto> users = userService.findAll().stream().map(this :: convertToDto).collect(Collectors.toList());
+        List<UserDto> users = userService.findAll().stream().map(this::convertToDto).collect(Collectors.toList());
         logger.trace("found {} users.", users.size());
         model.addAttribute("users", users);
         setAttributes(model, ALL);
@@ -55,10 +55,14 @@ public class UserController {
     @GetMapping("/edit")
     @PreAuthorize("hasAuthority('write')")
     public String edit(Integer id, Model model) {
+        logger.debug("GET edit() id {}", id);
         if (id == null) {
             throw new UnsupportedOperationException("Can't add user from UI");
         }
-        model.addAttribute("user", convertToDto(userService.findById(id)));
+        UserDto userDto = convertToDto(userService.findById(id));
+        logger.trace("GET edit() found: {}", userDto);
+        model.addAttribute("user", userDto);
+
         setEdit(id, model);
         return "users/edit";
     }
@@ -67,6 +71,7 @@ public class UserController {
     @PreAuthorize("hasAuthority('write')")
     public String edit(@Valid @ModelAttribute(value = "user") UserDto userDto, BindingResult bindingResult,
             Model model) {
+        logger.debug("POST edit() {},{}", userDto, bindingResult);
         if (bindingResult.hasErrors()) {
             setEdit(userDto.getId(), model);
             return "users/edit";
@@ -83,6 +88,7 @@ public class UserController {
     @GetMapping(value = "/delete")
     @PreAuthorize("hasAuthority('write')")
     public String delete(int id) {
+        logger.debug("GET delete() id {}", id);
         userService.markAsDeleteById(id);
         return REDIRECT_PAGE;
     }
@@ -112,6 +118,7 @@ public class UserController {
     }
 
     private void setEdit(Integer id, Model model) {
+        logger.debug("setEdit() id {}", id);
         if (id != null) {
             setAttributes(model, EDIT);
         } else {
