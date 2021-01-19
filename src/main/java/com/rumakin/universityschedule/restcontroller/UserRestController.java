@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -42,6 +43,7 @@ public class UserRestController {
     }
 
     @GetMapping
+    @PreAuthorize("hasAuthority('write')")
     public List<UserDto> findAll() {
         logger.debug("findAll() users");
         List<UserDto> users = userService.findAll().stream().map(this :: convertToDto).collect(Collectors.toList());
@@ -50,6 +52,7 @@ public class UserRestController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAuthority('write')")
     public ResponseEntity<UserDto> findById(@PathVariable(value = "id") int id) {
         logger.debug("findById() user");
         UserDto userDto = convertToDto(userService.findById(id));
@@ -58,6 +61,7 @@ public class UserRestController {
     }
 
     @GetMapping("/{email}")
+    @PreAuthorize("hasAuthority('write')")
     public ResponseEntity<UserDto> findByEmail(@PathVariable(value = "email") String email) {
         logger.debug("findByEmail() user");
         UserDto userDto = convertToDto(userService.findByEmail(email));
@@ -66,6 +70,7 @@ public class UserRestController {
     }
 
     @PostMapping
+    @PreAuthorize("hasAuthority('write')")
     public ResponseEntity<UserDto> add(@Valid @RequestBody UserDto userDto) {
         User user = userService.add(convertToEntity(userDto));
         return new ResponseEntity<>(convertToDto(user), HttpStatus.CREATED);
@@ -78,24 +83,28 @@ public class UserRestController {
     }
 
     @PutMapping
+    @PreAuthorize("hasAuthority('write')")
     public ResponseEntity<UserDto> updatePassword(@Valid @RequestBody UserDto userDto, String newPassword) {
         userService.updatePassword(convertToEntity(userDto), newPassword);
         return new ResponseEntity<>(null, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('write')")
     public ResponseEntity<UserDto> deleteById(@PathVariable(value = "id") int id) {
         userService.deleteById(id);
         return new ResponseEntity<>(null, HttpStatus.OK);
     }
 
     @DeleteMapping("/markAsDeleted/{id}")
+    @PreAuthorize("hasAuthority('write')")
     public ResponseEntity<UserDto> markAsDeleteById(@PathVariable(value = "id") int id) {
         userService.markAsDeleteById(id);
         return new ResponseEntity<>(null, HttpStatus.OK);
     }
 
     @DeleteMapping("/{email}")
+    @PreAuthorize("hasAuthority('write')")
     public ResponseEntity<UserDto> deleteByEmail(@PathVariable(value = "email") String email) {
         userService.deleteByEmail(email);
         return new ResponseEntity<>(null, HttpStatus.OK);

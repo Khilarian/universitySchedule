@@ -10,6 +10,7 @@ import org.modelmapper.ModelMapper;
 import org.slf4j.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,6 +37,7 @@ public class AuditoriumRestController {
     }
 
     @GetMapping
+    @PreAuthorize("hasAuthority('write')")
     public List<AuditoriumDto> getAll() {
         logger.debug("findAll() auditoriums");
         List<AuditoriumDto> auditoriums = auditoriumService.findAll().stream().map(this :: convertToDto)
@@ -45,6 +47,7 @@ public class AuditoriumRestController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAuthority('write')")
     public ResponseEntity<AuditoriumDto> findById(@PathVariable(value = "id") int id) {
         logger.debug("findById() auditorium");
         AuditoriumDto auditoriumDto = convertToDto(auditoriumService.findById(id));
@@ -53,18 +56,21 @@ public class AuditoriumRestController {
     }
 
     @PostMapping
+    @PreAuthorize("hasAuthority('write')")
     public ResponseEntity<AuditoriumDto> add(@Valid @RequestBody AuditoriumDto auditoriumDto) {
         Auditorium auditorium = auditoriumService.add(convertToEntity(auditoriumDto));
         return new ResponseEntity<>(convertToDto(auditorium), HttpStatus.CREATED);
     }
 
     @PutMapping
+    @PreAuthorize("hasAuthority('write')")
     public ResponseEntity<AuditoriumDto> update(@Valid @RequestBody AuditoriumDto auditoriumDto) {
         Auditorium auditorium = auditoriumService.update(convertToEntity(auditoriumDto));
         return new ResponseEntity<>(convertToDto(auditorium), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('write')")
     public HttpStatus delete(@PathVariable(value = "id") int id) {
         auditoriumService.deleteById(id);
         return HttpStatus.OK;

@@ -10,6 +10,7 @@ import org.modelmapper.ModelMapper;
 import org.slf4j.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,6 +37,7 @@ public class CourseRestController {
     }
 
     @GetMapping
+    @PreAuthorize("hasAuthority('write')")
     public List<CourseDto> findAll() {
         logger.debug("findAll() courses");
         List<CourseDto> courses = courseService.findAll().stream().map(b -> convertToDto(b))
@@ -45,6 +47,7 @@ public class CourseRestController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAuthority('write')")
     public ResponseEntity<CourseDto> findById(@PathVariable(value = "id") int id) {
         logger.debug("findById() course");
         CourseDto courseDto = convertToDto(courseService.findById(id));
@@ -53,18 +56,21 @@ public class CourseRestController {
     }
 
     @PostMapping
+    @PreAuthorize("hasAuthority('write')")
     public ResponseEntity<CourseDto> add(@Valid @RequestBody CourseDto courseDto) {
         Course course = courseService.add(convertToEntity(courseDto));
         return new ResponseEntity<>(convertToDto(course), HttpStatus.CREATED);
     }
 
     @PutMapping
+    @PreAuthorize("hasAuthority('write')")
     public ResponseEntity<CourseDto> update(@Valid @RequestBody CourseDto courseDto) {
         Course course = courseService.update(convertToEntity(courseDto));
         return new ResponseEntity<>(convertToDto(course), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('write')")
     public ResponseEntity<CourseDto> delete(@PathVariable(value = "id") int id) {
         courseService.deleteById(id);
         return new ResponseEntity<>(null, HttpStatus.OK);

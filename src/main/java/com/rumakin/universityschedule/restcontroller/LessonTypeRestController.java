@@ -10,6 +10,7 @@ import org.modelmapper.ModelMapper;
 import org.slf4j.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,6 +37,7 @@ public class LessonTypeRestController {
     }
 
     @GetMapping
+    @PreAuthorize("hasAuthority('write')")
     public List<LessonTypeDto> findAll() {
         logger.debug("findAll() lesson types");
         List<LessonTypeDto> lessonTypes = lessonTypeService.findAll().stream().map(b -> convertToDto(b))
@@ -45,6 +47,7 @@ public class LessonTypeRestController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAuthority('write')")
     public ResponseEntity<LessonTypeDto> findById(@PathVariable(value = "id") int id) {
         logger.debug("findById() lessonType");
         LessonTypeDto lessonTypeDto = convertToDto(lessonTypeService.findById(id));
@@ -53,18 +56,21 @@ public class LessonTypeRestController {
     }
 
     @PostMapping
+    @PreAuthorize("hasAuthority('write')")
     public ResponseEntity<LessonTypeDto> add(@Valid @RequestBody LessonTypeDto lessonTypeDto) {
         LessonType lessonType = lessonTypeService.add(convertToEntity(lessonTypeDto));
         return new ResponseEntity<>(convertToDto(lessonType), HttpStatus.CREATED);
     }
 
     @PutMapping
+    @PreAuthorize("hasAuthority('write')")
     public ResponseEntity<LessonTypeDto> update(@Valid @RequestBody LessonTypeDto lessonTypeDto) {
         LessonType lessonType = lessonTypeService.update(convertToEntity(lessonTypeDto));
         return new ResponseEntity<>(convertToDto(lessonType), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('write')")
     public ResponseEntity<LessonTypeDto> delete(@PathVariable(value = "id") int id) {
         lessonTypeService.deleteById(id);
         return new ResponseEntity<>(null, HttpStatus.OK);

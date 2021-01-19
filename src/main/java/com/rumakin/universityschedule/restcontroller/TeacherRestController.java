@@ -10,6 +10,7 @@ import org.modelmapper.ModelMapper;
 import org.slf4j.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,6 +37,7 @@ public class TeacherRestController {
     }
 
     @GetMapping
+    @PreAuthorize("hasAuthority('write')")
     public List<TeacherDto> findAll() {
         logger.debug("findAll() teachers");
         List<TeacherDto> teachers = teacherService.findAll().stream().map(b -> convertToDto(b))
@@ -45,6 +47,7 @@ public class TeacherRestController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAuthority('write')")
     public ResponseEntity<TeacherDto> findById(@PathVariable(value = "id") int id) {
         logger.debug("findById() teacher");
         TeacherDto teacherDto = convertToDto(teacherService.findById(id));
@@ -53,12 +56,14 @@ public class TeacherRestController {
     }
 
     @PostMapping
+    @PreAuthorize("hasAuthority('write')")
     public ResponseEntity<TeacherDto> add(@Valid @RequestBody TeacherDto teacherDto) {
         Teacher teacher = teacherService.add(convertToEntity(teacherDto));
         return new ResponseEntity<>(convertToDto(teacher), HttpStatus.CREATED);
     }
 
     @PutMapping
+    @PreAuthorize("hasAuthority('write')")
     public ResponseEntity<TeacherDto> update(@Valid @RequestBody TeacherDto teacherDto) {
         Teacher teacher = teacherService.update(convertToEntity(teacherDto));
         return new ResponseEntity<>(convertToDto(teacher), HttpStatus.OK);

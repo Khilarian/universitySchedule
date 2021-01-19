@@ -10,6 +10,7 @@ import org.modelmapper.ModelMapper;
 import org.slf4j.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,6 +37,7 @@ public class TimeSlotRestController {
     }
 
     @GetMapping
+    @PreAuthorize("hasAuthority('write')")
     public List<TimeSlotDto> findAll() {
         logger.debug("findAll() lesson types");
         List<TimeSlotDto> timeSlots = timeSlotService.findAll().stream().map(b -> convertToDto(b))
@@ -45,6 +47,7 @@ public class TimeSlotRestController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAuthority('write')")
     public ResponseEntity<TimeSlotDto> findById(@PathVariable(value = "id") int id) {
         logger.debug("findById() time slot");
         TimeSlotDto timeSlotDto = convertToDto(timeSlotService.findById(id));
@@ -53,18 +56,21 @@ public class TimeSlotRestController {
     }
 
     @PostMapping
+    @PreAuthorize("hasAuthority('write')")
     public ResponseEntity<TimeSlotDto> add(@Valid @RequestBody TimeSlotDto timeSlotDto) {
         TimeSlot timeSlot = timeSlotService.add(convertToEntity(timeSlotDto));
         return new ResponseEntity<>(convertToDto(timeSlot), HttpStatus.CREATED);
     }
 
     @PutMapping
+    @PreAuthorize("hasAuthority('write')")
     public ResponseEntity<TimeSlotDto> update(@Valid @RequestBody TimeSlotDto timeSlotDto) {
         TimeSlot timeSlot = timeSlotService.update(convertToEntity(timeSlotDto));
         return new ResponseEntity<>(convertToDto(timeSlot), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('write')")
     public ResponseEntity<TimeSlotDto> delete(@PathVariable(value = "id") int id) {
         timeSlotService.deleteById(id);
         return new ResponseEntity<>(null, HttpStatus.OK);

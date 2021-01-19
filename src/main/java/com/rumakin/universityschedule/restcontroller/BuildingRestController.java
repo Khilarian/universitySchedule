@@ -10,6 +10,7 @@ import org.modelmapper.ModelMapper;
 import org.slf4j.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,6 +37,7 @@ public class BuildingRestController {
     }
 
     @GetMapping
+    @PreAuthorize("hasAuthority('write')")
     public List<BuildingDto> findAll() {
         logger.debug("findAll() buildings");
         List<BuildingDto> buildings = buildingService.findAll().stream().map(b -> convertToDto(b))
@@ -45,6 +47,7 @@ public class BuildingRestController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAuthority('write')")
     public ResponseEntity<BuildingDto> findById(@PathVariable(value = "id") int id) {
         logger.debug("findById() building");
         BuildingDto buildingDto = convertToDto(buildingService.findById(id));
@@ -53,18 +56,21 @@ public class BuildingRestController {
     }
 
     @PostMapping
+    @PreAuthorize("hasAuthority('write')")
     public ResponseEntity<BuildingDto> add(@Valid @RequestBody BuildingDto buildingDto) {
         Building building = buildingService.add(convertToEntity(buildingDto));
         return new ResponseEntity<>(convertToDto(building), HttpStatus.CREATED);
     }
 
     @PutMapping
+    @PreAuthorize("hasAuthority('write')")
     public ResponseEntity<BuildingDto> update(@Valid @RequestBody BuildingDto buildingDto) {
         Building building = buildingService.update(convertToEntity(buildingDto));
         return new ResponseEntity<>(convertToDto(building), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('write')")
     public ResponseEntity<BuildingDto> delete(@PathVariable(value = "id") int id) {
         buildingService.deleteById(id);
         return new ResponseEntity<>(null, HttpStatus.OK);

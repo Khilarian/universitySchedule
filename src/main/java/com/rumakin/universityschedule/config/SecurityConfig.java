@@ -16,9 +16,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
-import com.rumakin.universityschedule.model.enums.Permission;
-import com.rumakin.universityschedule.security.UserDetailsServiceImpl;
-
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
@@ -38,11 +35,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .authorizeRequests()
                 .antMatchers("/v2/api-docs", "/swagger-resources/configuration/ui", "/swagger-resources",
                         "/swagger-resources/configuration/security", "/swagger-ui.html", "/webjars/**")
-                .permitAll().antMatchers(HttpMethod.GET, "/*").permitAll()
-                .antMatchers(HttpMethod.GET, "/api/**").hasAuthority(Permission.READ.getPermission())
-                .antMatchers(HttpMethod.POST, "/api/**").hasAuthority(Permission.WRITE.getPermission())
-                .antMatchers(HttpMethod.PUT, "/api/**").hasAuthority(Permission.WRITE.getPermission())
-                .antMatchers(HttpMethod.DELETE, "/api/**").hasAuthority(Permission.WRITE.getPermission())
+                .permitAll()
+                .antMatchers(HttpMethod.GET, "/*").permitAll()
                 .anyRequest()
                 .authenticated()
             .and()

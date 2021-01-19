@@ -10,6 +10,7 @@ import org.modelmapper.ModelMapper;
 import org.slf4j.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,15 +37,17 @@ public class StudentRestController {
     }
 
     @GetMapping
+    @PreAuthorize("hasAuthority('write')")
     public List<StudentDto> findAll() {
         logger.debug("findAll() students");
-        List<StudentDto> students = studentService.findAll().stream().map(this :: convertToDto)
+        List<StudentDto> students = studentService.findAll().stream().map(this::convertToDto)
                 .collect(Collectors.toList());
         logger.debug("found() {} students", students.size());
         return students;
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAuthority('write')")
     public ResponseEntity<StudentDto> findById(@PathVariable(value = "id") int id) {
         logger.debug("findById() student");
         StudentDto studentDto = convertToDto(studentService.findById(id));
@@ -53,18 +56,21 @@ public class StudentRestController {
     }
 
     @PostMapping
+    @PreAuthorize("hasAuthority('write')")
     public ResponseEntity<StudentDto> add(@Valid @RequestBody StudentDto studentDto) {
         Student student = studentService.add(convertToEntity(studentDto));
         return new ResponseEntity<>(convertToDto(student), HttpStatus.CREATED);
     }
 
     @PutMapping
+    @PreAuthorize("hasAuthority('write')")
     public ResponseEntity<StudentDto> update(@Valid @RequestBody StudentDto studentDto) {
         Student student = studentService.update(convertToEntity(studentDto));
         return new ResponseEntity<>(convertToDto(student), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('write')")
     public ResponseEntity<StudentDto> delete(@PathVariable(value = "id") int id) {
         studentService.deleteById(id);
         return new ResponseEntity<>(null, HttpStatus.OK);

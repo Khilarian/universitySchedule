@@ -10,6 +10,7 @@ import org.modelmapper.ModelMapper;
 import org.slf4j.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,7 +36,8 @@ public class LessonRestController {
         this.modelMapper = modelMapper;
     }
 
-    @GetMapping("")
+    @GetMapping
+    @PreAuthorize("hasAuthority('write')")
     public List<LessonDto> findAll() {
         logger.debug("findAll() lessons");
         List<LessonDto> lessons = lessonService.findAll().stream().map(this::convertToDto).collect(Collectors.toList());
@@ -44,6 +46,7 @@ public class LessonRestController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAuthority('write')")
     public ResponseEntity<LessonDto> findById(@PathVariable(value = "id") int id) {
         logger.debug("find() lesson");
         LessonDto lessonDto = convertToDto(lessonService.findById(id));
@@ -51,54 +54,37 @@ public class LessonRestController {
         return new ResponseEntity<>(lessonDto, HttpStatus.OK);
     }
 
-    @PostMapping("")
+    @PostMapping
+    @PreAuthorize("hasAuthority('write')")
     public ResponseEntity<LessonDto> add(@Valid @RequestBody LessonDto lessonDto) {
+        logger.debug("add() lesson");
         Lesson lesson = lessonService.add(convertToEntity(lessonDto));
         return new ResponseEntity<>(convertToDto(lesson), HttpStatus.CREATED);
     }
 
-    @PutMapping("")
+    @PutMapping
+    @PreAuthorize("hasAuthority('write')")
     public ResponseEntity<LessonDto> update(@Valid @RequestBody LessonDto lessonDto) {
+        logger.debug("update() lesson");
         Lesson lesson = lessonService.update(convertToEntity(lessonDto));
         return new ResponseEntity<>(convertToDto(lesson), HttpStatus.OK);
     }
 
     @DeleteMapping(value = "/{id}")
+    @PreAuthorize("hasAuthority('write')")
     public ResponseEntity<LessonDto> delete(@PathVariable(value = "id") int id) {
+        logger.debug("delete() lesson");
         lessonService.deleteById(id);
         return new ResponseEntity<>(null, HttpStatus.OK);
     }
-
-//    @GetMapping("")
-//    public List<CourseDto> getCourses() {
-//        return lessonService.getCourses().stream().map(this::convertToCourseDto).collect(Collectors.toList());
-//    }
-//
-//    @GetMapping("")
-//    public List<LessonTypeDto> getLessonTypes() {
-//        return lessonService.getLessonTypes().stream().map(this::convertToLessonTypeDto).collect(Collectors.toList());
-//    }
-//
-//    @GetMapping("")
-//    public List<TimeSlotDto> getTimeSlots() {
-//        return lessonService.getTimeSlots().stream().map(this::convertToTimeSlotDto).collect(Collectors.toList());
-//    }
-//
-//    @GetMapping("")
-//    public List<AuditoriumDto> getAuditoriums() {
-//        return lessonService.getAuditoriums().stream().map(this::convertToAuditoriumDto).collect(Collectors.toList());
-//    }
-//
-//    @GetMapping("")
-//    public List<TeacherDto> getTeachers() {
-//        return lessonService.getTeachers().stream().map(this::convertToTeacherDto).collect(Collectors.toList());
-//    }
-//
-//    @GetMapping("")
-//    public List<GroupDto> getGroups() {
-//        return lessonService.getGroups().stream().map(this::convertToGroupDto).collect(Collectors.toList());
-//    }
-
+    
+    @GetMapping("/getSchedule")
+    @PreAuthorize("hasAuthority('read')")
+    public List<LessonDto> getSchedule(@Valid @RequestBody LessonFilterDto lessonFilterDto){
+        logger.debug("getSchedule()");
+        return lessonService.getLessonsForSchedule(lessonFilterDto);
+    }
+    
     private LessonDto convertToDto(Lesson lesson) {
         return modelMapper.map(lesson, LessonDto.class);
     }
@@ -107,27 +93,4 @@ public class LessonRestController {
         return modelMapper.map(lessonDto, Lesson.class);
     }
 
-    private CourseDto convertToCourseDto(Course course) {
-        return modelMapper.map(course, CourseDto.class);
-    }
-
-    private LessonTypeDto convertToLessonTypeDto(LessonType lessonType) {
-        return modelMapper.map(lessonType, LessonTypeDto.class);
-    }
-
-    private TimeSlotDto convertToTimeSlotDto(TimeSlot timeSlot) {
-        return modelMapper.map(timeSlot, TimeSlotDto.class);
-    }
-
-    private AuditoriumDto convertToAuditoriumDto(Auditorium auditorium) {
-        return modelMapper.map(auditorium, AuditoriumDto.class);
-    }
-
-    private TeacherDto convertToTeacherDto(Teacher teacher) {
-        return modelMapper.map(teacher, TeacherDto.class);
-    }
-
-    private GroupDto convertToGroupDto(Group group) {
-        return modelMapper.map(group, GroupDto.class);
-    }
 }

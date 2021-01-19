@@ -10,6 +10,7 @@ import org.modelmapper.ModelMapper;
 import org.slf4j.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,6 +37,7 @@ public class GroupRestController {
     }
 
     @GetMapping
+    @PreAuthorize("hasAuthority('write')")
     public List<GroupDto> findAll() {
         logger.debug("findAll() groups");
         List<GroupDto> groups = groupService.findAll().stream().map(this :: convertToDto)
@@ -45,6 +47,7 @@ public class GroupRestController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAuthority('write')")
     public ResponseEntity<GroupDto> findById(@PathVariable(value = "id") int id) {
         logger.debug("findById() group");
         GroupDto groupDto = convertToDto(groupService.findById(id));
@@ -53,18 +56,21 @@ public class GroupRestController {
     }
 
     @PostMapping
+    @PreAuthorize("hasAuthority('write')")
     public ResponseEntity<GroupDto> add(@Valid @RequestBody GroupDto groupDto) {
         Group group = groupService.add(convertToEntity(groupDto));
         return new ResponseEntity<>(convertToDto(group), HttpStatus.CREATED);
     }
 
     @PutMapping
+    @PreAuthorize("hasAuthority('write')")
     public ResponseEntity<GroupDto> update(@Valid @RequestBody GroupDto groupDto) {
         Group group = groupService.update(convertToEntity(groupDto));
         return new ResponseEntity<>(convertToDto(group), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('write')")
     public ResponseEntity<GroupDto> delete(@PathVariable(value = "id") int id) {
         groupService.deleteById(id);
         return new ResponseEntity<>(null, HttpStatus.OK);
