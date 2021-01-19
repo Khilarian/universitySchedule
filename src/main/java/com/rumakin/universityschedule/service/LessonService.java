@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.rumakin.universityschedule.dao.LessonDao;
 import com.rumakin.universityschedule.dto.LessonDto;
+import com.rumakin.universityschedule.dto.LessonFilterDto;
 import com.rumakin.universityschedule.exception.*;
 import com.rumakin.universityschedule.model.*;
 
@@ -130,31 +131,56 @@ public class LessonService {
         logger.trace("getBusyTeachersId() result: {} .", result);
         return result;
     }
+    
+    public List<LessonDto> getLessonsForSchedule(LessonFilterDto lessonFilterDto){
+        logger.debug("getLessonsForSchedule() lessonFilterDto {}.", lessonFilterDto);
+        List<LessonDto> lessons;
+        Integer groupId = lessonFilterDto.getGroupId();
+        Integer teacherId = lessonFilterDto.getTeacherId();
+        LocalDate date = lessonFilterDto.getDate();
+        Integer monthScheduleCheck = lessonFilterDto.getMonthScheduleCheck();
+        if (monthScheduleCheck == 1) {
+            LocalDate startDate = date.withDayOfMonth(1);
+            LocalDate endDate = date.withDayOfMonth(date.lengthOfMonth());
+            if (groupId == null) {
+                lessons = getMonthScheduleForTeacher(teacherId, startDate, endDate);
+            } else {
+                lessons = getMonthScheduleForGroup(groupId, startDate, endDate);
+            }
+        } else {
+            if (groupId == null) {
+                lessons = getDayScheduleForTeacher(teacherId, date);
+            } else {
+                lessons = getDayScheduleForGroup(groupId, date);
+            }
+        }
+        return lessons;
+    }
 
-    public List<LessonDto> findMonthScheduleForTeacher(Integer teacherId, LocalDate startDate, LocalDate endDate) {
-        logger.debug("findMonthScheduleForTeacher() with {}, {}, {}.", teacherId, startDate, endDate);
-        List<LessonDto> result = lessonDao.findMonthScheduleForTeacher(teacherId, startDate, endDate);
+    private List<LessonDto> getMonthScheduleForTeacher(Integer teacherId, LocalDate startDate, LocalDate endDate) {
+        logger.debug("getMonthScheduleForTeacher() with {}, {}, {}.", teacherId, startDate, endDate);
+        List<LessonDto> result = lessonDao.getMonthScheduleForTeacher(teacherId, startDate, endDate);
         logger.trace("findMonthScheduleForTeacher() result: {}", result);
         return result;
     }
 
-    public List<LessonDto> findMonthScheduleForGroup(Integer groupId, LocalDate startDate, LocalDate endDate) {
-        logger.debug("findMonthScheduleForGroup() with {}, {}, {}.", groupId, startDate, endDate);
-        List<LessonDto> result = lessonDao.findMonthScheduleForGroup(groupId, startDate, endDate);
+    private List<LessonDto> getMonthScheduleForGroup(Integer groupId, LocalDate startDate, LocalDate endDate) {
+        logger.debug("getMonthScheduleForGroup() with {}, {}, {}.", groupId, startDate, endDate);
+        List<LessonDto> result = lessonDao.getMonthScheduleForGroup(groupId, startDate, endDate);
         logger.trace("findMonthScheduleForGroup() result: {}", result);
         return result;
     }
 
-    public List<LessonDto> findDayScheduleForTeacher(Integer teacherId, LocalDate date) {
-        logger.debug("findDayScheduleForTeacher() with {}, {}.", teacherId, date);
-        List<LessonDto> result = lessonDao.findDayScheduleForTeacher(teacherId, date);
+    private List<LessonDto> getDayScheduleForTeacher(Integer teacherId, LocalDate date) {
+        logger.debug("getDayScheduleForTeacher() with {}, {}.", teacherId, date);
+        List<LessonDto> result = lessonDao.getDayScheduleForTeacher(teacherId, date);
         logger.trace("findDayScheduleForTeacher() result: {}", result);
         return result;
     }
 
-    public List<LessonDto> findDayScheduleForGroup(Integer groupId, LocalDate date) {
-        logger.debug("findDayScheduleForGroup() with {}, {}.", groupId, date);
-        List<LessonDto> result = lessonDao.findDayScheduleForGroup(groupId, date);
+    private List<LessonDto> getDayScheduleForGroup(Integer groupId, LocalDate date) {
+        logger.debug("getDayScheduleForGroup() with {}, {}.", groupId, date);
+        List<LessonDto> result = lessonDao.getDayScheduleForGroup(groupId, date);
         logger.trace("findDayScheduleForGroup() result: {}", result);
         return result;
     }

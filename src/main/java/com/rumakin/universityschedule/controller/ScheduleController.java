@@ -45,7 +45,7 @@ public class ScheduleController {
             model.addAttribute("lessonFilterDto", emptyLessonFilterDto);
         }
         if (!bindingResult.hasErrors()) {
-            List<LessonDto> report = getLessons(lessonFilterDto);
+            List<LessonDto> report = lessonService.getLessonsForSchedule(lessonFilterDto);
             String reportMessage = prepareReportMessage(lessonFilterDto, report);
             model.addAttribute("reportMessage", reportMessage);
             if (!report.isEmpty()) {
@@ -67,30 +67,6 @@ public class ScheduleController {
                 .collect(Collectors.toList());
         model.addAttribute("teachers", teachers);
         model.addAttribute("groups", groups);
-    }
-
-    private List<LessonDto> getLessons(LessonFilterDto lessonFilterDto) {
-        List<LessonDto> lessons;
-        Integer groupId = lessonFilterDto.getGroupId();
-        Integer teacherId = lessonFilterDto.getTeacherId();
-        LocalDate date = lessonFilterDto.getDate();
-        Integer monthScheduleCheck = lessonFilterDto.getMonthScheduleCheck();
-        if (monthScheduleCheck == 1) {
-            LocalDate startDate = date.withDayOfMonth(1);
-            LocalDate endDate = date.withDayOfMonth(date.lengthOfMonth());
-            if (groupId == null) {
-                lessons = lessonService.findMonthScheduleForTeacher(teacherId, startDate, endDate);
-            } else {
-                lessons = lessonService.findMonthScheduleForGroup(groupId, startDate, endDate);
-            }
-        } else {
-            if (groupId == null) {
-                lessons = lessonService.findDayScheduleForTeacher(teacherId, date);
-            } else {
-                lessons = lessonService.findDayScheduleForGroup(groupId, date);
-            }
-        }
-        return lessons;
     }
 
     private String prepareReportMessage(LessonFilterDto lessonFilterDto, List<LessonDto> lessons) {

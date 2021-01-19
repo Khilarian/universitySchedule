@@ -88,7 +88,7 @@ public class CustomizedLessonDaoImpl implements CustomizedLessonDao {
     }
 
     @Override
-    public List<LessonDto> findMonthScheduleForTeacher(Integer teacherId, LocalDate startDate, LocalDate endDate) {
+    public List<LessonDto> getMonthScheduleForTeacher(Integer teacherId, LocalDate startDate, LocalDate endDate) {
         logger.debug("findMonthScheduleForTeacher() with agruments {}, {}, {}.", teacherId, startDate, endDate);
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<LessonDto> query = criteriaBuilder.createQuery(LessonDto.class);
@@ -106,7 +106,7 @@ public class CustomizedLessonDaoImpl implements CustomizedLessonDao {
     }
 
     @Override
-    public List<LessonDto> findMonthScheduleForGroup(Integer groupId, LocalDate startDate, LocalDate endDate) {
+    public List<LessonDto> getMonthScheduleForGroup(Integer groupId, LocalDate startDate, LocalDate endDate) {
         logger.debug("findMonthScheduleForGroup() with agruments {}, {}, {}.", groupId, startDate, endDate);
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<LessonDto> query = criteriaBuilder.createQuery(LessonDto.class);
@@ -124,7 +124,7 @@ public class CustomizedLessonDaoImpl implements CustomizedLessonDao {
     }
 
     @Override
-    public List<LessonDto> findDayScheduleForTeacher(Integer teacherId, LocalDate date) {
+    public List<LessonDto> getDayScheduleForTeacher(Integer teacherId, LocalDate date) {
         logger.debug("findDayScheduleForTeacher() with agruments {}, {}.", teacherId, date);
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<LessonDto> query = criteriaBuilder.createQuery(LessonDto.class);
@@ -141,7 +141,7 @@ public class CustomizedLessonDaoImpl implements CustomizedLessonDao {
     }
 
     @Override
-    public List<LessonDto> findDayScheduleForGroup(Integer groupId, LocalDate date) {
+    public List<LessonDto> getDayScheduleForGroup(Integer groupId, LocalDate date) {
         logger.debug("findDayScheduleForGroup() with agruments {}, {}.", groupId, date);
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<LessonDto> query = criteriaBuilder.createQuery(LessonDto.class);
