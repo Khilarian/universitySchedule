@@ -18,8 +18,8 @@ spring:
         location: classpath:/db/migration
     mail:
         host: smtp.yandex.com
-        username: donnorvator@yandex.ru
-        password: uppvqfzuaubactov
+        username: 
+        password: 
         port: 465
         protocol: smtps
 mail:
