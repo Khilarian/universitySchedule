@@ -4,17 +4,16 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.*;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.*;
 import org.springframework.test.web.servlet.request.*;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 
@@ -23,11 +22,12 @@ import com.rumakin.universityschedule.exception.ResourceNotFoundException;
 import com.rumakin.universityschedule.model.*;
 import com.rumakin.universityschedule.service.AuditoriumService;
 
-@ExtendWith(MockitoExtension.class)
-@WebMvcTest(value = AuditoriumController.class)
+@SpringBootTest
+@AutoConfigureMockMvc
 class AuditoriumControllerTest {
 
-    private MockMvc mockMvc;
+    @Autowired
+    private MockMvc mvc;
 
     private ModelMapper modelMapper;
 
@@ -46,12 +46,11 @@ class AuditoriumControllerTest {
 
     @BeforeEach
     public void setUpBeforeClass() throws Exception {
-        mockMvc = MockMvcBuilders.standaloneSetup(auditoriumController)
-                .setControllerAdvice(new GlobalExceptionHandler()).build();
         modelMapper = new ModelMapper();
     }
 
     @Test
+    @WithMockUser(authorities = { "write" })
     void getAllShouldReturnListOfBuildingsIfAtLeastOneExist() throws Exception {
         Building building = new Building(1, "Main", "Khimki");
         Building buildingTwo = new Building(2, "Second", "Moscow");
@@ -68,7 +67,7 @@ class AuditoriumControllerTest {
         Mockito.when(mockAuditoriumService.getBuildings()).thenReturn(buildings);
         String URI = "/auditoriums/getAll";
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders.get(URI);
-        ResultActions result = mockMvc.perform(request);
+        ResultActions result = mvc.perform(request);
         result.andExpect(MockMvcResultMatchers.view().name("auditoriums/getAll"))
                 .andExpect(MockMvcResultMatchers.model().attributeExists("auditoriums"))
                 .andExpect(MockMvcResultMatchers.model().attribute("auditoriums", auditoriumsDto))
@@ -76,6 +75,7 @@ class AuditoriumControllerTest {
     }
 
     @Test
+    @WithMockUser(authorities = { "write" })
     void getEditShouldGetEntityFromDataBaseIfItExists() throws Exception {
         Building building = new Building(1, "Main", "Khimki");
         Auditorium auditorium = new Auditorium(1, 15, 35, building);
@@ -83,24 +83,26 @@ class AuditoriumControllerTest {
         AuditoriumDto auditoriumDto = convertToDto(auditorium);
         String URI = "/auditoriums/edit/?id=1";
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders.get(URI);
-        ResultActions result = mockMvc.perform(request);
+        ResultActions result = mvc.perform(request);
         result.andExpect(MockMvcResultMatchers.view().name("auditoriums/edit"))
                 .andExpect(MockMvcResultMatchers.model().attributeExists("auditorium"))
                 .andExpect(MockMvcResultMatchers.model().attribute("auditorium", auditoriumDto));
     }
 
     @Test
+    @WithMockUser(authorities = { "write" })
     void getEditShouldReturnFormForAddNewEntryIfItDoesNotExist() throws Exception {
         Mockito.when(mockAuditoriumService.findById(Mockito.anyInt())).thenReturn(null);
         String URI = "/auditoriums/edit";
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders.get(URI);
-        ResultActions result = mockMvc.perform(request);
+        ResultActions result = mvc.perform(request);
         result.andExpect(MockMvcResultMatchers.view().name("auditoriums/edit"))
                 .andExpect(MockMvcResultMatchers.model().attributeExists("headerString"))
                 .andExpect(MockMvcResultMatchers.model().attribute("headerString", "Add auditorium"));
     }
 
     @Test
+    @WithMockUser(authorities = { "write" })
     void postEditShouldAddEntityIfItDoesNotExistsInDataBase() throws Exception {
         Building building = new Building(1, "Main", "Khimki");
         Auditorium auditorium = new Auditorium(15, 35, building);
@@ -115,6 +117,7 @@ class AuditoriumControllerTest {
     }
 
     @Test
+    @WithMockUser(authorities = { "write" })
     void postEditShouldUpdateEntityIfItExistsInDataBase() throws Exception {
         Building building = new Building(10, "Main", "Khimki");
         Auditorium auditorium = new Auditorium(1, 15, 35, building);
@@ -124,6 +127,7 @@ class AuditoriumControllerTest {
     }
 
     @Test
+    @WithMockUser(authorities = { "write" })
     void postEditShouldReturnEditPageIfAnyErrors() throws Exception {
         Building building = new Building(10, "Main", "Khimki");
         List<Building> buildings = Arrays.asList(building);
@@ -133,25 +137,27 @@ class AuditoriumControllerTest {
         auditoriumController.edit(convertToDto(auditorium), bindingResult, model);
         String URI = "/auditoriums/edit";
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders.get(URI);
-        ResultActions result = mockMvc.perform(request);
+        ResultActions result = mvc.perform(request);
         result.andExpect(MockMvcResultMatchers.view().name("auditoriums/edit"))
                 .andExpect(MockMvcResultMatchers.model().attributeExists("buildings"))
                 .andExpect(MockMvcResultMatchers.model().attribute("buildings", buildings));
     }
 
     @Test
+    @WithMockUser(authorities = { "write" })
     void deleteShouldExecuteOnceWhenDbCallFine() throws Exception {
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders.get("/auditoriums/delete/?id=1");
-        ResultActions result = mockMvc.perform(request);
+        ResultActions result = mvc.perform(request);
         result.andExpect(MockMvcResultMatchers.view().name("redirect:/auditoriums/getAll"));
         Mockito.verify(mockAuditoriumService).deleteById(1);
     }
 
     @Test
+    @WithMockUser(authorities = { "write" })
     void testHandleEntityNotFoundException() throws Exception {
         Mockito.when(mockAuditoriumService.findById(2)).thenThrow(ResourceNotFoundException.class);
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders.get("/auditoriums/edit/?id=2");
-        ResultActions result = mockMvc.perform(request);
+        ResultActions result = mvc.perform(request);
         result.andExpect(MockMvcResultMatchers.view().name("/common/notfound"));
     }
 

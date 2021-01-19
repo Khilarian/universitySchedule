@@ -4,18 +4,17 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.junit.jupiter.api.*;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.*;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 
@@ -24,10 +23,11 @@ import com.rumakin.universityschedule.exception.ResourceNotFoundException;
 import com.rumakin.universityschedule.model.*;
 import com.rumakin.universityschedule.service.StudentService;
 
-@ExtendWith(MockitoExtension.class)
-@WebMvcTest(value = StudentController.class)
+@SpringBootTest
+@AutoConfigureMockMvc
 class StudentControllerTest {
 
+    @Autowired
     private MockMvc mockMvc;
 
     private ModelMapper modelMapper;
@@ -47,12 +47,11 @@ class StudentControllerTest {
 
     @BeforeEach
     public void setUpBeforeClass() throws Exception {
-        mockMvc = MockMvcBuilders.standaloneSetup(studentController).setControllerAdvice(new GlobalExceptionHandler())
-                .build();
         modelMapper = new ModelMapper();
     }
 
     @Test
+    @WithMockUser(authorities = { "write" })
     void findAllShouldReturnListOfStudentsIfAtLeastOneExist() throws Exception {
         Group group = new Group(1, "TT-123", null);
         List<Group> groups = Arrays.asList(group);
@@ -72,6 +71,7 @@ class StudentControllerTest {
     }
 
     @Test
+    @WithMockUser(authorities = { "write" })
     void getEditShouldGetEntityFromDataBaseIfItExists() throws Exception {
         Group group = new Group(1, "TT-123", null);
         Student student = new Student(1, "Khil", "Main", "khil@dot.com", "+7(123)9876543", group);
@@ -87,6 +87,7 @@ class StudentControllerTest {
     }
 
     @Test
+    @WithMockUser(authorities = { "write" })
     void getEditShouldReturnFormForAddNewEntryIfItDoesNotExist() throws Exception {
         Mockito.when(mockStudentService.findById(Mockito.anyInt())).thenReturn(null);
         String URI = "/students/edit";
@@ -108,6 +109,7 @@ class StudentControllerTest {
     }
 
     @Test
+    @WithMockUser(authorities = { "write" })
     void postEditShouldUpdateEntityIfItExistsInDataBase() throws Exception {
         Group group = new Group(1, "TT-123", null);
         Student student = new Student(1, "Khil", "Main", "khil@dot.com", "+7(123)9876543", group);
@@ -116,6 +118,7 @@ class StudentControllerTest {
     }
 
     @Test
+    @WithMockUser(authorities = { "write" })
     void postEditShouldReturnEditPageIfAnyErrors() throws Exception {
         Group group = new Group(1, "TT-123", null);
         List<Group> groups = Arrays.asList(group);
@@ -132,6 +135,7 @@ class StudentControllerTest {
     }
 
     @Test
+    @WithMockUser(authorities = { "write" })
     void deleteShouldExecuteOnceWhenDbCallFine() throws Exception {
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders.get("/students/delete/?id=1");
         ResultActions result = mockMvc.perform(request);
@@ -139,6 +143,7 @@ class StudentControllerTest {
     }
 
     @Test
+    @WithMockUser(authorities = { "write" })
     void testhandleEntityNotFoundException() throws Exception {
         Mockito.when(mockStudentService.findById(2)).thenThrow(ResourceNotFoundException.class);
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders.get("/students/edit/?id=2");

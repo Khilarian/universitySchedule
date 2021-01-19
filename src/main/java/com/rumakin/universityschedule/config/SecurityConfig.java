@@ -17,6 +17,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import com.rumakin.universityschedule.model.enums.Permission;
+import com.rumakin.universityschedule.security.UserDetailsServiceImpl;
 
 @Configuration
 @EnableWebSecurity
@@ -66,10 +67,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.authenticationProvider(daoAuthenticationProvider());
     }
+    
+    @Bean
+    protected UserDetailsService getUserDetailServiceImpl() {
+        return this.userDetailsService;
+    }
 
     @Bean
     protected PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder(12);
+    }
+    
+    @Bean 
+    public UserDetailsService getUserDetailService() {
+        return this.userDetailsService;
     }
 
     @Bean

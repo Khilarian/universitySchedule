@@ -3,17 +3,16 @@ package com.rumakin.universityschedule.controller;
 import java.util.*;
 
 import org.junit.jupiter.api.*;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.*;
 import org.springframework.test.web.servlet.request.*;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 
@@ -22,10 +21,11 @@ import com.rumakin.universityschedule.exception.ResourceNotFoundException;
 import com.rumakin.universityschedule.model.*;
 import com.rumakin.universityschedule.service.*;
 
-@ExtendWith(MockitoExtension.class)
-@WebMvcTest(value = GroupController.class)
+@SpringBootTest
+@AutoConfigureMockMvc
 class GroupControllerTest {
 
+    @Autowired
     private MockMvc mockMvc;
 
     private ModelMapper modelMapper;
@@ -45,12 +45,11 @@ class GroupControllerTest {
 
     @BeforeEach
     public void setUpBeforeClass() throws Exception {
-        mockMvc = MockMvcBuilders.standaloneSetup(groupController).setControllerAdvice(new GlobalExceptionHandler())
-                .build();
         modelMapper = new ModelMapper();
     }
 
     @Test
+    @WithMockUser(authorities = { "write" })
     void findAllShouldReturnListOfFacultysIfAtLeastOneExist() throws Exception {
         Faculty faculty = new Faculty(1, "First");
         List<Faculty> faculties = Arrays.asList(faculty);
@@ -70,6 +69,7 @@ class GroupControllerTest {
     }
 
     @Test
+    @WithMockUser(authorities = { "write" })
     void getEditShouldGetEntityFromDataBaseIfItExists() throws Exception {
         Faculty faculty = new Faculty(1, "First");
         Group group = new Group(1, "AA_35", faculty);
@@ -84,6 +84,7 @@ class GroupControllerTest {
     }
 
     @Test
+    @WithMockUser(authorities = { "write" })
     void getEditShouldReturnFormForAddNewEntryIfItDoesNotExist() throws Exception {
         Mockito.when(mockGroupService.findById(Mockito.anyInt())).thenReturn(null);
         String URI = "/groups/edit";
@@ -95,6 +96,7 @@ class GroupControllerTest {
     }
 
     @Test
+    @WithMockUser(authorities = { "write" })
     void postEditShouldAddEntityIfItDoesNotExistsInDataBase() throws Exception {
         Faculty faculty = new Faculty(1, "First");
         Group group = new Group("AA_35", faculty);
@@ -105,6 +107,7 @@ class GroupControllerTest {
     }
 
     @Test
+    @WithMockUser(authorities = { "write" })
     void postEditShouldUpdateEntityIfItExistsInDataBase() throws Exception {
         Faculty faculty = new Faculty(10, "First");
         Group group = new Group(1, "AA_35", faculty);
@@ -113,6 +116,7 @@ class GroupControllerTest {
     }
 
     @Test
+    @WithMockUser(authorities = { "write" })
     void postEditShouldReturnEditPageIfAnyErrors() throws Exception {
         Faculty faculty = new Faculty(10, "First");
         List<Faculty> faculties = Arrays.asList(faculty);
@@ -129,6 +133,7 @@ class GroupControllerTest {
     }
 
     @Test
+    @WithMockUser(authorities = { "write" })
     void deleteShouldExecuteOnceWhenDbCallFine() throws Exception {
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders.get("/groups/delete/?id=1");
         ResultActions result = mockMvc.perform(request);
@@ -136,6 +141,7 @@ class GroupControllerTest {
     }
 
     @Test
+    @WithMockUser(authorities = { "write" })
     void testhandleEntityNotFoundException() throws Exception {
         Mockito.when(mockGroupService.findById(2)).thenThrow(ResourceNotFoundException.class);
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders.get("/groups/edit/?id=2");
