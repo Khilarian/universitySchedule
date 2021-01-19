@@ -6,8 +6,10 @@ import org.junit.jupiter.api.Test;
 import org.mockito.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.*;
 import static org.mockito.Mockito.*;
 
@@ -24,7 +26,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.hamcrest.collection.IsCollectionWithSize.*;
 import static org.hamcrest.core.Is.*;
 
-@WebMvcTest(CourseRestController.class)
+@SpringBootTest
+@AutoConfigureMockMvc
 class CourseRestControllerTest {
 
     @Autowired
@@ -36,7 +39,8 @@ class CourseRestControllerTest {
     private CourseService mockCourseService;
 
     @Test
-    public void getAllShouldReturnListOfEntityIfAtLeastOneExist() throws Exception {
+    @WithMockUser(authorities = { "write" })
+    void getAllShouldReturnListOfEntityIfAtLeastOneExist() throws Exception {
         Faculty faculty = new Faculty(1, "IT");
         Course course = new Course(1, "Java", faculty);
         Course courseTwo = new Course(2, "Java Object Oriented", faculty);
@@ -49,7 +53,8 @@ class CourseRestControllerTest {
     }
 
     @Test
-    public void findByIdShouldReturnEntityIfIdExists() throws Exception {
+    @WithMockUser(authorities = { "write" })
+    void findByIdShouldReturnEntityIfIdExists() throws Exception {
         Faculty faculty = new Faculty(1, "IT");
         Course course = new Course(1, "Java", faculty);
         Mockito.when(mockCourseService.findById(Mockito.anyInt())).thenReturn(course);
@@ -60,7 +65,8 @@ class CourseRestControllerTest {
     }
 
     @Test
-    public void addShouldAddEntityToDBAndReturnItWithIdWhenDBCallFine() throws Exception {
+    @WithMockUser(authorities = { "write" })
+    void addShouldAddEntityToDBAndReturnItWithIdWhenDBCallFine() throws Exception {
         CourseDto dto = new CourseDto();
         dto.setCourseName("Course");
         dto.setFacultyId(1);
@@ -81,7 +87,8 @@ class CourseRestControllerTest {
     }
 
     @Test
-    public void updateShouldUpdateEntryInDBAndReturnItWhenDBCallFine() throws Exception {
+    @WithMockUser(authorities = { "write" })
+    void updateShouldUpdateEntryInDBAndReturnItWhenDBCallFine() throws Exception {
         CourseDto dto = new CourseDto();
         dto.setId(1);
         dto.setCourseName("Course");
@@ -96,7 +103,8 @@ class CourseRestControllerTest {
     }
 
     @Test
-    public void deleteShouldRemoveEntryFromDBWhenDBCallFine() throws Exception {
+    @WithMockUser(authorities = { "write" })
+    void deleteShouldRemoveEntryFromDBWhenDBCallFine() throws Exception {
         Faculty faculty = new Faculty(1, "IT");
         Course course = new Course(1, "Java", faculty);
         mockMvc.perform(delete("/api/courses/1").contentType(APPLICATION_JSON)).andExpect(status().isOk());

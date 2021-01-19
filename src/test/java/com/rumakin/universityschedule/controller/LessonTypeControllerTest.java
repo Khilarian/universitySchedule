@@ -89,7 +89,7 @@ class LessonTypeControllerTest {
         ResultActions result = mockMvc.perform(request);
         result.andExpect(MockMvcResultMatchers.view().name("lessonTypes/edit"))
                 .andExpect(MockMvcResultMatchers.model().attributeExists("headerString"))
-                .andExpect(MockMvcResultMatchers.model().attribute("headerString", "Add lessonType"));
+                .andExpect(MockMvcResultMatchers.model().attribute("headerString", "Add lesson type"));
     }
 
     @Test

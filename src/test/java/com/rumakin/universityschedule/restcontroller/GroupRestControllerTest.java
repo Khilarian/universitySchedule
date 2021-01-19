@@ -6,8 +6,10 @@ import org.junit.jupiter.api.Test;
 import org.mockito.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.*;
 import static org.mockito.Mockito.*;
 
@@ -24,7 +26,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.hamcrest.collection.IsCollectionWithSize.*;
 import static org.hamcrest.core.Is.*;
 
-@WebMvcTest(GroupRestController.class)
+@SpringBootTest
+@AutoConfigureMockMvc
 class GroupRestControllerTest {
 
     @Autowired
@@ -36,7 +39,8 @@ class GroupRestControllerTest {
     private GroupService mockGroupService;
 
     @Test
-    public void getAllShouldReturnListOfEntityIfAtLeastOneExist() throws Exception {
+    @WithMockUser(authorities = { "write" })
+    void getAllShouldReturnListOfEntityIfAtLeastOneExist() throws Exception {
         Faculty faculty = new Faculty(1, "IT");
         Group group = new Group(1, "AA-01", faculty);
         Group groupTwo = new Group(2, "AA-02", faculty);
@@ -49,7 +53,8 @@ class GroupRestControllerTest {
     }
 
     @Test
-    public void findByIdShouldReturnEntityIfIdExists() throws Exception {
+    @WithMockUser(authorities = { "write" })
+    void findByIdShouldReturnEntityIfIdExists() throws Exception {
         Faculty faculty = new Faculty(1, "IT");
         Group group = new Group(1, "AA-01", faculty);
         Mockito.when(mockGroupService.findById(Mockito.anyInt())).thenReturn(group);
@@ -60,7 +65,8 @@ class GroupRestControllerTest {
     }
 
     @Test
-    public void addShouldAddEntityToDBAndReturnItWithIdWhenDBCallFine() throws Exception {
+    @WithMockUser(authorities = { "write" })
+    void addShouldAddEntityToDBAndReturnItWithIdWhenDBCallFine() throws Exception {
         GroupDto dto = new GroupDto();
         dto.setName("AA-201");
         dto.setFacultyId(1);
@@ -80,7 +86,8 @@ class GroupRestControllerTest {
     }
 
     @Test
-    public void updateShouldUpdateEntryInDBAndReturnItWhenDBCallFine() throws Exception {
+    @WithMockUser(authorities = { "write" })
+    void updateShouldUpdateEntryInDBAndReturnItWhenDBCallFine() throws Exception {
         GroupDto dto = new GroupDto();
         dto.setId(1);
         dto.setName("AA-201");
@@ -95,7 +102,8 @@ class GroupRestControllerTest {
     }
 
     @Test
-    public void deleteShouldRemoveEntryFromDBWhenDBCallFine() throws Exception {
+    @WithMockUser(authorities = { "write" })
+    void deleteShouldRemoveEntryFromDBWhenDBCallFine() throws Exception {
         Faculty faculty = new Faculty(1, "IT");
         Group group = new Group(1, "AA-01", faculty);
         mockMvc.perform(delete("/api/groups/1").contentType(APPLICATION_JSON)).andExpect(status().isOk());

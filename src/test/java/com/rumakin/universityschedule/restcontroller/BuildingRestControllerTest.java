@@ -6,8 +6,10 @@ import org.junit.jupiter.api.Test;
 import org.mockito.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.*;
 import static org.mockito.Mockito.*;
 
@@ -24,7 +26,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.hamcrest.collection.IsCollectionWithSize.*;
 import static org.hamcrest.core.Is.*;
 
-@WebMvcTest(BuildingRestController.class)
+@SpringBootTest
+@AutoConfigureMockMvc
 class BuildingRestControllerTest {
 
     @Autowired
@@ -36,7 +39,8 @@ class BuildingRestControllerTest {
     private BuildingService mockBuildingService;
 
     @Test
-    public void getAllShouldReturnListOfEntityIfAtLeastOneExist() throws Exception {
+    @WithMockUser(authorities = { "write" })
+    void getAllShouldReturnListOfEntityIfAtLeastOneExist() throws Exception {
         Building building = new Building(1, "Main", "Khimki");
         Building buildingTwo = new Building(2, "Sec", "Mos");
         List<Building> buildings = Arrays.asList(building, buildingTwo);
@@ -46,7 +50,8 @@ class BuildingRestControllerTest {
     }
 
     @Test
-    public void findByIdShouldReturnEntityIfIdExists() throws Exception {
+    @WithMockUser(authorities = { "write" })
+    void findByIdShouldReturnEntityIfIdExists() throws Exception {
         Building building = new Building(1, "Main", "Khimki");
         Mockito.when(mockBuildingService.findById(Mockito.anyInt())).thenReturn(building);
         mockMvc.perform(get("/api/buildings/1").contentType(APPLICATION_JSON)).andExpect(status().isOk())
@@ -55,7 +60,8 @@ class BuildingRestControllerTest {
     }
 
     @Test
-    public void addShouldAddEntityToDBAndReturnItWithIdWhenDBCallFine() throws Exception {
+    @WithMockUser(authorities = { "write" })
+    void addShouldAddEntityToDBAndReturnItWithIdWhenDBCallFine() throws Exception {
         BuildingDto dto = new BuildingDto();
         dto.setId(0);
         dto.setName("Main");
@@ -78,7 +84,8 @@ class BuildingRestControllerTest {
     }
 
     @Test
-    public void updateShouldUpdateEntryInDBAndReturnItWhenDBCallFine() throws Exception {
+    @WithMockUser(authorities = { "write" })
+    void updateShouldUpdateEntryInDBAndReturnItWhenDBCallFine() throws Exception {
         Building building = new Building(1, "Main", "Khimki");
         BuildingDto dto = new BuildingDto();
         dto.setId(1);
@@ -93,7 +100,8 @@ class BuildingRestControllerTest {
     }
 
     @Test
-    public void deleteShouldRemoveEntryFromDBWhenDBCallFine() throws Exception {
+    @WithMockUser(authorities = { "write" })
+    void deleteShouldRemoveEntryFromDBWhenDBCallFine() throws Exception {
         Building building = new Building(1, "Main", "Khimki");
         mockMvc.perform(delete("/api/buildings/1").contentType(APPLICATION_JSON)).andExpect(status().isOk());
         Mockito.verify(mockBuildingService, times(1)).deleteById(building.getId());

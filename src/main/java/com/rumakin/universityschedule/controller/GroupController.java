@@ -23,8 +23,8 @@ import com.rumakin.universityschedule.service.GroupService;
 public class GroupController {
 
     private static final String ALL = "All groups";
-    private static final String EDIT = "Edit groupum";
-    private static final String ADD = "Add groupum";
+    private static final String EDIT = "Edit group";
+    private static final String ADD = "Add group";
     private static final String REDIRECT_PAGE = "redirect:/groups/getAll";
 
     private final GroupService groupService;

@@ -14,8 +14,10 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -24,7 +26,8 @@ import com.rumakin.universityschedule.exception.ResourceNotFoundException;
 import com.rumakin.universityschedule.model.TimeSlot;
 import com.rumakin.universityschedule.service.TimeSlotService;
 
-@WebMvcTest(value = TimeSlotRestController.class)
+@SpringBootTest
+@AutoConfigureMockMvc
 class TimeSlotRestControllerTest {
 
     @Autowired
@@ -36,7 +39,8 @@ class TimeSlotRestControllerTest {
     private TimeSlotService mockTimeSlotService;
 
     @Test
-    public void getAllShouldReturnListOfEntityIfAtLeastOneExist() throws Exception {
+    @WithMockUser(authorities = { "write" })
+    void getAllShouldReturnListOfEntityIfAtLeastOneExist() throws Exception {
         TimeSlot slot = new TimeSlot(1, 1, "FIRST", LocalTime.of(1, 0), LocalTime.of(2, 0));
         TimeSlot slotTwo = new TimeSlot(2, 2, "SECOND", LocalTime.of(3, 0), LocalTime.of(4, 0));
         List<TimeSlot> slots = Arrays.asList(slot, slotTwo);
@@ -46,7 +50,8 @@ class TimeSlotRestControllerTest {
     }
 
     @Test
-    public void findByIdShouldReturnEntityIfIdExists() throws Exception {
+    @WithMockUser(authorities = { "write" })
+    void findByIdShouldReturnEntityIfIdExists() throws Exception {
         TimeSlot timeSlot = new TimeSlot(1, 1, "FIRST", LocalTime.of(1, 0), LocalTime.of(2, 0));
         Mockito.when(mockTimeSlotService.findById(Mockito.anyInt())).thenReturn(timeSlot);
         mockMvc.perform(get("/api/timeSlots/1").contentType(APPLICATION_JSON)).andExpect(status().isOk())
@@ -57,7 +62,8 @@ class TimeSlotRestControllerTest {
     }
 
     @Test
-    public void addShouldAddEntityToDBAndReturnItWithIdWhenDBCallFine() throws Exception {
+    @WithMockUser(authorities = { "write" })
+    void addShouldAddEntityToDBAndReturnItWithIdWhenDBCallFine() throws Exception {
         TimeSlotDto dto = new TimeSlotDto();
         dto.setName("FIRST");
         dto.setNumber(1);
@@ -83,7 +89,8 @@ class TimeSlotRestControllerTest {
     }
 
     @Test
-    public void updateShouldUpdateEntryInDBAndReturnItWhenDBCallFine() throws Exception {
+    @WithMockUser(authorities = { "write" })
+    void updateShouldUpdateEntryInDBAndReturnItWhenDBCallFine() throws Exception {
         TimeSlotDto dto = new TimeSlotDto();
         dto.setId(1);
         dto.setName("FIRST");
@@ -101,7 +108,8 @@ class TimeSlotRestControllerTest {
     }
 
     @Test
-    public void deleteShouldRemoveEntryFromDBWhenDBCallFine() throws Exception {
+    @WithMockUser(authorities = { "write" })
+    void deleteShouldRemoveEntryFromDBWhenDBCallFine() throws Exception {
         TimeSlot timeSlot = new TimeSlot(1, 1, "FIRST", LocalTime.of(1, 0), LocalTime.of(2, 0));
         mockMvc.perform(delete("/api/timeSlots/1").contentType(APPLICATION_JSON)).andExpect(status().isOk());
         Mockito.verify(mockTimeSlotService, times(1)).deleteById(timeSlot.getId());

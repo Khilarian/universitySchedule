@@ -13,8 +13,10 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -26,7 +28,8 @@ import com.rumakin.universityschedule.model.*;
 import com.rumakin.universityschedule.service.StudentService;
 import com.rumakin.universityschedule.service.TeacherService;
 
-@WebMvcTest(value = StudentRestController.class)
+@SpringBootTest
+@AutoConfigureMockMvc
 class StudentRestControllerTest {
 
     @Autowired
@@ -36,12 +39,13 @@ class StudentRestControllerTest {
 
     @MockBean
     private StudentService mockStudentService;
-    
+
     @MockBean
     private TeacherService mockTeacherService;
 
     @Test
-    public void getAllShouldReturnListOfEntityIfAtLeastOneExist() throws Exception {
+    @WithMockUser(authorities = { "write" })
+    void getAllShouldReturnListOfEntityIfAtLeastOneExist() throws Exception {
         Faculty faculty = new Faculty(1, "IT");
         Group group = new Group(1, "AA-01", faculty);
         Student student = new Student(1, "Mick", "Jagger", "mj@rs.com", "+7(123)4567890", group);
@@ -55,7 +59,8 @@ class StudentRestControllerTest {
     }
 
     @Test
-    public void findByIdShouldReturnEntityIfIdExists() throws Exception {
+    @WithMockUser(authorities = { "write" })
+    void findByIdShouldReturnEntityIfIdExists() throws Exception {
         Faculty faculty = new Faculty(1, "IT");
         Group group = new Group(1, "AA-01", faculty);
         Student student = new Student(1, "Mick", "Jagger", "mj@rs.com", "+7(123)4567890", group);
@@ -71,7 +76,8 @@ class StudentRestControllerTest {
     }
 
     @Test
-    public void addShouldAddEntityToDBAndReturnItWithIdWhenDBCallFine() throws Exception {
+    @WithMockUser(authorities = { "write" })
+    void addShouldAddEntityToDBAndReturnItWithIdWhenDBCallFine() throws Exception {
         StudentDto dto = new StudentDto();
         dto.setFirstName("Mel");
         dto.setLastName("B");
@@ -100,7 +106,8 @@ class StudentRestControllerTest {
     }
 
     @Test
-    public void updateShouldUpdateEntryInDBAndReturnItWhenDBCallFine() throws Exception {
+    @WithMockUser(authorities = { "write" })
+    void updateShouldUpdateEntryInDBAndReturnItWhenDBCallFine() throws Exception {
         StudentDto dto = new StudentDto();
         dto.setId(1);
         dto.setFirstName("Mel");
@@ -121,7 +128,8 @@ class StudentRestControllerTest {
     }
 
     @Test
-    public void deleteShouldRemoveEntryFromDBWhenDBCallFine() throws Exception {
+    @WithMockUser(authorities = { "write" })
+    void deleteShouldRemoveEntryFromDBWhenDBCallFine() throws Exception {
         Faculty faculty = new Faculty(1, "IT");
         Group group = new Group(1, "AA-01", faculty);
         Student student = new Student(1, "Mick", "Jagger", "mj@rs.com", "+7(123)4567890", group);

@@ -99,6 +99,7 @@ class StudentControllerTest {
     }
 
     @Test
+    @WithMockUser(authorities = { "write" })
     void postEditShouldAddEntityIfItDoesNotExistsInDataBase() throws Exception {
         Group group = new Group(1, "TT-123", null);
         Student student = new Student(0, "Khil", "Main", "khil@dot.com", "+7(123)9876543", group);

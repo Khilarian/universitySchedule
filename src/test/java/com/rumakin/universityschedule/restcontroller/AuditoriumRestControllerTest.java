@@ -6,8 +6,10 @@ import org.junit.jupiter.api.Test;
 import org.mockito.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.*;
 
 import static org.mockito.Mockito.*;
@@ -25,7 +27,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.hamcrest.collection.IsCollectionWithSize.*;
 import static org.hamcrest.core.Is.*;
 
-@WebMvcTest(AuditoriumRestController.class)
+@SpringBootTest
+@AutoConfigureMockMvc
 class AuditoriumRestControllerTest {
 
     @Autowired
@@ -37,7 +40,8 @@ class AuditoriumRestControllerTest {
     private AuditoriumService mockAuditoriumService;
 
     @Test
-    public void getAllShouldReturnListOfEntityIfAtLeastOneExist() throws Exception {
+    @WithMockUser(authorities = { "write" })
+    void getAllShouldReturnListOfEntityIfAtLeastOneExist() throws Exception {
         Building building = new Building(1, "Main", "Khimki");
         Auditorium auditorium = new Auditorium(15, 35, building);
         Auditorium auditoriumTwo = new Auditorium(16, 30, building);
@@ -50,7 +54,8 @@ class AuditoriumRestControllerTest {
     }
 
     @Test
-    public void findByIdShouldReturnEntityIfIdExists() throws Exception {
+    @WithMockUser(authorities = { "write" })
+    void findByIdShouldReturnEntityIfIdExists() throws Exception {
         Building building = new Building(1, "Main", "Khimki");
         Auditorium auditorium = new Auditorium(1, 15, 35, building);
         Mockito.when(mockAuditoriumService.findById(Mockito.anyInt())).thenReturn(auditorium);
@@ -64,7 +69,8 @@ class AuditoriumRestControllerTest {
     }
 
     @Test
-    public void addShouldAddEntityToDBAndReturnItWithIdWhenDBCallFine() throws Exception {
+    @WithMockUser(authorities = { "write" })
+    void addShouldAddEntityToDBAndReturnItWithIdWhenDBCallFine() throws Exception {
         Building building = new Building(1, "Main", "Khimki");
         Auditorium auditorium = new Auditorium(7, 8, building);
         AuditoriumDto auditoriumDto = convertToDto(auditorium);
@@ -78,7 +84,8 @@ class AuditoriumRestControllerTest {
     }
 
     @Test
-    public void updateShouldUpdateEntryInDBAndReturnItWhenDBCallFine() throws Exception {
+    @WithMockUser(authorities = { "write" })
+    void updateShouldUpdateEntryInDBAndReturnItWhenDBCallFine() throws Exception {
         Building building = new Building(1, "Main", "Khimki");
         Auditorium auditorium = new Auditorium(12, 8, 9, building);
         AuditoriumDto auditoriumDto = convertToDto(auditorium);
@@ -90,7 +97,8 @@ class AuditoriumRestControllerTest {
     }
 
     @Test
-    public void deleteShouldRemoveEntryFromDBWhenDBCallFine() throws Exception {
+    @WithMockUser(authorities = { "write" })
+    void deleteShouldRemoveEntryFromDBWhenDBCallFine() throws Exception {
         Building building = new Building(1, "Main", "Khimki");
         Auditorium auditorium = new Auditorium(1, 15, 35, building);
         mockMvc.perform(delete("/api/auditoriums/1").contentType(APPLICATION_JSON)).andExpect(status().isOk());

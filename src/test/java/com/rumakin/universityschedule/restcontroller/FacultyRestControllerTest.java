@@ -6,8 +6,10 @@ import org.junit.jupiter.api.Test;
 import org.mockito.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.*;
 import static org.mockito.Mockito.*;
 
@@ -24,7 +26,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.hamcrest.collection.IsCollectionWithSize.*;
 import static org.hamcrest.core.Is.*;
 
-@WebMvcTest(FacultyRestController.class)
+@SpringBootTest
+@AutoConfigureMockMvc
 class FacultyRestControllerTest {
 
     @Autowired
@@ -36,7 +39,8 @@ class FacultyRestControllerTest {
     private FacultyService mockFacultyService;
 
     @Test
-    public void getAllShouldReturnListOfEntityIfAtLeastOneExist() throws Exception {
+    @WithMockUser(authorities = { "write" })
+    void getAllShouldReturnListOfEntityIfAtLeastOneExist() throws Exception {
         Faculty faculty = new Faculty(1, "IT");
         Faculty facultyTwo = new Faculty(2, "Wrestling");
         List<Faculty> faculties = Arrays.asList(faculty, facultyTwo);
@@ -46,7 +50,8 @@ class FacultyRestControllerTest {
     }
 
     @Test
-    public void findByIdShouldReturnEntityIfIdExists() throws Exception {
+    @WithMockUser(authorities = { "write" })
+    void findByIdShouldReturnEntityIfIdExists() throws Exception {
         Faculty faculty = new Faculty(1, "IT");
         Mockito.when(mockFacultyService.findById(Mockito.anyInt())).thenReturn(faculty);
         mockMvc.perform(get("/api/faculties/1").contentType(APPLICATION_JSON)).andExpect(status().isOk())
@@ -54,7 +59,8 @@ class FacultyRestControllerTest {
     }
 
     @Test
-    public void addShouldAddEntityToDBAndReturnItWithIdWhenDBCallFine() throws Exception {
+    @WithMockUser(authorities = { "write" })
+    void addShouldAddEntityToDBAndReturnItWithIdWhenDBCallFine() throws Exception {
         FacultyDto dto = new FacultyDto();
         dto.setId(0);
         dto.setName("TestName");
@@ -72,7 +78,8 @@ class FacultyRestControllerTest {
     }
 
     @Test
-    public void updateShouldUpdateEntryInDBAndReturnItWhenDBCallFine() throws Exception {
+    @WithMockUser(authorities = { "write" })
+    void updateShouldUpdateEntryInDBAndReturnItWhenDBCallFine() throws Exception {
         FacultyDto dto = new FacultyDto();
         dto.setId(1);
         dto.setName("Faculty");
@@ -84,7 +91,8 @@ class FacultyRestControllerTest {
     }
 
     @Test
-    public void deleteShouldRemoveEntryFromDBWhenDBCallFine() throws Exception {
+    @WithMockUser(authorities = { "write" })
+    void deleteShouldRemoveEntryFromDBWhenDBCallFine() throws Exception {
         Faculty faculty = new Faculty(1, "IT");
         mockMvc.perform(delete("/api/faculties/1").contentType(APPLICATION_JSON)).andExpect(status().isOk());
         Mockito.verify(mockFacultyService, times(1)).deleteById(faculty.getId());

@@ -18,8 +18,10 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -30,7 +32,8 @@ import com.rumakin.universityschedule.model.*;
 import com.rumakin.universityschedule.service.StudentService;
 import com.rumakin.universityschedule.service.TeacherService;
 
-@WebMvcTest(value = TeacherRestController.class)
+@SpringBootTest
+@AutoConfigureMockMvc
 class TeacherRestControllerTest {
 
     @Autowired
@@ -45,7 +48,8 @@ class TeacherRestControllerTest {
     private TeacherService mockTeacherService;
 
     @Test
-    public void getAllShouldReturnListOfEntityIfAtLeastOneExist() throws Exception {
+    @WithMockUser(authorities = { "write" })
+    void getAllShouldReturnListOfEntityIfAtLeastOneExist() throws Exception {
         Faculty faculty = new Faculty(1, "IT");
         Teacher teacher = new Teacher(1, "Mick", "Jagger", "mj@rs.com", "+7(123)4567890", faculty);
         Teacher teacherTwo = new Teacher(2, "Bill", "Goldberg", "bg@wwe.com", "+7(123)4567891", faculty);
@@ -58,7 +62,8 @@ class TeacherRestControllerTest {
     }
 
     @Test
-    public void findByIdShouldReturnEntityIfIdExists() throws Exception {
+    @WithMockUser(authorities = { "write" })
+    void findByIdShouldReturnEntityIfIdExists() throws Exception {
         Faculty faculty = new Faculty(1, "IT");
         Teacher teacher = new Teacher(1, "Mick", "Jagger", "mj@rs.com", "+7(123)4567890", faculty);
         Mockito.when(mockTeacherService.findById(Mockito.anyInt())).thenReturn(teacher);
@@ -73,7 +78,8 @@ class TeacherRestControllerTest {
     }
 
     @Test
-    public void addShouldAddEntityToDBAndReturnItWithIdWhenDBCallFine() throws Exception {
+    @WithMockUser(authorities = { "write" })
+    void addShouldAddEntityToDBAndReturnItWithIdWhenDBCallFine() throws Exception {
         TeacherDto dto = new TeacherDto();
         dto.setFirstName("Mel");
         dto.setLastName("B");
@@ -102,7 +108,8 @@ class TeacherRestControllerTest {
     }
 
     @Test
-    public void updateShouldUpdateEntryInDBAndReturnItWhenDBCallFine() throws Exception {
+    @WithMockUser(authorities = { "write" })
+    void updateShouldUpdateEntryInDBAndReturnItWhenDBCallFine() throws Exception {
         TeacherDto dto = new TeacherDto();
         dto.setId(1);
         dto.setFirstName("Mel");
@@ -123,7 +130,8 @@ class TeacherRestControllerTest {
     }
 
     @Test
-    public void deleteShouldRemoveEntryFromDBWhenDBCallFine() throws Exception {
+    @WithMockUser(authorities = { "write" })
+    void deleteShouldRemoveEntryFromDBWhenDBCallFine() throws Exception {
         Faculty faculty = new Faculty(1, "IT");
         Teacher teacher = new Teacher(1, "Mick", "Jagger", "mj@rs.com", "+7(123)4567890", faculty);
         mockMvc.perform(delete("/api/teachers/1").contentType(APPLICATION_JSON)).andExpect(status().isOk());
