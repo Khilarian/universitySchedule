@@ -20,15 +20,23 @@ For Windows psql -u postgres -f db_creation.sql<br>
 For Unix-like: $ sudo -u postgres psql -d university -f user_creation.sql<br>
 For Windows psql -u postgres -f user_creation.sql<br>
 3-3. mvn flyway:migrate -Dflyway.url=jdbc:postgresql://localhost:5432/university -Dflyway.user=tester -Dflyway.password=test<br>
-3-4. For insert example database entries:<br>
+3-4.(Optional) For insert example database entries:<br>
+Run Sql-scripts from src/test/resources/db/sql
 For Unix-like: $ sudo -u postgres psql -d university -f test_data.sql<br>
 For Windows psql -u postgres -d university -f test_data.sql<br>
-4. Run in Console mvn spring-boot:run<br>
-5. Enter <span>http://127.0.0.1:8080/university</span> in browser<br>
+UI acesses:
+Admin: admin@admin.com admin
+User: user@user.com user
+4. Insert username and password in application.yml for mail sending. <br>
+Config prepared to using yandex.ru, don't forget to allow access to mail by 3's party client in mail properties.
+If you want to use another mail service, you need to update application mail configuration.
+5. Run in Console mvn spring-boot:run<br>
+6. Enter <span>http://127.0.0.1:8080/university</span> in browser<br>
 <hr>
 Enjoy!!!
 
-<h1 align="center"> Changelog: </h1>
+<h1 align="center"> Main steps changelog: </h1>
+2020-03-04: Start project<br>
 2020-04-07: Add logging system<br>
 2020-04-13: Start to adding Spring MVC/Thymeleaf/Bootstrap<br>
 2020-04-29: Add jndi, put config files for Tomcat into resorces<br>
@@ -41,3 +49,6 @@ Enjoy!!!
 2020-06-24: Start Swagger implementation<br>
 2020-10-25: Next step planning<br>
 2020-10-27: JaCoCo implemented
+2020-12-26: Start SpringSecurity implementation<br>
+2021-01-29: Release candidate
+
