@@ -79,7 +79,7 @@ public class LessonRestController {
     }
     
     @GetMapping("/getSchedule")
-    @PreAuthorize("hasAuthority('read')")
+    @PreAuthorize("hasAnyAuthority('read','write')")
     public List<LessonDto> getSchedule(@Valid @RequestBody LessonFilterDto lessonFilterDto){
         logger.debug("getSchedule()");
         return lessonService.getLessonsForSchedule(lessonFilterDto);

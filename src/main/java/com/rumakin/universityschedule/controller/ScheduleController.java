@@ -35,7 +35,7 @@ public class ScheduleController {
     }
 
     @GetMapping("/schedule")
-    @PreAuthorize("hasAuthority('write')")
+    @PreAuthorize("hasAnyAuthority('write','read')")
     public String getSchedule(@Valid @ModelAttribute(value = "lessonFilterDto") final LessonFilterDto lessonFilterDto,
             BindingResult bindingResult, Model model) {
         logger.debug("getSchedule() {}", lessonFilterDto);
