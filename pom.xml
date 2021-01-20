@@ -16,6 +16,7 @@
         <swagger.version>2.9.2</swagger.version>
         <swagger-annotation.version>1.6.2</swagger-annotation.version>
         <jacoco.version>0.8.6</jacoco.version>
+        <rider.version>1.21.1</rider.version>
     </properties>
 
     <parent>
@@ -179,6 +180,13 @@
             <groupId>io.springfox</groupId>
             <artifactId>springfox-bean-validators</artifactId>
             <version>${swagger.version}</version>
+        </dependency>
+        
+         <dependency>
+            <groupId>com.github.database-rider</groupId>
+            <artifactId>rider-spring</artifactId>
+            <version>${rider.version}</version>
+            <scope>test</scope>
         </dependency>
 
     </dependencies>

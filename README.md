@@ -20,7 +20,8 @@ For Windows psql -u postgres -f db_creation.sql<br>
 For Unix-like: $ sudo -u postgres psql -d university -f user_creation.sql<br>
 For Windows psql -u postgres -f user_creation.sql<br>
 3-3. mvn flyway:migrate -Dflyway.url=jdbc:postgresql://localhost:5432/university -Dflyway.user=tester -Dflyway.password=test<br>
-3-4.(Optional) For insert example database entries:<br>
+3-4.(Optional) If you want to add test database, reply steps 3.1-3.3 with /src/test/resouces/db/sql folder 
+To insert example database entries:<br>
 Run Sql-scripts from src/test/resources/db/sql
 For Unix-like: $ sudo -u postgres psql -d university -f test_data.sql<br>
 For Windows psql -u postgres -d university -f test_data.sql<br>
