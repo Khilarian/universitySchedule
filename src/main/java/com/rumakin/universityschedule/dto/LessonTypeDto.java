@@ -35,6 +35,11 @@ public class LessonTypeDto {
     }
 
     @Override
+    public String toString() {
+        return "LessonTypeDto [id=" + id + ", name=" + name + "]";
+    }
+
+    @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
@@ -49,11 +54,6 @@ public class LessonTypeDto {
         if (!(obj instanceof LessonTypeDto)) return false;
         LessonTypeDto dto = (LessonTypeDto) obj;
         return getId().equals(dto.getId());
-    }
-
-    @Override
-    public String toString() {
-        return "LessonTypeDto [id=" + id + ", name=" + name + "]";
     }
 
 }

@@ -80,6 +80,12 @@ public class TimeSlotDto {
     }
 
     @Override
+    public String toString() {
+        return "TimeSlotDto [id=" + id + ", name=" + name + ", number=" + number + ", startTime=" + startTime
+                + ", endTime=" + endTime + "]";
+    }
+
+    @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
@@ -97,12 +103,6 @@ public class TimeSlotDto {
         if (!(obj instanceof TimeSlotDto)) return false;
         TimeSlotDto dto = (TimeSlotDto) obj;
         return getId().equals(dto.getId());
-    }
-
-    @Override
-    public String toString() {
-        return "TimeSlotDto [id=" + id + ", name=" + name + ", number=" + number + ", startTime=" + startTime
-                + ", endTime=" + endTime + "]";
     }
 
 }

@@ -184,6 +184,13 @@
         
          <dependency>
             <groupId>com.github.database-rider</groupId>
+            <artifactId>rider-core</artifactId>
+            <version>${rider.version}</version>
+            <scope>test</scope>
+        </dependency>
+        
+         <dependency>
+            <groupId>com.github.database-rider</groupId>
             <artifactId>rider-spring</artifactId>
             <version>${rider.version}</version>
             <scope>test</scope>
