@@ -49,7 +49,7 @@ Enjoy!!!
 2020-06-18: Start REST implementation<br>
 2020-06-24: Start Swagger implementation<br>
 2020-10-25: Next step planning<br>
-2020-10-27: JaCoCo implemented
+2020-10-27: JaCoCo implemented<br>
 2020-12-26: Start SpringSecurity implementation<br>
 2021-01-29: Release candidate
 
