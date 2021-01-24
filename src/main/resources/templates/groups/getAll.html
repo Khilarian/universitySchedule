@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<div th:insert="/fragments/common :: common_head"></div>
+<script type="text/javascript" src="../../resources/js/common.js" th:src="@{/resources/js/common.js}"></script>
+<title th:text="${headerString}"></title>
+</head>
+<body class="container-sm">
+    <div th:insert="/fragments/common :: nav_menu"></div>
+    <h3 align="center" th:text="${headerString}"></h3>
+    <a th:href="@{/groups/edit}" class="btn btn-secondary">Add new group</a>
+    <div>
+        <table class="table table-bordered">
+            <thead class="bg-primary text-white">
+                <tr>
+                    <th><strong>Group name</strong></th>
+                    <th><strong>Faculty Name</strong></th>
+                    <th><strong>Edit</strong></th>
+                    <th><strong>Delete</strong></th>
+                </tr>
+            </thead>
+            <tr th:each="group:${groups}" class="table-success">
+                <td th:text="${group.name}"></td>
+                <td th:text="${group.facultyName}"></td>
+                <td><a th:href="@{/groups/edit/(id=${group.id})}" class="btn btn-warning">Edit</a></td>
+                <td><a th:href="@{/groups/delete/(id=${group.id})}" class="btn btn-danger">Delete</a></td>
+            </tr>
+        </table>
+    </div>
+    <div th:insert="fragments/common :: deleteEntry"></div>
+</body>
+</html>

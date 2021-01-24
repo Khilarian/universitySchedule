@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+<div th:insert="/fragments/common :: common_head"></div>
+<title>Login</title>
+</head>
+<body class="container">
+    <div th:insert="/fragments/common :: nav_menu"></div>
+    <h2 class="form-signin-heading">Login</h2>
+    <p th:if="${loginError}" class="alert alert-danger">Wrong user or password.</p>
+    <p th:if="${accessDenied}" class="alert alert-danger">Sorry, you do not have permission to view this page.</p>
+    <form class="form-signin" method="post" action="/auth/login">
+        <label for="username">Username</label>
+        <input type="text" id="username" name="username" class="form-control" placeholder="Username" required>
+        <p>
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" class="form-control" placeholder="Password" required>
+        </p>
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+    </form>
+</body>
+</html>

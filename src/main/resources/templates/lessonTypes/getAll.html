@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<div th:insert="/fragments/common :: common_head"></div>
+<script type="text/javascript" src="../../resources/js/common.js" th:src="@{/resources/js/common.js}"></script>
+<title th:text="${headerString}"></title>
+</head>
+<body class="container-sm">
+    <div th:insert="/fragments/common :: nav_menu"></div>
+    <h3 align="center" th:text="${headerString}"></h3>
+    <a th:href="@{/lessonTypes/edit}" class="btn btn-secondary">Add new lesson type</a>
+    <table class="table table-bordered">
+        <thead class="bg-primary text-white">
+            <tr>
+                <td>Lesson Type Name</td>
+                <td>Delete</td>
+            </tr>
+        </thead>
+        <tr th:each="lessonType:${lessonTypes}" class="table-success">
+            <td th:text="${lessonType.name}">Lesson Type Name</td>
+            <td><a th:href="@{/lessonTypes/delete/(id=${lessonType.id})}" class="btn btn-danger">Delete</a></td>
+        </tr>
+    </table>
+    <div th:insert="fragments/common :: deleteEntry"></div>
+</body>
+</html>

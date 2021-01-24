@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<div th:insert="/fragments/common :: common_head"></div>
+<title class="text-body" th:text="${headerString}"></title>
+</head>
+<body class="container-sm">
+    <div th:insert="/fragments/common :: nav_menu"></div>
+    <h3 class="text-body" th:text="${headerString}"></h3>
+    <form action="#" th:action="@{/students/edit}" th:object="${student}" method="post">
+        <div class="form-group row">
+            <label class="col-form-label">Enter student's first name</label>
+            <input type="hidden" class="form-control" th:field="*{id}" th:value=${id} /> <input type="text"
+                class="form-control" th:field="*{firstName}" th:value=${firstName} />
+            <span class="font-italic text-danger" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"></span>
+        </div>
+        <div class="form-group row">
+            <label class="col-form-label">Enter student's last name</label>
+            <input type="text" class="form-control" th:field="*{lastName}" th:value=${lastName} />
+            <span class="font-italic text-danger" th:if="${#fields.hasErrors('lastName')}" th:errors="*lastName}"></span>
+        </div>
+        <div class="form-group row">
+            <label class="col-form-label">Enter student's email</label>
+            <input type="text" th:if="*{email} == null" class="form-control" th:field="*{email}" th:value="${email}" />
+            <input type="text" th:unless="*{email} == null" class="form-control" th:field="*{email}" th:value="${email}"
+                readonly="readonly" />
+            <span class="font-italic text-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
+        </div>
+        <div class="form-group row">
+            <label class="col-form-label">Enter student's phone number</label>
+            <input type="text" class="form-control" th:field="*{phone}" th:value="${phone}" />
+            <span class="font-italic text-danger" th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}"></span>
+        </div>
+        <div class="form-group row">
+            <label class="col-form-label">Select group</label>
+            <select class="form-control" th:field="*{groupId}">
+                <option th:value="null">Group not assign</option>
+                <option th:each="group : ${groups}" th:value="${group.id}" th:utext="${group.name}" id="addGroupId"
+                    placeholder="Group" th:required="required">Group</option>
+            </select>
+            <span class="font-italic text-danger" th:if="${#fields.hasErrors('groupId')}" th:errors="*{groupId}"></span>
+        </div>
+        <div class="form-group row">
+            <input type="submit" value="Save"> <input type="reset" class="btn btn-warning" value="Reset" /> <a
+                th:href="@{/students/getAll}" class="btn btn-danger">Cancel</a>
+        </div>
+    </form>
+</body>
+</html>

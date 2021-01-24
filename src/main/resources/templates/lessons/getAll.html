@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<div th:insert="/fragments/common :: common_head"></div>
+<script type="text/javascript" src="../../resources/js/common.js" th:src="@{/resources/js/common.js}"></script>
+<title th:text="${headerString}"></title>
+</head>
+<body class="container-sm">
+    <div th:insert="/fragments/common :: nav_menu"></div>
+    <h3 align="center" th:text="${headerString}"></h3>
+    <a th:href="@{/lessons/edit}" class="btn btn-secondary">Add new lesson</a>
+    <div>
+        <table class="table table-bordered">
+            <thead class="bg-primary text-white">
+                <tr>
+                    <td><strong>Id</strong></td>
+                    <td><strong>Course name</strong></td>
+                    <td><strong>Lesson Type</strong></td>
+                    <td><strong>Date</strong></td>
+                    <td><strong>Time Slot</strong></td>
+                    <td><strong>Auditorium</strong></td>
+                    <td><strong>Teachers</strong></td>
+                    <td><strong>Groups</strong></td>
+                    <td><strong>Edit</strong></td>
+                    <td><strong>Delete</strong></td>
+                </tr>
+            </thead>
+            <tr th:each="lesson:${lessons}" class="table-success">
+                <td th:text="${lesson.id}"></td>
+                <td th:text="${lesson.courseName}"></td>
+                <td th:text="${lesson.lessonTypeName}"></td>
+                <td th:text="${lesson.date}"></td>
+                <td th:text="|${lesson.timeSlotStartTime} - ${lesson.timeSlotEndTime}"></td>
+                <td th:text="|${lesson.auditoriumNumber} in ${lesson.buildingName}"></td>
+                <td>
+                    <ul>
+                        <li th:each="teacher : ${lesson.teachers}"><span
+                                th:text="|${teacher.firstName} ${teacher.lastName}|" /></span></li>
+                    </ul>
+                </td>
+                <td>
+                    <ul>
+                        <li th:each="group : ${lesson.groups}"><span th:text="${group.name}" /></span></li>
+                    </ul>
+                </td>
+                <td><a th:href="@{/lessons/edit/(id=${lesson.id})}" class="btn btn-warning">Edit</a></td>
+                <td><a th:href="@{/lessons/delete/(id=${lesson.id})}" class="btn btn-danger">Delete</a></td>
+            </tr>
+        </table>
+    </div>
+    <div th:insert="fragments/common :: deleteEntry"></div>
+</body>
+</html>

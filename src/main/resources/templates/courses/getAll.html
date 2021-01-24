@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<div th:insert="/fragments/common :: common_head"></div>
+<script type="text/javascript" src="../../resources/js/common.js" th:src="@{/resources/js/common.js}"></script>
+<title th:text="${headerString}"></title>
+</head>
+<body class="container-sm">
+    <div th:insert="/fragments/common :: nav_menu"></div>
+    <h3 align="center" th:text="${headerString}"></h3>
+    <a th:href="@{/courses/edit}" class="btn btn-secondary">Add new course</a>
+    <div>
+        <table class="table table-bordered">
+            <thead class="bg-primary text-white">
+                <tr>
+                    <td><strong>Course name</strong></td>
+                    <td><strong>Faculty Name</strong></td>
+                    <td><strong>Edit</strong></td>
+                    <td><strong>Delete</strong></td>
+                </tr>
+            </thead>
+            <tr th:each="course:${courses}" class="table-success">
+                <td th:text="${course.name}"></td>
+                <td th:text="${course.facultyName}"></td>
+                <td><a th:href="@{/courses/edit/(id=${course.id})}" class="btn btn-warning">Edit</a></td>
+                <td><a th:href="@{/courses/delete/(id=${course.id})}" class="btn btn-danger">Delete</a></td>
+            </tr>
+        </table>
+    </div>
+    <div th:insert="fragments/common :: deleteEntry"></div>
+</body>
+</html>

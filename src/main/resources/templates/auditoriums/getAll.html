@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<div th:insert="/fragments/common :: common_head"></div>
+<script type="text/javascript" src="../../resources/js/common.js" th:src="@{/resources/js/common.js}"></script>
+<title class="text-body" th:text="${headerString}"></title>
+</head>
+<body class="container-sm">
+    <div th:insert="/fragments/common :: nav_menu"></div>
+    <h3 align="center" th:text="${headerString}"></h3>
+    <a th:href="@{/auditoriums/edit}" class="btn btn-secondary">Add new auditorium</a>
+    <div>
+        <table class="table table-bordered">
+            <thead class="bg-primary text-white">
+                <tr>
+                    <th>Number</th>
+                    <th>Capacity</th>
+                    <th>Building Name</th>
+                    <th>Building address</th>
+                    <th>Edit</th>
+                    <th>Delete</th>
+                </tr>
+            </thead>
+            <tr th:each="auditorium:${auditoriums}" class="table-success">
+                <td th:text="${auditorium.number}">Number</td>
+                <td th:text="${auditorium.capacity}">Capacity</td>
+                <td th:text="${auditorium.buildingName}">Building Name</td>
+                <td th:text="${auditorium.buildingAddress}">Building Address</td>
+                <td><a th:href="@{/auditoriums/edit/(id=${auditorium.id})}" class="btn btn-warning">Edit</a></td>
+                <td><a th:href="@{/auditoriums/delete/(id=${auditorium.id})}" class="btn btn-danger">Delete</a></td>
+            </tr>
+        </table>
+        <div th:insert="fragments/common :: deleteEntry"></div>
+    </div>
+</body>
+</html>

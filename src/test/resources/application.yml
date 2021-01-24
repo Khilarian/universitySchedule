@@ -1,0 +1,26 @@
+spring:  
+    datasource:
+        initialization-mode: always
+        driverClassName: org.h2.Driver
+        url: jdbc:h2:mem:university_test
+        username: sa
+        password: 
+        maxTotal: 20
+        maxIdle: 10
+        maxWaitMillis: -1
+    jpa:
+        hibernate:
+            ddl-auto: update
+        database-platform: org.hibernate.dialect.H2Dialect
+        show-sql: true
+    flyway:
+        enabled: false
+        location: classpath:/db/migration
+    mail:
+        host: smtp.yandex.com
+        username: 
+        password: 
+        port: 465
+        protocol: smtps
+mail:
+    debug: false

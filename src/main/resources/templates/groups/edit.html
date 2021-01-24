@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<div th:insert="/fragments/common :: common_head"></div>
+<title class="text-body" th:text="${headerString}"></title>
+</head>
+<body class="container-sm">
+    <div th:insert="/fragments/common :: nav_menu"></div>
+    <h3 class="text-body" th:text="${headerString}"></h3>
+    <form action="#" th:action="@{/groups/edit}" th:object="${group}" method="post">
+        <div class="form-group row">
+            <label class="col-form-label">Enter group name</label>
+            <input type="hidden" class="form-control" th:field="*{id}" th:value=${id} /> <input type="text"
+                class="form-control" th:field="*{name}" th:value=${name} />
+            <span class="font-italic text-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
+        </div>
+        <div class="form-group row">
+            <label class="col-form-label">Select faculty</label>
+            <select class="form-control" th:field="*{facultyId}">
+                <option th:value="null">Faculty not assign</option>
+                <option th:each="faculty : ${faculties}" th:value="${faculty.id}" th:utext="${faculty.name}"
+                    id="addFacultyId" placeholder="Faculty" th:required="required">Faculty</option>
+            </select>
+            <span class="font-italic text-danger" th:if="${#fields.hasErrors('facultyId')}" th:errors="*{facultyId}"></span>
+        </div>
+        <input type="submit" value="Save"> <input type="reset" class="btn btn-warning" value="Reset" /> <a
+            th:href="@{/groups/getAll}" class="btn btn-danger">Cancel</a>
+    </form>
+</body>
+</html>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<div th:insert="/fragments/common :: common_head"></div>
+<title class="text-body" th:text="${headerString}"></title>
+</head>
+<body class="container-sm">
+    <div th:insert="/fragments/common :: nav_menu"></div>
+    <h3 class="text-body" th:text="${headerString}"></h3>
+    <form action="#" th:action="@{/users/changePassword}" th:object="${user}" method="post">
+        <div class="form-group row">
+            <label class="col-form-label">User's first name</label>
+            <input type="hidden" class="form-control" th:field="*{id}" th:value=${id} readonly="readonly" />
+            <input type="text" class="form-control" th:field="*{firstName}" th:value=${firstName} readonly="readonly" />
+        </div>
+        <div class="form-group row">
+            <label class="col-form-label">User's last name</label>
+            <input type="text" class="form-control" th:field="*{lastName}" th:value=${lastName} readonly="readonly" />
+        </div>
+        <div class="form-group row">
+            <label class="col-form-label">User's email</label>
+            <input type="email" th:unless="*{email} == null" class="form-control" th:field="*{email}"
+                th:value="${email}" readonly="readonly" />
+            <input type="hidden" class="form-control" th:field="*{role}" th:value="${role}" readonly="readonly">
+            <input type="hidden" class="form-control" th:field="*{status}" th:value="${status}" readonly="readonly">
+        </div>
+        <p th:if="${passwordError}" class="alert alert-danger">Something goes wrong</p>
+        <p th:if="${passwordSuccess}" class="alert alert-success">Password was changed successfully!</p>
+        <h1>Change password:</h1>
+        <div class="form-group row">
+            <label class="col-form-label">Current password</label>
+            <input type="text" class="form-control" th:field="*{password}" th:value="${password}" />
+        </div>
+        <div class="form-group row">
+            <label class="col-form-label">New password</label>
+            <input type="text" class="form-control" th:field="*{newPassword}" th:value="${newPassword}" />
+        </div>
+        <div class="form-group row">
+            <input type="submit" value="Save">
+            <input type="reset" class="btn btn-warning" value="Reset" />
+            <a th:href="@{/university}" class="btn btn-danger">Cancel</a>
+        </div>
+    </form>
+</body>
+</html>

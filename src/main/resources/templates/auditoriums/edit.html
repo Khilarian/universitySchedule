@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<div th:insert="/fragments/common :: common_head"></div>
+<title class="text-body" th:text="${headerString}"></title>
+</head>
+<body class="container-sm">
+    <div th:insert="/fragments/common :: nav_menu"></div>
+    <h3 class="text-body" th:text="${headerString}"></h3>
+    <form action="#" th:action="@{/auditoriums/edit}" th:object="${auditorium}" method="post">
+        <div class="form-group row">
+            <label class="col-form-label">Enter auditorium number</label>
+            <input type="hidden" class="form-control" th:field="*{id}" th:value=${id} />
+            <input type="text" class="form-control" th:field="*{number}" th:value=${number} />
+            <span class="font-italic text-danger" th:if="${#fields.hasErrors('number')}" th:errors="*{number}"></span>
+        </div>
+        <div class="form-group row">
+            <label class="col-form-label">Enter auditorium capacity</label>
+            <input type="text" class="form-control" th:field="*{capacity}" th:value="${capacity}" />
+            <span class="font-italic text-danger" th:if="${#fields.hasErrors('capacity')}" th:errors="*{capacity}"></span>
+        </div>
+        <div class="form-group row">
+            <label class="col-form-label">Select building</label>
+            <select class="form-control" th:field="*{buildingId}">
+                <option th:value="null">Building not assign</option>
+                <option th:each="building : ${buildings}" th:value="${building.id}" th:utext="${building.name}"
+                    id="addBuildingId" placeholder="Building" th:required="required">Building</option>
+            </select>
+            <span class="font-italic text-danger" th:if="${#fields.hasErrors('buildingId')}" th:errors="*{buildingId}"></span>
+        </div>
+        <input type="submit" value="Save">
+        <input type="reset" class="btn btn-warning" value="Reset" />
+        <a th:href="@{/auditoriums/getAll}" class="btn btn-danger">Cancel</a>
+    </form>
+</body>
+</html>

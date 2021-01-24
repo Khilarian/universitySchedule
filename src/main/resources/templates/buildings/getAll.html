@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<div th:insert="/fragments/common :: common_head"></div>
+<script type="text/javascript" src="../../resources/js/common.js" th:src="@{/resources/js/common.js}"></script>
+<title th:text="${headerString}"></title>
+</head>
+<body class="container-sm">
+    <div th:insert="/fragments/common :: nav_menu"></div>
+    <h3 align="center" th:text="${headerString}"></h3>
+    <a th:href="@{/buildings/edit}" class="btn btn-secondary">Add new building</a>
+    <table class="table table-bordered">
+        <thead class="bg-primary text-white">
+            <tr>
+                <td>Building Name</td>
+                <td>Building address</td>
+                <td>Edit</td>
+                <td>Delete</td>
+            </tr>
+        </thead>
+        <tr th:each="building:${buildings}" class="table-success">
+            <td th:text="${building.name}">Building Name</td>
+            <td th:text="${building.address}">Building Address</td>
+            <td><a th:href="@{/buildings/edit/(id=${building.id})}" class="btn btn-warning">Edit</a></td>
+            <td><a th:href="@{/buildings/delete/(id=${building.id})}" class="btn btn-danger">Delete</a></td>
+        </tr>
+    </table>
+    <div th:insert="fragments/common :: deleteEntry"></div>
+</body>
+</html>
