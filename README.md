@@ -3,10 +3,10 @@ Students or teachers can get their timetable for a day or for a month.
 
 <hr>
 <h1 align="center"> Installation of the working environment:</h1>
-1. Install JDK8 from <a href=https://www.oracle.com/java/technologies/javase-jdk11-downloads.html>here</a><br>
+1. Install JDK11 from <a href=https://www.oracle.com/java/technologies/javase-jdk11-downloads.html>here</a><br>
 2. Install latest version Eclipse IDE for EE from <a href=https://www.eclipse.org/downloads/>here</a><br>
 3. Install latest version of Apache Maven for UNIX from <a href=https://maven.apache.org/download.cgi>here</a><br>
-4. Install PostgreSQL 12 from <a href=https://www.postgresql.org/download>here</a><br>
+4. Install PostgreSQL 13 from <a href=https://www.postgresql.org/download>here</a><br>
 5. Install latest version Git from <a href=https://git-scm.com/downloads>here</a><br>
 
 <h1 align="center"> Preparing for work: </h1>
